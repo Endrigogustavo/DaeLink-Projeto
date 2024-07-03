@@ -6,7 +6,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Definindo as vagas de trabalho para o teste
 jobs = [
     {"id": 1, "title": "Software Engineer", "description": "Develop software applications using Java and Python."},
     {"id": 2, "title": "Data Scientist", "description": "Analyze data to gain insights and build predictive models."},
@@ -47,23 +46,37 @@ jobs = [
     {"id": 37, "title": "Site Reliability Engineer", "description": "Ensure the reliability and availability of critical systems."},
     {"id": 38, "title": "Data Engineer", "description": "Build and maintain data infrastructure and ETL processes."},
     {"id": 39, "title": "Information Security Analyst", "description": "Monitor and protect information systems from security breaches."},
-    {"id": 40, "title": "Robotics Engineer", "description": "Design and develop robotic systems and applications."}
+    {"id": 40, "title": "Robotics Engineer", "description": "Design and develop robotic systems and applications."},
+    {"id": 41, "title": "Digital Marketing Specialist", "description": "Plan and execute digital marketing campaigns."},
+    {"id": 42, "title": "Digital Marketing Specialist", "description": "Plan and execute digital marketing campaigns."},
+    {"id": 43, "title": "Digital Marketing Specialist", "description": "Plan and execute digital marketing campaigns."},
 ]
 
-# Vetorização das descrições de vagas
 descriptions = [job['description'] for job in jobs]
 tfidf = TfidfVectorizer().fit_transform(descriptions)
+
+def find_job_index_by_title(title):
+    for index, job in enumerate(jobs):
+        if job['title'].lower() == title.lower():
+            return index
+    return None
 
 @app.route('/recommend', methods=['POST'])
 def recommend():
     data = request.json
-    job_id = data['job_id']
-    job_index = next(index for (index, job) in enumerate(jobs) if job["id"] == job_id)
-    
+    job_title = data.get('job_title')
+    job_index = find_job_index_by_title(job_title)
+
+    if job_index is None:
+        return jsonify({"error": "Job title not found"}), 404
+
     cosine_similarities = linear_kernel(tfidf[job_index:job_index+1], tfidf).flatten()
-    related_docs_indices = cosine_similarities.argsort()[:-15:-1]
-    
+    related_docs_indices = cosine_similarities.argsort()[:-20:-1]
+
+    # Incluir a vaga pesquisada nas recomendações
     recommendations = [jobs[i] for i in related_docs_indices if i != job_index]
+    recommendations.insert(0, jobs[job_index])  # Colocar a vaga pesquisada no início
+
     return jsonify(recommendations)
 
 if __name__ == '__main__':
