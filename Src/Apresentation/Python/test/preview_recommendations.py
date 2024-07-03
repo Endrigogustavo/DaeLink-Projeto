@@ -1,16 +1,16 @@
 import requests
 import json
 
-def get_recommendations(job_id):
+def get_recommendations(job_title):
     url = 'http://localhost:5000/recommend'  # URL do seu endpoint Flask
-    payload = {'job_id': job_id}
+    payload = {'job_title': job_title}
     headers = {'Content-Type': 'application/json'}
 
     response = requests.post(url, data=json.dumps(payload), headers=headers)
 
     if response.status_code == 200:
         recommendations = response.json()
-        print(f"Recomendações para o Job ID {job_id}:\n")
+        print(f"Recomendações para o Job Title {job_title}:\n")
         for rec in recommendations:
             print(f"ID: {rec['id']}")
             print(f"Título: {rec['title']}")
@@ -20,5 +20,5 @@ def get_recommendations(job_id):
 
 if __name__ == '__main__':
     # Exemplo de uso
-    job_id = 20  # Substitua pelo ID da vaga que deseja consultar
-    get_recommendations(job_id)
+    job_title = "Digital Marketing Specialist"  # Substitua pelo nome da vaga que deseja consultar
+    get_recommendations(job_title)
