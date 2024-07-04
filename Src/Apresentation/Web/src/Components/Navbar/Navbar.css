@@ -8,9 +8,16 @@
     @apply block lg:flex
 }
 .Logo{
-    width: 13%;
+    width: 10%;
 }
 span{
     color: black;
-    font-size: large;
+    font-size: medium;
 }
+
+.navbar{
+   background-color: #fdfdf2;
+}
+
+
+

@@ -68,7 +68,7 @@ def recommend():
     job_index = find_job_index_by_title(job_title)
 
     if job_index is None:
-        return jsonify({"error": "Job title not found"}), 404
+        return jsonify({"error": "Esta vaga não existe"}), 404
 
     cosine_similarities = linear_kernel(tfidf[job_index:job_index+1], tfidf).flatten()
     related_docs_indices = cosine_similarities.argsort()[:-20:-1]
