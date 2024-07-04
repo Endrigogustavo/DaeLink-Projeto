@@ -1,0 +1,16 @@
+.navbar-active .hamburger div:first-child {
+    @apply rotate-45 translate-y-1.5;
+}
+.navbar-active .hamburger div:last-child {
+    @apply -rotate-45 -translate-y-1;
+}
+.navbar-active div:first-child div:first-child div:last-child{
+    @apply block lg:flex
+}
+.Logo{
+    width: 13%;
+}
+span{
+    color: black;
+    font-size: large;
+}
