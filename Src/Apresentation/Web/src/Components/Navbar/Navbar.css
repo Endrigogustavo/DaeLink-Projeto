@@ -8,7 +8,7 @@
     @apply block lg:flex
 }
 .Logo{
-    width: 10%;
+    width: 10rem;
 }
 span{
     color: black;
@@ -17,6 +17,14 @@ span{
 
 .navbar{
    background-color: #fdfdf2;
+}
+
+.navbar-itens{
+    margin-top: 0.90rem;
+}
+
+.itens{
+    margin-right: 3rem;
 }
 
 

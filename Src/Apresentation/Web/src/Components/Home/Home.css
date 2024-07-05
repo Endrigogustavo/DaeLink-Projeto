@@ -30,36 +30,32 @@ main {
 }
 
 .heading-xl {
-  font-family: inherit;
   font-size: clamp(2.648rem, 6vw, 4.241rem);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -1px;
   margin-left: 3rem;
+  margin-top: -5rem;
 
 }
 .heading-lg {
-  font-family: inherit;
   font-size: clamp(2.179rem, 5vw, 3.176rem);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -1px;
 }
 .heading-md {
-  font-family: inherit;
   font-size: clamp(1.794rem, 4vw, 2.379rem);
   font-weight: 700;
   line-height: 1.25;
   letter-spacing: -1px;
 }
 .heading-sm {
-  font-family: inherit;
   font-size: clamp(1.476rem, 3vw, 1.782rem);
   font-weight: 600;
   line-height: 1.5;
 }
 .heading-xs {
-  font-family: inherit;
   font-size: clamp(1.215rem, 2vw, 1.335rem);
   font-weight: 500;
   line-height: 1.5;
@@ -67,7 +63,6 @@ main {
 }
 
 .paragraph {
-  font-family: inherit;
   font-size: clamp(1rem, 2vw, 1.125rem);
   text-wrap: balance;
   color: var(--color-white-200);
@@ -76,7 +71,6 @@ main {
 
 .btn {
   display: inline-block;
-  font-family: inherit;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5;
@@ -126,7 +120,6 @@ main {
 
 
 .brand {
-  font-family: inherit;
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 1.5;
@@ -160,7 +153,6 @@ main {
   row-gap: 1.25rem;
 }
 .menu-link {
-  font-family: inherit;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5;
@@ -170,7 +162,6 @@ main {
 }
 .menu-block {
   display: inline-block;
-  font-family: inherit;
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.25;
@@ -381,91 +372,4 @@ h2:last-of-type {
   h2 {
       font-size: 1.5rem;
   }
-}
-
-.header-body {
-  text-align: center;
-  line-height: 0.8;
-  margin-bottom: 50px;
-  margin-top: 100px;
-}
-
-.header-body p {
-  margin: 0 auto;
-  line-height: 2;
-  color: var(--grayishBlue);
-}
-
-
-.box p {
-  color: var(--grayishBlue);
-}
-
-.box {
-  border-radius: 5px;
-  box-shadow: 0px 30px 40px -20px var(--grayishBlue);
-  padding: 30px;
-  margin: 20px;  
-}
-
-img {
-  float: right;
-}
-
-@media (max-width: 450px) {
-  .box {
-      height: 200px;
-  }
-}
-
-@media (max-width: 950px) and (min-width: 450px) {
-  .box {
-      text-align: center;
-      height: 180px;
-  }
-}
-
-.cyan {
-  border-top: 3px solid var(--cyan);
-}
-.red {
-  border-top: 3px solid var(--red);
-}
-.blue {
-  border-top: 3px solid var(--blue);
-}
-.orange {
-  border-top: 3px solid var(--orange);
-}
-
-h2 {
-  color: var(--varyDarkBlue);
-  font-weight: var(--weight3);
-}
-
-
-@media (min-width: 950px) {
-  .row1-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
-  
-  .row2-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
-  .box-down {
-      position: relative;
-      top: 150px;
-  }
-  .box {
-      width: 20%;
-   
-  }
-  .header p {
-      width: 30%;
-  }
-  
 }
