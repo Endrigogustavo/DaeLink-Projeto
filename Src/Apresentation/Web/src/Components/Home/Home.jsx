@@ -2,7 +2,7 @@ import './Home.css'
 import './Card.css'
 
 import Card from './Card'
-import Def from './Img/HomeImg.png'
+import Def from '../../Img/HomeImg.png'
 
 
 function Home() {
