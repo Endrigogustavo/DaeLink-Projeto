@@ -73,7 +73,7 @@ function Profile() {
           type="button"
           class="flex button-profile -mt-12 w-auto cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 transition hover:border-gray-300 focus:border-gray-300 focus:outline-none focus:ring-0"
         >
-          Edit profile
+          Contatar
         </button>
         <br />
                         <div class="bg-white p-3 shadow-sm rounded-sm">
