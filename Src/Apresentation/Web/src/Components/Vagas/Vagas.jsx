@@ -1,151 +1,230 @@
 
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-import axios from 'axios';
 
 function Vagas() {
-	const [jobTitle, setJobTitle] = useState('');
-	const [jobId, setJobID] = useState('');
-	const [recommendations, setRecommendations] = useState([]);
-
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		try {
-			const response = await axios.post('http://localhost:5000/recommend', { job_title: jobTitle });
-			//const response = await axios.post('http://localhost:5000/recommend', { job_id: parseInt(jobId) });
-			setRecommendations(response.data);
-		} catch (error) {
-			console.error('Error fetching recommendations:', error);
-		}
-	};
+	
 
 
 
 	return (
 		<>
-			<br /><br /><br /><br />
-			<div class="bg-white p-8 rounded-md w-full">
-				<div class=" flex items-center justify-center pb-6">
-					<div class="flex items-center justify-between">
-						<div class="flex bg-gray-50 items-center p-2 rounded-md">
-
-
-							<form onSubmit={handleSubmit} class="flex">
-								<div class="relative w-full">
-									<input value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} type="text" id="voice-search" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Procurar vagas" required="" />
-
-								</div>
-								<button type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-									<svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Search
-								</button>
-							</form>
-
-						</div>
-
-					</div>
-				</div>
-				<div>
-					<div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-						<div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
-							<table class="min-w-full leading-normal">
-								<thead>
-									<tr>
-										<th
-											class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-											Id
-										</th>
-										<th
-											class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-											Trabalho
-										</th>
-										<th
-											class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-											Descrição
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									
-										<tr>
-											<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-												<div class="flex items-center">
-													<div class="ml-3">
-														<p class="text-gray-900 whitespace-no-wrap">
-															{rec.id}
-														</p>
-													</div>
-												</div>
-											</td>
-											<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-												<p class="text-gray-900 whitespace-no-wrap"></p>
-											</td>
-											<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-												<p class="text-gray-900 whitespace-no-wrap">
-													
-												</p>
-											</td>
-											<td>
-			
-											</td>
-										</tr>
-									
-								</tbody>
-							</table>
-						</div>
-					</div>
+		<div class="bg-white p-8 rounded-md w-full">
+	<div class=" flex items-center justify-between pb-6">
+		<div>
+			<h2 class="text-gray-600 font-semibold">Products Oder</h2>
+			<span class="text-xs">All products item</span>
+		</div>
+		<div class="flex items-center justify-between">
+			<div class="flex bg-gray-50 items-center p-2 rounded-md">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
+					fill="currentColor">
+					<path fill-rule="evenodd"
+						d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+						clip-rule="evenodd" />
+				</svg>
+				<input class="bg-gray-50 outline-none ml-1 block " type="text" name="" id="" placeholder="search..."/>
+          </div>
+				<div class="lg:ml-40 ml-10 space-x-8">
+					<button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">New Report</button>
+					<button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">Create</button>
 				</div>
 			</div>
-
-
-		{recommendations.map((rec) => (
-		<div class="max-w-3xl w-full mx-auto z-10">
-		<div class="flex flex-col w-full">
-			<div class="bg-white border border-white shadow-lg  rounded-3xl p-4 m-4">
-				<div class="flex-none sm:flex">
-					<div class=" relative h-32 w-32   sm:mb-0 mb-3">
-						<img src="https://tailwindcomponents.com/storage/avatars/njkIbPhyZCftc4g9XbMWwVsa7aGVPajYLRXhEeoo.jpg" alt="aji" class=" w-32 h-32 object-cover rounded-2xl"/>
-						<a href="#"
-							class="absolute -right-2 bottom-2   -ml-3  text-white p-1 text-xs bg-green-400 hover:bg-green-500 font-medium tracking-wider rounded-full transition ease-in duration-300">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-								class="h-4 w-4">
-								<path
-									d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z">
-								</path>
-							</svg>
-						</a>
-					</div>
-					<div class="flex-auto sm:ml-5 justify-evenly">
-						<div class="flex items-center justify-between sm:mt-2">
-							<div class="flex items-center">
-								<div class="flex flex-col">
-									<div class="w-full flex-none text-lg text-gray-800 font-bold leading-none">Aji</div>
-									<div class="flex-auto text-gray-500 my-1">
-										<span class="mr-3 ">{rec.title}</span><span class="mr-3 border-r border-gray-200  max-h-0">
-										<br />
-										</span><span>{rec.description}</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="flex flex-row items-center">
-						
-							</div>
-							<div class="flex pt-2  text-sm text-gray-500">
-								<div class="flex-1 inline-flex items-center">
-				
-								</div>
-								<Link  to="/">
-												<button type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-													<svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Perfil
-												</button>
-												</Link></div>
+		</div>
+		<div>
+			<div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+				<div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+					<table class="min-w-full leading-normal">
+						<thead>
+							<tr>
+								<th
+									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+									Name
+								</th>
+								<th
+									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+									products
+								</th>
+								<th
+									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+									Created at
+								</th>
+								<th
+									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+									QRT
+								</th>
+								<th
+									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+									Status
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<div class="flex items-center">
+										<div class="flex-shrink-0 w-10 h-10">
+											<img class="w-full h-full rounded-full"
+                                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                alt="" />
+                                        </div>
+											<div class="ml-3">
+												<p class="text-gray-900 whitespace-no-wrap">
+													Vera Carpenter
+												</p>
+											</div>
+										</div>
+								</td>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">Admin</p>
+								</td>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">
+										Jan 21, 2020
+									</p>
+								</td>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">
+										43
+									</p>
+								</td>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<span
+                                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+									<span class="relative">Activo</span>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<div class="flex items-center">
+										<div class="flex-shrink-0 w-10 h-10">
+											<img class="w-full h-full rounded-full"
+                                                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                alt="" />
+                                        </div>
+											<div class="ml-3">
+												<p class="text-gray-900 whitespace-no-wrap">
+													Blake Bowman
+												</p>
+											</div>
+										</div>
+								</td>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">Editor</p>
+								</td>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"/>
+									<p class="text-gray-900 whitespace-no-wrap">
+										Jan 01, 2020
+									</p>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">
+										77
+									</p>
+								</td>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<span
+                                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+									<span class="relative">Activo</span>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<div class="flex items-center">
+										<div class="flex-shrink-0 w-10 h-10">
+											<img class="w-full h-full rounded-full"
+                                                src="https://images.unsplash.com/photo-1540845511934-7721dd7adec3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                                                alt="" />
+                                        </div>
+											<div class="ml-3">
+												<p class="text-gray-900 whitespace-no-wrap">
+													Dana Moore
+												</p>
+											</div>
+										</div>
+								</td>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">Editor</p>
+								</td>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"/>
+									<p class="text-gray-900 whitespace-no-wrap">
+										Jan 10, 2020
+									</p>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">
+										64
+									</p>
+								</td>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<span
+                                        class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
+									<span class="relative">Suspended</span>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<td class="px-5 py-5 bg-white text-sm">
+									<div class="flex items-center">
+										<div class="flex-shrink-0 w-10 h-10">
+											<img class="w-full h-full rounded-full"
+                                                src="https://images.unsplash.com/photo-1522609925277-66fea332c575?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&h=160&w=160&q=80"
+                                                alt="" />
+                                        </div>
+											<div class="ml-3">
+												<p class="text-gray-900 whitespace-no-wrap">
+													Alonzo Cox
+												</p>
+											</div>
+										</div>
+								</td>
+								<td class="px-5 py-5 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">Admin</p>
+								</td>
+								<td class="px-5 py-5 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">Jan 18, 2020</p>
+								</td>
+								<td class="px-5 py-5 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">70</p>
+								</td>
+								<td class="px-5 py-5 bg-white text-sm">
+									<span
+                                        class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                        <span aria-hidden
+                                            class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+									<span class="relative">Inactive</span>
+									</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div
+						class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+						<span class="text-xs xs:text-sm text-gray-900">
+                            Showing 1 to 4 of 50 Entries
+                        </span>
+						<div class="inline-flex mt-2 xs:mt-0">
+							<button
+                                class="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-indigo-600 font-semibold py-2 px-4 rounded-l">
+                                Prev
+                            </button>
+							&nbsp; &nbsp;
+							<button
+                                class="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-indigo-600 font-semibold py-2 px-4 rounded-r">
+                                Next
+                            </button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-))}
-
+	</div>
 		</>
 	)
 }

@@ -26,7 +26,7 @@ function Navbar() {
                                             </center>
                                         </li>
                                         <li>
-                                            <Link  to="/desenhos" class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
+                                            <Link  to="/candidatos" class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
                                                 <center>
                                                     <svg viewBox="0 0 64 64" width="25px" height="25px" xmlns="http://www.w3.org/2000/svg">
                                                         <g id="Teamwork">
