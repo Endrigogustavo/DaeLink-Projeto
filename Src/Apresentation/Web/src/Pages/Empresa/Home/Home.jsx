@@ -18,8 +18,8 @@ function Home() {
           <div class="container banner-column">
             <img class="banner-image" src={Def} alt="banner" />
             <div class="banner-inner">
-              <h1 class="heading-xl">DaeLink a melhor plataforma de trabalho</h1>
-              <p class="paragraph">
+              <h1 class="heading-xl leading-snug font-serif">DaeLink a melhor plataforma de trabalho</h1>
+              <p class="paragraph leading-snug font-serif">
                 Uma plataforma de empregabilidade com foco em empresas contratarem pessoas portadoras de deficiencia
               </p>
             </div>

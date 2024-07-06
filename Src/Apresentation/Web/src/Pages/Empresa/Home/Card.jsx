@@ -5,7 +5,7 @@ function Card() {
         <>
 
      <div class="max-w-2xl mx-auto text-center">
-            <h2 class="text-2xl font-light text-black sm:text-4xl sm:leading-tight">O que é DaeLink
+            <h2 class="text-2xl font-light text-black sm:text-4xl leading-snug font-serif">O que é DaeLink
             </h2>
         </div>
 
