@@ -4,9 +4,11 @@ import Home from '../Pages/Empresa/Home/Home';
 import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
 import Vagas from '../Pages/PCD/Vagas/Vagas';
 import Profile from '../Pages/PCD/Profile/Profile';
-import Login from './Login';
+import Login from '../Components/Login/Login';
 import Logout from './Logout';
-import PrivateRoute from './PrivateRoute';
+import Cadastro from '../Components/Cadastro/Cadastrar';
+
+import PrivateRoute from '../Auth/PrivateRoute';
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/" element={<Home />} />
         <Route path="/" element={<PrivateRoute />}>
           <Route path="/candidatos" element={<Candidatos />} />
