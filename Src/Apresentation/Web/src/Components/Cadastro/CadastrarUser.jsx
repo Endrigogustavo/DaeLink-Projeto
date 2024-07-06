@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { register } from '../../Auth/Auth';
+import { registerUser } from '../../Auth/Auth';
 
 const Register = () => {
   const [image, setImage] = useState(null);
@@ -18,7 +18,7 @@ const Register = () => {
       return;
     }
   
-    const success = await register(email, password, idade, deficiencia, image, { name });
+    const success = await registerUser(email, password, idade, deficiencia, image, { name });
     if (success) {
       alert("Cadastrado com sucesso");
       navigate('/');

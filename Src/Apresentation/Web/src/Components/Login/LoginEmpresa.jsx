@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../../Auth/Auth';
+import { loginEmpresa } from '../../Auth/Auth';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const success = await login(email, password);
+      const success = await loginEmpresa(email, password);
       if (success) {
         navigate('/');
       } else {
