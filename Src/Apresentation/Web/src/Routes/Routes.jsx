@@ -1,20 +1,28 @@
-import Home from '../Pages/Empresa/Home/Home'
-import Candidatos from '../Pages/Empresa/Candidatos/Candidatos'
-import Vagas from '../Pages/PCD/Vagas/Vagas'
-import Profile from '../Pages/PCD/Profile/Profile'
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from '../Pages/Empresa/Home/Home';
+import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
+import Vagas from '../Pages/PCD/Vagas/Vagas';
+import Profile from '../Pages/PCD/Profile/Profile';
+import Login from './Login';
+import Logout from './Logout';
+import PrivateRoute from './PrivateRoute';
 
-import { Routes, Route } from "react-router-dom";
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/" element={<Home />} />
-        <Route path="/candidatos" element={<Candidatos />} />
+        <Route path="/" element={<PrivateRoute />}>
+          <Route path="/candidatos" element={<Candidatos />} />
+        </Route>
         <Route path="/vagas" element={<Vagas />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
-    </>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
