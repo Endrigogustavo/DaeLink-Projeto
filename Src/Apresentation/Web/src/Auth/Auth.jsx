@@ -7,7 +7,6 @@ export const registerUser = async (email, password, idade, deficiencia, image, a
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password, idade, deficiencia, image, additionalData);
     const user = userCredential.user;
-
     const storageRef = ref(storage, `images/${image.name}`);
     await uploadBytes(storageRef, image);
     const url = await getDownloadURL(storageRef);
