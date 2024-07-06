@@ -1,11 +1,5 @@
 import Routes from './Routes/Routes'
-
-function App() {
-  return (
-    <>
-      <Routes/>
-    </>
-  )
-}
+import React from 'react';
+const App = () => <Routes/>
 
 export default App

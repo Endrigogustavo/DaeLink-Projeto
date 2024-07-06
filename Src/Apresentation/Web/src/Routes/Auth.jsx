@@ -1,39 +1,15 @@
-import React from 'react'
-import { Route, Redirect } from 'react-router-dom';
+// src/utils/auth.js
+export const login = () => {
+  // Simula um login bem-sucedido
+  localStorage.setItem('isLoggedIn', 'true');
+};
 
-import store from '../store';
+export const logout = () => {
+  // Simula o logout
+  localStorage.removeItem('isLoggedIn');
+};
 
-import React from 'react';
-import { Switch } from 'react-router-dom';
-import Route from './Route';
-
-import Login from '../pages/Login';
-import Dashboard from '../pages/Dashboard';
-
-
-export default function Routes() {
-   return (
-      <Switch>
-         <Route path="/" exact component={Login}/>
-         <Route path='/dashboard' component={Dashboard} isPrivate />
-      </Switch>
-   );
-}
-
-export default function RouteWrapper({
-   component: Component,
-   isPrivate = false,
-   ...rest
-}) {
-   const { logged } = store.getState().auth;
-
-   if (!logged && isPrivate) {
-      return <Redirect to="/"/>;
-   }
-
-   if (logged && !isPrivate) {
-      return <Redirect to="/dashboard" />;
-   }
-
-   return <Route {...rest} component={Component} />;
+export const isAuthenticated = () => {
+  // Verifica se o usuário está autenticado
+  return localStorage.getItem('isLoggedIn') === 'true';
 };
