@@ -1,7 +1,7 @@
 // src/components/Logout.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logout } from './Auth';
+import { logout } from '../../Auth/Auth';
 
 const Logout = () => {
   const navigate = useNavigate();

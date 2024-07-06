@@ -5,7 +5,7 @@ import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
 import Vagas from '../Pages/PCD/Vagas/Vagas';
 import Profile from '../Pages/PCD/Profile/Profile';
 import Login from '../Components/Login/Login';
-import Logout from './Logout';
+import Logout from '../Components/Login/Logout';
 import Cadastro from '../Components/Cadastro/Cadastrar';
 
 import PrivateRoute from '../Auth/PrivateRoute';
