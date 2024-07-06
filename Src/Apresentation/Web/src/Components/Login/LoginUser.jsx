@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from '../../Auth/Auth';
-
+import { getAuth, signInWithPopup, GoogleAuthProvider, getRedirectResult ,signInWithRedirect, signOut} from "firebase/auth";
 import ImgUser from '../../Img/LoginUser.png'
 
 const Login = () => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const auth = getAuth();
+  auth.languageCode = 'it';
+
+
 
   const handleLogin = async () => {
     try {
@@ -22,6 +27,31 @@ const Login = () => {
       alert("Failed to login. Please check your credentials.");
     }
   };
+
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // This gives you a Google Access Token. You can use it to access Google APIs.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      console.log("User:", user);
+      console.log("Token:", token);
+      navigate('/');
+    } catch (error) {
+      console.error("Google login error:", error.message);
+      alert("Failed to login with Google. Please try again.");
+    }
+  };
+
+  signOut(auth).then(() => {
+    // Sign-out successful.
+  }).catch((error) => {
+    // An error happened.
+  });
 
   return (
 
@@ -44,7 +74,7 @@ const Login = () => {
 
                 <div className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
                   <div class="my-5">
-                    <button class="w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
+                    <button onClick={handleGoogleLogin} class="w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
                       <img src="https://www.svgrepo.com/show/355037/google.svg" class="w-6 h-6" alt="" /> <span>Login with Google</span>
                     </button>
                   </div>
