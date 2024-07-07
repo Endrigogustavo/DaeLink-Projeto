@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
 
 
 
