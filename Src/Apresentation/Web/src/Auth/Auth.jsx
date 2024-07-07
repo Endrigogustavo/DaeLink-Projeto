@@ -3,9 +3,9 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
-export const registerUser = async (email, password, idade, deficiencia, image, additionalData) => {
+export const registerUser = async (email, password, idade, deficiencia,descrição, trabalho, image, additionalData) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password, idade, deficiencia, image, additionalData);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password, idade, deficiencia, descrição, trabalho, image, additionalData);
     const user = userCredential.user;
     const storageRef = ref(storage, `images/${image.name}`);
     await uploadBytes(storageRef, image);
@@ -13,8 +13,10 @@ export const registerUser = async (email, password, idade, deficiencia, image, a
 
     const dataToSave = {      
       email,
-      idade,
       deficiencia,
+      trabalho,
+      descrição,
+      idade,
       imageUrl: url ,
       ...additionalData};
 
