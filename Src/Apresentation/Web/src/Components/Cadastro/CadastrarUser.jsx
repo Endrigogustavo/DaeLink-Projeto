@@ -7,6 +7,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [trabalho, setTrabalho] = useState("");
+  const [descrição, setDescrição] = useState("");
   const [idade, setIdade] = useState("");
   const [deficiencia, setDeficiencia] = useState("");
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ const Register = () => {
       return;
     }
   
-    const success = await registerUser(email, password, idade, deficiencia, image, { name });
+    const success = await registerUser(email, password, idade, deficiencia,descrição, trabalho, image, { name });
     if (success) {
       alert("Cadastrado com sucesso");
       navigate('/');
@@ -54,6 +56,18 @@ const Register = () => {
         placeholder="Idade"
         value={idade}
         onChange={(e) => setIdade(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Area de atuação"
+        value={trabalho}
+        onChange={(e) => setTrabalho(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Descrição do seu trabalho"
+        value={descrição}
+        onChange={(e) => setDescrição(e.target.value)}
       />
       <input
         type="text"

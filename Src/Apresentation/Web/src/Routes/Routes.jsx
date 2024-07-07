@@ -18,7 +18,6 @@ import PrivateRoute from '../Auth/PrivateRoute';
 function App() {
   return (
     <BrowserRouter>
-    <Navbar/>
       <Routes>
         <Route path="/loginu" element={<LoginU />} />
         <Route path="/logine" element={<LoginE />} />
