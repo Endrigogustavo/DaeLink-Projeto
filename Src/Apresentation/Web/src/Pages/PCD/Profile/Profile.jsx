@@ -43,7 +43,7 @@ function Profile() {
                                     alt="" />
                             </div>
                             <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">{userProfile.name}</h1>
-                            <h3 class="text-gray-600 font-lg text-semibold leading-6">{userProfile.telefone}</h3>
+                            <h3 class="text-gray-600 font-lg text-semibold leading-6">{userProfile.trabalho}</h3>
                             <p class="text-sm text-gray-500 hover:text-gray-600 leading-6">Lorem ipsum dolor sit amet
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                             </p>
@@ -115,7 +115,7 @@ function Profile() {
                                 </div>
                                 <div class="text-gray-700">
                                     <div class="grid md:grid-cols-2 text-sm">
-                                    {userProfile.sobre}
+                                    {userProfile.descrição}
                                        
                                         </div>
                                 </div>
