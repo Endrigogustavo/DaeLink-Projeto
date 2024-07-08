@@ -1,15 +1,27 @@
-// src/components/PrivateRoute.jsx
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { onAuthChange } from './Auth';
+import { onAuthChange, getUserData } from './Auth'; // Certifique-se de que o caminho está correto
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ allowedRoles }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [userType, setUserType] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthChange(user => {
-      setIsAuthenticated(!!user);
+    const unsubscribe = onAuthChange(async (user) => {
+      if (user) {
+        try {
+          const userData = await getUserData(user.uid);
+          setIsAuthenticated(true);
+          setUserType(userData.userType); // Supondo que userData tenha o campo userType
+        } catch (error) {
+          console.error(error);
+          setIsAuthenticated(false);
+        }
+      } else {
+        setIsAuthenticated(false);
+        setUserType(null);
+      }
       setLoading(false);
     });
     return () => unsubscribe();
@@ -19,7 +31,15 @@ const PrivateRoute = () => {
     return <div>Loading...</div>;
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/loginu" />;
+  if (!isAuthenticated) {
+    return <Navigate to="/loginu" />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userType)) {
+    return <Navigate to="/" />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;
