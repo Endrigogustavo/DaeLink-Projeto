@@ -35,16 +35,17 @@ export const registerUser = async (email, password, idade, deficiencia,descriç�
   }
 };
 
-export const registerEmpresa = async (email, password, cnpj, endereco, cep, additionalData) => {
+export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo, additionalData) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password, cnpj, endereco, cep, additionalData);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password, cnpj, endereco, cep,tipo, additionalData);
     const user = userCredential.user;
 
     const dataToSave = {      
       email,
       cnpj,
-       endereco,
-        cep,
+      endereco,
+      cep,
+      tipo,
       ...additionalData};
 
     // Adicione o usuário ao Firestore
@@ -130,7 +131,7 @@ export const onAuthChange = (callback) => {
 // Função para obter dados adicionais do usuário do Firestore
 export const getUserData = async (uid) => {
   const db = getFirestore();
-  const userDoc = await getDoc(doc(db, "users", uid));
+  const userDoc = await getDoc(doc(db, "Empresa", uid));
   if (userDoc.exists()) {
     return userDoc.data();
   } else {
