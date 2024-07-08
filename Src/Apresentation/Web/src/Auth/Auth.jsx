@@ -1,5 +1,5 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth } from "firebase/auth";
+import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore"; 
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
@@ -121,6 +121,19 @@ export const logout = async () => {
   }
 };
 
+
 export const onAuthChange = (callback) => {
+  const auth = getAuth();
   return onAuthStateChanged(auth, callback);
+};
+
+// Função para obter dados adicionais do usuário do Firestore
+export const getUserData = async (uid) => {
+  const db = getFirestore();
+  const userDoc = await getDoc(doc(db, "users", uid));
+  if (userDoc.exists()) {
+    return userDoc.data();
+  } else {
+    throw new Error("User not found");
+  }
 };

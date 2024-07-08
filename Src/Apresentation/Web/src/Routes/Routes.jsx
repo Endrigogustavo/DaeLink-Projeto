@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from '../Pages/Empresa/Home/Home';
+import Home from '../Pages/Home/Home';
 import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
 import Vagas from '../Pages/PCD/Vagas/Vagas';
 import Profile from '../Pages/PCD/Profile/Profile';
@@ -19,19 +19,23 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/loginu" element={<LoginU />} />
-        <Route path="/logine" element={<LoginE />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/list" element={<List />} />
-        <Route path="/cadastrouser" element={<CadastroUser />} />
-        <Route path="/cadastroempresa" element={<CadastroEmpresa />} />
-        <Route path="/cadastroimagem" element={<CadastroImg />} />
         <Route path="/" element={<Home />} />
-        <Route path="/" element={<PrivateRoute />}>
+        <Route path="/logout" element={<Logout />} />
+
+        <Route path="/" element={<PrivateRoute allowedRoles={['Empresa']} />}>
           <Route path="/candidatos" element={<Candidatos />} />
         </Route>
+        <Route path="/cadastroempresa" element={<CadastroEmpresa />} />
+        <Route path="/list" element={<List />} />
+        <Route path="/logine" element={<LoginE />} />
+
+        <Route path="/" element={<PrivateRoute allowedRoles={['PCD']} />}>
+          <Route path="/profile/:id" element={<Profile />} />
+        </Route>
         <Route path="/vagas" element={<Vagas />} />
-        <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/cadastrouser" element={<CadastroUser />} />
+        <Route path="/loginu" element={<LoginU />} />
+
       </Routes>
     </BrowserRouter>
   );
