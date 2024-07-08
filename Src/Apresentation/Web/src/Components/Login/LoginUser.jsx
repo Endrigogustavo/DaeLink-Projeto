@@ -18,7 +18,7 @@ const Login = () => {
     try {
       const success = await loginUser(email, password);
       if (success) {
-        navigate('/');
+        navigate('/homeuser');
       } else {
         alert("Failed to login. Please check your credentials.");
       }

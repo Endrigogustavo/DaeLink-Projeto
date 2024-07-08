@@ -1,0 +1,83 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { registerVaga } from '../../../Auth/Auth';
+
+const Register = () => {
+  const [vaga, setVaga] = useState("");
+  const [empresa, setEmpresa] = useState("");
+  const [detalhes, setDetalhes] = useState("");
+  const [salario, setSalario] = useState("");
+  const [exigencias, setExigencias] = useState("");
+  const [area, setArea] = useState("");
+  const [local, setLocal] = useState("");
+  const [tipo, setTipo] = useState("");
+  const navigate = useNavigate();
+
+  const handleRegister = async () => {
+
+    const success = await registerVaga(tipo, empresa, detalhes, salario, exigencias, area, local, vaga);
+    if (success) {
+      alert("Cadastrado com sucesso");
+      navigate('/');
+    } else {
+      alert("Falha ao criar um registro, tente novamente.");
+    }
+  };
+
+  return (
+    <div>
+      <h2>Register Page</h2>
+      <input
+        type="text"
+        placeholder="Nome da vaga"
+        value={vaga}
+        onChange={(e) => setVaga(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Detalhes da vaga"
+        value={detalhes}
+        onChange={(e) => setDetalhes(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Area especifica"
+        value={area}
+        onChange={(e) => setArea(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Nome da empresa"
+        value={empresa}
+        onChange={(e) => setEmpresa(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Salario"
+        value={salario}
+        onChange={(e) => setSalario(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Presencial ou online?"
+        value={tipo}
+        onChange={(e) => setTipo(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Local da empresa"
+        value={local}
+        onChange={(e) => setLocal(e.target.value)}
+      />
+      <input
+        type="textarea"
+        placeholder="Qual as certificaçoes nescessarias?"
+        value={exigencias}
+        onChange={(e) => setExigencias(e.target.value)}
+      />
+      <button onClick={handleRegister}>Register</button>
+    </div>
+  );
+};
+
+export default Register;

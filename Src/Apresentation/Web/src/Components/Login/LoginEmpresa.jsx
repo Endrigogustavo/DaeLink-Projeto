@@ -13,7 +13,7 @@ const Login = () => {
     try {
       const success = await loginEmpresa(email, password);
       if (success) {
-        navigate('/');
+        navigate('/homeempresa');
       } else {
         alert("Failed to login. Please check your credentials.");
       }
