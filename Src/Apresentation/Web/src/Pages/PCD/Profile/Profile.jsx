@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
-
 function Profile() {
     const { id } = useParams();
     const [userProfile, setUserProfile] = useState(null);

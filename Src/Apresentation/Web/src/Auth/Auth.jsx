@@ -64,7 +64,7 @@ export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo
 };
 
 
-export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias, area, local, vaga, additionalData) => {
+export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias, area, local, vaga, id, additionalData) => {
   try {
     // Dados a serem salvos no Firestore
     const dataToSave = {
@@ -76,6 +76,7 @@ export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias,
       tipo,
       local,
       exigencias,
+      id,
       ...additionalData
     };
 
@@ -84,6 +85,7 @@ export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias,
 
     console.log("Vaga adicionada com ID: ", docRef.id);
 
+    
     return true;
   } catch (error) {
     console.error("Registration error: ", error);
@@ -125,19 +127,19 @@ export const loginEmpresa = async (email, password) => {
     console.log("User logged in successfully:", uid);
 
     // Acessar a tabela específica com base no UID
-    const userDocRef = doc(db, "Empresa", uid); // Supondo que a coleção seja chamada "users" e o documento seja o UID do usuário
+    const userDocRef = doc(db, "Empresa", uid); // Supondo que a coleção seja chamada "Empresa" e o documento seja o UID do usuário
     const userDoc = await getDoc(userDocRef);
 
     if (userDoc.exists()) {
       console.log("User data:", userDoc.data());
-      return userDoc.data(); // Retorne os dados do usuário
+      return { uid, ...userDoc.data() }; // Retorne os dados do usuário incluindo o UID
     } else {
       console.log("No such document!");
       return null;
     }
   } catch (error) {
     console.error("Login error: ", error.code, error.message);
-    return false;
+    throw error; // Lançar o erro para lidar com ele no componente React
   }
 };
 

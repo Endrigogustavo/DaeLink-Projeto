@@ -24,11 +24,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/cadastrovaga" element={<CadastrarVaga />} />
+        <Route path="/homeempresa/cadastrovaga/:id" element={<CadastrarVaga />} />
 
         <Route path="/" element={<PrivateRoute allowedRoles={['Empresa']} />}>
           <Route path="/candidatos" element={<Candidatos />} />
-          <Route path="/homeempresa" element={<Homeempresa />} />
+          <Route path="/homeempresa/:id" element={<Homeempresa />} />
         </Route>
         <Route path="/cadastroempresa" element={<CadastroEmpresa />} />
         <Route path="/list" element={<List />} />
