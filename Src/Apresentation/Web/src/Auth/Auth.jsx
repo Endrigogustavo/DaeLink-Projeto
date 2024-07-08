@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth } from "firebase/auth";
-import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore"; 
+import { doc, setDoc, getDoc, getFirestore , addDoc, collection} from "firebase/firestore"; 
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
@@ -62,6 +62,35 @@ export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo
     return false;
   }
 };
+
+
+export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias, area, local, vaga, additionalData) => {
+  try {
+    // Dados a serem salvos no Firestore
+    const dataToSave = {
+      vaga,
+      detalhes,
+      area,
+      empresa,
+      salario,
+      tipo,
+      local,
+      exigencias,
+      ...additionalData
+    };
+
+    // Adicione a vaga ao Firestore
+    const docRef = await addDoc(collection(db, "Vagas"), dataToSave);
+
+    console.log("Vaga adicionada com ID: ", docRef.id);
+
+    return true;
+  } catch (error) {
+    console.error("Registration error: ", error);
+    return false;
+  }
+};
+
 
 
 export const loginUser = async (email, password) => {
