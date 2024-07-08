@@ -9,6 +9,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [cnpj, setCnpj] = useState("");
   const [endereco, setEndereco] = useState("");
+  const [tipo] = useState("Empresa");
   const navigate = useNavigate();
 
   const handleRegister = async () => {
@@ -18,7 +19,7 @@ const Register = () => {
       return;
     }
   
-    const success = await registerEmpresa(email, password, cnpj, endereco, cep, { name });
+    const success = await registerEmpresa(email, password, cnpj, endereco, cep, tipo, { name });
     if (success) {
       alert("Cadastrado com sucesso");
       navigate('/');

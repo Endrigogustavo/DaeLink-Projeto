@@ -12,8 +12,9 @@ const PrivateRoute = ({ allowedRoles }) => {
       if (user) {
         try {
           const userData = await getUserData(user.uid);
+          console.log('User Data:', userData);
           setIsAuthenticated(true);
-          setUserType(userData.userType); // Supondo que userData tenha o campo userType
+          setUserType(userData.tipo); // Supondo que userData tenha o campo tipo
         } catch (error) {
           console.error(error);
           setIsAuthenticated(false);
