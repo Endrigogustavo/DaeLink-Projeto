@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { db } from '../../../Database/Firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import { registerVaga } from '../../../Auth/Auth';
 
 const Register = () => {
@@ -11,11 +13,29 @@ const Register = () => {
   const [area, setArea] = useState("");
   const [local, setLocal] = useState("");
   const [tipo, setTipo] = useState("");
+  const [userProfile, setUserProfile] = useState(null);
+  const [userId, setUserId] = useState("");
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const handleRegister = async () => {
+  useEffect(() => {
+    const getUserProfile = async () => {
+      const userDoc = doc(db, "Empresa", id);
+      const userSnap = await getDoc(userDoc);
+      if (userSnap.exists()) {
+        setUserProfile(userSnap.data());
+        setUserId(userSnap.id);
+      } else {
+        setUserProfile(null);
+        alert("No such document!");
+      }
+    };
 
-    const success = await registerVaga(tipo, empresa, detalhes, salario, exigencias, area, local, vaga);
+    getUserProfile();
+  }, [id]);
+
+  const handleRegister = async () => {
+    const success = await registerVaga(tipo, empresa, detalhes, salario, exigencias, area, local, vaga, id);
     if (success) {
       alert("Cadastrado com sucesso");
       navigate('/');
