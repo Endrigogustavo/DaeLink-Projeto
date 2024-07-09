@@ -1,20 +1,35 @@
 
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { db } from '../../../Database/Firebase';
+import { doc, query, getDocs , collection} from 'firebase/firestore';
+
+
 
 function Vagas() {
+	const navigate = useNavigate()
+	const [userProfile, setUserProfile] = useState([]);
+
+	useEffect(() => {
+		const userCollection = collection(db, "Vagas");
+
+		const getUsers = async () => {
+		  const data = await getDocs(userCollection);
+		  setUserProfile(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+		};
 	
+		getUsers();
 
-
-
+	  }, []);
+	
+	  const handleButtonClick = (id) => {
+		navigate(`/entrarvaga/${id}`);
+	  };
+	  
 	return (
 		<>
 		<div class="bg-white p-8 rounded-md w-full">
 	<div class=" flex items-center justify-between pb-6">
-		<div>
-			<h2 class="text-gray-600 font-semibold">Products Oder</h2>
-			<span class="text-xs">All products item</span>
-		</div>
 		<div class="flex items-center justify-between">
 			<div class="flex bg-gray-50 items-center p-2 rounded-md">
 				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
@@ -39,188 +54,84 @@ function Vagas() {
 							<tr>
 								<th
 									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-									Name
+									Vaga
 								</th>
 								<th
 									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-									products
+									Area
 								</th>
 								<th
 									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-									Created at
+									Empresa
 								</th>
 								<th
 									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-									QRT
+									Exigencias
 								</th>
 								<th
 									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-									Status
+									Salario
+								</th>
+								<th
+									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+									Tipo
+								</th>
+								<th
+									class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+									Local
 								</th>
 							</tr>
 						</thead>
+						{userProfile.map (users => (
 						<tbody>
 							<tr>
 								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 									<div class="flex items-center">
-										<div class="flex-shrink-0 w-10 h-10">
-											<img class="w-full h-full rounded-full"
-                                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                alt="" />
-                                        </div>
 											<div class="ml-3">
 												<p class="text-gray-900 whitespace-no-wrap">
-													Vera Carpenter
+													{users.vaga}
 												</p>
 											</div>
 										</div>
 								</td>
 								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-									<p class="text-gray-900 whitespace-no-wrap">Admin</p>
-								</td>
-								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 									<p class="text-gray-900 whitespace-no-wrap">
-										Jan 21, 2020
+										{users.area}
 									</p>
 								</td>
 								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 									<p class="text-gray-900 whitespace-no-wrap">
-										43
+									{users.empresa}
 									</p>
 								</td>
-								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-									<span
-                                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                        <span aria-hidden
-                                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-									<span class="relative">Activo</span>
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-									<div class="flex items-center">
-										<div class="flex-shrink-0 w-10 h-10">
-											<img class="w-full h-full rounded-full"
-                                                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                alt="" />
-                                        </div>
-											<div class="ml-3">
-												<p class="text-gray-900 whitespace-no-wrap">
-													Blake Bowman
-												</p>
-											</div>
-										</div>
-								</td>
-								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-									<p class="text-gray-900 whitespace-no-wrap">Editor</p>
-								</td>
-								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"/>
-									<p class="text-gray-900 whitespace-no-wrap">
-										Jan 01, 2020
-									</p>
 								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 									<p class="text-gray-900 whitespace-no-wrap">
-										77
+									{users.exigencias}
 									</p>
 								</td>
-								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-									<span
-                                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                        <span aria-hidden
-                                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-									<span class="relative">Activo</span>
-									</span>
-								</td>
-							</tr>
-							<tr>
-								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-									<div class="flex items-center">
-										<div class="flex-shrink-0 w-10 h-10">
-											<img class="w-full h-full rounded-full"
-                                                src="https://images.unsplash.com/photo-1540845511934-7721dd7adec3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                alt="" />
-                                        </div>
-											<div class="ml-3">
-												<p class="text-gray-900 whitespace-no-wrap">
-													Dana Moore
-												</p>
-											</div>
-										</div>
-								</td>
-								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-									<p class="text-gray-900 whitespace-no-wrap">Editor</p>
-								</td>
-								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"/>
-									<p class="text-gray-900 whitespace-no-wrap">
-										Jan 10, 2020
-									</p>
 								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 									<p class="text-gray-900 whitespace-no-wrap">
-										64
+									{users.salario}
 									</p>
 								</td>
 								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-									<span
-                                        class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-                                        <span aria-hidden
-                                            class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-									<span class="relative">Suspended</span>
-									</span>
+									<p class="text-gray-900 whitespace-no-wrap">
+									{users.tipo}
+									</p>
 								</td>
-							</tr>
-							<tr>
-								<td class="px-5 py-5 bg-white text-sm">
-									<div class="flex items-center">
-										<div class="flex-shrink-0 w-10 h-10">
-											<img class="w-full h-full rounded-full"
-                                                src="https://images.unsplash.com/photo-1522609925277-66fea332c575?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&h=160&w=160&q=80"
-                                                alt="" />
-                                        </div>
-											<div class="ml-3">
-												<p class="text-gray-900 whitespace-no-wrap">
-													Alonzo Cox
-												</p>
-											</div>
-										</div>
+								<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+									<p class="text-gray-900 whitespace-no-wrap">
+									{users.local}
+									</p>
 								</td>
-								<td class="px-5 py-5 bg-white text-sm">
-									<p class="text-gray-900 whitespace-no-wrap">Admin</p>
-								</td>
-								<td class="px-5 py-5 bg-white text-sm">
-									<p class="text-gray-900 whitespace-no-wrap">Jan 18, 2020</p>
-								</td>
-								<td class="px-5 py-5 bg-white text-sm">
-									<p class="text-gray-900 whitespace-no-wrap">70</p>
-								</td>
-								<td class="px-5 py-5 bg-white text-sm">
-									<span
-                                        class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                        <span aria-hidden
-                                            class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-									<span class="relative">Inactive</span>
-									</span>
-								</td>
+
+								<button onClick={() => handleButtonClick(users.id)} type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+													<svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Perfil
+												</button>
 							</tr>
 						</tbody>
+						))}
 					</table>
-					<div
-						class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-						<span class="text-xs xs:text-sm text-gray-900">
-                            Showing 1 to 4 of 50 Entries
-                        </span>
-						<div class="inline-flex mt-2 xs:mt-0">
-							<button
-                                class="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-indigo-600 font-semibold py-2 px-4 rounded-l">
-                                Prev
-                            </button>
-							&nbsp; &nbsp;
-							<button
-                                class="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-indigo-600 font-semibold py-2 px-4 rounded-r">
-                                Next
-                            </button>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
