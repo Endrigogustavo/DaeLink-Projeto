@@ -14,8 +14,6 @@ const AddPessoaForm = () => {
 
 
   useEffect(() => {
-    alert(pessoaId)
-alert(vagaId)
     // Configura os estados apenas uma vez quando o componente é montado
     if (id && vagaUid) {
       setPessoaId(id);

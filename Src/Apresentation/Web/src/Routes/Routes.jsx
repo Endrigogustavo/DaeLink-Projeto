@@ -1,22 +1,27 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import Home from '../Pages/Home/Home';
+import Logout from '../Components/Login/Logout';
+
 import Homeuser from '../Pages/PCD/Home/Home';
 import Homeempresa from '../Pages/Empresa/Home/Home';
+
+import LoginE from '../Components/Login/LoginEmpresa';
+import CadastroEmpresa from '../Components/Cadastro/CadastroEmpresa';
+import CadastrarVaga from '../Pages/Empresa/Vagas/CriarVagas'
 import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
 import Vagas from '../Pages/PCD/Vagas/Vagas';
-import Profile from '../Pages/PCD/Profile/Profile';
+import ProfileAdd from '../Pages/Empresa/Profile/Profile';
+
 import LoginU from '../Components/Login/LoginUser';
-import LoginE from '../Components/Login/LoginEmpresa';
-import Logout from '../Components/Login/Logout';
 import CadastroUser from '../Components/Cadastro/CadastrarUser';
-import CadastroEmpresa from '../Components/Cadastro/CadastroEmpresa';
-import List from '../Components/Listar/Listar';
-import CadastrarVaga from '../Pages/Empresa/Vagas/CriarVagas'
 import EntrarVaga from '../Pages/PCD/Vagas/Entrar_Vaga'
 import VisualizarProcessos from '../Pages/PCD/Vagas/Visualizar_Processos'
 import EnviarDocumentos from '../Pages/PCD/Vagas/Enviar_documentos'
+import Profile from '../Pages/PCD/Profile/Profile';
 
+import List from '../Components/Listar/Listar';
 import Navbar from '../Components/Navbar/Navbar';
 
 import PrivateRoute from '../Auth/PrivateRoute';
@@ -27,11 +32,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/homeempresa/cadastrovaga/:id" element={<CadastrarVaga />} />
 
         <Route path="/" element={<PrivateRoute allowedRoles={['Empresa']} />}>
+        <Route path="/homeempresa/cadastrovaga/:id" element={<CadastrarVaga />} />
           <Route path="/candidatos" element={<Candidatos />} />
           <Route path="/homeempresa/:id" element={<Homeempresa />} />
+          <Route path="/profileadd/:id" element={<ProfileAdd />} />
         </Route>
         <Route path="/cadastroempresa" element={<CadastroEmpresa />} />
         <Route path="/list" element={<List />} />
