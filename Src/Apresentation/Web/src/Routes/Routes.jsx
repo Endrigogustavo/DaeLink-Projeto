@@ -13,6 +13,7 @@ import CadastroUser from '../Components/Cadastro/CadastrarUser';
 import CadastroEmpresa from '../Components/Cadastro/CadastroEmpresa';
 import List from '../Components/Listar/Listar';
 import CadastrarVaga from '../Pages/Empresa/Vagas/CriarVagas'
+import Entrar_Vaga from '../Pages/PCD/Vagas/Entrar_Vaga'
 
 import Navbar from '../Components/Navbar/Navbar';
 
@@ -41,6 +42,7 @@ function App() {
         <Route path="/vagas" element={<Vagas />} />
         <Route path="/cadastrouser" element={<CadastroUser />} />
         <Route path="/loginu" element={<LoginU />} />
+        <Route path="/entrarvaga/:id" element={<Entrar_Vaga />} />
 
       </Routes>
     </BrowserRouter>
