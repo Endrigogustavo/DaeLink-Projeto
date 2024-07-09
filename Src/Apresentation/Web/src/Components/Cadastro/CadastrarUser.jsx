@@ -11,6 +11,7 @@ const Register = () => {
   const [descrição, setDescrição] = useState("");
   const [idade, setIdade] = useState("");
   const [deficiencia, setDeficiencia] = useState("");
+  const [tipo, setTipo] = useState("PCD");
   const navigate = useNavigate();
 
   const handleRegister = async () => {
@@ -20,10 +21,10 @@ const Register = () => {
       return;
     }
   
-    const success = await registerUser(email, password, idade, deficiencia,descrição, trabalho, image, { name });
+    const success = await registerUser(email, password, idade, deficiencia,descrição, trabalho, image, tipo, { name });
     if (success) {
       alert("Cadastrado com sucesso");
-      navigate('/');
+      navigate(`/homeuser/${id}`);
     } else {
       alert("Falha ao criar um registro, tente novamente.");
     }

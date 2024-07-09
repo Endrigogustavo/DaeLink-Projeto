@@ -16,9 +16,11 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const success = await loginUser(email, password);
-      if (success) {
-        navigate('/homeuser');
+      const userData = await loginUser(email, password); // Chama sua função de login
+
+      if (userData) {
+        console.log("User data:", userData); // Verifique os dados do usuário recebidos
+        navigate(`/homeuser/${userData.uid}`); // Navega para a página usando o UID retornado
       } else {
         alert("Failed to login. Please check your credentials.");
       }
@@ -40,7 +42,7 @@ const Login = () => {
       const user = result.user;
       console.log("User:", user);
       console.log("Token:", token);
-      navigate('/');
+      navigate('/homeuser');
     } catch (error) {
       console.error("Google login error:", error.message);
       alert("Failed to login with Google. Please try again.");
@@ -103,7 +105,7 @@ const Login = () => {
                   rounded-lg transition duration-200 hover:bg-indigo-600 ease">Logar</a>
                     </button>
                     <br /><br />
-                    <p>Não tem uma conta ainda? <Link to="/register">Cadastrar agora</Link></p>
+                    <p>Não tem uma conta ainda? <Link to="/cadastrouser">Cadastrar agora</Link></p>
 
                   </div>
                 </div>

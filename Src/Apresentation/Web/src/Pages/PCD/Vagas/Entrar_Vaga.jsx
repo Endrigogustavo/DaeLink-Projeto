@@ -1,31 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../../Database/Firebase";
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 
 const AddPessoaForm = () => {
+  const navigate = useNavigate();
+  const { id, vagaId } = useParams();
 
-    const { id } = useParams();
-  const [vagaId, setVagaId] = useState(id);
-  const [pessoaId, setPessoaId] = useState("");
+  const [vagaUid, setVagaUid] = useState(vagaId);
+  const [pessoaId, setPessoaId] = useState(id);
   const [email, setEmail] = useState("")
 
+
+  useEffect(() => {
+    // Configura os estados apenas uma vez quando o componente é montado
+    if (id && vagaUid) {
+      setPessoaId(id);
+      setVagaUid(vagaUid);
+    }
+  }, [id, vagaUid]);
+
+
   const handleSubmit = async (e) => {
+  
     e.preventDefault();
-    if (!vagaId || !pessoaId) {
+    if (!vagaUid || !pessoaId) {
+      alert(id)
+      alert(vagaUid)
       alert("Por favor, preencha todos os campos.");
       return;
     }
 
     try {
-      const vagaRef = doc(db, "Vagas", vagaId);
+      const vagaRef = doc(db, "Vagas", vagaUid);
       await updateDoc(vagaRef, {
         candidato: arrayUnion(pessoaId),
         emailcandidato: arrayUnion(email)
       });
       alert("Pessoa adicionada com sucesso!");
-      setVagaId("");
+      setVagaUid("");
       setPessoaId("");
+      navigate(`/homeuser/${id}`);
     } catch (e) {
       console.error("Erro ao adicionar pessoa: ", e);
       alert("Erro ao adicionar pessoa.");
@@ -35,15 +50,14 @@ const AddPessoaForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>ID da Pessoa:</label>
         <input 
-          type="text" 
+          type="hidden" 
           value={pessoaId} 
           onChange={(e) => setPessoaId(e.target.value)} 
         />
       </div>
       <div>
-        <label>ID da Pessoa:</label>
+        <label>email de contato:</label>
         <input 
           type="text" 
           value={email} 
