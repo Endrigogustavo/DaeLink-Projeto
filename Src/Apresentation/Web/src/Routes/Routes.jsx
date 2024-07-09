@@ -13,7 +13,9 @@ import CadastroUser from '../Components/Cadastro/CadastrarUser';
 import CadastroEmpresa from '../Components/Cadastro/CadastroEmpresa';
 import List from '../Components/Listar/Listar';
 import CadastrarVaga from '../Pages/Empresa/Vagas/CriarVagas'
-import Entrar_Vaga from '../Pages/PCD/Vagas/Entrar_Vaga'
+import EntrarVaga from '../Pages/PCD/Vagas/Entrar_Vaga'
+import VisualizarProcessos from '../Pages/PCD/Vagas/Visualizar_Processos'
+import EnviarDocumentos from '../Pages/PCD/Vagas/Enviar_documentos'
 
 import Navbar from '../Components/Navbar/Navbar';
 
@@ -39,7 +41,9 @@ function App() {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/homeuser/:id" element={<Homeuser />} />
           <Route path="/homeuser/vagas/:id" element={<Vagas />} />
-          <Route path="/entrarvaga/:id/:vagaId" element={<Entrar_Vaga />} />
+          <Route path="/entrarvaga/:id/:vagaId" element={<EntrarVaga />} />
+          <Route path="/enviardocumento/:id/:vagaId" element={<EnviarDocumentos />} />
+          <Route path="/homeuser/processos/:id" element={<VisualizarProcessos />} />
         </Route>
         
         <Route path="/cadastrouser" element={<CadastroUser />} />
