@@ -3,9 +3,9 @@ import { doc, setDoc, getDoc, getFirestore , addDoc, collection} from "firebase/
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
-export const registerUser = async (email, password, idade, deficiencia,descrição, trabalho, image, additionalData) => {
+export const registerUser = async (email, password, idade, deficiencia,descrição, trabalho, image, tipo, additionalData) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password, idade, deficiencia, descrição, trabalho, image, additionalData);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password, idade, deficiencia, descrição, trabalho, image, tipo, additionalData);
     const user = userCredential.user;
     const storageRef = ref(storage, `images/${image.name}`);
     await uploadBytes(storageRef, image);
@@ -17,6 +17,7 @@ export const registerUser = async (email, password, idade, deficiencia,descriç�
       trabalho,
       descrição,
       idade,
+      tipo,
       imageUrl: url ,
       ...additionalData};
 
@@ -107,7 +108,7 @@ export const loginUser = async (email, password) => {
 
     if (userDoc.exists()) {
       console.log("User data:", userDoc.data());
-      return userDoc.data(); // Retorne os dados do usuário
+      return { uid, ...userDoc.data() }; // Retorne os dados do usuário incluindo o UID
     } else {
       console.log("No such document!");
       return null;
@@ -163,9 +164,14 @@ export const onAuthChange = (callback) => {
 export const getUserData = async (uid) => {
   const db = getFirestore();
   const userDoc = await getDoc(doc(db, "Empresa", uid));
+  const userDocPCD = await getDoc(doc(db, "PCD", uid));
   if (userDoc.exists()) {
     return userDoc.data();
-  } else {
+  } 
+  if(userDocPCD.exists()){
+    return userDocPCD.data();
+  }
+    else {
     throw new Error("User not found");
   }
 };

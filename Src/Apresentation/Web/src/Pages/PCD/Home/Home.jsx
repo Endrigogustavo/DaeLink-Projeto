@@ -1,6 +1,7 @@
 import './Home.css'
 import './Card.css'
 
+import Navbar from '../Navbar/Navbar'
 import Card from './Card'
 import Def from '../../../Img/HomeImg.png'
 
@@ -9,6 +10,9 @@ function Home() {
 
   return (
     <>
+    <div className="nav">
+      <Navbar/>
+    </div>
       <main class="main">
         <section class="section banner banner-section">
           <div class="container banner-column">

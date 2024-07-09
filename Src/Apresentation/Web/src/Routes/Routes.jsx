@@ -37,12 +37,14 @@ function App() {
 
         <Route path="/" element={<PrivateRoute allowedRoles={['PCD']} />}>
           <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/homeuser" element={<Homeuser />} />
+          <Route path="/homeuser/:id" element={<Homeuser />} />
+          <Route path="/homeuser/vagas/:id" element={<Vagas />} />
+          <Route path="/entrarvaga/:id/:vagaId" element={<Entrar_Vaga />} />
         </Route>
-        <Route path="/vagas" element={<Vagas />} />
+        
         <Route path="/cadastrouser" element={<CadastroUser />} />
         <Route path="/loginu" element={<LoginU />} />
-        <Route path="/entrarvaga/:id" element={<Entrar_Vaga />} />
+        
 
       </Routes>
     </BrowserRouter>
