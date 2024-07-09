@@ -65,7 +65,7 @@ export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo
 };
 
 
-export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias, area, local, vaga, id, additionalData) => {
+export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId, additionalData) => {
   try {
     // Dados a serem salvos no Firestore
     const dataToSave = {
@@ -77,7 +77,7 @@ export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias,
       tipo,
       local,
       exigencias,
-      id,
+      empresaId,
       ...additionalData
     };
 

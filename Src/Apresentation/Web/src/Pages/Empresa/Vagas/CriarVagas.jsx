@@ -5,6 +5,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { registerVaga } from '../../../Auth/Auth';
 
 const Register = () => {
+  const { id } = useParams();
+
   const [vaga, setVaga] = useState("");
   const [empresa, setEmpresa] = useState("");
   const [detalhes, setDetalhes] = useState("");
@@ -15,7 +17,8 @@ const Register = () => {
   const [tipo, setTipo] = useState("");
   const [userProfile, setUserProfile] = useState(null);
   const [userId, setUserId] = useState("");
-  const { id } = useParams();
+  const [empresaId] = useState(id);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +38,7 @@ const Register = () => {
   }, [id]);
 
   const handleRegister = async () => {
-    const success = await registerVaga(tipo, empresa, detalhes, salario, exigencias, area, local, vaga, id);
+    const success = await registerVaga(tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId);
     if (success) {
       alert("Cadastrado com sucesso");
       navigate('/homeempresa');
