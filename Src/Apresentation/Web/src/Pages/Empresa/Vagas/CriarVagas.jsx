@@ -40,10 +40,10 @@ const Register = () => {
   const handleRegister = async () => {
     const success = await registerVaga(tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId);
     if (success) {
-      alert("Cadastrado com sucesso");
-      navigate('/homeempresa');
+      alert("Vaga Cadastrada com sucesso");
+      navigate(`/homeempresa/${id}`);
     } else {
-      alert("Falha ao criar um registro, tente novamente.");
+      alert("Falha ao criar uma vaga, tente novamente.");
     }
   };
 

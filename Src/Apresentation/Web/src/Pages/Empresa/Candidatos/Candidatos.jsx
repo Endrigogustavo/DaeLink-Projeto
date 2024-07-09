@@ -22,7 +22,7 @@ function Vagas() {
 	};
 
 	const handleButtonClick = (id) => {
-		navigate(`/profile/${id}`);
+		navigate(`/profileadd/${id}`);
 	  };
 	
 
