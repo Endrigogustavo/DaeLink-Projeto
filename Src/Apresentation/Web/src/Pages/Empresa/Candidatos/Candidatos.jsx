@@ -1,17 +1,25 @@
 
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Vagas() {
 	const navigate = useNavigate();
+	const {id} = useParams();
 
-
+	const [empresaid, setEmpresa] = useState(null)
 	const [trabalho, setTrabalho] = useState('');
 	const [recommendations, setRecommendations] = useState([]);
 
+	useEffect(() => {
+
+		setEmpresa(id);
+		
+	  }, [id]);
+	
 	const handleSubmit = async (event) => {
+		
 		event.preventDefault();
 		try {
 			const response = await axios.post('http://localhost:5000/recommend', { trabalho: trabalho });
@@ -22,7 +30,7 @@ function Vagas() {
 	};
 
 	const handleButtonClick = (id) => {
-		navigate(`/profileadd/${id}`);
+		navigate(`/profileadd/${id}/${empresaid}`);
 	  };
 	
 
@@ -58,7 +66,11 @@ function Vagas() {
 									<tr>
 										<th
 											class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-											Id
+											Foto
+										</th>
+										<th
+											class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+											Nome
 										</th>
 										<th
 											class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -67,6 +79,10 @@ function Vagas() {
 										<th
 											class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
 											Descrição
+										</th>
+										<th
+											class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+											Perfil
 										</th>
 									</tr>
 								</thead>
@@ -77,17 +93,26 @@ function Vagas() {
 												<div class="flex items-center">
 													<div class="ml-3">
 														<p class="text-gray-900 whitespace-no-wrap">
-															{rec.id}
+															<img src={rec.imageUrl} alt=""class=" w-32 h-32 object-cover rounded-2xl" />
 														</p>
 													</div>
 												</div>
 											</td>
 											<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-												<p class="text-gray-900 whitespace-no-wrap">{rec.descrição}</p>
+												<div class="flex items-center">
+													<div class="ml-3">
+														<p class="text-gray-900 whitespace-no-wrap">
+															{rec.name}
+														</p>
+													</div>
+												</div>
+											</td>
+											<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+												<p class="text-gray-900 whitespace-no-wrap">{rec.trabalho}</p>
 											</td>
 											<td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 												<p class="text-gray-900 whitespace-no-wrap">
-													{rec.trabalho}
+													{rec.descrição}
 												</p>
 											</td>
 											<td>

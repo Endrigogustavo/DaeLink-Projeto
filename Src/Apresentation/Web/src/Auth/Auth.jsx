@@ -3,23 +3,34 @@ import { doc, setDoc, getDoc, getFirestore , addDoc, collection} from "firebase/
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
-export const registerUser = async (email, password, idade, deficiencia,descrição, trabalho, image, tipo, additionalData) => {
+export const registerUser = async (email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, additionalData) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password, idade, deficiencia, descrição, trabalho, image, tipo, additionalData);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    const storageRef = ref(storage, `images/${image.name}`);
-    await uploadBytes(storageRef, image);
-    const url = await getDownloadURL(storageRef);
 
-    const dataToSave = {      
+    // Upload da imagem de perfil
+    const profileImageRef = ref(storage, `images/${image.name}`);
+    await uploadBytes(profileImageRef, image);
+    const profileImageUrl = await getDownloadURL(profileImageRef);
+
+    // Upload da imagem de fundo
+    const backgroundImageRef = ref(storage, `background_profile/${background.name}`);
+    await uploadBytes(backgroundImageRef, background);
+    const backgroundImageUrl = await getDownloadURL(backgroundImageRef);
+
+    const dataToSave = {
       email,
       deficiencia,
       trabalho,
       descrição,
       idade,
       tipo,
-      imageUrl: url ,
-      ...additionalData};
+      imageUrl: profileImageUrl,
+      sobre,
+      experiencias,
+      imageProfile: backgroundImageUrl,
+      ...additionalData
+    };
 
     // Adicione o usuário ao Firestore
     const docRef = doc(db, "PCD", user.uid);
@@ -35,6 +46,7 @@ export const registerUser = async (email, password, idade, deficiencia,descriç�
     return false;
   }
 };
+
 
 export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo, additionalData) => {
   try {
