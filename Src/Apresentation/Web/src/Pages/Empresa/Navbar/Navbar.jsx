@@ -32,6 +32,10 @@ function Navbar() {
         navigate(`/homeempresa/cadastrovaga/${id}`);
     };
 
+    const handleButtonClickProfile = (IdEmpresa) => {
+        navigate(`/candidatos/${IdEmpresa}`);
+    };
+
     return (
         <>
             <header>
@@ -52,11 +56,10 @@ function Navbar() {
                                                     </svg>
                                                     <span>Home</span>
                                                 </Link>
-
                                             </center>
                                         </li>
                                         <li>
-                                            <Link  to="/candidatos" class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
+                                            <button  onClick={() => handleButtonClickProfile(userId)} class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
                                                 <center>
                                                     <svg viewBox="0 0 64 64" width="25px" height="25px" xmlns="http://www.w3.org/2000/svg">
                                                         <g id="Teamwork">
@@ -64,17 +67,17 @@ function Navbar() {
                                                     </svg>
                                                     <span>Candidatos</span>
                                                 </center>
-                                            </Link>
+                                            </button>
                                         </li>
                                         <li>
                                             <button onClick={() => handleButtonClick(userId)} class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
-
                                                 <center>
                                                     <svg viewBox="0 0 64 64" width="25px" height="25px" xmlns="http://www.w3.org/2000/svg"><g id="Networking"><path d="M32,25.07a3.59,3.59,0,1,0,3.59,3.59A3.59,3.59,0,0,0,32,25.07Zm0,5.18a1.59,1.59,0,1,1,1.59-1.59A1.59,1.59,0,0,1,32,30.25Z" /><path d="M55.07,26.07A5.92,5.92,0,0,0,49.23,31H42.76a10.77,10.77,0,0,0-2.45-5.9l4.58-4.58a5.91,5.91,0,0,0,7.62-.64,6,6,0,0,0,0-8.39h0a5.93,5.93,0,0,0-9,7.62L38.9,23.69A10.77,10.77,0,0,0,33,21.24V14.77a5.93,5.93,0,1,0-2,0v6.47a10.77,10.77,0,0,0-5.9,2.45l-4.57-4.58a5.83,5.83,0,0,0,1.09-3.42,5.93,5.93,0,1,0-5.93,5.93,6,6,0,0,0,3.42-1.1l4.58,4.58A10.77,10.77,0,0,0,21.24,31H14.78a5.93,5.93,0,1,0,0,2h6.46a10.77,10.77,0,0,0,2.45,5.9l-4.58,4.58a5.92,5.92,0,1,0,2.51,4.83,5.83,5.83,0,0,0-1.09-3.42l4.57-4.58A10.77,10.77,0,0,0,31,42.76v6.47a5.93,5.93,0,1,0,2,0V42.76a10.77,10.77,0,0,0,5.9-2.45l4.58,4.58a5.93,5.93,0,1,0,1.41-1.41L40.31,38.9A10.77,10.77,0,0,0,42.76,33h6.47a5.93,5.93,0,1,0,5.84-6.93ZM45.53,12.91a3.94,3.94,0,0,1,5.56,0h0a3.93,3.93,0,1,1-5.56,5.56h0A3.94,3.94,0,0,1,45.53,12.91Zm-17.46-4A3.93,3.93,0,1,1,32,12.86,3.93,3.93,0,0,1,28.07,8.93ZM12.91,18.47a3.93,3.93,0,1,1,5.56,0h0A3.94,3.94,0,0,1,12.91,18.47Zm-4,17.46A3.93,3.93,0,1,1,12.87,32,3.94,3.94,0,0,1,8.93,35.93ZM32,40.81a8.8,8.8,0,0,1-5.67-2.08,6.44,6.44,0,0,1,11.34,0A8.8,8.8,0,0,1,32,40.81ZM18.47,51.09a3.93,3.93,0,1,1,0-5.56h0a3.94,3.94,0,0,1,0,5.56Zm17.46,4A3.93,3.93,0,1,1,32,51.14,3.93,3.93,0,0,1,35.93,55.07Zm15.16-9.54a3.93,3.93,0,1,1-5.56,0h0a3.94,3.94,0,0,1,5.56,0Zm-12-8.33a8.44,8.44,0,0,0-14.18,0A8.76,8.76,0,0,1,23.19,32h0a8.81,8.81,0,1,1,15.9,5.21Zm16-1.27A3.93,3.93,0,0,1,51.14,32h0a3.93,3.93,0,1,1,3.93,3.93Z" /></g></svg>
                                                     <span>Criar vagas</span>
                                                 </center>
                                             </button>
                                         </li>
+                                        
                                     </ul>
                                 </div>
                                 </center>

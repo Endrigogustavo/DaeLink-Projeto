@@ -3,13 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../Auth/Auth';
 
 const Register = () => {
-  const [image, setImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [backgroundImage, setBackgroundImage] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [trabalho, setTrabalho] = useState("");
   const [descrição, setDescrição] = useState("");
   const [idade, setIdade] = useState("");
+  const [sobre, setSobre] = useState("");
+  const [experiencias, setExperiencia] = useState("");
   const [deficiencia, setDeficiencia] = useState("");
   const [tipo, setTipo] = useState("PCD");
   const navigate = useNavigate();
@@ -20,8 +23,8 @@ const Register = () => {
       alert("O formato de email é invalido, tente novamente.");
       return;
     }
-  
-    const success = await registerUser(email, password, idade, deficiencia,descrição, trabalho, image, tipo, { name });
+
+    const success = await registerUser(email, password, idade, deficiencia, descrição, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, { name });
     if (success) {
       alert("Cadastrado com sucesso");
       navigate(`/homeuser/${id}`);
@@ -33,12 +36,27 @@ const Register = () => {
   return (
     <div>
       <h2>Register Page</h2>
-      <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+      <input type="file" onChange={(e) => setProfileImage(e.target.files[0])} />
+      <input type="file" onChange={(e) => setBackgroundImage(e.target.files[0])} />
+
       <input
         type="text"
         placeholder="Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
+      />
+
+      <input
+        type="text"
+        placeholder="Sobre você"
+        value={sobre}
+        onChange={(e) => setSobre(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Suas experiencias"
+        value={experiencias}
+        onChange={(e) => setExperiencia(e.target.value)}
       />
       <input
         type="email"
