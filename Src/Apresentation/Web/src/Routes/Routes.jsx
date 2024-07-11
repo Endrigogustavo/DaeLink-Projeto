@@ -16,6 +16,7 @@ import ProfileAdd from '../Pages/Empresa/Profile/Profile';
 import AddPessoa from '../Pages/Empresa/Vagas/AdicionarPessoa'
 import VisualizarProcessosEmpresa from '../Pages/Empresa/Vagas/Visualizar_Processos'
 import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas'
+import VisualizarDocumentos from '../Pages/Empresa/Vagas/VisualizarDocumentos'
 
 import LoginU from '../Pages/Login/LoginUser';
 import CadastroUser from '../Pages/Cadastro/CadastrarUser';
@@ -42,7 +43,8 @@ function App() {
           <Route path='/addpessoa/:id/' element={<AddPessoa/>}/>
           <Route path="/profileadd/:id/:empresaId" element={<ProfileAdd />} />
           <Route path="/processos/:id" element={<VisualizarProcessosEmpresa />} />
-          <Route path="/visualizarpessoas/:id" element={<VisualizarPessoasVaga />} />
+          <Route path="/visualizarpessoas/:vagaId" element={<VisualizarPessoasVaga />} />
+          <Route path="/visualizardocumentos/:id/:vagaId" element={<VisualizarDocumentos />} />
         </Route>
         <Route path="/candidatos" element={<Candidatos />} />
         <Route path="/cadastroempresa" element={<CadastroEmpresa />} />

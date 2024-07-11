@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams , useNavigate} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../Database/Firebase';
 
 
 function VisualizarPessoas() {
-    const navigate = useNavigate()
-    const { vagaId } = useParams();
+    const { vagaId, id } = useParams();
   const [candidatos, setCandidatos] = useState([]);
   const [vaga, setVaga] = useState(null);
   const [error, setError] = useState('');
@@ -15,7 +14,7 @@ function VisualizarPessoas() {
     const fetchCandidatos = async () => {
       try {
         if (vagaId) {
-          const candidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos');
+          const candidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos', id ,'documentos');
           console.log('candidatosCollection:', candidatosCollection); 
           const candidatosSnapshot = await getDocs(candidatosCollection);
           const candidatosList = candidatosSnapshot.docs.map(doc => ({
@@ -64,9 +63,6 @@ function VisualizarPessoas() {
     <li key={candidato.id}>{candidato.nome}</li>
   ))}
 
-  const handleButtonClick = (id) =>{
-    navigate(`/visualizardocumentos/${id}/${vagaId}`)
-  }
     return (
    <>
         <div className="bg-white p-8 rounded-md w-full">
