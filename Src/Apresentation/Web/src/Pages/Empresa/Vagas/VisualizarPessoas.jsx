@@ -1,27 +1,29 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate} from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
+import { collection, getDocs , query, where, doc} from 'firebase/firestore';
 
-function Visualizar_Processo() {
+function VisualizarPessoas() {
     const { id } = useParams();
     const [vagas, setVagas] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate()
 
+ 
     useEffect(() => {
         const fetchVagas = async () => {
             try {
-                const vagasRef = collection(db, 'Vagas');
-                const q = query(vagasRef, where('empresaId', '==', id)); // Usando o ID da empresa para buscar as vagas
-                const querySnapshot = await getDocs(q);
+                const vagasRef = collection(db, 'Vagas', id, 'candidatos')
+               const querySnapshot = await getDocs(vagasRef);
 
-                const vagasList = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
+                let vagasDoCandidato = [];
 
-                setVagas(vagasList);
+                    if (!querySnapshot.empty) {
+                        vagasDoCandidato.push({ id: doc.id, ...doc.data() });
+                    }
+                
+
+                setVagas(vagasDoCandidato);
             } catch (error) {
                 console.error('Erro ao buscar vagas: ', error);
             } finally {
@@ -32,17 +34,16 @@ function Visualizar_Processo() {
         fetchVagas();
     }, [id]);
 
+
     if (loading) {
-        return <div>Carregando...</div>;
-    }
+        return <p>Carregando...</p>;
+      }
 
-    if (vagas.length === 0) {
-        return <div>Nenhuma vaga encontrada para esta empresa.</div>;
-    }
 
-    const handleButtonClick = (vagaId) => {
-		navigate(`/visualizarpessoas/${vagaId}`);
+      const handleButtonClick = (vagaId) => {
+		navigate(`/enviardocumento/${id}/${vagaId}`);
 	  };
+
 
     return (
         <>
@@ -54,25 +55,16 @@ function Visualizar_Processo() {
                                 <thead>
                                     <tr>
                                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Vaga
+                                            Id
                                         </th>
                                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Area
+                                            Nome
                                         </th>
                                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Empresa
+                                            Email
                                         </th>
                                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Exigencias
-                                        </th>
-                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Salario
-                                        </th>
-                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Tipo
-                                        </th>
-                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Local
+                                            Perfil
                                         </th>
                                     </tr>
                                 </thead>
@@ -91,36 +83,16 @@ function Visualizar_Processo() {
                                             </td>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <p className="text-gray-900 whitespace-no-wrap">
-                                                    {vaga.area}
+                                                    {vaga.name}
                                                 </p>
                                             </td>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <p className="text-gray-900 whitespace-no-wrap">
-                                                    {vaga.empresa}
-                                                </p>
-                                            </td>
-                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                <p className="text-gray-900 whitespace-no-wrap">
-                                                    {vaga.exigencias}
-                                                </p>
-                                            </td>
-                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                <p className="text-gray-900 whitespace-no-wrap">
-                                                    {vaga.salario}
-                                                </p>
-                                            </td>
-                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                <p className="text-gray-900 whitespace-no-wrap">
-                                                    {vaga.tipo}
-                                                </p>
-                                            </td>
-                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                <p className="text-gray-900 whitespace-no-wrap">
-                                                    {vaga.local}
+                                                    {vaga.email}
                                                 </p>
                                             </td>
                                             <button onClick={() => handleButtonClick(vaga.id)} type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-												<svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Candidatos
+												<svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Documentos
 											</button>
                                         </tr>
                                     ))}
@@ -134,4 +106,4 @@ function Visualizar_Processo() {
     );
 }
 
-export default Visualizar_Processo;
+export default VisualizarPessoas;

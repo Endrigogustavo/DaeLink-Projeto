@@ -14,11 +14,13 @@ import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
 import Vagas from '../Pages/PCD/Vagas/Vagas';
 import ProfileAdd from '../Pages/Empresa/Profile/Profile';
 import AddPessoa from '../Pages/Empresa/Vagas/AdicionarPessoa'
+import VisualizarProcessosEmpresa from '../Pages/Empresa/Vagas/Visualizar_Processos'
+import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas'
 
 import LoginU from '../Pages/Login/LoginUser';
 import CadastroUser from '../Pages/Cadastro/CadastrarUser';
 import EntrarVaga from '../Pages/PCD/Vagas/Entrar_Vaga'
-import VisualizarProcessos from '../Pages/PCD/Vagas/Visualizar_Processos'
+import VisualizarProcessosUser from '../Pages/PCD/Vagas/Visualizar_Processos'
 import EnviarDocumentos from '../Pages/PCD/Vagas/Enviar_documentos'
 import Profile from '../Pages/PCD/Profile/Profile';
 
@@ -39,7 +41,10 @@ function App() {
           <Route path="/homeempresa/:id" element={<Homeempresa />} />
           <Route path='/addpessoa/:id/' element={<AddPessoa/>}/>
           <Route path="/profileadd/:id/:empresaId" element={<ProfileAdd />} />
+          <Route path="/processos/:id" element={<VisualizarProcessosEmpresa />} />
+          <Route path="/visualizarpessoas/:id" element={<VisualizarPessoasVaga />} />
         </Route>
+        <Route path="/candidatos" element={<Candidatos />} />
         <Route path="/cadastroempresa" element={<CadastroEmpresa />} />
         <Route path="/list" element={<List />} />
         <Route path="/logine" element={<LoginE />} />
@@ -50,9 +55,9 @@ function App() {
           <Route path="/homeuser/vagas/:id" element={<Vagas />} />
           <Route path="/entrarvaga/:id/:vagaId" element={<EntrarVaga />} />
           <Route path="/enviardocumento/:id/:vagaId" element={<EnviarDocumentos />} />
-          <Route path="/homeuser/processos/:id" element={<VisualizarProcessos />} />
+          <Route path="/homeuser/processos/:id" element={<VisualizarProcessosUser />} />
         </Route>
-        
+        <Route path="/vagas" element={<Vagas />} />
         <Route path="/cadastrouser" element={<CadastroUser />} />
         <Route path="/loginu" element={<LoginU />} />
         
