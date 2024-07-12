@@ -19,10 +19,10 @@ const Register = () => {
       return;
     }
   
-    const success = await registerEmpresa(email, password, cnpj, endereco, cep, tipo, { name });
-    if (success) {
+      const response =  await registerEmpresa(email, password, cnpj, endereco, cep, tipo, { name });
+    if (response.success) {
       alert("Cadastrado com sucesso");
-      navigate('/');
+      navigate(`/homeempresa/${response.uid}`);
     } else {
       alert("Falha ao criar um registro, tente novamente.");
     }
