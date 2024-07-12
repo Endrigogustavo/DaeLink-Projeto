@@ -68,7 +68,7 @@ const Login = () => {
                   rounded-lg transition duration-200 hover:bg-indigo-600 ease">Login</a>
                     </button>
                     <br /><br />
-                    <p>Não tem uma conta? <Link to="/register">Cadastrar agora</Link></p>
+                    <p>Não tem uma conta? <Link to="/cadastroempresa">Cadastrar agora</Link></p>
 
                   </div>
                 </div>

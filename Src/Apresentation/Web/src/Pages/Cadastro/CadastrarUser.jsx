@@ -24,10 +24,10 @@ const Register = () => {
       return;
     }
 
-    const success = await registerUser(email, password, idade, deficiencia, descrição, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, { name });
-    if (success) {
+    const response = await registerUser(email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, {});
+    if (response.success) {
       alert("Cadastrado com sucesso");
-      navigate(`/homeuser/${id}`);
+      navigate(`/homeuser/${response.uid}`);
     } else {
       alert("Falha ao criar um registro, tente novamente.");
     }
