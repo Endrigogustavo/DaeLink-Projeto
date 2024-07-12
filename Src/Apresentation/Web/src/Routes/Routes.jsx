@@ -24,7 +24,7 @@ import EntrarVaga from '../Pages/PCD/Vagas/Entrar_Vaga'
 import VisualizarProcessosUser from '../Pages/PCD/Vagas/Visualizar_Processos'
 import EnviarDocumentos from '../Pages/PCD/Vagas/Enviar_documentos'
 import Profile from '../Pages/PCD/Profile/Profile';
-
+import Empresas from '../Pages/PCD/Empresas/Empresas'
 import List from '../Components/Listar/Listar';
 
 import PrivateRoute from '../Auth/PrivateRoute';
@@ -61,6 +61,7 @@ function App() {
         </Route>
         <Route path="/vagas" element={<Vagas />} />
         <Route path="/cadastrouser" element={<CadastroUser />} />
+        <Route path="/empresas" element={<Empresas />} />
         <Route path="/loginu" element={<LoginU />} />
         
 
