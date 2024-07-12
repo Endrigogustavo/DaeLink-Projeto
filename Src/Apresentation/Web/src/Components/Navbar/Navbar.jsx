@@ -15,9 +15,9 @@ export default function Navbar() {
     const Navlinks = () => {
         return (
             <>
-                <NavLink to="/">Network</NavLink>
+                <NavLink to="/candidatos">Network</NavLink>
                 <NavLink to="/">Media</NavLink>
-                <NavLink to="/">Empresas</NavLink>
+                <NavLink to="/vagas">Empresas</NavLink>
             </>
         )
     }
@@ -35,7 +35,7 @@ export default function Navbar() {
 
                     </div>
                     <IoSearch className='text-black text-2xl cursor-pointer iconhover' />
-                    <Link to="/profile">
+                    <Link to="/loginu">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4V3cocSdopo5hP0mkgdw0NXemc_BRakHZOQ&s" className='w-8 h-8 rounded-full imgborder' alt="Profile" />
                     </Link>
                     <div className="flex  md:hidden">
