@@ -36,7 +36,7 @@ export const registerUser = async (email, password, idade, deficiencia, descriç
     const docRef = doc(db, "PCD", user.uid);
     await setDoc(docRef, dataToSave);
 
-    return true;
+    return { success: true, uid: user.uid };
   } catch (error) {
     console.error("Registration error: ", error);
     if (error.code === 'auth/email-already-in-use') {
@@ -64,6 +64,7 @@ export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo
     // Adicione o usuário ao Firestore
     const docRef = doc(db, "Empresa", user.uid);
     await setDoc(docRef, dataToSave);
+    return { success: true, uid: user.uid };
 
     return true;
   } catch (error) {
@@ -79,7 +80,7 @@ export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo
 
 export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId, additionalData) => {
   try {
-    // Dados a serem salvos no Firestore
+
     const dataToSave = {
       vaga,
       detalhes,
@@ -99,7 +100,7 @@ export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias,
     console.log("Vaga adicionada com ID: ", docRef.id);
 
     
-    return true;
+    return { success: true, uid: user.uid };
   } catch (error) {
     console.error("Registration error: ", error);
     return false;
