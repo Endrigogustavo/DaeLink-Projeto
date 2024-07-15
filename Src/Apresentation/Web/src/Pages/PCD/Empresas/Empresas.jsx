@@ -12,7 +12,7 @@ function Empresas() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        //Pegando as informações no banco
+        //Caminho das informações no banco
         const userCollection = collection(db, "Empresa");
         //Pegando dados
         const getUsers = async () => {
