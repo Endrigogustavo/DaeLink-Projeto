@@ -116,12 +116,12 @@ export const loginUser = async (email, password) => {
     console.log("User logged in successfully:", uid);
 
     // Acessar a tabela específica com base no UID
-    const userDocRef = doc(db, "PCD", uid); // Supondo que a coleção seja chamada "users" e o documento seja o UID do usuário
+    const userDocRef = doc(db, "PCD", uid); 
     const userDoc = await getDoc(userDocRef);
 
     if (userDoc.exists()) {
       console.log("User data:", userDoc.data());
-      return { uid, ...userDoc.data() }; // Retorne os dados do usuário incluindo o UID
+      return { uid, ...userDoc.data() };
     } else {
       console.log("No such document!");
       return null;
@@ -141,12 +141,12 @@ export const loginEmpresa = async (email, password) => {
     console.log("User logged in successfully:", uid);
 
     // Acessar a tabela específica com base no UID
-    const userDocRef = doc(db, "Empresa", uid); // Supondo que a coleção seja chamada "Empresa" e o documento seja o UID do usuário
+    const userDocRef = doc(db, "Empresa", uid); 
     const userDoc = await getDoc(userDocRef);
 
     if (userDoc.exists()) {
       console.log("User data:", userDoc.data());
-      return { uid, ...userDoc.data() }; // Retorne os dados do usuário incluindo o UID
+      return { uid, ...userDoc.data() }; 
     } else {
       console.log("No such document!");
       return null;

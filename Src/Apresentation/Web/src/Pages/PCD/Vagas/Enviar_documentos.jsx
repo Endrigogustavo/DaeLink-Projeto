@@ -5,11 +5,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 
 const AddDocumentoForm = () => {
+  //Função de navegação do site
   const navigate = useNavigate();
+  //Utilizado para pegar o id do usuario e da vaga na tela anterior
   const { id, vagaId } = useParams();
   const [userId, setUserId] = useState(id);
   const [vagaUid, setVagaUid] = useState(vagaId);
 
+  //Informações para guardar no banco de dados
   const [nome, setNome] = useState("");
   const [endereco, setEndereco] = useState("");
   const [telefone, setTel] = useState("");
@@ -42,40 +45,48 @@ const AddDocumentoForm = () => {
 
   const [informatica, setInfo] = useState("");
 
-  
-
   const [documento, setDocumento] = useState(null);
 
+  //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
+    //Inicializando os IDs
     if (id && vagaUid) {
       setUserId(id);
       setVagaUid(vagaUid);
     }
   }, [id, vagaUid]);
 
+  //Botão para guardar as informações no banco
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-
+      //Utiliza o storage para guardar arquivos no banco
       const storageRef = ref(storage, `documentos/${documento.name}`);
+      //Guardando dados
       await uploadBytes(storageRef, documento);
-
+      //Pegando a URL de onde a imagem esta para colocar no banco como uma informação do usuario
       const downloadURL = await getDownloadURL(storageRef);
 
+      //Pega o candidato matriculado dentro das vagas
       const candidatosRef = collection(db, "Vagas", vagaUid, "candidatos");
-
+      //Indentificando o usuario pelo ID
       const q = query(candidatosRef, where("userId", "==", userId));
+      //Pegando inromações
       const querySnapshot = await getDocs(q);
 
+      //Taramento de erros
       if (!querySnapshot.empty) {
+        //Fazendo tratamento das imagens
         const candidatoDoc = querySnapshot.docs[0];
         const candidatoId = candidatoDoc.id;
- 
+
+        //Perfil do candidato encontrado para enviar os documentos no nome dele
         const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", candidatoId);
 
+        //Criando a tabela documentos no perfil do user
         const documentosRef = collection(candidatoDocRef, "documentos");
 
+        //Add informações no banco de dados
         await addDoc(documentosRef, {
           nome: nome,
           endereco: endereco,
@@ -101,7 +112,7 @@ const AddDocumentoForm = () => {
           idioma2: idiomas2,
           informatica: informatica,
           url: downloadURL,
-          userId: userId  
+          userId: userId
         });
 
         alert("Documento adicionado com sucesso!");
@@ -135,9 +146,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setNome(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Email"
@@ -145,9 +156,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Telefone"
@@ -155,9 +166,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setTel(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Endereço"
@@ -165,9 +176,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setEndereco(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Idade"
@@ -175,9 +186,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setIdade(e.target.value)}
         />
       </div>
-<br />
-<br />
-<div>
+      <br />
+      <br />
+      <div>
         <input
           type="text"
           placeholder="Objetivo Profissional"
@@ -185,10 +196,10 @@ const AddDocumentoForm = () => {
           onChange={(e) => setObjetivo(e.target.value)}
         />
       </div>
-<br />
-<br />
+      <br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Experiencia 1"
@@ -196,9 +207,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setExp1(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Experiencia 2"
@@ -206,9 +217,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setExp2(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Experiencia 3"
@@ -216,10 +227,10 @@ const AddDocumentoForm = () => {
           onChange={(e) => setExp3(e.target.value)}
         />
       </div>
-<br />
-<br />
+      <br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Formação academica 1"
@@ -227,9 +238,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setForm1a(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Formação academica 2"
@@ -237,9 +248,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setForm2a(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Formação academica 3"
@@ -247,9 +258,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setForm3a(e.target.value)}
         />
       </div>
-<br />
-<br />
-<div>
+      <br />
+      <br />
+      <div>
         <input
           type="text"
           placeholder="Formação complementar 1"
@@ -257,9 +268,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setForm1c(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Formação complementar 2"
@@ -267,9 +278,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setForm2c(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Formação complementar 3"
@@ -277,9 +288,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setForm3c(e.target.value)}
         />
       </div>
-<br />
-<br />
-<div>
+      <br />
+      <br />
+      <div>
         <input
           type="text"
           placeholder="Qualificação 1"
@@ -287,9 +298,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setQuali1(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Qualificação 2"
@@ -297,9 +308,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setQuali2(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Qualificação 3"
@@ -307,9 +318,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setQuali3(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Qualificação 4"
@@ -317,9 +328,9 @@ const AddDocumentoForm = () => {
           onChange={(e) => setQuali4(e.target.value)}
         />
       </div>
-<br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Qualificação 5"
@@ -327,10 +338,10 @@ const AddDocumentoForm = () => {
           onChange={(e) => setQuali5(e.target.value)}
         />
       </div>
-<br />
-<br />
+      <br />
+      <br />
 
-<div>
+      <div>
         <input
           type="text"
           placeholder="Idioma 1"
@@ -338,8 +349,8 @@ const AddDocumentoForm = () => {
           onChange={(e) => setIdioma1(e.target.value)}
         />
       </div>
-<br />
-<div>
+      <br />
+      <div>
         <input
           type="text"
           placeholder="Idioma 2"
@@ -347,8 +358,8 @@ const AddDocumentoForm = () => {
           onChange={(e) => setIdioma2(e.target.value)}
         />
       </div>
-<br />
-<div>
+      <br />
+      <div>
         <input
           type="text"
           placeholder="Informatica"
@@ -356,7 +367,7 @@ const AddDocumentoForm = () => {
           onChange={(e) => setInfo(e.target.value)}
         />
       </div>
-<br />
+      <br />
       <div>
         <label>Documento:</label>
         <input

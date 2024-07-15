@@ -19,7 +19,7 @@ function Navbar() {
             const userSnap = await getDoc(userDoc);
             if (userSnap.exists()) {
                 setUserProfile(userSnap.data());
-                setUserId(userSnap.id); // Define o ID do usuário no estado
+                setUserId(userSnap.id);
             } else {
                 setUserProfile(null);
                 alert("No such document!");
