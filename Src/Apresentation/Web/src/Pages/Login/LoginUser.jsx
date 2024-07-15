@@ -1,37 +1,43 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from '../../Auth/Auth';
-import { getAuth, signInWithPopup, GoogleAuthProvider, getRedirectResult ,signInWithRedirect, signOut} from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, getRedirectResult, signInWithRedirect, signOut } from "firebase/auth";
 import ImgUser from '../../Img/LoginUser.png'
 
 const Login = () => {
-
+  //Variaveis onde as informações serão setadas
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  //Função de navegação do site
   const navigate = useNavigate();
+  //Função do Firebase de autenticação com email e senha
   const auth = getAuth();
   auth.languageCode = 'it';
 
 
-
+  // Borão para fazer Login
   const handleLogin = async () => {
     try {
+      //Função do Auth.jsx para fazer o Login
       const userData = await loginUser(email, password);
-
+      //Tratamento dos dados
       if (userData) {
-        console.log("User data:", userData); 
+        //Sucesso
+        console.log("User data:", userData);
         navigate(`/homeuser/${userData.uid}`);
       } else {
-        alert("Failed to login. Please check your credentials.");
+        //Erro
+        alert("Erro ao fazer Login, tente novamente!");
       }
     } catch (error) {
       console.error("Login error:", error.message);
-      alert("Failed to login. Please check your credentials.");
+      alert("Erro ao fazer Login, tente novamente mais tarde!");
     }
   };
 
-
+  //Login com a conta google
   const handleGoogleLogin = async () => {
+    //Função do Firebase
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
@@ -42,10 +48,11 @@ const Login = () => {
       const user = result.user;
       console.log("User:", user);
       console.log("Token:", token);
+      
       navigate('/homeuser');
     } catch (error) {
       console.error("Google login error:", error.message);
-      alert("Failed to login with Google. Please try again.");
+      alert("Erro ao fazer Login, tente novamente mais tarde!");
     }
   };
 
@@ -69,7 +76,7 @@ const Login = () => {
                 <p className="w-full text-4xl font-medium text-center leading-snug font-serif">Login - Usuario</p>
 
                 <div className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
-                <div class="my-5">
+                  <div class="my-5">
                     <Link to="/logine" class="w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
                       <img src="https://www.svgrepo.com/show/355037/google.svg" class="w-6 h-6" alt="" /> <span>Logar como Empresa</span>
                     </Link>

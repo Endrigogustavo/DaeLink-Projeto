@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../Auth/Auth';
 
 const Register = () => {
+  //Variaveis onde as informações serão setadas
   const [profileImage, setProfileImage] = useState(null);
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [email, setEmail] = useState("");
@@ -14,9 +15,12 @@ const Register = () => {
   const [sobre, setSobre] = useState("");
   const [experiencias, setExperiencia] = useState("");
   const [deficiencia, setDeficiencia] = useState("");
+  //Variavel para fazer gerenciamento de nivel de acesso
   const [tipo, setTipo] = useState("PCD");
+  //Função de navegação do site
   const navigate = useNavigate();
 
+  // Borão para fazer Cadastro
   const handleRegister = async () => {
     // Verificar se o formato do e-mail é válido
     if (!/\S+@\S+\.\S+/.test(email)) {
@@ -24,12 +28,15 @@ const Register = () => {
       return;
     }
 
+    //Função do Auth.jsx para fazer login enviando os parametros do form
     const response = await registerUser(email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, {});
     if (response.success) {
+      //Sucesso
       alert("Cadastrado com sucesso");
       navigate(`/homeuser/${response.uid}`);
     } else {
-      alert("Falha ao criar um registro, tente novamente.");
+      //Erro
+      alert("Falha ao cadastrar, tente novamente.");
     }
   };
 
