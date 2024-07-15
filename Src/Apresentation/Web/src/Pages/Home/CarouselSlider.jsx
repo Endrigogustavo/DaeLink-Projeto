@@ -6,7 +6,7 @@ import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
-function CarouselSlider() {
+const  CarouselSlider = () => {
     const carouselpages = [
         { image: "https://projy.s3.amazonaws.com/uploads/80133c3b17c74fe4a3959ba67d95b4dd.jpg" },
         { image: "https://cdnsjengenhariae.nuneshost.com/wp-content/uploads/2024/04/microsoft-.jpeg" },

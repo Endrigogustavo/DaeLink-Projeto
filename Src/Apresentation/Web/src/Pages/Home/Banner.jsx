@@ -4,7 +4,7 @@ import { CiLogin } from "react-icons/ci";
 
 
 import './Css/Home.css'
-function Banner() {
+const  Banner = () => {
     return (
         <>
             <div className=" w-full h-88vh banner-color banner ">
