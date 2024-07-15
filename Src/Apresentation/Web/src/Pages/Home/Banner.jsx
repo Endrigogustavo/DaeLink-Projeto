@@ -21,7 +21,7 @@ function Banner() {
                     </div>
                     <div className="w-1/2 h-full justify-center flex">
 
-                        <img src={ImgBanner} className="image" alt="" />
+                         <img src="https://i.postimg.cc/bYMRV8d8/Andrew.png" className="" alt="" />
                         {/**<img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="" alt=""> / */}
                     </div>
 
