@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { onAuthChange, getUserData } from './Auth'; // Certifique-se de que o caminho está correto
+import { onAuthChange, getUserData } from './Auth'; 
 
 const PrivateRoute = ({ allowedRoles }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -14,7 +14,7 @@ const PrivateRoute = ({ allowedRoles }) => {
           const userData = await getUserData(user.uid);
           console.log('User Data:', userData);
           setIsAuthenticated(true);
-          setUserType(userData.tipo); // Supondo que userData tenha o campo tipo
+          setUserType(userData.tipo); 
         } catch (error) {
           console.error(error);
           setIsAuthenticated(false);
