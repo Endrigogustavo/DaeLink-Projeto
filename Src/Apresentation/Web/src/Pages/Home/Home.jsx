@@ -11,7 +11,7 @@ import Carousel from './Carousel';
 
 
 
-function Home() {
+const Home = () => {
 
   return (
     <>
