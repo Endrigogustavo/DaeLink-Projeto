@@ -3,9 +3,12 @@ import { doc, setDoc, getDoc, getFirestore , addDoc, collection} from "firebase/
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
+//Função para cadastrar um novo usuario
 export const registerUser = async (email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, additionalData) => {
   try {
+    //Autenticador do Firebase
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    //Autenticar usuario unico
     const user = userCredential.user;
 
     // Upload da imagem de perfil
@@ -18,6 +21,7 @@ export const registerUser = async (email, password, idade, deficiencia, descriç
     await uploadBytes(backgroundImageRef, background);
     const backgroundImageUrl = await getDownloadURL(backgroundImageRef);
 
+    //Dados a serem salvos em uma variavel
     const dataToSave = {
       email,
       deficiencia,
@@ -34,14 +38,15 @@ export const registerUser = async (email, password, idade, deficiencia, descriç
 
     // Adicione o usuário ao Firestore
     const docRef = doc(db, "PCD", user.uid);
+    //Adicionando os dados junto do usuario no banco
     await setDoc(docRef, dataToSave);
 
     return { success: true, uid: user.uid };
   } catch (error) {
-    console.error("Registration error: ", error);
+    console.error("Erro ao registrar, tente novamente: ", error);
     if (error.code === 'auth/email-already-in-use') {
       // Manipular o erro de email já registrado
-      alert("Email already in use. Please use a different email.");
+      alert("O email utilizado esta em uso, tente outro email");
     }
     return false;
   }
@@ -68,10 +73,10 @@ export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo
 
     return true;
   } catch (error) {
-    console.error("Registration error: ", error);
+    console.error("Erro ao registrar, tente novamente: ", error);
     if (error.code === 'auth/email-already-in-use') {
       // Manipular o erro de email já registrado
-      alert("Email already in use. Please use a different email.");
+      alert("O email utilizado esta em uso, tente outro email");
     }
     return false;
   }

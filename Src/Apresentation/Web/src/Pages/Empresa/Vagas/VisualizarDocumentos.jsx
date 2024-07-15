@@ -5,23 +5,35 @@ import { db } from '../../../Database/Firebase';
 
 
 function VisualizarDocumentos() {
+  //Pegar o id do usuario na tela anterior
   const { vagaId, id } = useParams();
+  //Variaveis para setar dados do banco
   const [candidatos, setCandidatos] = useState([]);
   const [vaga, setVaga] = useState(null);
+  //Variavel para setar os erros
   const [error, setError] = useState('');
 
+  //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
     const fetchCandidatos = async () => {
       try {
+        //Tratamento de erros com base do ID da vaga
         if (vagaId) {
+          //Caminho dos dados da tabela PCD do banco
           const candidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos', id, 'documentos');
+          //Mensagem dos dados coletados
           console.log('candidatosCollection:', candidatosCollection);
+          //Pegando dados
           const candidatosSnapshot = await getDocs(candidatosCollection);
+          //Utilizando a função map para guardar as informações
           const candidatosList = candidatosSnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
           }));
+
+          //Mensagem das informações
           console.log('Candidatos:', candidatosList);
+          //Setando informações
           setCandidatos(candidatosList);
         } else {
           setError('ID da vaga não fornecido');
@@ -32,17 +44,26 @@ function VisualizarDocumentos() {
       }
     };
 
+    //Função para procurar vagas
     const fetchVaga = async () => {
       try {
+        //Tratamento de erro com base do ID da vaga
         if (vagaId) {
+          //Caminho das informações
           const vagaDoc = doc(db, 'Vagas', vagaId);
+          //Mensagem para ver se esta ok
           console.log('vagaDoc:', vagaDoc);
+          //Pegando as informações
           const vagaSnapshot = await getDoc(vagaDoc);
+
+          //Tratamento e setando dados em variaveis
           if (vagaSnapshot.exists()) {
+            //Sucesso
             const vagaData = { id: vagaSnapshot.id, ...vagaSnapshot.data() };
             console.log('Vaga:', vagaData);
             setVaga(vagaData);
           } else {
+            //Erro
             console.log('Nenhum documento encontrado!');
             setError('Nenhuma vaga encontrada');
           }
@@ -55,6 +76,7 @@ function VisualizarDocumentos() {
       }
     };
 
+    //Chamando as funções
     fetchCandidatos();
     fetchVaga();
   }, [vagaId]);

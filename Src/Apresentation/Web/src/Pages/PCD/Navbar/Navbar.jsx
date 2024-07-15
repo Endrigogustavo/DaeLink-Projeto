@@ -17,7 +17,7 @@ function Navbar() {
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
         const getUserProfile = async () => {
-            //Pegando as informações do banco com base no ID
+            //Caminho das informações do banco com base no ID
             const userDoc = doc(db, "PCD", id);
             //Pegando os dados
             const userSnap = await getDoc(userDoc);
