@@ -11,11 +11,11 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const userData = await loginEmpresa(email, password); // Chama sua função de login
+      const userData = await loginEmpresa(email, password);
 
       if (userData) {
-        console.log("User data:", userData); // Verifique os dados do usuário recebidos
-        navigate(`/homeempresa/${userData.uid}`); // Navega para a página usando o UID retornado
+        console.log("User data:", userData);
+        navigate(`/homeempresa/${userData.uid}`);
       } else {
         alert("Failed to login. Please check your credentials.");
       }

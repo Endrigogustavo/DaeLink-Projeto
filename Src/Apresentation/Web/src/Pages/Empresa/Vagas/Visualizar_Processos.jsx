@@ -13,7 +13,7 @@ function Visualizar_Processo() {
         const fetchVagas = async () => {
             try {
                 const vagasRef = collection(db, 'Vagas');
-                const q = query(vagasRef, where('empresaId', '==', id)); // Usando o ID da empresa para buscar as vagas
+                const q = query(vagasRef, where('empresaId', '==', id));
                 const querySnapshot = await getDocs(q);
 
                 const vagasList = querySnapshot.docs.map(doc => ({
