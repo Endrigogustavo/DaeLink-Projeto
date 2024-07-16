@@ -29,7 +29,7 @@ const Register = () => {
     }
 
     //Função do Auth.jsx para fazer login enviando os parametros do form
-    const response = await registerUser(email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, {});
+    const response = await registerUser(email, password, idade, deficiencia, descrição, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, {});
     if (response.success) {
       //Sucesso
       alert("Cadastrado com sucesso");
