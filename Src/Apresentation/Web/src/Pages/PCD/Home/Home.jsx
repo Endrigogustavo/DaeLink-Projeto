@@ -1,42 +1,28 @@
-import './Home.css'
-import './Card.css'
+
+import '../../../Pages/Home/ExtraTailwind.css'
+
 
 import Navbar from '../Navbar/Navbar'
-import Card from './Card'
-import Def from '../../../Img/HomeImg.png'
+import Banner from '../../../Pages/Home/Banner';
+import About from '../../../Pages/Home/About';
+import Footer from '../../../Components/Footer/Footer'
+import Sliders from '../../../Pages/Home/Sliders';
+import Carousel from '../../../Pages/Home/Carousel';
+
 
 
 function Home() {
 
   return (
     <>
-    <div className="nav">
+      
+   
       <Navbar/>
-    </div>
-      <main class="main">
-        <section class="section banner banner-section">
-          <div class="container banner-column">
-            <img class="banner-image" src={Def} alt="banner" />
-            <div class="banner-inner">
-              <h1 class="heading-xl">DaeLink a melhor plataforma de trabalho</h1>
-              <p class="paragraph">
-                Uma plataforma de empregabilidade com foco em empresas contratarem pessoas portadoras de deficiencia
-              </p>
-            </div>
-            <div class="banner-links">
-              <a href="#" title=""><i class="bx bxl-facebook"></i></a>
-              <a href="#" title=""><i class="bx bxl-instagram"></i></a>
-              <a href="#" title=""><i class="bx bxl-twitter"></i></a>
-              <a href="#" title=""><i class="bx bxl-youtube"></i></a>
-            </div>
-          </div>
-        </section>
-
-        <div className="card-home">
-          <Card />
-        </div>
-
-      </main>
+      <Banner/>
+      <About/>
+      <Carousel/>
+      <Sliders/>
+      <Footer/>
 
     </>
   )
