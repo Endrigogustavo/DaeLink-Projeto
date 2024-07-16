@@ -52,12 +52,15 @@ export const registerUser = async (email, password, idade, deficiencia, descriç
   }
 };
 
-
+//Constante de registrar empresa
 export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo, additionalData) => {
   try {
+    //Autenticador do Firebase
     const userCredential = await createUserWithEmailAndPassword(auth, email, password, cnpj, endereco, cep,tipo, additionalData);
+   //Autenticar usuario unico
     const user = userCredential.user;
 
+    //Informações para ir no banco
     const dataToSave = {      
       email,
       cnpj,
@@ -68,6 +71,7 @@ export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo
 
     // Adicione o usuário ao Firestore
     const docRef = doc(db, "Empresa", user.uid);
+    
     await setDoc(docRef, dataToSave);
     return { success: true, uid: user.uid };
 
