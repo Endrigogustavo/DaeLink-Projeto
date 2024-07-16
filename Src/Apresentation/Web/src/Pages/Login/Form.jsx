@@ -54,7 +54,7 @@ const Form = () => {
                     />
                 </div>
                 <div className="flex flex-col mt-4">
-                    <label className="text-lg font-medium">Password</label>
+                    <label className="text-lg font-medium">Senha</label>
                     <input
                         type="password"
                         className="w-full border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"

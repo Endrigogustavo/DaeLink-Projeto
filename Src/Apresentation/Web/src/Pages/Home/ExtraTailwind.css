@@ -95,6 +95,15 @@
       justify-content: center;
       align-items: center;
     }
+    
+    .itemstextboxsd{
+      width: 100%;
+    }
+
+    .sm-textrun{
+      padding-left: 2,5rem;
+      padding-right: 2,5rem;
+    }
 }
 
 @media (max-width:1400px){
