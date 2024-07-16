@@ -44,6 +44,11 @@ function Navbar() {
         navigate(`/homeuser/processos/${id}`);
     };
 
+    //Botão onde entre na tela de perfil de usuario
+    const handleButtonClickProfile = (id) => {
+        navigate(`/userprofile/${id}`);
+    };
+
 
     return (
         <>
@@ -97,9 +102,9 @@ function Navbar() {
                                         </svg>
 
                                     </Link>
-                                    <Link to="/logout">
+                                    <button onClick={() => handleButtonClickProfile(userId)}>
                                         <img src={userProfile.imageUrl} alt="" class="w-10 h-10 rounded-full" />
-                                    </Link>
+                                    </button>
                                 </div>
                             </div>
                         </div>
