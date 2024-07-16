@@ -3,23 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import { registerEmpresa } from '../../Auth/Auth';
 
 const Register = () => {
+  //Variaveis onde as informações serão setadas
   const [cep, setCep] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [cnpj, setCnpj] = useState("");
   const [endereco, setEndereco] = useState("");
+  //Variavel para fazer gerenciamento de nivel de acesso
   const [tipo] = useState("Empresa");
+  //Função de navegação do site
   const navigate = useNavigate();
 
+  // Borão para fazer Cadastro
   const handleRegister = async () => {
     // Verificar se o formato do e-mail é válido
     if (!/\S+@\S+\.\S+/.test(email)) {
       alert("O formato de email é invalido, tente novamente.");
       return;
     }
-  
-      const response =  await registerEmpresa(email, password, cnpj, endereco, cep, tipo, { name });
+
+
+    //Função do Auth.jsx para fazer login enviando os parametros do form
+    const response = await registerEmpresa(email, password, cnpj, endereco, cep, tipo, { name });
     if (response.success) {
       alert("Cadastrado com sucesso");
       navigate(`/homeempresa/${response.uid}`);

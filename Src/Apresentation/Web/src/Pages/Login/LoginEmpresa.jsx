@@ -5,23 +5,28 @@ import { loginEmpresa } from '../../Auth/Auth';
 import ImgEmpresa from '../../Img/LoginEmpresa.png'
 
 const Login = () => {
+  //Variaveis onde as informações serão setadas
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  //Função de navegação do site
   const navigate = useNavigate();
 
+  // Borão para fazer Login
   const handleLogin = async () => {
     try {
+      //Função do Auth.jsx para fazer o Login de empresa
       const userData = await loginEmpresa(email, password);
-
+      //Tratamento dos dados
       if (userData) {
+        //Sucesso
         console.log("User data:", userData);
         navigate(`/homeempresa/${userData.uid}`);
       } else {
-        alert("Failed to login. Please check your credentials.");
+        alert("Erro ao fazer Login, tente novamente!");
       }
     } catch (error) {
       console.error("Login error:", error.message);
-      alert("Failed to login. Please check your credentials.");
+      alert("Erro ao fazer Login, tente novamente mais tarde!");
     }
   };
   return (
