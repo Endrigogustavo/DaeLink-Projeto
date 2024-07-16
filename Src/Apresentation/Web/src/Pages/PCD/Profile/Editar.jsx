@@ -1,75 +1,72 @@
 import React, { useState, useEffect } from "react";
-import { doc, collection, updateDoc, getDocs} from "firebase/firestore";
-import { db, storage } from "../../../Database/Firebase";  // Ajuste o caminho conforme necessário
+import { doc, collection, updateDoc, getDoc, getDocs } from "firebase/firestore";
+import { db, storage } from "../../../Database/Firebase"; 
 import { useParams, useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 
-const AddDocumentoForm = () => {
-  //Função de navegação do site
+const EditarPerfil = () => {
+  // Função de navegação do site
   const navigate = useNavigate();
-  //Utilizado para pegar o id do usuario e da vaga na tela anterior
+  // Utilizado para pegar o id do usuario e da vaga na tela anterior
   const { id } = useParams();
   const [userId, setUserId] = useState(id);
 
-  //Informações do usuario
-  const [userData, setUserData] = useState()
+  // Informações do usuario
+  const [userData, setUserProfile] = useState({
+    name: '',
+    email: '',
+    trabalho: '',
+    descrição: '',
+    idade: '',
+    sobre: '',
+    experiencias: '',
+    deficiencia: ''
+  });
 
-  //Informações para guardar no banco de dados
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [trabalho, setTrabalho] = useState("");
-  const [descrição, setDescrição] = useState("");
-  const [idade, setIdade] = useState("");
-  const [sobre, setSobre] = useState("");
-  const [experiencias, setExperiencia] = useState("");
-  const [deficiencia, setDeficiencia] = useState("");
-
-
+  // Carregar as informações do usuário do banco de dados
   useEffect(() => {
+    const getUserProfile = async () => {
+      const userDoc = doc(db, "PCD", id);
+      const userSnap = await getDoc(userDoc);
+      if (userSnap.exists()) {
+        setUserProfile(userSnap.data());
+      } else {
+        setUserProfile(null);
+        alert("Sem documentos!");
+      }
+    };
+    getUserProfile();
+  }, [id]);
 
-    const fetchUser = async () => {
-          //Pega o candidato matriculado dentro das vagas
-          const candidatosRef = collection(db, "PCD", userId);
-          //Indentificando o usuario pelo ID
-          const querySnapshot = await getDocs(candidatosRef);
-          setUserData(querySnapshot)
-    
-          fetchUser()
-}}, [id]);
+  // Função para lidar com as mudanças nos inputs
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserProfile((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-
-  //Botão para guardar as informações no banco
+  // Botão para guardar as informações no banco
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const userDoc = doc(db, "PCD", userId);
 
-      //Pega o candidato matriculado dentro das vagas
-      const candidatosRef = collection(db, "PCD", userId);
-      //Indentificando o usuario pelo ID
-      const querySnapshot = await getDocs(candidatosRef);
+      await updateDoc(userDoc, {
+        name: userData.name,
+        email: userData.email,
+        trabalho: userData.trabalho,
+        descrição: userData.descrição,
+        sobre: userData.sobre,
+        experiencias: userData.experiencias,
+        idade: userData.idade,
+        userId: userId,
+        deficiencia: userData.deficiencia,
+      });
 
-      //Taramento de erros
-      if (!querySnapshot.empty) {
-
-        //Add informações no banco de dados
-        await updateDoc(documentosRef, {
-          nome: nome,
-          endereco: endereco,
-          telefone: telefone,
-          email: email,
-          idade: idade,
-          url: downloadURL,
-          userId: userId
-        });
-
-        alert("Documento adicionado com sucesso!");
-        setDocumento(null);
-        navigate(`/homeuser/${userId}`);
-      } else {
-        console.error("Candidato não encontrado.");
-        alert("Erro ao adicionar documento: candidato não encontrado.");
-      }
+      alert("Conta atualizada com sucesso!");
+      navigate(`/userprofile/${userId}`);
     } catch (e) {
       console.error("Erro ao adicionar documento: ", e);
       alert("Erro ao adicionar documento.");
@@ -81,67 +78,80 @@ const AddDocumentoForm = () => {
       <div>
         <input
           type="text"
-          placeholder={userData.name}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          name="name"
+          placeholder="name"
+          value={userData.name}
+          onChange={handleInputChange}
         />
       </div>
       <br />
-
       <div>
         <input
           type="text"
+          name="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={userData.email}
+          onChange={handleInputChange}
         />
       </div>
       <br />
-
       <div>
         <input
           type="text"
-          placeholder="Telefone"
-          value={telefone}
-          onChange={(e) => setTel(e.target.value)}
+          name="trabalho"
+          placeholder="Trabalho"
+          value={userData.trabalho}
+          onChange={handleInputChange}
         />
       </div>
       <br />
-
       <div>
         <input
           type="text"
-          placeholder="Endereço"
-          value={endereco}
-          onChange={(e) => setEndereco(e.target.value)}
+          name="descrição"
+          placeholder="Descrição"
+          value={userData.descrição}
+          onChange={handleInputChange}
         />
       </div>
       <br />
-
       <div>
         <input
-          type="text"
+          type="date"
+          name="idade"
           placeholder="Idade"
-          value={idade}
-          onChange={(e) => setIdade(e.target.value)}
+          value={userData.idade}
+          onChange={handleInputChange}
         />
       </div>
-
       <br />
       <div>
         <input
           type="text"
-          placeholder="Informatica"
-          value={informatica}
-          onChange={(e) => setInfo(e.target.value)}
+          name="sobre"
+          placeholder="Sobre"
+          value={userData.sobre}
+          onChange={handleInputChange}
         />
       </div>
       <br />
       <div>
-        <label>Documento:</label>
         <input
-          type="file"
-          onChange={(e) => setDocumento(e.target.files[0])}
+          type="text"
+          name="experiencias"
+          placeholder="Experiencias"
+          value={userData.experiencias}
+          onChange={handleInputChange}
+        />
+      </div>
+      <br />
+      <div>
+        <input
+          type="text"
+          name="deficiencia"
+          placeholder="Deficiencia"
+          value={userData.deficiencia}
+          onChange={handleInputChange}
         />
       </div>
       <button type="submit">Adicionar Documento</button>
@@ -149,4 +159,4 @@ const AddDocumentoForm = () => {
   );
 };
 
-export default AddDocumentoForm;
+export default EditarPerfil;
