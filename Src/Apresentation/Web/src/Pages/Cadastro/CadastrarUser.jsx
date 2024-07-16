@@ -86,13 +86,13 @@ const Register = () => {
 
   return (
     <>
-      <header className='w-full h-20 flex items-center px-8 border-b-2 border-gray-300 '>
+      <header className='w-full h-20  bg-indigo-200 flex items-center px-8 border-b-2 border-gray-300 '>
         <Link to="/"><img src="https://i.postimg.cc/vB5MHPX1/DaeLink.png" className='w-40' alt="" /></Link>
       </header>
       <div className='bg-gray-100 my-4 h-max py-4 px-20 w-full grid grid-cols-1 lg:grid-cols-2 gap-4 justify-items-center rounded-3xl border-2 border-blue-300 lg:border-none '>
         <div className='flex flex-col'>
           <img src={profileImagePreview} className="w-32 h-32 rounded-full border-4 border-gray-500" alt="Preview Perfil" />
-          <p className='text-lg font-medium mb-2'>Foto de Perfil</p>
+          <p className='text-lg font-medium mb-2 text-center'>Foto de Perfil</p>
           <label htmlFor="profile-image-input" className='text-center w-32 border-2 border-gray-500 font-bold py-2 px-4 rounded-full transition-all hover:bg-gray-500 cursor-pointer hover:text-white'>Upload</label>
           <input id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
         </div>
