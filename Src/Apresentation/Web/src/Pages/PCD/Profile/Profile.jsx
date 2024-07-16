@@ -5,21 +5,27 @@ import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 function Profile() {
+    //Utilizado para pegar o id do usuario e da vaga na tela anterior
     const { id } = useParams();
+    //Variaveis onde as informações serão setadas
     const [userProfile, setUserProfile] = useState(null);
 
+    //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
         const getUserProfile = async () => {
+            //Caminho das informações do banco com base no ID
             const userDoc = doc(db, "PCD", id);
+            //Pegando os dados
             const userSnap = await getDoc(userDoc);
+            //Tratamento e setando dados recebidos em uma variavel
             if (userSnap.exists()) {
                 setUserProfile(userSnap.data());
             } else {
                 setUserProfile(null);
-                alert("No such document!");
+                alert("Sem documentos!");
             }
         };
-
+        //Iniciando a função
         getUserProfile();
     }, [id]);
 
@@ -104,24 +110,24 @@ function Profile() {
                             <div class="bg-white p-3 shadow-sm rounded-sm">
                                 <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                                     <span clas="text-green-500">
-                                       
-                                    <span clas="text-green-500">
-                                                <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                </svg>
-                                            </span>
-                                            
+
+                                        <span clas="text-green-500">
+                                            <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </span>
+
 
                                     </span>
                                     <span class="tracking-wide">Sobre o trabalho</span>
                                 </div>
                                 <div class="text-gray-700">
                                     <div class="grid md:grid-cols-2 text-sm">
-                                    {userProfile.descrição}
-                                       
-                                        </div>
+                                        {userProfile.descrição}
+
+                                    </div>
                                 </div>
                             </div>
 
@@ -160,11 +166,11 @@ function Profile() {
                                 <div class="grid ">
                                     <div>
                                         <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                                        <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
+                                            <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
                                             <span class="tracking-wide">Sobre a pessoa</span>
                                         </div>
 
