@@ -37,7 +37,7 @@ const Register = () => {
       alert("O formato de email é invalido, tente novamente.");
       return;
     }
-    
+
     //Função do Auth.jsx para fazer login enviando os parametros do form
 
     const response = await registerUser(email, password, idade, deficiencia, descrição, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, {});
@@ -95,11 +95,13 @@ const Register = () => {
 
   return (
     <>
-      <header className='w-full h-20  bg-indigo-200 flex items-center px-8 border-b-2 border-gray-300 '>
+      <header className='w-full h-20  bg-gray-200 flex items-center px-20 border-b-2 border-gray-300 '>
         <Link to="/"><img src="https://i.postimg.cc/vB5MHPX1/DaeLink.png" className='w-40' alt="" /></Link>
       </header>
-      <div className='bg-gray-100 my-4 h-max py-4 px-20 w-full grid grid-cols-1 lg:grid-cols-2 gap-4 justify-items-center rounded-3xl border-2 border-blue-300 lg:border-none '>
-        <div className='flex flex-col'>
+      <div className='bg-gray-100 my-4 h-max py-4 px-20 w-full grid grid-cols-1 lg:grid-cols-2 gap-4 justify-items-center rounded-3xl border-2 border-blue-800 lg:border-none '>
+
+        <div className='flex flex-col items-center gap-4'>
+          <h1 className='font-medium text-2xl text-center'>Insira seus dados para cadastrar:</h1>
           <img src={profileImagePreview} className="w-32 h-32 rounded-full border-4 border-gray-500" alt="Preview Perfil" />
           <p className='text-lg font-medium mb-2 text-center'>Foto de Perfil</p>
           <label htmlFor="profile-image-input" className='text-center w-32 border-2 border-gray-500 font-bold py-2 px-4 rounded-full transition-all hover:bg-gray-500 cursor-pointer hover:text-white'>Upload</label>
@@ -219,8 +221,8 @@ const Register = () => {
 
 
         <div className='w-full px-20 flex justify-center mt-4 gap-8'>
-          <button onClick={handleRegister} className="w-32 h-12 bg-green-500 text-white py-2 px-4 rounded-full">Registrar</button>
-          <button onClick={handleClear} className="w-32 h-12 bg-red-500 text-white py-2 px-4 rounded-full">Limpar</button>
+          <button onClick={handleRegister} className="w-32 h-12 bg-blue-500  text-white py-2 px-4 rounded-full">Cadastrar</button>
+          <button onClick={handleClear} className="w-32 h-12 bg-gray-400 text-white py-2 px-4 rounded-full">Limpar</button>
         </div>
 
       </div>

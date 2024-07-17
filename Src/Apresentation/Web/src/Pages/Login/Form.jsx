@@ -37,7 +37,7 @@ const Form = () => {
     };
 
     return (
-        <div className="px-6 py-10 rounded-3xl border-2 border-blue-300 w-full max-w-lg mx-auto">
+        <div className="px-6 py-10 rounded-3xl border-2 border-blue-800 w-full max-w-lg mx-auto">
             <h1 className="font-extrabold text-3xl">Bem Vindo!</h1>
             <p className="font-semibold text-wrap mt-2 text-black opacity-80">
                 Preencha os campos de acordo com as informações:
@@ -67,13 +67,13 @@ const Form = () => {
             <div className="flex flex-col items-center mt-8">
                 <button
                     onClick={handleLogin}
-                    className="w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-all"
+                    className="w-32 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all"
                 >
                     Login
                 </button>
                 <div className="w-full mt-4 text-center">
                     <p className="mb-2">
-                        Não possui conta? <Link to="/cadastrouser" className="text-blue-500">Cadastre-se</Link>
+                        Não possui conta? <Link to="/cadastrouser" className="text-blue-700">Cadastre-se</Link>
                     </p>
                     <div className="flex flex-col gap-2 justify-center items-center">
                         <button className="flex items-center justify-center w-52 text-sm text-white bg-gray-900 rounded-full py-2 px-4">
