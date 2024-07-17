@@ -158,7 +158,7 @@
 
 
 .swiper_container {
-  box-shadow: 10px 10px 10px rgba(68, 68, 245, 0.5);
+  box-shadow: 10px 10px 8px #1e40af;
 }
 
 .swiper-button-next,
