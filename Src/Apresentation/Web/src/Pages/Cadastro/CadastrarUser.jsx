@@ -5,6 +5,7 @@ import { registerUser } from '../../Auth/Auth';
 import { FaCloudUploadAlt } from "react-icons/fa";
 
 const Register = () => {
+  //Variaveis onde as informações serão setadas
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
   const [backgroundImage, setBackgroundImage] = useState(null);
@@ -17,7 +18,9 @@ const Register = () => {
   const [sobre, setSobre] = useState("");
   const [experiencias, setExperiencia] = useState("");
   const [deficiencia, setDeficiencia] = useState("");
+  //Variavel para fazer gerenciamento de nivel de acesso
   const [tipo, setTipo] = useState("PCD");
+  //Função de navegação do site
   const navigate = useNavigate();
 
   const textareaRefs = {
@@ -27,18 +30,24 @@ const Register = () => {
     descrição: useRef(null),
   };
 
+  // Borão para fazer Cadastro
+
   const handleRegister = async () => {
     if (!/\S+@\S+\.\S+/.test(email)) {
       alert("O formato de email é invalido, tente novamente.");
       return;
     }
+    
+    //Função do Auth.jsx para fazer login enviando os parametros do form
 
     const response = await registerUser(email, password, idade, deficiencia, descrição, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, {});
     if (response.success) {
+      //Sucesso
       alert("Cadastrado com sucesso");
       navigate(`/homeuser/${response.uid}`);
     } else {
-      alert("Falha ao criar um registro, tente novamente.");
+      //Erro
+      alert("Falha ao cadastrar, tente novamente.");
     }
   };
 

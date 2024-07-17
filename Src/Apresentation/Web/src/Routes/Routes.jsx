@@ -31,6 +31,7 @@ import EnviarDocumentos from '../Pages/PCD/Vagas/Enviar_documentos'
 import Profile from '../Pages/PCD/Profile/Profile';
 import Empresas from '../Pages/PCD/Empresas/Empresas'
 import List from '../Components/Listar/Listar';
+import EditarUser from '../Pages/PCD/Profile/Editar'
 
 //Função de criar rotas privadas
 import PrivateRoute from '../Auth/PrivateRoute';
@@ -67,6 +68,8 @@ function App() {
           <Route path="/entrarvaga/:id/:vagaId" element={<EntrarVaga />} />
           <Route path="/enviardocumento/:id/:vagaId" element={<EnviarDocumentos />} />
           <Route path="/homeuser/processos/:id" element={<VisualizarProcessosUser />} />
+          <Route path="/userprofile/:id" element={<Profile/>}/>
+          <Route path="/edituser/:id" element={<EditarUser/>}/>
         </Route>
         {/* Rotas livres do usuario*/}
         <Route path="/vagas" element={<Vagas />} />

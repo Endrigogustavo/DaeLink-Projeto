@@ -1,17 +1,23 @@
-
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../../../Database/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDocs, collection, addDoc, query, where } from 'firebase/firestore';
-const UserData = () => {
+
+const AddPessoa = () => {
+  //Função de navegação do site
   const navigate = useNavigate()
+  //Pegar o id do usuario na tela anterior
   const { id } = useParams();
+
+  //Variaveis para setar dados do banco
   const [userInfo, setUserInfo] = useState(null);
   const [user, setUser] = useState(null);
   const [vagas, setVagas] = useState([]);
 
+  //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
+    //Pega os dados com base no perfil de empresa logado utilizando o auth do Firebase
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
@@ -23,17 +29,21 @@ const UserData = () => {
 
     return () => unsubscribe();
   }, []);
+
+  //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
     const fetchData = async () => {
       try {
+        //Caminho dos dados da tabela PCD do banco
         const vagasRef = collection(db, 'PCD');
+        //Pegando dados
         const querySnapshot = await getDocs(vagasRef);
-
+        //Colocando dados em um map para listar informações
         const vagasListUser = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         }));
-
+        //Setando as informarções do banco na variavel
         setUserInfo(vagasListUser);
       } catch (error) {
         console.error('Error getting document:', error);
@@ -43,19 +53,25 @@ const UserData = () => {
     fetchData();
   }, [id]);
 
+  //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
     const fetchVagas = async () => {
+      //utilizando o user como parametro de tratamento
       if (user) {
         try {
+          //Caminho dos dados da tabela PCD do banco
           const vagasRef = collection(db, 'Vagas');
+          //Utilizando o query e o where para pegar as informações de uma empresa especifica
           const q = query(vagasRef, where('empresaId', '==', user.uid));
+          //Pegando dados com o tratamento
           const querySnapshot = await getDocs(q);
 
+          //utilizando de uma função map para listar as informações
           const vagasList = querySnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
           }));
-
+          //Setando os dados em uma variavel
           setVagas(vagasList);
         } catch (error) {
           console.error('Error fetching vagas:', error);
@@ -174,4 +190,4 @@ const UserData = () => {
   );
 };
 
-export default UserData;
+export default AddPessoa;
