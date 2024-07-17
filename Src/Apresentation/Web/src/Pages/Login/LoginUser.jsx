@@ -11,7 +11,7 @@ const Login = () => {
         </div>
         <div className='hidden lg:flex lg:w-1/2 bg-gray-300 items-center justify-center'>
           {/*<img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="object-cover" alt="Side Image" />*/}
-          <img src="https://i.postimg.cc/fTpz35Zc/Bellingham.png" className="object-cover" alt="Side Image" />
+          <img src="https://i.postimg.cc/pXbgPMkt/Bellingham.png" className="object-cover" alt="Side Image" />
         </div>
       </div>
     </>
