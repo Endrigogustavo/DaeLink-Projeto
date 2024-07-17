@@ -98,7 +98,7 @@ const Register = () => {
       <div className='w-full flex w-full h-screen  '>
         <div className='hidden lg:flex lg:w-3/6 h-full bg-gray-300 items-center justify-center'>
           {/*<img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="object-cover" alt="Side Image" /> */}
-          <img src="https://i.postimg.cc/C5FL2nRc/Login.png" className="object-cover" alt="Side Image" /> 
+          <img src="https://i.postimg.cc/C5FL2nRc/Login.png" className="object-cover" alt="Side Image" />
         </div>
         <div className='w-full  lg:w-3/6 overflow-hidden overflow-y-scroll px-4 lg:px-0 containerresponsiveform'>
           <h1 className='font-bold text-2xl text-center my-4 uppercase'>Cadastro de Usuário</h1>
@@ -224,9 +224,9 @@ const Register = () => {
             </div>
 
 
-            <div className='w-full px-20 flex justify-center mt-4 gap-8'>
-              <button onClick={handleRegister} className="w-32 h-12 bg-blue-500  text-white py-2 px-4 rounded-full">Cadastrar</button>
-              <button onClick={handleClear} className="w-32 h-12 bg-gray-500 text-white py-2 px-4 rounded-full">Limpar</button>
+            <div className='w-full px-19 flex justify-center items-center gap-5'>
+              <button onClick={handleRegister} className="w-32 h-12 bg-blue-500 hover:bg-blue-700 transition-all text-white py-2 px-4 rounded-full">Cadastrar</button>
+              <button onClick={handleClear} className="w-32 h-12 bg-gray-500  hover:bg-gray-700 transition-al text-white py-2 px-4 rounded-full">Limpar</button>
             </div>
 
           </div>
