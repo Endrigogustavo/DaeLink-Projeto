@@ -71,7 +71,7 @@ const AddDocumentoForm = () => {
       const candidatosRef = collection(db, "Vagas", vagaUid, "candidatos");
       //Indentificando o usuario pelo ID
       const q = query(candidatosRef, where("userId", "==", userId));
-      //Pegando inromações
+      //Pegando infomações
       const querySnapshot = await getDocs(q);
 
       //Taramento de erros

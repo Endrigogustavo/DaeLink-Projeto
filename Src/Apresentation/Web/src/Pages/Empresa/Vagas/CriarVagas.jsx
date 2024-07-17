@@ -4,9 +4,11 @@ import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { registerVaga } from '../../../Auth/Auth';
 
-const Register = () => {
+const RegisterVaga = () => {
+  //Pegar o id do usuario na tela anterior
   const { id } = useParams();
 
+  //Variaveis para enviar os dados para o banco
   const [vaga, setVaga] = useState("");
   const [empresa, setEmpresa] = useState("");
   const [detalhes, setDetalhes] = useState("");
@@ -18,26 +20,34 @@ const Register = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [userId, setUserId] = useState("");
   const [empresaId] = useState(id);
-
+  
+  //Função de navegação do site
   const navigate = useNavigate();
 
+  //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
     const getUserProfile = async () => {
+      //Caminho dos dados da tabela Empresa do banco com base no ID
       const userDoc = doc(db, "Empresa", id);
+      //Pegando dados tratados
       const userSnap = await getDoc(userDoc);
+      //Tratamento e setando as variaveis
       if (userSnap.exists()) {
+        //Sucesso
         setUserProfile(userSnap.data());
         setUserId(userSnap.id);
       } else {
         setUserProfile(null);
-        alert("No such document!");
+        alert("Tente novamente!");
       }
     };
-
+    //Iniciando a função
     getUserProfile();
   }, [id]);
 
+  //Botão de registrar vaga
   const handleRegister = async () => {
+    //Função registrar vaga que esta no Auth.jsx enviando parametros do form
     const success = await registerVaga(tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId);
     if (success) {
       alert("Vaga Cadastrada com sucesso");
@@ -103,4 +113,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterVaga;
