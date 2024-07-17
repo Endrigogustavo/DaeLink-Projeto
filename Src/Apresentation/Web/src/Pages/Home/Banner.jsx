@@ -15,8 +15,8 @@ const  Banner = () => {
                         <p className="text-justify pb-10">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium iusto nesciunt quia sunt molestias aspernatur saepe quaerat atque corrupti, perferendis dicta natus libero alias repudiandae modi, possimus debitis voluptas ad.</p>
 
                         <div className="flex w-full items-center max-sm-jusify">
-                            <button className=" w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-all">Cadastrar-se</button>
-                            <Link to={""} className="ml-5  flex items-center iconhover">Login <CiLogin className="flex text-2xl  " /> </Link>
+                            <Link to={"cadastrouser"}><button className=" w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-all">Cadastrar-se</button></Link>
+                            <Link to={"loginu"} className="ml-5  flex items-center iconhover">Login <CiLogin className="flex text-2xl  " /> </Link>
                         </div>
                     </div>
                     <div className="w-1/2 h-full justify-center flex overflow-hidden">

@@ -56,7 +56,7 @@ function Footer() {
               <Link className="text-subtitle font-bold text-2xl">DAELINK</Link>
               <p className="text-gray-600 lg:pr-24 pt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere deserunt vero reprehenderit corporis?</p>
               <p className="text-gray-500 mt-4 mb-4"> TCC realizado por</p>
-              <a className="w-14 bg-blue-500  text-white py-2 px-4 font-bold rounded-full ">Danilo - Alex - Endrigo - DAE</a>
+              <a className="w-14 bg-blue-500  text-white py-2 px-4 font-bold rounded-full ">Danilo - Alex - Endrigo</a>
             </div>
 
             <div className="col-span-2 grid grid-cols-2 sm:grid-cols-3 md:pl-10">
