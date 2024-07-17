@@ -1,6 +1,6 @@
 import React from "react";
 
-function Sliders() {
+const Sliders = () => {
   const InfiniteLogos = [
     {
       url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/480px-Google_%22G%22_logo.svg.png",

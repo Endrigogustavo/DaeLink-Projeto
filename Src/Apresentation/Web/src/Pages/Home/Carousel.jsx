@@ -1,7 +1,7 @@
 import React from "react";
 import CarouselSlider from "./CarouselSlider";
 
-function Carousel() {
+const Carousel = () => {
    
 
     return (
