@@ -87,7 +87,7 @@ export const registerEmpresa = async (
       endereco,
       cep, // Certifique-se de que cep é uma string ou número
       tipo,
-      imageProfile: backgroundImageUrl,  // Corrija para usar a URL da imagem de fundo
+      imageProfile: backgroundImageUrl, 
       imageUrl: profileImageUrl,
       ...additionalData
     };
