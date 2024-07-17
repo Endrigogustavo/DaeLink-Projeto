@@ -1,0 +1,26 @@
+.text-daeblue {
+    color: #2563eb;
+
+}
+
+.bg-header-color {
+    background: #343270;
+}
+
+
+
+@media (max-width:400px) {
+    .respon-w-input {
+        width: 18rem;
+    }
+
+}
+
+@media (max-width:350px) {
+    .respon-w-input {
+        width: 16rem;
+    }
+
+}
+
+
