@@ -4,6 +4,8 @@ import { registerEmpresa } from '../../Auth/Auth';
 
 const Register = () => {
   //Variaveis onde as informações serão setadas
+  const [profileImage, setProfileImage] = useState(null);
+  const [backgroundImage, setBackgroundImage] = useState(null);
   const [cep, setCep] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +27,7 @@ const Register = () => {
 
 
     //Função do Auth.jsx para fazer login enviando os parametros do form
-    const response = await registerEmpresa(email, password, cnpj, endereco, cep, tipo, { name });
+    const response = await registerEmpresa(email, password, cnpj, endereco, cep, tipo, profileImage, backgroundImage,  { name });
     if (response.success) {
       alert("Cadastrado com sucesso");
       navigate(`/homeempresa/${response.uid}`);
@@ -37,6 +39,9 @@ const Register = () => {
   return (
     <div>
       <h2>Register Page</h2>
+      <input type="file" onChange={(e) => setProfileImage(e.target.files[0])} />
+      <input type="file" onChange={(e) => setBackgroundImage(e.target.files[0])} />
+
       <input
         type="text"
         placeholder="CEP"
