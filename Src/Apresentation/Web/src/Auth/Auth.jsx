@@ -53,39 +53,57 @@ export const registerUser = async (email, password, idade, deficiencia, descriç
 };
 
 //Constante de registrar empresa
-export const registerEmpresa = async (email, password, cnpj, endereco, cep, tipo, additionalData) => {
+
+export const registerEmpresa = async (
+  email,
+  password,
+  cnpj,
+  endereco,
+  cep,
+  tipo,
+  image,
+  background,
+  additionalData
+) => {
   try {
-    //Autenticador do Firebase
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password, cnpj, endereco, cep,tipo, additionalData);
-   //Autenticar usuario unico
+    // Autenticação do Firebase
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    //Informações para ir no banco
-    const dataToSave = {      
+    // Upload da imagem do perfil
+    const profileImageRef = ref(storage, `images_company/${image.name}`);
+    await uploadBytes(profileImageRef, image);
+    const profileImageUrl = await getDownloadURL(profileImageRef);
+
+    // Upload da imagem de fundo
+    const backgroundImageRef = ref(storage, `background_profile_company/${background.name}`);
+    await uploadBytes(backgroundImageRef, background);
+    const backgroundImageUrl = await getDownloadURL(backgroundImageRef);
+
+    // Informações para salvar no banco
+    const dataToSave = {
       email,
       cnpj,
       endereco,
-      cep,
+      cep, // Certifique-se de que cep é uma string ou número
       tipo,
-      ...additionalData};
+      imageProfile: backgroundImageUrl,  // Corrija para usar a URL da imagem de fundo
+      imageUrl: profileImageUrl,
+      ...additionalData
+    };
 
-    // Adicione o usuário ao Firestore
+    // Adiciona o usuário ao Firestore
     const docRef = doc(db, "Empresa", user.uid);
-    
     await setDoc(docRef, dataToSave);
     return { success: true, uid: user.uid };
-
-    return true;
   } catch (error) {
     console.error("Erro ao registrar, tente novamente: ", error);
     if (error.code === 'auth/email-already-in-use') {
-      // Manipular o erro de email já registrado
-      alert("O email utilizado esta em uso, tente outro email");
+      alert("O email utilizado está em uso, tente outro email");
     }
-    return false;
+    return { success: false, message: error.message };
   }
 };
-
 
 export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId, additionalData) => {
   try {
