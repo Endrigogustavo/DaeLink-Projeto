@@ -89,7 +89,7 @@ export const registerEmpresa = async (
       sobre,
       area,
       endereco,
-      cep, // Certifique-se de que cep é uma string ou número
+      cep,
       tipo,
       imageProfile: backgroundImageUrl, 
       imageUrl: profileImageUrl,
@@ -109,9 +109,10 @@ export const registerEmpresa = async (
   }
 };
 
+
 export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId, additionalData) => {
   try {
-
+    // Dados a serem salvos no Firestore
     const dataToSave = {
       vaga,
       detalhes,
@@ -131,13 +132,12 @@ export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias,
     console.log("Vaga adicionada com ID: ", docRef.id);
 
     
-    return { success: true, uid: user.uid };
+    return true;
   } catch (error) {
     console.error("Registration error: ", error);
     return false;
   }
 };
-
 
 
 export const loginUser = async (email, password) => {
