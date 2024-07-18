@@ -96,7 +96,7 @@ const Register = () => {
   return (
     <>
       <div className='w-full flex w-full h-screen  '>
-        <div className='hidden lg:flex lg:w-3/6 h-full bg-gray-300 items-center justify-center'>
+        <div className='hidden lg:flex lg:w-3/6 h-full items-center justify-center'>
           {/*<img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="object-cover" alt="Side Image" /> */}
           <img src="https://i.postimg.cc/C5FL2nRc/Login.png" className="object-cover" alt="Side Image" />
         </div>

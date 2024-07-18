@@ -53,6 +53,9 @@ export default function Navbar() {
     const handleButtonClickVaga = (IdEmpresa) => {
         navigate(`/processos/${IdEmpresa}`);
     };
+    const handleButtonProfileCompany = (id) => {
+        navigate(`/perfilempresa/${id}`)
+    }
 
     const Navlinks = () => {
         return (
@@ -64,7 +67,7 @@ export default function Navbar() {
         )
     }
 
-    
+
     return (
         <>
             <header className="flex justify-between px-12 items-center py-6 bg-state-50 border-b-2 border-gray-500">
@@ -76,8 +79,8 @@ export default function Navbar() {
 
                     </div>
                     <IoSearch className='text-black text-2xl cursor-pointer iconhover' />
-                    <button>
-                    <img src={userProfile.imageProfile} alt="" class="w-10 h-10 rounded-full" />
+                    <button onClick={() => handleButtonProfileCompany(userId)}>
+                        <img src={userProfile.imageProfile} alt="" class="w-10 h-10 rounded-full" />
                     </button>
                     <div className="flex  md:hidden">
                         <button onClick={toggleNavbar}>{isOpen ? <IoCloseOutline className='text-black text-2xl cursor-pointer' /> : <FiMenu className='text-black text-2xl cursor-pointer' />}</button>
