@@ -47,7 +47,7 @@ function Profile() {
 
     }
     const EditProfile = (id) =>{
-        navigate(`/edituser/${id}`)
+        navigate(`/editempresa/${id}`)
     }
 
     return (
