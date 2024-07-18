@@ -1,4 +1,9 @@
 import React from "react";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+
+
+import 'swiper/css/pagination';
 
 const Sliders = () => {
   const InfiniteLogos = [
@@ -21,26 +26,52 @@ const Sliders = () => {
       url: "https://cdn.icon-icons.com/icons2/2699/PNG/512/amazon_logo_icon_169612.png",
     },
     {
-      url: "https://cdn.pixabay.com/photo/2021/12/14/22/29/meta-6871457_1280.png"
-    }
-
-
+      url: "https://cdn.pixabay.com/photo/2021/12/14/22/29/meta-6871457_1280.png",
+    },
   ];
 
   return (
-    <div className="w-full h-44 flex flex-col max-sm-h-size items-center overflow-hidden my-8">
+    <div className="w-full h-44 flex flex-col max-sm-h-size items-center overflow-hidden my-8 ">
       <h1 className="text-1xl font-bold text-center pb-8 uppercase">Disponível em todas as plataformas</h1>
-      <div className="scroller max-w-full flex justify-center" data-animated="true">
-        <div className="scroller__inner flex h-full items-center gap-8 justify-center">
-          {InfiniteLogos.map((data, index) => (
-            <img key={index} src={data.url} alt={`Logo ${index}`} className="h-14" />
-          ))}
-          {/* Duplicate the logos to ensure continuous scrolling */}
-          {InfiniteLogos.map((data, index) => (
-            <img key={index + InfiniteLogos.length} src={data.url} alt={`Logo ${index}`} className="h-14" />
-          ))}
-        </div>
-      </div>
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={1} 
+        centeredSlides={true} 
+        pagination={{
+          clickable: true,
+        }}
+        loop={true}
+        autoplay={{
+          delay: 1500,
+          disableOnInteraction: false,
+        }}
+        breakpoints={{
+          '@0.00': {
+            slidesPerView: 1,
+            spaceBetween: 1,
+          },
+          '@0.75': {
+            slidesPerView: 2,
+            spaceBetween: 1,
+          },
+          '@1.00': {
+            slidesPerView: 3,
+            spaceBetween: 1,
+          },
+          '@1.50': {
+            slidesPerView: 4,
+            spaceBetween: 1,
+          },
+        }}
+        modules={[Pagination, Autoplay]}
+        className="mySwiper sliderlogo"
+      >
+        {InfiniteLogos.map((data, index) => (
+          <SwiperSlide key={index} className="sliderlogo-slide">
+            <img src={data.url} alt={`Logo ${index}`} className="h-14" />
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 }
