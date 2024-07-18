@@ -57,6 +57,8 @@ export const registerUser = async (email, password, idade, deficiencia, descriç
 export const registerEmpresa = async (
   email,
   password,
+  sobre,
+  area,
   cnpj,
   endereco,
   cep,
@@ -84,6 +86,8 @@ export const registerEmpresa = async (
     const dataToSave = {
       email,
       cnpj,
+      sobre,
+      area,
       endereco,
       cep, // Certifique-se de que cep é uma string ou número
       tipo,

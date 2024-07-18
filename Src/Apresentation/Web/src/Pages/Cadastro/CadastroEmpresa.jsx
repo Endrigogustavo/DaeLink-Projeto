@@ -12,6 +12,8 @@ const Register = () => {
   const [name, setName] = useState("");
   const [cnpj, setCnpj] = useState("");
   const [endereco, setEndereco] = useState("");
+  const [sobre, setSobre] = useState("");
+  const [area, setArea] = useState("");
   //Variavel para fazer gerenciamento de nivel de acesso
   const [tipo] = useState("Empresa");
   //Função de navegação do site
@@ -27,7 +29,7 @@ const Register = () => {
 
 
     //Função do Auth.jsx para fazer login enviando os parametros do form
-    const response = await registerEmpresa(email, password, cnpj, endereco, cep, tipo, profileImage, backgroundImage,  { name });
+    const response = await registerEmpresa(email, password, sobre, area, cnpj, endereco, cep, tipo, profileImage, backgroundImage,  { name });
     if (response.success) {
       alert("Cadastrado com sucesso");
       navigate(`/homeempresa/${response.uid}`);
@@ -67,7 +69,7 @@ const Register = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <input
-        type="date"
+        type="text"
         placeholder="Cnpj"
         value={cnpj}
         onChange={(e) => setCnpj(e.target.value)}
@@ -77,6 +79,18 @@ const Register = () => {
         placeholder="endereco"
         value={endereco}
         onChange={(e) => setEndereco(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Sobre a empresa"
+        value={sobre}
+        onChange={(e) => setSobre(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Area da empresa"
+        value={area}
+        onChange={(e) => setArea(e.target.value)}
       />
       <button onClick={handleRegister}>Register</button>
     </div>
