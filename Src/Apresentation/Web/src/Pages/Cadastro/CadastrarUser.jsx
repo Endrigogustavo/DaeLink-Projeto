@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { registerUser } from '../../Auth/Auth';
 import { FaCloudUploadAlt } from "react-icons/fa";
+import CadastroU from '../../Img/CadastroU.png'
 
 const Register = () => {
   //Variaveis onde as informações serão setadas
@@ -98,7 +99,7 @@ const Register = () => {
       <div className='w-full flex w-full h-screen  '>
         <div className='hidden lg:flex lg:w-3/6 h-full items-center justify-center'>
           {/*<img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="object-cover" alt="Side Image" /> */}
-          <img src="https://i.postimg.cc/C5FL2nRc/Login.png" className="object-cover" alt="Side Image" />
+          <img src={CadastroU} className="object-cover Img-Cadastro" alt="Side Image" />
         </div>
         <div className='w-full  lg:w-3/6 overflow-hidden overflow-y-scroll px-4 lg:px-0 containerresponsiveform'>
           <h1 className='font-bold text-2xl text-center my-4 uppercase'>Cadastro de Usuário</h1>

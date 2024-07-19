@@ -34,6 +34,7 @@ import Profile from '../Pages/PCD/Profile/Profile';
 import Empresas from '../Pages/PCD/Empresas/Empresas'
 import List from '../Components/Listar/Listar';
 import EditarUser from '../Pages/PCD/Profile/Editar'
+import VisualizarPerfilEmpresa from '../Pages/PCD/Profile/PerfilEmpresa'
 
 //Função de criar rotas privadas
 import PrivateRoute from '../Auth/PrivateRoute';
@@ -74,6 +75,7 @@ function App() {
           <Route path="/homeuser/processos/:id" element={<VisualizarProcessosUser />} />
           <Route path="/userprofile/:id" element={<Profile/>}/>
           <Route path="/edituser/:id" element={<EditarUser/>}/>
+          <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa/>}/>
         </Route>
         {/* Rotas livres do usuario*/}
         <Route path="/vagas" element={<Vagas />} />
