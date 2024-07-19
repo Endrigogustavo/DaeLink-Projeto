@@ -6,7 +6,7 @@ const Carousel = () => {
 
 
     return (
-        <div className="flex flex-col w-100 h-75vh bg-gray-900 py-10 max-md-content ">
+        <div className="flex flex-col w-100  bg-gray-900 py-10 max-md-content ">
             <div className="w-full  flex justify-center pb-8 ">
                 <h1 className="text-3xl uppercase font-semibold text-white text-center">Descubra hoje sua empresa ideal</h1>
 

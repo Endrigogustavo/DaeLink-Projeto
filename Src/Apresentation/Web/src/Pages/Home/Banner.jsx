@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { CiLogin } from "react-icons/ci";
+import ImgHome from '../../Img/HomeImg.png'
+import './Home.css'
 
 
 const Banner = () => {
@@ -20,7 +22,7 @@ const Banner = () => {
                     </div>
                     <div className="w-1/2 h-full justify-center flex overflow-hidden">
 
-                        <img src="https://i.postimg.cc/bYMRV8d8/Andrew.png" className="" alt="" />
+                        <img src={ImgHome} className="Banner-Image" alt="" />
                     </div>
 
                 </div>

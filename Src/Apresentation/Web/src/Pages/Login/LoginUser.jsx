@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from './Form';
+import LoginU from '../../Img/LoginU.png'
 
 const Login = () => {
 
@@ -11,7 +12,7 @@ const Login = () => {
         </div>
         <div className='hidden lg:flex lg:w-1/2 items-center justify-center'>
           {/*<img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="object-cover" alt="Side Image" />*/}
-          <img src="https://i.postimg.cc/pXbgPMkt/Bellingham.png" className="object-cover" alt="Side Image" />
+          <img src={LoginU} className="object-cover" alt="Side Image" />
         </div>
       </div>
     </>

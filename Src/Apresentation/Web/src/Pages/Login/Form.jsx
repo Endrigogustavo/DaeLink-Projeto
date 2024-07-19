@@ -75,6 +75,9 @@ const Form = () => {
                     <p className="mb-2">
                         Não possui conta? <Link to="/cadastrouser" className="text-blue-700">Cadastre-se</Link>
                     </p>
+                    <p className="mb-2">
+                        Login empresa <Link to="/logine" className="text-blue-700">Login</Link>
+                    </p>
                     <div className="flex flex-col gap-2 justify-center items-center">
                         <button className="flex items-center justify-center w-52 text-sm text-white bg-gray-900 rounded-full py-2 px-4">
                             <FaApple className="mr-2 text-2xl" />
