@@ -9,7 +9,7 @@ const Login = () => {
         <div className='w-full lg:w-1/2 flex items-center justify-center'>
           <Form />
         </div>
-        <div className='hidden lg:flex lg:w-1/2 bg-gray-300 items-center justify-center'>
+        <div className='hidden lg:flex lg:w-1/2 items-center justify-center'>
           {/*<img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="object-cover" alt="Side Image" />*/}
           <img src="https://i.postimg.cc/pXbgPMkt/Bellingham.png" className="object-cover" alt="Side Image" />
         </div>
