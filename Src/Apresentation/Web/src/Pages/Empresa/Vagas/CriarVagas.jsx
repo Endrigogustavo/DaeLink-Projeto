@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { db } from '../../../Database/Firebase';
+import { db , auth} from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { registerVaga } from '../../../Auth/Auth';
 
@@ -26,6 +26,7 @@ const RegisterVaga = () => {
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
+    alert(id)
     const getUserProfile = async () => {
       //Caminho dos dados da tabela Empresa do banco com base no ID
       const userDoc = doc(db, "Empresa", id);
@@ -47,6 +48,7 @@ const RegisterVaga = () => {
 
   //Botão de registrar vaga
   const handleRegister = async () => {
+    const user = auth.currentUser; 
     //Função registrar vaga que esta no Auth.jsx enviando parametros do form
     const success = await registerVaga(tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId);
     if (success) {

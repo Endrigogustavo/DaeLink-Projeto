@@ -21,6 +21,8 @@ import AddPessoa from '../Pages/Empresa/Vagas/AdicionarPessoa'
 import VisualizarProcessosEmpresa from '../Pages/Empresa/Vagas/Visualizar_Processos'
 import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas'
 import VisualizarDocumentos from '../Pages/Empresa/Vagas/VisualizarDocumentos'
+import PerfilEmpresa from '../Pages/Empresa/Profile/PerfilEmpresa'
+import EditEmpresa from '../Pages/Empresa/Profile/EditarPerfilEmpresa'
 
 //Rotas usuario
 import LoginU from '../Pages/Login/LoginUser';
@@ -53,6 +55,8 @@ function App() {
           <Route path="/processos/:id" element={<VisualizarProcessosEmpresa />} />
           <Route path="/visualizarpessoas/:vagaId" element={<VisualizarPessoasVaga />} />
           <Route path="/visualizardocumentos/:id/:vagaId" element={<VisualizarDocumentos />} />
+          <Route path="/editempresa/:id" element={<EditEmpresa />}/>
+          <Route path="/perfilempresa/:id" element={<PerfilEmpresa />} />
         </Route>
         {/* Rotas livres da empresa*/}
         <Route path="/candidatos" element={<Candidatos />} />
