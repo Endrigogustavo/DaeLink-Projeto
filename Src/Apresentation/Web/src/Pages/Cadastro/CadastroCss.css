@@ -7,6 +7,9 @@
     background: #343270;
 }
 
+.Img-Cadastro{
+    margin-top: 2rem;
+}
 
 @media (max-width:1024px){
     .containerresponsiveform{
