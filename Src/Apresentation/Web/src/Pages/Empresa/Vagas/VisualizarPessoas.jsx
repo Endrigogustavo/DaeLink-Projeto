@@ -117,7 +117,7 @@ function VisualizarPessoas() {
                         <div className="flex items-center">
                           <div className="ml-3">
                             <p className="text-gray-900 whitespace-no-wrap">
-                              {candidato.nome}
+                              {candidato.name}
                             </p>
                           </div>
                         </div>
