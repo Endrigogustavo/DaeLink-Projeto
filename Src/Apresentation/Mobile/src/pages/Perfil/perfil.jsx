@@ -1,51 +1,57 @@
-import React, {useState , useEffect}from 'react';
+import React, {useState , useCallback}from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { auth, db } from '../../config/firebaseConfig';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import styles from './style';
 import {doc, getDoc} from 'firebase/firestore'
 import load from '../load/load';
 
 export default function Profile() {
-  const [userData, setUserData] = useState(null);
-  const navigation = useNavigation();
+      const [userData, setUserData] = useState(null);
+      const navigation = useNavigation();
+    
+      const handleEditar = () => {
+        navigation.navigate("editar");
+      };
+    
+      const handleConfig = () => {
+        navigation.navigate("configuração");
+      };
 
-  const handleEditar = () => {
-    navigation.navigate("editar");
-  };
+      const fetchUserData = useCallback(async () => {
+        const docRef = doc(db, 'PCD', auth.currentUser.uid);
+        const docSnap = await getDoc(docRef);
+    
+        if (docSnap.exists()) {
+          setUserData(docSnap.data());
+        } else {
+          console.log("Documento não encontrado");
+        }
+      }, []);
+    
+      useFocusEffect(
+        useCallback(() => {
+          fetchUserData();
+        }, [fetchUserData])
+      );
 
-  const handleConfig = () => {
-    navigation.navigate("configuração");
-  };
+        if (!userData) {
+          return (
+            <View style={load.container2}>
+            <View style={load.carregando}>
+              <Image source={require('../../img/logo.png')} style={load.logo} />
+              <Text style={load.text}>Loading...</Text>
+              </View>
+            </View>
+          );
+        }
 
-useEffect(() => {
-const fetchUserData = async() => {
-  const docRef = doc(db, 'PCD', auth.currentUser.uid);
-  const docSnap = await getDoc(docRef);
 
-  if(docSnap.exists()){
-    setUserData(docSnap.data());
-  }else{
-    console.log("Documento não encontrado")
-  }
-};fetchUserData();
-},[]);
-
-if (!userData) {
-  return (
-    <View style={load.container2}>
-    <View style={load.carregando}>
-      <Image source={require('../../img/logo.png')} style={load.logo} />
-      <Text style={load.text}>Loading...</Text>
-      </View>
-    </View>
-  );
-}
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.header}>
-        <Image source={require('../../img/background.jpg')}
+        <Image source={{uri:userData.imageProfile }}
           style={styles.headerBackground}
         />
         <Image
@@ -90,6 +96,8 @@ if (!userData) {
             <Text style={styles.compTrab}>Descrição: {userData.descrição}</Text>
             <Text style={styles.LocalTrab}>Cidade, Estado</Text>
           </View>
+
+
           <Text style={styles.TituloSecao}>Suas Vagas</Text>
           <View style={styles.caixaTrab}>
             <Text style={styles.TitTrab}>Trabalho: {userData.trabalho}</Text>

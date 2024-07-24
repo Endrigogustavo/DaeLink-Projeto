@@ -1,26 +1,26 @@
-import { StyleSheet } from "react-native";
+import { Button, StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-    scrollContainer: {
+  scrollContainer: {
     flexGrow: 1,
     backgroundColor: '#f0f0f0',
   },
   container: {
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    margin: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  EntradaText: {
+      padding: 20,
+      backgroundColor: '#fff',
+      borderRadius: 10,
+      margin: 20,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+EntradaText: {
     width: '100%',
     padding: 10,
     marginVertical: 10,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#fff',
     borderRadius: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -33,11 +33,11 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems:'center'
  },
- logo: {
-  width: 250,
-  height:250,
-},
-Imagem: {
+   logo: {
+      width: 250,
+      height:250,
+ },
+ Imagem: {
   width: '50%',
   height: 100,
   backgroundColor: '#f0f0f0',
@@ -50,39 +50,6 @@ Imagem: {
   shadowOpacity: 0.25,
   shadowRadius: 3.84,
   elevation: 5,
-},
-label:{
-  fontWeight: 'bold',
-  marginBottom: 5,
-},
-TextImg:{
-  color:'blue',
-  textAlign: 'center',
-  marginVertical: 10,
-},
-imagemContainer:{
-  flexDirection:'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
-  marginVertical: 10
- 
-},
-  uploadIcon: {
-  width: 30,
-  height: 30,
-},
-  imageButton:{
-    width: 100,
-    height:100,
-    backgroundColor: '#f0f0f0',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowRadius:3.84,
-    elevation: 5,
 },
 button: {
   width: '100%',
@@ -97,6 +64,19 @@ button: {
   shadowRadius: 3.84,
   elevation: 5,
 },
+buttonText: {
+  color: '#fff',
+  fontSize: 16,
+},
+label: {
+  fontWeight: 'bold',
+  marginBottom: 5,
+},
+TextImg: {
+  color: 'blue',
+  textAlign: 'center',
+  marginVertical: 10,
+},
 imageContainer: {
   flexDirection: 'row',
   alignItems: 'center',
@@ -104,8 +84,21 @@ imageContainer: {
   width: '100%',
   marginVertical: 10,
 },
-Text:{
-  color: '#fff',
-  fontWeight: 'bold',
-}
-})
+imageButton: {
+  width: 100,
+  height: 100,
+  backgroundColor: '#f0f0f0',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 5,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5,
+},
+uploadIcon: {
+  width: 30,
+  height: 30,
+},
+});

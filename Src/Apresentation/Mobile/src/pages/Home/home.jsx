@@ -36,14 +36,14 @@ fetchUserData();
   const handlePerfil = () => {
     navigation.navigate("perfil");
   };
-  const handleConfig = () => {
-    navigation.navigate("configuração");
+  const handleEmpresa = () => {
+    navigation.navigate("empresa");
   };
   const handleVaga = () => {
     navigation.navigate("vaga");
   };
   const handleDocumento = () => {
-    navigation.navigate("documento");
+    navigation.navigate("Visualizar Documento");
   };
   const handleProcesso = () => {
     navigation.navigate("processo");
@@ -93,9 +93,9 @@ fetchUserData();
             <Text style={styles.opcoesText}>Perfil</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.caixaopcoes} onPress={(handleConfig)}>
-            <FontAwesome name="cogs" size={24} color="#fff" />
-            <Text style={styles.opcoesText}>Configuração</Text>
+          <TouchableOpacity style={styles.caixaopcoes} onPress={(handleEmpresa)}>
+            <Ionicons name="business" size={24} color="#fff" />
+            <Text style={styles.opcoesText}>Empresas</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.caixaopcoes} onPress={handleSignOut}>
