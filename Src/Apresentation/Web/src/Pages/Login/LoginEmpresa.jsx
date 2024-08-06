@@ -46,7 +46,7 @@ const LoginEmpresa = () => {
                     <input
                         type="email"
                         className="w-full border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        placeholder="Insira seu Email '-'"
+                        placeholder="Insira seu Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -56,7 +56,7 @@ const LoginEmpresa = () => {
                     <input
                         type="password"
                         className="w-full border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        placeholder="Insira sua Senha :)"
+                        placeholder="Insira sua Senha"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
