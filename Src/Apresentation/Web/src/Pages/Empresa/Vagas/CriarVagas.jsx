@@ -26,7 +26,6 @@ const RegisterVaga = () => {
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
-    alert(id)
     const getUserProfile = async () => {
       //Caminho dos dados da tabela Empresa do banco com base no ID
       const userDoc = doc(db, "Empresa", id);
