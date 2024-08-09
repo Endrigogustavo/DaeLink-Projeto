@@ -4,7 +4,7 @@
     margin: 0 auto;
   }
   
-  .App header {
+  .App .header {
     background-color: #181717;
     height: 10vh;
     min-height: 50px;
@@ -21,7 +21,7 @@
     box-sizing: border-box;
   }
   
-  .App section {
+  .App .sectionchat {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,7 +29,7 @@
     background-color: rgb(40, 37, 53);
   }
   
-  main {
+  .mainchat {
     padding: 10px;
     height: 80vh;
     margin: 10vh 0 10vh;
@@ -38,19 +38,19 @@
     flex-direction: column;
   }
   
-  main::-webkit-scrollbar {
+  .mainchat::-webkit-scrollbar {
     width: 0.25rem;
   }
   
-  main::-webkit-scrollbar-track {
+  .mainchat::-webkit-scrollbar-track {
     background: #1e1e24;
   }
   
-  main::-webkit-scrollbar-thumb {
+  .mainchat::-webkit-scrollbar-thumb {
     background: #6649b8;
   }
   
-  form {
+  .formchat {
     height: 10vh;
     position: fixed;
     bottom: 0;
@@ -61,12 +61,12 @@
     font-size: 1.5rem;
   }
   
-  form button {
+  .formchat button {
     width: 20%;
     background-color: rgb(56, 56, 143);
   }
   
-  input {
+  .inputchat {
     line-height: 1.5;
     width: 100%;
     font-size: 1.5rem;
@@ -77,7 +77,7 @@
     padding: 0 10px;
   }
   
-  button {
+  .buttonchat {
     background-color: #282c34; /* Green */
     border: none;
     color: white;
@@ -89,7 +89,7 @@
     font-size: 1.25rem;
   }
   
-  button:disabled {
+  .buttonchat:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
@@ -101,13 +101,13 @@
     margin: 0 auto;
   }
   
-  ul,
-  li {
+  .ulchat,
+  .lichat {
     text-align: left;
     list-style: none;
   }
   
-  p {
+  .paragrafo {
     max-width: 500px;
     margin-bottom: 12px;
     line-height: 24px;
@@ -127,17 +127,17 @@
     flex-direction: row-reverse;
   }
   
-  .sent p {
+  .sent .paragrafo {
     color: white;
     background: #0b93f6;
     align-self: flex-end;
   }
-  .received p {
+  .received .paragrafo {
     background: #e5e5ea;
     color: black;
   }
   
-  img {
+  .imgchat {
     width: 40px;
     height: 40px;
     border-radius: 50%;
