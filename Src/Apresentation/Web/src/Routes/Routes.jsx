@@ -23,7 +23,7 @@ import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas'
 import VisualizarDocumentos from '../Pages/Empresa/Vagas/VisualizarDocumentos'
 import PerfilEmpresa from '../Pages/Empresa/Profile/PerfilEmpresa'
 import EditEmpresa from '../Pages/Empresa/Profile/EditarPerfilEmpresa'
-import Chat from '../Components/Chat/HomeChat'
+import Chat from '../Pages/Empresa/Chat/Chat'
 
 
 
@@ -52,14 +52,15 @@ function App() {
         {/* Rotas privadas da empresa*/}
         <Route path="/" element={<PrivateRoute allowedRoles={['Empresa']} />}>
           <Route path="/homeempresa/cadastrovaga/:id" element={<CadastrarVaga />} />
-          <Route path="/candidatos/:id" element={<Candidatos />} />
+          <Route path="/candidatos/:idempresa" element={<Candidatos />} />
           <Route path="/homeempresa/:id" element={<Homeempresa />} />
           <Route path='/addpessoa/:id/' element={<AddPessoa />} />
-          <Route path="/profileadd/:id/:empresaId" element={<ProfileAdd />} />
+          <Route path="/profileadd/:id/:idempresa" element={<ProfileAdd />} />
           <Route path="/processos/:id" element={<VisualizarProcessosEmpresa />} />
           <Route path="/visualizarpessoas/:vagaId" element={<VisualizarPessoasVaga />} />
           <Route path="/visualizardocumentos/:id/:vagaId" element={<VisualizarDocumentos />} />
           <Route path="/editempresa/:id" element={<EditEmpresa />}/>
+          <Route path="/perfilempresa/:id" element={<PerfilEmpresa />} />
           <Route path="/perfilempresa/:id" element={<PerfilEmpresa />} />
         </Route>
         {/* Rotas livres da empresa*/}

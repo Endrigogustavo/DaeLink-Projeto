@@ -8,7 +8,7 @@ function Vagas() {
 	//Função de navegação do site
 	const navigate = useNavigate();
 	//Pegar o id do usuario na tela anterior
-	const { id } = useParams();
+	const { idempresa } = useParams();
 	//Variaveis para setar dados do banco
 	const [empresaid, setEmpresa] = useState(null)
 	const [trabalho, setTrabalho] = useState('');
@@ -16,9 +16,11 @@ function Vagas() {
 
 	//useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
 	useEffect(() => {
+		alert(idempresa)
 		//Setando o Id
-		setEmpresa(id);
-	}, [id]);
+		setEmpresa(idempresa);
+		
+	}, [idempresa]);
 
 	//Botão de recomendação do App.py para listar usuarios que tenha uma especialização semelhando ao que a empresa procura
 	const handleSubmit = async (event) => {
@@ -35,7 +37,7 @@ function Vagas() {
 	};
 	//Botão para adicionar pessoa a empresa
 	const handleButtonClick = (id) => {
-		navigate(`/profileadd/${id}/${empresaid}`);
+		navigate(`/profileadd/${id}/${idempresa}`);
 	};
 
 
