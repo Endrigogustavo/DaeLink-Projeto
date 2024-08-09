@@ -10,11 +10,11 @@ const App = () => {
     const [user] = useAuthState(auth)
     return (
         <div className="App">
-            <header>
+            <header className="header">
                 <h1>ReactChat</h1>
                 <SingOut />
             </header>
-            <section>{user ? <ChatRoom/> : <SignIn />}</section>
+            <section className="sectionchat">{user ? <ChatRoom/> : <SignIn />}</section>
         </div>
     );
 };
@@ -44,19 +44,20 @@ export const ChatRoom = () => {
     }
     return (
         <>
-        <main>
+        <main className="mainchat">
             {messages &&
              messages.map((msg, index) =>(
              <ChatMessage key={index} message={msg}/>
              ))}
              <div ref={dummy}></div>
         </main>
-        <form onSubmit={sendMessage}>
-            <input type="text" 
+        <form className="formchat" onSubmit={sendMessage}>
+            <input type="text"
+            className="inputchat" 
             value={formValue}
             onChange={e => setFormValue(e.target.value)}
              />
-            <button>Enviar</button>
+            <button className="buttonchat">Enviar</button>
         </form>
         </>
     )
@@ -69,8 +70,8 @@ export const ChatMessage = (props) => {
     const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received'
     return (
         <div className={`message ${messageClass}`}>
-            <img src={photoURL}/>
-            <p>{text}</p>
+            <img className="imgchat" src={photoURL}/>
+            <p className="paragrafo">{text}</p>
         </div>
     )
 }

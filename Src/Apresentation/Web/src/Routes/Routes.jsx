@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //Rotas principais
 import Home from '../Pages/Home/Home';
 import Logout from '../Pages/Login/Logout';
-import HomeChat from '/src/Components/Chat/HomeChat.jsx';
 
 //Rotas privadas principais
 import Homeuser from '../Pages/PCD/Home/Home';
@@ -24,6 +23,9 @@ import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas'
 import VisualizarDocumentos from '../Pages/Empresa/Vagas/VisualizarDocumentos'
 import PerfilEmpresa from '../Pages/Empresa/Profile/PerfilEmpresa'
 import EditEmpresa from '../Pages/Empresa/Profile/EditarPerfilEmpresa'
+import Chat from '../Components/Chat/HomeChat'
+
+
 
 //Rotas usuario
 import LoginU from '../Pages/Login/LoginUser';
@@ -44,7 +46,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomeChat />} />
+        <Route path="/" element={<Home />} />
         <Route path="/logout" element={<Logout />} />
 
         {/* Rotas privadas da empresa*/}
