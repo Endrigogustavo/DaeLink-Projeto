@@ -33,7 +33,8 @@ const ChatRoom = () => {
         const fetchMessages = async () => {
             const candidatosRef = collection(db, "Chat");
             const q = query(candidatosRef, where("empresaId", "==", idempresa));
-            const querySnapshot = await getDocs(q);
+            const qq = query(q, where("userId", "==", id));
+            const querySnapshot = await getDocs(qq);
             
             if (!querySnapshot.empty) {
                 const documentRef = querySnapshot.docs[0]?.ref;
