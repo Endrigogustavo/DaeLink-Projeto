@@ -85,8 +85,10 @@ def recommend():
 
     # Preparar recomendações
     recommendations = [jobs[i] for i in related_docs_indices if i != job_index]
-    recommendations.insert(0, jobs[job_index])  
 
+    # Colocar a vaga solicitada no início das recomendações
+    recommendations.insert(0, jobs[job_index]) 
+    
     return jsonify(recommendations)
 
 
@@ -104,7 +106,10 @@ def recommend_profile():
 
     # Preparar recomendações
     recommendations = [jobs[i] for i in related_docs_indices if i != job_index]
-    recommendations.insert(0, jobs[job_index])  
+
+     # Colocar a vaga solicitada no início das recomendações
+    recommendations.insert(0, jobs[job_index]) 
+
     return jsonify(recommendations)
 
 if __name__ == '__main__':

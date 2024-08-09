@@ -114,6 +114,14 @@
   }
 }
 
+@media (max-width:1500px) {
+  .aboutextcontainer{
+    height:fit-content;
+  }
+
+
+}
+
 
 /*Carousel*/
 
