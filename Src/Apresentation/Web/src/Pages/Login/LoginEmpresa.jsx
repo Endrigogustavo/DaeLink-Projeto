@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginEmpresa } from '../../Auth/Auth';
 
-import ImgEmpresa from '../../Img/LoginUser.png'
+import ImgEmpresa from '../../Img/LoginE.png'
 
 const LoginEmpresa = () => {
   //Variaveis onde as informações serão setadas

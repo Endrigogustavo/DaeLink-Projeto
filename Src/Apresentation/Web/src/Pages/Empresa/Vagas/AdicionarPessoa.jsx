@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../../../Database/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDocs, collection, addDoc, query, where } from 'firebase/firestore';
+import { doc, getDoc, getDocs, collection, addDoc, query, where } from 'firebase/firestore';
 
 const AddPessoa = () => {
   //Função de navegação do site
@@ -30,28 +30,29 @@ const AddPessoa = () => {
     return () => unsubscribe();
   }, []);
 
-  //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
-    const fetchData = async () => {
+    //Informações do usuario
+    const getUserProfile = async () => {
       try {
-        //Caminho dos dados da tabela PCD do banco
-        const vagasRef = collection(db, 'PCD');
-        //Pegando dados
-        const querySnapshot = await getDocs(vagasRef);
-        //Colocando dados em um map para listar informações
-        const vagasListUser = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        //Setando as informarções do banco na variavel
-        setUserInfo(vagasListUser);
-      } catch (error) {
-        console.error('Error getting document:', error);
-      }
-    };
+          const userDoc = doc(db, "PCD", id);
+          const userSnap = await getDoc(userDoc);
 
-    fetchData();
-  }, [id]);
+          if (userSnap.exists()) {
+              console.log('Documento encontrado:', userSnap.data());
+              setUserInfo(userSnap.data());
+          } else {
+              console.log('Nenhum documento encontrado com o ID:', id);
+              setUserInfo(null);
+              alert("Nenhum documento encontrado!");
+          }
+      } catch (error) {
+          console.error('Erro ao buscar documento:', error);
+          setUserInfo(null);
+          alert("Erro ao buscar documento!");
+      }
+  };
+    getUserProfile();
+}, [id]);
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
@@ -83,22 +84,26 @@ const AddPessoa = () => {
   }, [user]);
 
   const AddUserToVaga = async (VagaId, IdEmpresa) => {
-    try {
-      const userToAdd = userInfo[0];
-
-      const vagaRef = doc(db, "Vagas", VagaId);
-      const candidatosRef = collection(vagaRef, 'candidatos');
-      await addDoc(candidatosRef, {
-        userId: userToAdd.id,
-        nome: userToAdd.name,
-        email: userToAdd.email
-      });
-
-      alert("Pessoa adicionada com sucesso!");
-      navigate(`/homeempresa/${IdEmpresa}`)
-    } catch (error) {
-      console.error("Erro ao adicionar pessoa:", error);
-    }
+    if (userInfo  && userInfo.name && userInfo.email) {
+      
+      try {
+          const vagaRef = doc(db, "Vagas", VagaId);
+          const candidatosRef = collection(vagaRef, 'candidatos');
+          await addDoc(candidatosRef, {
+              userId: id,
+              name: userInfo.name,
+              email: userInfo.email
+          });
+          alert("Pessoa adicionada com sucesso!");
+          navigate(`/homeempresa/${IdEmpresa}`)
+      } catch (error) {
+          console.error('Erro ao adicionar pessoa:', error);
+          alert(`Erro ao adicionar pessoa: ${error.message}`);
+      }
+  } else {
+      console.error('Informações do usuário incompletas:', userInfo);
+      alert("Informações do usuário não estão disponíveis ou estão incompletas.");
+  }
   };
 
 

@@ -46,7 +46,7 @@ def get_jobs_from_firestore():
     jobs = []
     for doc in docs:
         job = doc.to_dict()
-        job['id'] = doc.id  # Inclui o ID do documento no job
+        job['id'] = doc.id  
         jobs.append(job)
     return jobs
 
@@ -85,6 +85,7 @@ def recommend():
 
     # Preparar recomendações
     recommendations = [jobs[i] for i in related_docs_indices if i != job_index]
+
     # Colocar a vaga solicitada no início das recomendações
     recommendations.insert(0, jobs[job_index]) 
     
@@ -105,9 +106,9 @@ def recommend_profile():
 
     # Preparar recomendações
     recommendations = [jobs[i] for i in related_docs_indices if i != job_index]
+
      # Colocar a vaga solicitada no início das recomendações
     recommendations.insert(0, jobs[job_index]) 
-   
 
     return jsonify(recommendations)
 

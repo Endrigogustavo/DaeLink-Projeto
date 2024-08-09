@@ -23,6 +23,9 @@ import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas'
 import VisualizarDocumentos from '../Pages/Empresa/Vagas/VisualizarDocumentos'
 import PerfilEmpresa from '../Pages/Empresa/Profile/PerfilEmpresa'
 import EditEmpresa from '../Pages/Empresa/Profile/EditarPerfilEmpresa'
+import Chat from '../Components/Chat/HomeChat'
+
+
 
 //Rotas usuario
 import LoginU from '../Pages/Login/LoginUser';
