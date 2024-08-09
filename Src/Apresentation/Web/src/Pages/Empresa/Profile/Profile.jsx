@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import axios from 'axios';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, addDoc } from 'firebase/firestore';
 
 function Profile() {
     //Pegar o id do usuario na tela anterior
@@ -60,6 +60,21 @@ function Profile() {
     //Botão para adicionar uma pessoa a vaga
     const ButtonClickAdd = () => {
         navigate(`/addpessoa/${id}`)
+    }
+
+    const ChatUser = async() => {
+        try {
+            const candidatosRef = collection(db, "Chat");
+            await addDoc(candidatosRef, {
+                userId: id,
+                empresaId: idempresa
+            });
+            alert("Pessoa adicionada com sucesso!");
+            navigate(`/chat/${id}/${idempresa}`)
+        } catch (error) {
+            console.error('Erro ao adicionar pessoa:', error);
+            alert(`Erro ao adicionar pessoa: ${error.message}`);
+        }
     }
 
     return (
@@ -120,6 +135,14 @@ function Profile() {
                                 class="flex button-profile -mt-12 w-auto cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 transition hover:border-gray-300 focus:border-gray-300 focus:outline-none focus:ring-0"
                             >
                                 Adicionar a vaga
+                            </button>
+                            <br /><br /><br />
+                            <button
+                                type="button"
+                                onClick={ChatUser}
+                                class="flex button-profile -mt-12 w-auto cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 transition hover:border-gray-300 focus:border-gray-300 focus:outline-none focus:ring-0"
+                            >
+                                contatar
                             </button>
                             <br />
                             <div class="bg-white p-3 shadow-sm rounded-sm">
