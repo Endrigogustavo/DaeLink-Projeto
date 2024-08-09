@@ -7,7 +7,7 @@ import { doc, getDoc } from 'firebase/firestore';
 
 function Profile() {
     //Pegar o id do usuario na tela anterior
-    const { id } = useParams();
+    const { id, idempresa } = useParams();
     //Função de navegação do site
     const navigate = useNavigate();
     //Variaveis para setar dados do banco
@@ -16,6 +16,8 @@ function Profile() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
+        alert(id)
+        alert(idempresa)
         //Pegando o sistema de recomendação do App.py para listar usuarios semelhantes
         const fetchRecommendations = async () => {
             try {
