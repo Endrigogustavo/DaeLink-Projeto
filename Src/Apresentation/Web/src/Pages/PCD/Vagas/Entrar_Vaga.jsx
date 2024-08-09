@@ -46,14 +46,7 @@ const EntrarVaga = () => {
 */}
 
       //Informações do banco
-      const vagaRef = doc(db, "Vagas", vagaUid);
-      const candidatosRef = collection(vagaRef, 'candidatos');
-      //Add informações no banco
-      await addDoc(candidatosRef, {
-        userId: pessoaId,
-        nome: nome,
-        email: email
-      });
+
       alert("Pessoa adicionada com sucesso!");
       setVagaUid("");
       setPessoaId("");

@@ -32,6 +32,7 @@ function Visualizar_Processo() {
 
                 //Setando resultado em uma variavel
                 setVagas(vagasList);
+                console.log(vagasList)
             } catch (error) {
                 console.error('Erro ao buscar vagas: ', error);
             } finally {
