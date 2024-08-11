@@ -23,7 +23,7 @@ import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas'
 import VisualizarDocumentos from '../Pages/Empresa/Vagas/VisualizarDocumentos'
 import PerfilEmpresa from '../Pages/Empresa/Profile/PerfilEmpresa'
 import EditEmpresa from '../Pages/Empresa/Profile/EditarPerfilEmpresa'
-import Chat from '../Pages/Empresa/Chat/Chat'
+import ChatEmpresa from '../Pages/Empresa/Chat/Chat'
 
 
 
@@ -38,6 +38,7 @@ import Empresas from '../Pages/PCD/Empresas/Empresas'
 import List from '../Components/Listar/Listar';
 import EditarUser from '../Pages/PCD/Profile/Editar'
 import VisualizarPerfilEmpresa from '../Pages/PCD/Profile/PerfilEmpresa'
+import ChatPCD from '../Pages/PCD/Chat/Chat'
 
 //Função de criar rotas privadas
 import PrivateRoute from '../Auth/PrivateRoute';
@@ -61,7 +62,7 @@ function App() {
           <Route path="/visualizardocumentos/:id/:vagaId" element={<VisualizarDocumentos />} />
           <Route path="/editempresa/:id" element={<EditEmpresa />}/>
           <Route path="/perfilempresa/:id" element={<PerfilEmpresa />} />
-          <Route path="/chat/:id/:idempresa" element={<Chat />} />
+          <Route path="/chat/:id/:idempresa" element={<ChatEmpresa />} />
         </Route>
         {/* Rotas livres da empresa*/}
         <Route path="/candidatos" element={<Candidatos />} />
@@ -80,6 +81,7 @@ function App() {
           <Route path="/userprofile/:id" element={<Profile/>}/>
           <Route path="/edituser/:id" element={<EditarUser/>}/>
           <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa/>}/>
+          <Route path="/chatpcd/:id/:empresaId" element={<ChatPCD />} />
         </Route>
         {/* Rotas livres do usuario*/}
         <Route path="/vagas" element={<Vagas />} />
