@@ -43,7 +43,6 @@ const ChatRoom = () => {
                     const messagesQuery = query(messagesRef, orderBy("createdAt"), limit(25));
                     setMessageRef(messagesRef);
 
-                    // Fetch initial messages
                     const snapshot = await getDocs(messagesQuery);
                     setMessages(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
                 }
