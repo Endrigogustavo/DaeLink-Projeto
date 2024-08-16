@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaSearch } from "react-icons/fa";
 
 const CandidatosTable = () => {
+    const text = "Robert Nesta Marley foi um cantor e compositor jamaicano, o mais conhecido músico de reggae de todos os tempos, famoso por popularizar internacionalmente o gênero. Já vendeu mais de 75 milhões de discos e, em 1978, três anos antes de sua morte, foi condecorado pela ONU com a Medalha da Paz do Terceiro Mundo"
     const navigate = useNavigate();
     const { idempresa } = useParams();
     const [empresaid, setEmpresa] = useState(null);
@@ -33,8 +34,8 @@ const CandidatosTable = () => {
 
     return (
         <>
-            <section className='w-full h-96 flex flex-col justify-center items-center gap-y-3'>
-                    <img src="https://logos-world.net/wp-content/uploads/2020/04/Nike-Logo.png" alt=""  className='h-24' />
+            <section className='w-full h-96 flex flex-col justify-center items-center gap-y-3 overflow-hidden'>
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/Nike-Logo.png" alt="" className='h-24' />
                 <h1 className='text-2xl font-bold block'>Procure candidatos conforme a vaga necessária:</h1>
                 <form onSubmit={handleSubmit} className="flex">
                     <div className='flex w-80 h-16 border-2 border-gray-500 rounded-full p-4 mt-1 bg-transparent items-center'>
@@ -44,53 +45,21 @@ const CandidatosTable = () => {
                         </button>
                     </div>
                 </form>
-                    <p className="text-black font-normal opacity-80">Comece fazendo uma pesquisa básica.</p>
+                <p className="text-black font-normal opacity-80">Comece fazendo uma pesquisa básica.</p>
             </section>
 
-                <div className="inline-block min-w-full shadow rounded-lg overflow-hidden mt-8">
-                    <table className="min-w-full leading-normal">
-                        <thead>
-                            <tr>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Foto</th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nome</th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Trabalho</th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Descrição</th>
-                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Perfil</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {recommendations.map((rec) => (
-                                <tr key={rec.id}>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <div className="flex items-center">
-                                            <div className="ml-3">
-                                                <img src={rec.imageUrl} alt="" className="w-32 h-32 object-cover rounded-2xl" />
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <div className="flex items-center">
-                                            <div className="ml-3">
-                                                <p className="text-gray-900 whitespace-no-wrap">{rec.name}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{rec.trabalho}</p>
-                                    </td>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p className="text-gray-900 whitespace-no-wrap">{rec.descrição}</p>
-                                    </td>
-                                    <td>
-                                        <button onClick={() => handleButtonClick(rec.id)} type="submit" className="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            <svg aria-hidden="true" className="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Perfil
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+            <div className='w-full h-fit overflow-x-hidden grid grid-cols-1 sm:grid-cols-4 gap-4 justify-items-center items-center'>
+                {recommendations.map((rec) => (
+                    <div key={rec.id} className=' h-80 w-72 bg-gray-900 rounded-xl flex flex-col items-center justify-center gap-2 overflow-x-hidden'>
+                        <img src={rec.imageUrl} className="rounded-full h-28 w-28 " alt="" />
+                        <h1 className='text-lg font-medium text-white text-center'>{rec.name}<h2 className='opacity-75 text-sm' >{rec.trabalho}</h2></h1>
+                        <p className='text-white text-justify px-5 truncate-multiline'>{rec.descrição}</p>
+                        <button onClick={() => handleButtonClick(rec.id)} type="submit"
+                            className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
+                    </div>
+                ))}
+            </div>
+
         </>
     );
 }
