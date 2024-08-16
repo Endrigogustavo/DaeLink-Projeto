@@ -33,10 +33,11 @@ const CandidatosTable = () => {
 
     return (
         <>
-            <section className='w-full h-96 flex flex-col justify-center items-center gap-y-2'>
+            <section className='w-full h-96 flex flex-col justify-center items-center gap-y-3'>
+                    <img src="https://logos-world.net/wp-content/uploads/2020/04/Nike-Logo.png" alt=""  className='h-24' />
                 <h1 className='text-2xl font-bold block'>Procure candidatos conforme a vaga necessária:</h1>
                 <form onSubmit={handleSubmit} className="flex">
-                    <div className='flex w-80 h-16 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent items-center'>
+                    <div className='flex w-80 h-16 border-2 border-gray-500 rounded-full p-4 mt-1 bg-transparent items-center'>
                         <input value={trabalho} onChange={(e) => setTrabalho(e.target.value)} type="text" className='h-full w-full bg-transparent border-0 focus:outline-none' placeholder="Procurar vagas" required />
                         <button type='submit' className='flex bg-blue-500 rounded-full'>
                             <FaSearch className='p-1 text-2xl' />
