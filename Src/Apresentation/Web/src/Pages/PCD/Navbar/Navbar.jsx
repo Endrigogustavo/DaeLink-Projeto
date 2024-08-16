@@ -87,7 +87,6 @@ export default function Navbar() {
                     </div>
                 </nav>
             </header>
-            <hr className="hr-bg h-2"></hr>
             {isOpen && (
                 <div className=" md:hidden flex basis-full flex-col items-center gap-3 z-50 bg-state-50" >
                     <Navlinks></Navlinks>

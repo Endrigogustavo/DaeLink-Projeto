@@ -80,7 +80,7 @@ export default function Navbar() {
                     </div>
                     <IoSearch className='text-black text-2xl cursor-pointer iconhover' />
                     <button onClick={() => handleButtonProfileCompany(userId)}>
-                        <img src={userProfile.imageUrl} alt="" class="w-10 h-10 rounded-full" />
+                        <img src={userProfile.imageUrl} alt="" className="w-10 h-10 rounded-full" />
                     </button>
                     <div className="flex  md:hidden">
                         <button onClick={toggleNavbar}>{isOpen ? <IoCloseOutline className='text-black text-2xl cursor-pointer' /> : <FiMenu className='text-black text-2xl cursor-pointer' />}</button>
@@ -88,7 +88,6 @@ export default function Navbar() {
                     </div>
                 </nav>
             </header>
-            <hr className="hr-bg h-2"></hr>
             {isOpen && (
                 <div className=" md:hidden flex basis-full flex-col items-center gap-3 z-50 bg-state-50" >
                     <Navlinks></Navlinks>
