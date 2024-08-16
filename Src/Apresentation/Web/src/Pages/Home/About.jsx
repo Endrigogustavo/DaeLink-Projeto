@@ -18,15 +18,15 @@ const About = () => {
                         <div className="flex w-full  justify-center px-16 gap-8 pb-8  itemscontentsd">
                             <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                                 <FaBook className='text-white text-3xl ' />
-                                <p className="text-justify text-white bg-gray-800 px-4 py-4 rounded-lg  font-normal">Fazemos a integração entre as empresas e as pessoas com deficiência (PCD) de forma ampla, em que a funcionalidade de nossa plataforma é projetada para o maior uso empresarial.</p>
+                                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg  font-normal">Fazemos a integração entre as empresas e as pessoas com deficiência (PCD) de forma ampla, em que a funcionalidade de nossa plataforma é projetada para o maior uso empresarial.</p>
                             </div>
                             <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                                 <FaGear className='text-white text-3xl  ' />
-                                <p className="text-justify text-white bg-gray-800 px-4 py-4 rounded-lg font-normal">Simplificamos o recrutamento de pessoas com deficiência (PCD), através de um sistema de vagas e de encontro de candidatos (Matchs) tornando esse processo mais prático possível.</p>
+                                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal">Simplificamos o recrutamento de pessoas com deficiência (PCD), através de um sistema de vagas e de encontro de candidatos (Matchs) tornando esse processo mais prático possível.</p>
                             </div>
                             <div className="w-1/3 flex flex-col items-center gap-4  itemstextboxsd">
                                 <FaCircleInfo className='text-white text-3xl  ' />
-                                <p className="text-justify text-white bg-gray-800 px-4 py-4 rounded-lg font-normal">Acreditamos que iniciativas através da tecnologia possa trazer uma melhora significativa a vida de pessoas marginalizadas socialmente como em nosso caso os PCD.</p>
+                                <p className="text-justify text-white bg-gray-800 px-3 rounded-lg font-normal">Acreditamos que iniciativas através da tecnologia possa trazer uma melhora significativa a vida de pessoas marginalizadas socialmente como em nosso caso os PCD.</p>
                             </div>
                         </div>
 
