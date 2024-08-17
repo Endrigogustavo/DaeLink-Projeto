@@ -15,21 +15,21 @@ function Profile() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        const getUserProfile = async () => {
+        const getPCDprofile = async () => {
             //Caminho das informações do banco com base no ID
-            const userDoc = doc(db, "PCD", id);
+            const PCDdoc = doc(db, "PCD", id);
             //Pegando os dados
-            const userSnap = await getDoc(userDoc);
+            const GetPCDInfo = await getDoc(PCDdoc);
             //Tratamento e setando dados recebidos em uma variavel
-            if (userSnap.exists()) {
-                setUserProfile(userSnap.data());
+            if (GetPCDInfo.exists()) {
+                setUserProfile(GetPCDInfo.data());
             } else {
                 setUserProfile(null);
                 alert("Sem documentos!");
             }
         };
         //Iniciando a função
-        getUserProfile();
+        getPCDprofile();
     }, [id]);
 
     if (!userProfile) {

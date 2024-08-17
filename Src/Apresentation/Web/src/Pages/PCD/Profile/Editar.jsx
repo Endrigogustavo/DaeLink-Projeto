@@ -27,9 +27,9 @@ const EditarPerfil = () => {
   useEffect(() => {
     const getUserProfile = async () => {
       const userDoc = doc(db, "PCD", id);
-      const userSnap = await getDoc(userDoc);
-      if (userSnap.exists()) {
-        setUserProfile(userSnap.data());
+      const GetUser = await getDoc(userDoc);
+      if (GetUser.exists()) {
+        setUserProfile(GetUser.data());
       } else {
         setUserProfile(null);
         alert("Sem documentos!");
@@ -51,9 +51,9 @@ const EditarPerfil = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userDoc = doc(db, "PCD", userId);
+      const PCDdoc = doc(db, "PCD", userId);
 
-      await updateDoc(userDoc, {
+      await updateDoc(PCDdoc, {
         name: userData.name,
         email: userData.email,
         trabalho: userData.trabalho,

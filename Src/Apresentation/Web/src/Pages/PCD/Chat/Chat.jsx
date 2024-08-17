@@ -30,29 +30,29 @@ const ChatRoom = () => {
     const [messageRef, setMessageRef] = useState(null);
 
     useEffect(() => {
-        const fetchMessages = async () => {
-            const candidatosRef = collection(db, "Chat");
-            const q = query(candidatosRef, where("userId", "==",  id));
-            const qq = query(q, where("empresaId", "==", empresaId));
-            const querySnapshot = await getDocs(qq);
+        const GetChatMessage = async () => {
+            const ChatCollection = collection(db, "Chat");
+            const GetQueryPCDId = query(ChatCollection, where("userId", "==",  id));
+            const GetQueryCompanyId = query(GetQueryPCDId, where("empresaId", "==", empresaId));
+            const GetChatWithCompanyAndPCD = await getDocs(GetQueryCompanyId);
             
-            if (!querySnapshot.empty) {
-                const documentRef = querySnapshot.docs[0]?.ref;
-                if (documentRef) {
-                    const messagesRef = collection(documentRef, "messages");
-                    const messagesQuery = query(messagesRef, orderBy("createdAt"), limit(25));
-                    setMessageRef(messagesRef);
+            if (!GetChatWithCompanyAndPCD.empty) {
+                const DocumentRef = GetChatWithCompanyAndPCD.docs[0]?.ref;
+                if (DocumentRef) {
+                    const MessagesRef = collection(DocumentRef, "messages");
+                    const MessagesQuery = query(MessagesRef, orderBy("createdAt"), limit(25));
+                    setMessageRef(MessagesRef);
 
-                    const snapshot = await getDocs(messagesQuery);
-                    setMessages(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                    const GetMessages = await getDocs(MessagesQuery);
+                    setMessages(GetMessages.docs.map(doc => ({ id: doc.id, ...doc.data() })));
                 }
             }
         };
 
-        fetchMessages();
+        GetChatMessage();
     }, [id]);
 
-    const sendMessage = async (e) => {
+    const CreateNewMessage = async (e) => {
         e.preventDefault();
 
         if (messageRef) {
@@ -90,7 +90,7 @@ const ChatRoom = () => {
                     ))}
                 <div ref={dummy}></div>
             </main>
-            <form className="formchat" onSubmit={sendMessage}>
+            <form className="formchat" onSubmit={CreateNewMessage}>
                 <input
                     type="text"
                     className="inputchat"
