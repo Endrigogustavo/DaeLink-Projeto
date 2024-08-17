@@ -13,11 +13,11 @@ function Empresas() {
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
         //Caminho das informações no banco
-        const userCollection = collection(db, "Empresa");
+        const CompanyCollection = collection(db, "Empresa");
         //Pegando dados
         const getUsers = async () => {
             //Colocando os dados em uma função map para listar
-            const data = await getDocs(userCollection);
+            const data = await getDocs(CompanyCollection);
             setVagas(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
         };
         //Inicializando função

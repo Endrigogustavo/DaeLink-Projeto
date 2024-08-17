@@ -7,9 +7,9 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 export const registerUser = async (email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, additionalData) => {
   try {
     //Autenticador do Firebase
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const PCDCredential = await createUserWithEmailAndPassword(auth, email, password);
     //Autenticar usuario unico
-    const user = userCredential.user;
+    const user = PCDCredential.user;
 
     // Upload da imagem de perfil
     const profileImageRef = ref(storage, `images/${image.name}`);
@@ -37,9 +37,9 @@ export const registerUser = async (email, password, idade, deficiencia, descriç
     };
 
     // Adicione o usuário ao Firestore
-    const docRef = doc(db, "PCD", user.uid);
+    const PCDdoc = doc(db, "PCD", user.uid);
     //Adicionando os dados junto do usuario no banco
-    await setDoc(docRef, dataToSave);
+    await setDoc(PCDdoc, dataToSave);
 
     return { success: true, uid: user.uid };
   } catch (error) {
@@ -69,8 +69,8 @@ export const registerEmpresa = async (
 ) => {
   try {
     // Autenticação do Firebase
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    const CompanyCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = CompanyCredential.user;
 
     // Upload da imagem do perfil
     const profileImageRef = ref(storage, `images_company/${image.name}`);
@@ -97,8 +97,8 @@ export const registerEmpresa = async (
     };
 
     // Adiciona o usuário ao Firestore
-    const docRef = doc(db, "Empresa", user.uid);
-    await setDoc(docRef, dataToSave);
+    const CompanyDoc = doc(db, "Empresa", user.uid);
+    await setDoc(CompanyDoc, dataToSave);
     return { success: true, uid: user.uid };
   } catch (error) {
     console.error("Erro ao registrar, tente novamente: ", error);
@@ -127,9 +127,9 @@ export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias,
     };
 
     // Adicione a vaga ao Firestore
-    const docRef = await addDoc(collection(db, "Vagas"), dataToSave);
+    const VagaDocAdd = await addDoc(collection(db, "Vagas"), dataToSave);
 
-    console.log("Vaga adicionada com ID: ", docRef.id);
+    console.log("Vaga adicionada com ID: ", VagaDocAdd.id);
 
     
     return true;
@@ -142,17 +142,17 @@ export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias,
 
 export const loginUser = async (email, password) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const uid = userCredential.user.uid;
+    const PCDCredential = await signInWithEmailAndPassword(auth, email, password);
+    const uid = PCDCredential.user.uid;
     console.log("User logged in successfully:", uid);
 
     // Acessar a tabela específica com base no UID
-    const userDocRef = doc(db, "PCD", uid); 
-    const userDoc = await getDoc(userDocRef);
+    const PCDDocRef = doc(db, "PCD", uid); 
+    const GetPCDDoc = await getDoc(PCDDocRef);
 
-    if (userDoc.exists()) {
-      console.log("User data:", userDoc.data());
-      return { uid, ...userDoc.data() };
+    if (GetPCDDoc.exists()) {
+      console.log("User data:", GetPCDDoc.data());
+      return { uid, ...GetPCDDoc.data() };
     } else {
       console.log("No such document!");
       return null;
@@ -167,17 +167,17 @@ export const loginUser = async (email, password) => {
 
 export const loginEmpresa = async (email, password) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const uid = userCredential.user.uid;
+    const CompanyCredential = await signInWithEmailAndPassword(auth, email, password);
+    const uid = CompanyCredential.user.uid;
     console.log("User logged in successfully:", uid);
 
     // Acessar a tabela específica com base no UID
-    const userDocRef = doc(db, "Empresa", uid); 
-    const userDoc = await getDoc(userDocRef);
+    const CompanyDoc = doc(db, "Empresa", uid); 
+    const GetCompanyDoc = await getDoc(CompanyDoc);
 
-    if (userDoc.exists()) {
-      console.log("User data:", userDoc.data());
-      return { uid, ...userDoc.data() }; 
+    if (GetCompanyDoc.exists()) {
+      console.log("User data:", GetCompanyDoc.data());
+      return { uid, ...GetCompanyDoc.data() }; 
     } else {
       console.log("No such document!");
       return null;
@@ -207,13 +207,13 @@ export const onAuthChange = (callback) => {
 // Função para obter dados adicionais do usuário do Firestore
 export const getUserData = async (uid) => {
   const db = getFirestore();
-  const userDoc = await getDoc(doc(db, "Empresa", uid));
-  const userDocPCD = await getDoc(doc(db, "PCD", uid));
-  if (userDoc.exists()) {
-    return userDoc.data();
+  const CompanyDoc = await getDoc(doc(db, "Empresa", uid));
+  const PCDDoc = await getDoc(doc(db, "PCD", uid));
+  if (CompanyDoc.exists()) {
+    return CompanyDoc.data();
   } 
-  if(userDocPCD.exists()){
-    return userDocPCD.data();
+  if(PCDDoc.exists()){
+    return PCDDoc.data();
   }
     else {
     throw new Error("User not found");

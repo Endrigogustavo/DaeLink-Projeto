@@ -19,25 +19,25 @@ function Visualizar_Processo() {
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
         //Função assincrona de pegar as vagas
-        const fetchVagas = async () => {
+        const GetVagas = async () => {
             try {
                 //Informando a tabela do banco
                 const vagasRef = collection(db, 'Vagas');
                 //Pegando as informações do banco
-                const querySnapshot = await getDocs(vagasRef);
+                const ResultVagas = await getDocs(vagasRef);
                 //Inicializando uma matriz vazia
                 let vagasDoCandidato = [];
 
                 //Tratamento de erro
-                for (const doc of querySnapshot.docs) {
+                for (const doc of ResultVagas.docs) {
                     //Pegando os dados encontrados anteriormente e analizando com a tabela candidatos do banco
                     const candidatosRef = collection(doc.ref, 'candidatos');
                     //Utilizando o query e where para trazer as vagas que pertecem ao usuario do ID
-                    const q = query(candidatosRef, where('userId', '==', id));
+                    const QueryCandidatos = query(candidatosRef, where('userId', '==', id));
                     //Pegando os dados tratados
-                    const candidatosSnapshot = await getDocs(q);
+                    const GetResultCandidatos = await getDocs(QueryCandidatos);
                     //Tratamento de erro caso não pegue nenhum valor
-                    if (!candidatosSnapshot.empty) {
+                    if (!GetResultCandidatos.empty) {
                         //Adicionando valores do banco na matriz em branco
                         vagasDoCandidato.push({ id: doc.id, ...doc.data() });
                     }
@@ -51,7 +51,7 @@ function Visualizar_Processo() {
             }
         };
         //Inicializando a função
-        fetchVagas();
+        GetVagas();
     }, [id]);
 
     //Função de tela de loading

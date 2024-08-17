@@ -70,14 +70,14 @@ const AddDocumentoForm = () => {
       //Pega o candidato matriculado dentro das vagas
       const candidatosRef = collection(db, "Vagas", vagaUid, "candidatos");
       //Indentificando o usuario pelo ID
-      const q = query(candidatosRef, where("userId", "==", userId));
+      const QueryCandidatos = query(candidatosRef, where("userId", "==", userId));
       //Pegando infomações
-      const querySnapshot = await getDocs(q);
+      const ResultCandidatos = await getDocs(QueryCandidatos);
 
       //Taramento de erros
-      if (!querySnapshot.empty) {
+      if (!ResultCandidatos.empty) {
         //Fazendo tratamento das imagens
-        const candidatoDoc = querySnapshot.docs[0];
+        const candidatoDoc = ResultCandidatos.docs[0];
         const candidatoId = candidatoDoc.id;
 
         //Perfil do candidato encontrado para enviar os documentos no nome dele

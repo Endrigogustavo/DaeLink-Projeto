@@ -18,14 +18,14 @@ function Vagas() {
 	useEffect(() => {
 		const getUserProfile = async () => {
 			//Caminho das informações espeficias de um documento com base no ID
-			const userDoc = doc(db, "PCD", id);
+			const ProfileUser = doc(db, "PCD", id);
 			//Pega os resultados utilizando getDoc
-			const userSnap = await getDoc(userDoc);
+			const GetProfileUser = await getDoc(ProfileUser);
 			//Tratamento caso não exista registros
-			if (userSnap.exists()) {
+			if (GetProfileUser.exists()) {
 				//Setando as informações
-				setUserProfile(userSnap.data());
-				setUserId(userSnap.id);
+				setUserProfile(GetProfileUser.data());
+				setUserId(GetProfileUser.id);
 			} else {
 				setUserProfile(null);
 				alert("Nenhuma vaga encontrada!");
@@ -43,11 +43,11 @@ function Vagas() {
 	//useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
 	useEffect(() => {
 		//Vai pegar todas a vagas da coleção
-		const userCollection = collection(db, "Vagas");
+		const VagasCollection = collection(db, "Vagas");
 
 		//Pega as informações e permite listalas de forma visual
 		const getUsers = async () => {
-			const data = await getDocs(userCollection);
+			const data = await getDocs(VagasCollection);
 			setVagas(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
 		};
 

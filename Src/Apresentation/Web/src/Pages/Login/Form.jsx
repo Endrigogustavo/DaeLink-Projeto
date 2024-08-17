@@ -15,9 +15,9 @@ const Form = () => {
 
     const handleLogin = async () => {
         try {
-            const userData = await loginUser(email, password);
-            if (userData) {
-                navigate(`/homeuser/${userData.uid}`);
+            const PCDData = await loginUser(email, password);
+            if (PCDData) {
+                navigate(`/homeuser/${PCDData.uid}`);
             } else {
                 alert('Failed to login. Please check your credentials.');
             }

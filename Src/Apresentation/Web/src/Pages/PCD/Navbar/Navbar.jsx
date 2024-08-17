@@ -25,22 +25,22 @@ export default function Navbar() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        const getUserProfile = async () => {
+        const getPCDprofile = async () => {
             //Caminho das informações do banco com base no ID
-            const userDoc = doc(db, "PCD", id);
+            const PCDdoc = doc(db, "PCD", id);
             //Pegando os dados
-            const userSnap = await getDoc(userDoc);
+            const GetPCDInfo = await getDoc(PCDdoc);
             //Tratamento e setando dados recebidos em uma variavel
-            if (userSnap.exists()) {
-                setUserProfile(userSnap.data());
-                setUserId(userSnap.id);
+            if (GetPCDInfo.exists()) {
+                setUserProfile(GetPCDInfo.data());
+                setUserId(GetPCDInfo.id);
             } else {
                 setUserProfile(null);
                 alert("No such document!");
             }
         };
         //Iniciando a função
-        getUserProfile();
+        getPCDprofile();
     }, [id]);
 
     //Botão onde entra na tela de vagas com base no ID do user

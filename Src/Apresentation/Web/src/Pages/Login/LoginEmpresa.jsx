@@ -15,12 +15,12 @@ const LoginEmpresa = () => {
   const handleLogin = async () => {
     try {
       //Função do Auth.jsx para fazer o Login de empresa
-      const userData = await loginEmpresa(email, password);
+      const CompanyData = await loginEmpresa(email, password);
       //Tratamento dos dados
-      if (userData) {
+      if (CompanyData) {
         //Sucesso
-        console.log("User data:", userData);
-        navigate(`/homeempresa/${userData.uid}`);
+        console.log("User data:", CompanyData);
+        navigate(`/homeempresa/${CompanyData.uid}`);
       } else {
         alert("Erro ao fazer Login, tente novamente!");
       }
