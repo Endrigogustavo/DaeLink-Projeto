@@ -24,17 +24,17 @@ const EditarPerfil = () => {
 
   // Carregar as informações do usuário do banco de dados
   useEffect(() => {
-    const getUserProfile = async () => {
-      const userDoc = doc(db, "Empresa", id);
-      const userSnap = await getDoc(userDoc);
-      if (userSnap.exists()) {
-        setUserProfile(userSnap.data());
+    const getCompanyProfile = async () => {
+      const CompanyDoc = doc(db, "Empresa", id);
+      const GetCompany = await getDoc(CompanyDoc);
+      if (GetCompany.exists()) {
+        setUserProfile(GetCompany.data());
       } else {
         setUserProfile(null);
         alert("Sem documentos!");
       }
     };
-    getUserProfile();
+    getCompanyProfile();
   }, [id]);
 
   // Função para lidar com as mudanças nos inputs

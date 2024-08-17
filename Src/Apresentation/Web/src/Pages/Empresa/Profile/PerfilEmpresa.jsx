@@ -15,21 +15,21 @@ function Profile() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        const getUserProfile = async () => {
+        const getCompanyProfile = async () => {
             //Caminho das informações do banco com base no ID
-            const userDoc = doc(db, "Empresa", id);
+            const CompanyDoc = doc(db, "Empresa", id);
             //Pegando os dados
-            const userSnap = await getDoc(userDoc);
+            const GetCompany = await getDoc(CompanyDoc);
             //Tratamento e setando dados recebidos em uma variavel
-            if (userSnap.exists()) {
-                setUserProfile(userSnap.data());
+            if (GetCompany.exists()) {
+                setUserProfile(GetCompany.data());
             } else {
                 setUserProfile(null);
                 alert("Sem documentos!");
             }
         };
         //Iniciando a função
-        getUserProfile();
+        getCompanyProfile();
     }, [id]);
 
     if (!userProfile) {

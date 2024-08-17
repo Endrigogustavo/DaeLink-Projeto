@@ -19,7 +19,7 @@ function Profile() {
         alert(id)
         alert(idempresa)
         //Pegando o sistema de recomendação do App.py para listar usuarios semelhantes
-        const fetchRecommendations = async () => {
+        const Recommendations = async () => {
             try {
                 //Rota do sistema de recomendação utilizando o axios no react e do flask do python
                 //Utilizando o Id como base pesquisa
@@ -32,15 +32,15 @@ function Profile() {
         };
 
         //Informações do usuario
-        const getUserProfile = async () => {
+        const getPCDProfile = async () => {
             //Caminho do documento por base do ID na tabela PCD
-            const userDoc = doc(db, "PCD", id);
+            const PCDdoc = doc(db, "PCD", id);
             //Pegando dados
-            const userSnap = await getDoc(userDoc);
+            const GetPCD = await getDoc(PCDdoc);
             //Tratamento para setar os dados
-            if (userSnap.exists()) {
+            if (GetPCD.exists()) {
                 //Sucesso
-                setUserProfile(userSnap.data());
+                setUserProfile(GetPCD.data());
             } else {
                 //Erro
                 setUserProfile(null);
@@ -48,8 +48,8 @@ function Profile() {
             }
         };
         //Iniciando as funções
-        fetchRecommendations();
-        getUserProfile();
+        Recommendations();
+        getPCDProfile();
     }, [id]);
 
     //Tela de carregamento
@@ -64,8 +64,8 @@ function Profile() {
 
     const ChatUser = async() => {
         try {
-            const candidatosRef = collection(db, "Chat");
-            await addDoc(candidatosRef, {
+            const ChatCollection = collection(db, "Chat");
+            await addDoc(ChatCollection, {
                 userId: id,
                 empresaId: idempresa
             });
