@@ -18,7 +18,7 @@ const AddPessoa = () => {
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
     //Pega os dados com base no perfil de empresa logado utilizando o auth do Firebase
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const AuthProfile = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
         fetchUserData(currentUser.uid);
@@ -27,19 +27,19 @@ const AddPessoa = () => {
       }
     });
 
-    return () => unsubscribe();
+    return () => AuthProfile();
   }, []);
 
   useEffect(() => {
     //Informações do usuario
-    const getUserProfile = async () => {
+    const getPCDProfile = async () => {
       try {
-          const userDoc = doc(db, "PCD", id);
-          const userSnap = await getDoc(userDoc);
+          const PCDdoc = doc(db, "PCD", id);
+          const GetPCDresult = await getDoc(PCDdoc);
 
-          if (userSnap.exists()) {
-              console.log('Documento encontrado:', userSnap.data());
-              setUserInfo(userSnap.data());
+          if (GetPCDresult.exists()) {
+              console.log('Documento encontrado:', GetPCDresult.data());
+              setUserInfo(GetPCDresult.data());
           } else {
               console.log('Nenhum documento encontrado com o ID:', id);
               setUserInfo(null);
@@ -51,24 +51,24 @@ const AddPessoa = () => {
           alert("Erro ao buscar documento!");
       }
   };
-    getUserProfile();
+  getPCDProfile();
 }, [id]);
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
-    const fetchVagas = async () => {
+    const GetVagas = async () => {
       //utilizando o user como parametro de tratamento
       if (user) {
         try {
           //Caminho dos dados da tabela PCD do banco
-          const vagasRef = collection(db, 'Vagas');
+          const VagasCollection = collection(db, 'Vagas');
           //Utilizando o query e o where para pegar as informações de uma empresa especifica
-          const q = query(vagasRef, where('empresaId', '==', user.uid));
+          const QueryVagas = query(VagasCollection, where('empresaId', '==', user.uid));
           //Pegando dados com o tratamento
-          const querySnapshot = await getDocs(q);
+          const GetVagasResult = await getDocs(QueryVagas);
 
           //utilizando de uma função map para listar as informações
-          const vagasList = querySnapshot.docs.map(doc => ({
+          const vagasList = GetVagasResult.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
           }));
@@ -80,16 +80,16 @@ const AddPessoa = () => {
       }
     };
 
-    fetchVagas();
+    GetVagas();
   }, [user]);
 
   const AddUserToVaga = async (VagaId, IdEmpresa) => {
     if (userInfo  && userInfo.name && userInfo.email) {
       
       try {
-          const vagaRef = doc(db, "Vagas", VagaId);
-          const candidatosRef = collection(vagaRef, 'candidatos');
-          await addDoc(candidatosRef, {
+          const VagaDoc = doc(db, "Vagas", VagaId);
+          const CandidatosCollection = collection(VagaDoc, 'candidatos');
+          await addDoc(CandidatosCollection, {
               userId: id,
               name: userInfo.name,
               email: userInfo.email

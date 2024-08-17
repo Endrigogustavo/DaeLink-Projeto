@@ -17,18 +17,18 @@ function VisualizarPessoas() {
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
-    const fetchCandidatos = async () => {
+    const GetCandidatos = async () => {
       try {
         //Tratamento de erros com base do ID da vaga
         if (vagaId) {
           //Caminho dos dados da tabela PCD do banco
-          const candidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos');
+          const CandidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos');
           //Mensagem dos dados coletados
-          console.log('candidatosCollection:', candidatosCollection);
+          console.log('candidatosCollection:', CandidatosCollection);
           //Pegando dados
-          const candidatosSnapshot = await getDocs(candidatosCollection);
+          const GetCandidatos = await getDocs(CandidatosCollection);
           //Utilizando a função map para guardar as informações
-          const candidatosList = candidatosSnapshot.docs.map(doc => ({
+          const candidatosList = GetCandidatos.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
           }));
@@ -45,21 +45,21 @@ function VisualizarPessoas() {
       }
     };
 
-    const fetchVaga = async () => {
+    const GetVaga = async () => {
       try {
         //Função para procurar vagas
         if (vagaId) {
           //Caminho das informações
-          const vagaDoc = doc(db, 'Vagas', vagaId);
+          const VagaDoc = doc(db, 'Vagas', vagaId);
           //Mensagem para ver se esta ok
-          console.log('vagaDoc:', vagaDoc);
+          console.log('vagaDoc:', VagaDoc);
           //Pegando as informações
-          const vagaSnapshot = await getDoc(vagaDoc);
+          const GetVagas = await getDoc(VagaDoc);
 
           //Tratamento e setando dados em variaveis
-          if (vagaSnapshot.exists()) {
+          if (GetVagas.exists()) {
             //Sucesso
-            const vagaData = { id: vagaSnapshot.id, ...vagaSnapshot.data() };
+            const vagaData = { id: GetVagas.id, ...GetVagas.data() };
             console.log('Vaga:', vagaData);
             setVaga(vagaData);
           } else {
@@ -76,8 +76,8 @@ function VisualizarPessoas() {
       }
     };
 
-    fetchCandidatos();
-    fetchVaga();
+    GetCandidatos();
+    GetVaga();
   }, [vagaId]);
 
   {

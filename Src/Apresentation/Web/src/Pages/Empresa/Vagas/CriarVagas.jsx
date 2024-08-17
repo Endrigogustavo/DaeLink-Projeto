@@ -26,23 +26,23 @@ const RegisterVaga = () => {
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
-    const getUserProfile = async () => {
+    const getCompanyProfile = async () => {
       //Caminho dos dados da tabela Empresa do banco com base no ID
-      const userDoc = doc(db, "Empresa", id);
+      const CompanyDoc = doc(db, "Empresa", id);
       //Pegando dados tratados
-      const userSnap = await getDoc(userDoc);
+      const GetCompanyDoc = await getDoc(CompanyDoc);
       //Tratamento e setando as variaveis
-      if (userSnap.exists()) {
+      if (GetCompanyDoc.exists()) {
         //Sucesso
-        setUserProfile(userSnap.data());
-        setUserId(userSnap.id);
+        setUserProfile(GetCompanyDoc.data());
+        setUserId(GetCompanyDoc.id);
       } else {
         setUserProfile(null);
         alert("Tente novamente!");
       }
     };
     //Iniciando a função
-    getUserProfile();
+    getCompanyProfile();
   }, [id]);
 
   //Botão de registrar vaga

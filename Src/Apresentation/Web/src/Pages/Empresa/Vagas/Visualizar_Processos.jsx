@@ -15,17 +15,17 @@ function Visualizar_Processo() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        const fetchVagas = async () => {
+        const GetVagas = async () => {
             try {
                 //Caminho dos dados da tabela PCD do banco
-                const vagasRef = collection(db, 'Vagas');
+                const VagasCollection = collection(db, 'Vagas');
                 //Tratando a pesquisa com query e where para pegar os dados de uma empresa 
-                const q = query(vagasRef, where('empresaId', '==', id));
+                const QueryVagas = query(VagasCollection, where('empresaId', '==', id));
                 //Pegando dados
-                const querySnapshot = await getDocs(q);
+                const GetVagasResult = await getDocs(QueryVagas);
 
                 //Utilizando a funçã0 map para guardar os valos para serem listados
-                const vagasList = querySnapshot.docs.map(doc => ({
+                const vagasList = GetVagasResult.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
                 }));
@@ -40,7 +40,7 @@ function Visualizar_Processo() {
             }
         };
 
-        fetchVagas();
+        GetVagas();
     }, [id]);
 
     if (loading) {
