@@ -22,6 +22,7 @@ export default function Navbar() {
     //Variaveis onde as informações serão setadas
     const [userProfile, setUserProfile] = useState([]);
     const [userId, setUserId] = useState("");
+    const [loading, setLoading] = useState(true);
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
@@ -38,6 +39,7 @@ export default function Navbar() {
                 setUserProfile(null);
                 alert("No such document!");
             }
+            setLoading(false); // Carregamento concluído
         };
         //Iniciando a função
         getPCDprofile();
@@ -79,8 +81,15 @@ export default function Navbar() {
 
                     </div>
                     <IoSearch className='text-black text-2xl cursor-pointer iconhover' />
-                    <button onClick={() => handleButtonClickProfile(userId)}>
-                    <img src={userProfile.imageUrl} alt="" class="w-10 h-10 rounded-full" /></button>
+                    <button onClick={() => handleButtonClickProfile(userId)} className='border-2 border-blue-500 rounded-full'>
+                        {loading ? (
+                            <div className="w-8 h-8 rounded-full bg-gray-300"></div>
+                        ) : userProfile?.imageUrl ? (
+                            <img src={userProfile.imageUrl} alt="" class="w-8 h-8 rounded-full " />
+                        ) : (
+                            <div className="w-8 h-8 rounded-full bg-gray-300"></div> // Placeholder se não houver imagem
+                        )}
+                    </button>
                     <div className="flex  md:hidden">
                         <button onClick={toggleNavbar}>{isOpen ? <IoCloseOutline className='text-black text-2xl cursor-pointer' /> : <FiMenu className='text-black text-2xl cursor-pointer' />}</button>
 

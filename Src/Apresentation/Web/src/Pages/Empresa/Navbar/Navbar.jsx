@@ -71,13 +71,13 @@ export default function Navbar() {
                         <Navlinks />
                     </div>
                     <IoSearch className='text-black text-2xl cursor-pointer iconhover' />
-                    <button onClick={() => handleButtonProfileCompany(userId)}>
+                    <button onClick={() => handleButtonProfileCompany(userId)} className='border-2 border-blue-500 rounded-full'>
                         {loading ? (
-                            <div className="w-10 h-10 rounded-full bg-gray-300"></div> // Placeholder enquanto carrega
+                            <div className="w-8 h-8 rounded-full bg-gray-300"></div> // Placeholder enquanto carrega
                         ) : userProfile?.imageUrl ? (
-                            <img src={userProfile.imageUrl} alt="Profile" className="w-10 h-10 rounded-full" />
+                            <img src={userProfile.imageUrl} alt="Profile" className="w-8 h-8 rounded-full border-2 border-blue-500 rounded-full" />
                         ) : (
-                            <div className="w-10 h-10 rounded-full bg-gray-300"></div> // Placeholder se não houver imagem
+                            <div className="w-8 h-8 rounded-full bg-gray-300"></div> // Placeholder se não houver imagem
                         )}
                     </button>
                     <div className="flex md:hidden">
