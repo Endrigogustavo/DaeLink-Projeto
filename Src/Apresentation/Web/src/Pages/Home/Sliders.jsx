@@ -31,7 +31,7 @@ const Sliders = () => {
   ];
 
   return (
-    <div className="w-full h-44 flex flex-col max-sm-h-size items-center overflow-hidden my-8 ">
+    <div className="w-full h-52 flex flex-col max-sm-h-size items-center overflow-hidden py-5">
       <h1 className="text-1xl font-bold text-center pb-8 uppercase">Disponível em todas as plataformas</h1>
       <Swiper
         slidesPerView={1}
