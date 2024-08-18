@@ -5,26 +5,29 @@ import { useNavigate } from 'react-router-dom';
 import { FaSearch } from "react-icons/fa";
 
 const CandidatosTable = () => {
-    const text = "Robert Nesta Marley foi um cantor e compositor jamaicano, o mais conhecido músico de reggae de todos os tempos, famoso por popularizar internacionalmente o gênero. Já vendeu mais de 75 milhões de discos e, em 1978, três anos antes de sua morte, foi condecorado pela ONU com a Medalha da Paz do Terceiro Mundo"
     const navigate = useNavigate();
     const { idempresa } = useParams();
     const [empresaid, setEmpresa] = useState(null);
     const [trabalho, setTrabalho] = useState('');
     const [recommendations, setRecommendations] = useState([]);
+    const [loading, setLoading] = useState(false); // Estado de carregamento
+    const [hasSearched, setHasSearched] = useState(false); // Estado para rastrear se a pesquisa foi feita
 
     useEffect(() => {
-        alert(idempresa);
         setEmpresa(idempresa);
     }, [idempresa]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true); // Inicia o carregamento
+        setHasSearched(true); // Define que a pesquisa foi feita
         try {
             const response = await axios.post('http://localhost:5000/recommend', { trabalho: trabalho });
             setRecommendations(response.data);
-            setHasSearched(true); // Oculta o texto após a pesquisa
         } catch (error) {
             console.error('Error fetching recommendations:', error);
+        } finally {
+            setLoading(false); // Termina o carregamento
         }
     };
 
@@ -45,21 +48,37 @@ const CandidatosTable = () => {
                         </button>
                     </div>
                 </form>
-                <p className="text-black font-normal opacity-80">Comece fazendo uma pesquisa básica.</p>
+                {!hasSearched && !loading && (
+                    <p className="text-black font-normal opacity-80">Comece fazendo uma pesquisa básica.</p>
+                )}
             </section>
 
-            <div className='w-full h-fit overflow-x-hidden grid grid-cols-1 sm:grid-cols-4 gap-4 justify-items-center items-center'>
-                {recommendations.map((rec) => (
-                    <div key={rec.id} className=' h-80 w-72 bg-gray-900 rounded-xl flex flex-col items-center justify-center gap-2 overflow-x-hidden'>
-                        <img src={rec.imageUrl} className="rounded-full h-28 w-28 " alt="" />
-                        <h1 className='text-lg font-medium text-white text-center'>{rec.name}<h2 className='opacity-75 text-sm' >{rec.trabalho}</h2></h1>
-                        <p className='text-white text-justify px-5 truncate-multiline'>{rec.descrição}</p>
-                        <button onClick={() => handleButtonClick(rec.id)} type="submit"
-                            className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
-                    </div>
-                ))}
+            <div
+                className={`w-full h-fit overflow-x-hidden grid Pcdscontainer gap-4 justify-items-center items-center ${hasSearched ? 'pb-6' : ''}`}
+            >
+                {loading ? (
+                    // Exibe skeleton loaders enquanto está carregando
+                    Array.from({ length: 4 }).map((_, index) => (
+                        <div key={index} className='h-80 w-72 bg-gray-300 rounded-xl flex flex-col items-center justify-center gap-2 border-blue-300 border-4 animate-pulse'>
+                            <div className="rounded-full bg-gray-400 w-28 h-28"></div>
+                            <div className="h-6 bg-gray-400 w-40 rounded"></div>
+                            <div className="h-4 bg-gray-400 w-32 rounded"></div>
+                            <div className="h-4 bg-gray-400 w-48 rounded"></div>
+                            <div className="h-10 bg-gray-400 w-36 rounded-full"></div>
+                        </div>
+                    ))
+                ) : (
+                    recommendations.map((rec) => (
+                        <div key={rec.id} className='h-80 w-72 bg-gray-900 rounded-xl flex flex-col items-center justify-center gap-2 border-blue-500 border-4 overflow-x-hidden'>
+                            <img src={rec.imageUrl} className="rounded-full w-28 h-28" alt="" />
+                            <h1 className='text-lg font-medium text-white text-center'>{rec.name}<h2 className='opacity-75 text-sm'>{rec.trabalho}</h2></h1>
+                            <p className='text-white text-justify w-5/6 truncate-multiline'>{rec.descrição}</p>
+                            <button onClick={() => handleButtonClick(rec.id)} type="submit"
+                                className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
+                        </div>
+                    ))
+                )}
             </div>
-
         </>
     );
 }
