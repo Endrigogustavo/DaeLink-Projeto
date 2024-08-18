@@ -1,0 +1,70 @@
+.loader {
+    border-top-color: #3498db;
+    animation: spin 1s ease-in-out infinite;
+}
+
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/*HeroContainer*/
+
+.h-vagashero{
+    height: 60vh;
+}
+
+@media (max-width:900px){
+    .h-vagashero{
+        height: fit-content;
+        flex-direction: column;
+    }
+
+    .containder-side{
+        width: 100%;
+    }
+
+    .imgcontainer {
+        height: 26rem;
+    }
+
+    .text-side {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
+
+
+/*Vagas Card*/
+.h-vagacard{
+    height: 12.8rem;
+}
+
+
+
+/*Vagas Container*/
+.Vagascontainer{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width:1200px){
+    .Vagascontainer{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width:800px){
+    .Vagascontainer{
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}
+
+
+
+

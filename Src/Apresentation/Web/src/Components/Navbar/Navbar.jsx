@@ -26,7 +26,7 @@ export default function Navbar() {
     return (
         <>
             <header className="flex justify-between px-12 items-center py-6 bg-state-50 border-b-2 border-gray-500">
-                <img src="https://i.postimg.cc/vB5MHPX1/DaeLink.png" className=' max-sm-logo w-40' />
+                <Link to="/"><img src="https://i.postimg.cc/vB5MHPX1/DaeLink.png" className=' max-sm-logo w-40' /></Link>
 
                 <nav className=" flex items-center gap-4">
                     <div className=" hidden md:flex items-center gap-4">

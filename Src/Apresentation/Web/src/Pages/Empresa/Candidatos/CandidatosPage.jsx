@@ -58,7 +58,7 @@ const CandidatosPage = () => {
                 <div className='w-1/2 h-full flex justify-center align-center bg-gray-900  container-side text-side'>
                     <div className='w-full h-full flex flex-col gap-2 justify-center items-center'>
                         <h1 className='text-white text-2xl font-bold text-center'>Não encontrou o que procurava?</h1>
-                        <p className='text-white line-clamp-3 w-3/4 text-justify'>Não encontrou um candidato com o cargo designado? Crie uma vaga para algum futuro candidato, ou até que algum usuário se torne capacitado para esta função.</p>
+                        <p className='text-white line-clamp-3 w-3/4 text-justify leading-relaxed'>Crie uma vaga para algum futuro candidato, ou até que algum usuário se torne capacitado para esta função.</p>
                         <button className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Criar Vaga</button>
                     </div>
                 </div>
