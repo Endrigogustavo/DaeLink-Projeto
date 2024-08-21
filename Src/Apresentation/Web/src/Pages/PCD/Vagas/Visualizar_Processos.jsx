@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-
+import { decrypt } from '../../../Auth/Cryptography_Rotes';
 function Visualizar_Processo() {
     //Utilizado para pegar o id do usuario na tela anterior
-    const { id } = useParams();
-
+    const { encryptedId } = useParams();
+    const decryptedId = decrypt(decodeURIComponent(encryptedId));
     //setVagas vai guardar todas as informações recebidas no getDocs
     const [vagas, setVagas] = useState([]);
 
@@ -33,7 +33,7 @@ function Visualizar_Processo() {
                     //Pegando os dados encontrados anteriormente e analizando com a tabela candidatos do banco
                     const candidatosRef = collection(doc.ref, 'candidatos');
                     //Utilizando o query e where para trazer as vagas que pertecem ao usuario do ID
-                    const QueryCandidatos = query(candidatosRef, where('userId', '==', id));
+                    const QueryCandidatos = query(candidatosRef, where('userId', '==', decryptedId));
                     //Pegando os dados tratados
                     const GetResultCandidatos = await getDocs(QueryCandidatos);
                     //Tratamento de erro caso não pegue nenhum valor
@@ -52,7 +52,7 @@ function Visualizar_Processo() {
         };
         //Inicializando a função
         GetVagas();
-    }, [id]);
+    }, [encryptedId]);
 
     //Função de tela de loading
     if (loading) {
@@ -61,11 +61,11 @@ function Visualizar_Processo() {
 
     //Botão para is para a tela de enviar documento, enviando o ID do usuario e o da vaga
     const EnviarDoc = (vagaId) => {
-        navigate(`/enviardocumento/${id}/${vagaId}`);
+        navigate(`/enviardocumento/${encryptedId}/${vagaId}`);
     };
 
     const ChatEmpresa = (empresaId) => {
-        navigate(`/chatpcd/${id}/${empresaId}`);
+        navigate(`/chatpcd/${encryptedId}/${empresaId}`);
     };
 
 

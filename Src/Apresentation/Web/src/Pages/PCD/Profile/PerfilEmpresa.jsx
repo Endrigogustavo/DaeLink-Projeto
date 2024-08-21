@@ -4,12 +4,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { logout } from '../../../Auth/Auth';
+import { decrypt } from '../../../Auth/Cryptography_Rotes';
 
 
 function Profile() {
     const navigate = useNavigate();
     //Utilizado para pegar o id do usuario e da vaga na tela anterior
     const { id } = useParams();
+
+    const decryptedId = decrypt(decodeURIComponent(id))
     //Variaveis onde as informações serão setadas
     const [userProfile, setUserProfile] = useState(null);
 
@@ -17,7 +20,7 @@ function Profile() {
     useEffect(() => {
         const getCompanyProfile = async () => {
             //Caminho das informações do banco com base no ID
-            const CompanyDoc = doc(db, "Empresa", id);
+            const CompanyDoc = doc(db, "Empresa", decryptedId);
             //Pegando os dados
             const GetCompany = await getDoc(CompanyDoc);
             //Tratamento e setando dados recebidos em uma variavel
@@ -30,25 +33,12 @@ function Profile() {
         };
         //Iniciando a função
         getCompanyProfile();
-    }, [id]);
+    }, [decryptedId]);
 
     if (!userProfile) {
         return <div>Loading...</div>;
     }
 
-    function LogoutProfile() {
-        var response = confirm("Deseja fazer Logout?");
-        if (response == true) {
-            //Função do Auth.jsx para deslogar
-            logout();
-            // Redireciona para a página de login após o logout
-            navigate('/');
-        }
-
-    }
-    const EditProfile = (id) =>{
-        navigate(`/editempresa/${id}`)
-    }
 
     return (
         <>

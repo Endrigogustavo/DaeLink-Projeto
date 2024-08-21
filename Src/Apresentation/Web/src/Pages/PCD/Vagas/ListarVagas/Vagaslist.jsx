@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../../Database/Firebase';
 import { doc, getDoc, getDocs, collection, query, where } from 'firebase/firestore';
+import { decrypt, encrypt } from '../../../../Auth/Cryptography_Rotes';
 
 const Vagaslist = () => {
     const [userId, setUserId] = useState("");
@@ -10,11 +11,12 @@ const Vagaslist = () => {
     const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
+    const decryptedId = decrypt(decodeURIComponent(id))
     const navigate = useNavigate();
 
     useEffect(() => {
         const getUserProfile = async () => {
-            const ProfileUser = doc(db, "PCD", id);
+            const ProfileUser = doc(db, "PCD", decryptedId);
             const GetProfileUser = await getDoc(ProfileUser);
             if (GetProfileUser.exists()) {
                 setUserProfile(GetProfileUser.data());
@@ -26,9 +28,10 @@ const Vagaslist = () => {
         };
 
         getUserProfile();
-    }, [id]);
+    }, [decryptedId]);
 
     useEffect(() => {
+        alert(decryptedId)
         const getVagas = async () => {
             const VagasCollection = collection(db, "Vagas");
             const data = await getDocs(VagasCollection);
@@ -56,7 +59,9 @@ const Vagaslist = () => {
     }, []);
 
     const handleButtonClick = (vagaId) => {
-        navigate(`/entrarvaga/${id}/${vagaId}`);
+        alert(vagaId)
+        const encryptedVaga = encrypt(vagaId)
+        navigate(`/entrarvaga/${encodeURIComponent(encryptedVaga)}`);
     };
 
     return (

@@ -1,36 +1,56 @@
 import React, { useState, useEffect } from "react";
 import { doc, updateDoc, arrayUnion, collection, addDoc } from "firebase/firestore";
-import { db } from "../../../Database/Firebase";
+import { auth, db } from "../../../Database/Firebase";
 import { useParams, useNavigate } from 'react-router-dom';
+import { decrypt } from "../../../Auth/Cryptography_Rotes";
+import { onAuthStateChanged } from 'firebase/auth';
 
 const EntrarVaga = () => {
   //Função de navegação do site
   const navigate = useNavigate();
   //Utilizado para pegar o id do usuario e da vaga na tela anterior
-  const { id, vagaId } = useParams();
+  const { vaga } = useParams();
+
+  const decryptedVaga = decrypt(decodeURIComponent(vaga))
 
   //Variaveis onde as informações serão setadas
-  const [vagaUid, setVagaUid] = useState(vagaId);
-  const [pessoaId, setPessoaId] = useState(id);
+  const [vagaUid, setVagaUid] = useState(decryptedVaga);
+  const [pessoaId, setPessoaId] = useState(null);
   const [email, setEmail] = useState("")
   const [nome, setNome] = useState("")
 
+
+  useEffect(() => {
+    //Pega os dados com base no perfil de empresa logado utilizando o auth do Firebase
+    const AuthProfile = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setPessoaId(currentUser.uid);
+      } else {
+        setPessoaId(null);
+      }
+    });
+
+    return () => AuthProfile();
+  }, []);
+
+
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
+    alert(decryptedVaga)
     //Inicializando os IDs
-    if (id && vagaUid) {
-      setPessoaId(id);
-      setVagaUid(vagaUid);
+    if (pessoaId && decryptedVaga) {
+      setPessoaId(pessoaId);
+      setVagaUid(decryptedVaga);
     }
-  }, [id, vagaUid]);
+  }, [pessoaId, decryptedVaga]);
 
   //Botão para guardar as informações no banco
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Tratamento de erro no form
     if (!vagaUid || !pessoaId) {
-      alert(id)
-      alert(vagaUid)
+      alert(pessoaId)
+      alert(decryptedVaga)
       alert("Por favor, preencha todos os campos.");
       return;
     }
@@ -46,7 +66,7 @@ const EntrarVaga = () => {
 */}
 
       //Informações do banco
-      const vagaRef = doc(db, "Vagas", vagaUid);
+      const vagaRef = doc(db, "Vagas", decryptedVaga);
       const candidatosRef = collection(vagaRef, 'candidatos');
       //Add informações no banco
       await addDoc(candidatosRef, {
@@ -57,7 +77,7 @@ const EntrarVaga = () => {
       alert("Pessoa adicionada com sucesso!");
       setVagaUid("");
       setPessoaId("");
-      navigate(`/homeuser/${id}`);
+      navigate(`/homeuser/${pessoaId}`);
     } catch (e) {
       console.error("Erro ao adicionar pessoa: ", e);
       alert("Erro ao adicionar pessoa.");
