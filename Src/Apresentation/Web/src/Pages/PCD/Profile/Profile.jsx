@@ -4,20 +4,23 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { logout } from '../../../Auth/Auth';
+import { decrypt } from '../../../Auth/Cryptography_Rotes';
 
 
 function Profile() {
     const navigate = useNavigate();
     //Utilizado para pegar o id do usuario e da vaga na tela anterior
     const { id } = useParams();
+    const decryptedId = decrypt(decodeURIComponent(id))
     //Variaveis onde as informações serão setadas
     const [userProfile, setUserProfile] = useState(null);
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
+        alert(id)
         const getPCDprofile = async () => {
             //Caminho das informações do banco com base no ID
-            const PCDdoc = doc(db, "PCD", id);
+            const PCDdoc = doc(db, "PCD", decryptedId);
             //Pegando os dados
             const GetPCDInfo = await getDoc(PCDdoc);
             //Tratamento e setando dados recebidos em uma variavel
@@ -30,7 +33,7 @@ function Profile() {
         };
         //Iniciando a função
         getPCDprofile();
-    }, [id]);
+    }, [decryptedId]);
 
     if (!userProfile) {
         return <div>Loading...</div>;
