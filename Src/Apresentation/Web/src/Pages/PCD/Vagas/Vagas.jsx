@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
+import { decrypt, encrypt } from '../../../Auth/Cryptography_Rotes';
 
 
 
@@ -13,19 +14,21 @@ function Vagas() {
 	const [userProfile, setUserProfile] = useState(null);
 	//Pegando o ID do urusario com base na URL
 	const { id } = useParams();
+	const decryptedId = decrypt(decodeURIComponent(id))
 
 	//useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
 	useEffect(() => {
+		alert(decryptedId)
 		const getUserProfile = async () => {
 			//Caminho das informações espeficias de um documento com base no ID
-			const ProfileUser = doc(db, "PCD", id);
+			const ProfileUser = doc(db, "PCD", decryptedId);
 			//Pega os resultados utilizando getDoc
 			const GetProfileUser = await getDoc(ProfileUser);
 			//Tratamento caso não exista registros
 			if (GetProfileUser.exists()) {
 				//Setando as informações
 				setUserProfile(GetProfileUser.data());
-				setUserId(GetProfileUser.id);
+				setUserId(GetProfileUser.decryptedId);
 			} else {
 				setUserProfile(null);
 				alert("Nenhuma vaga encontrada!");
@@ -33,7 +36,7 @@ function Vagas() {
 		};
 
 		getUserProfile();
-	}, [id]);
+	}, [decryptedId]);
 
 
 	//Função de navegação do site
@@ -42,6 +45,7 @@ function Vagas() {
 
 	//useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
 	useEffect(() => {
+		alert(decryptedId)
 		//Vai pegar todas a vagas da coleção
 		const VagasCollection = collection(db, "Vagas");
 
@@ -57,7 +61,10 @@ function Vagas() {
 
 	//Botão para is para a tela de enviar entrar na vaga, enviando o ID do usuario e o da vaga
 	const handleButtonClick = (vagaId) => {
-		navigate(`/entrarvaga/${id}/${vagaId}`);
+		const encryptedId = encrypt(encodeURIComponent(decryptedId))
+		const encryptedVaga = encrypt(encodeURIComponent(vagaId))
+ 
+		navigate(`/entrarvaga/${encryptedId}/${encryptedVaga}`);
 	};
 
 	return (

@@ -7,7 +7,7 @@ import { IoSearch } from "react-icons/io5";
 import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
-
+import { encrypt } from '../../../Auth/Cryptography_Rotes';
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -45,17 +45,20 @@ export default function Navbar() {
 
     //Botão onde entra na tela de vagas com base no ID do user
     const handleButtonClick = (id) => {
-        navigate(`/homeuser/vagas/${id}`);
+        const encryptedId = encrypt(id);
+        navigate(`/homeuser/vagas/${encodeURIComponent(encryptedId)}`);
     };
 
     //Botão onde entra na tela de processos com base no ID do user
     const handleButtonClickProcess = (id) => {
-        navigate(`/homeuser/processos/${id}`);
+        const encryptedId = encrypt(id);
+        navigate(`/homeuser/processos/${encodeURIComponent(encryptedId)}`);
     };
 
     //Botão onde entre na tela de perfil de usuario
     const handleButtonClickProfile = (id) => {
-        navigate(`/userprofile/${id}`);
+        const encryptedId = encrypt(id);
+        navigate(`/userprofile/${encodeURIComponent(encryptedId)}`);
     };
 
     const Navlinks = () => {
