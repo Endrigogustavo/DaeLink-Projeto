@@ -3,13 +3,15 @@ import { doc, collection, updateDoc, getDoc, getDocs } from "firebase/firestore"
 import { db, storage } from "../../../Database/Firebase"; 
 import { useParams, useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import { decrypt } from "../../../Auth/Cryptography_Rotes";
 
 const EditarPerfil = () => {
   // Função de navegação do site
   const navigate = useNavigate();
   // Utilizado para pegar o id do usuario e da vaga na tela anterior
   const { id } = useParams();
-  const [userId, setUserId] = useState(id);
+  const decryptedId = decrypt(decodeURIComponent(id))
+  const [userId, setUserId] = useState(decryptedId);
 
   // Informações do usuario
   const [userData, setUserProfile] = useState({
@@ -25,8 +27,9 @@ const EditarPerfil = () => {
 
   // Carregar as informações do usuário do banco de dados
   useEffect(() => {
+    alert(decryptedId)
     const getUserProfile = async () => {
-      const userDoc = doc(db, "PCD", id);
+      const userDoc = doc(db, "PCD", decryptedId);
       const GetUser = await getDoc(userDoc);
       if (GetUser.exists()) {
         setUserProfile(GetUser.data());
@@ -36,7 +39,7 @@ const EditarPerfil = () => {
       }
     };
     getUserProfile();
-  }, [id]);
+  }, [decryptedId]);
 
   // Função para lidar com as mudanças nos inputs
   const handleInputChange = (e) => {

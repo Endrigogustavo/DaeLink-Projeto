@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { logout } from '../../../Auth/Auth';
-import { decrypt } from '../../../Auth/Cryptography_Rotes';
+import { decrypt, encrypt } from '../../../Auth/Cryptography_Rotes';
 
 
 function Profile() {
@@ -49,8 +49,10 @@ function Profile() {
         }
 
     }
+
     const EditProfile = (id) =>{
-        navigate(`/edituser/${id}`)
+        const encryptedId = encodeURIComponent(encrypt(id))
+        navigate(`/edituser/${encryptedId}`)
     }
 
     return (
@@ -97,7 +99,7 @@ function Profile() {
                         <div class="sm:block hidden">
                             <button
                                 type="button"
-                                onClick={() => EditProfile(id)}
+                                onClick={() => EditProfile(decryptedId)}
                                 class="flex button-profile -mt-12 w-auto cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 transition hover:border-gray-300 focus:border-gray-300 focus:outline-none focus:ring-0"
                             >
                                 Editar Perfil
