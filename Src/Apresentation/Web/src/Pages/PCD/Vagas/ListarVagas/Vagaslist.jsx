@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../../Database/Firebase';
+
 import { doc, getDoc, getDocs, collection, query, where } from 'firebase/firestore';
 import { decrypt, encrypt } from '../../../../Secutity/Cryptography_Rotes';
 
@@ -11,10 +12,12 @@ const Vagaslist = () => {
     const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
-    const decryptedId = decrypt(decodeURIComponent(id))
+    const decryptedId = decrypt(decodeURIComponent(id));
     const navigate = useNavigate();
+    const defaultempresaicon = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy7OOS70yj8sex-Sw9mgQOnJKzNsUN3uWZCw&s";
 
     useEffect(() => {
+        const decryptedId = decrypt(decodeURIComponent(id));
         const getUserProfile = async () => {
             const ProfileUser = doc(db, "PCD", decryptedId);
             const GetProfileUser = await getDoc(ProfileUser);
@@ -23,15 +26,14 @@ const Vagaslist = () => {
                 setUserId(GetProfileUser.id);
             } else {
                 setUserProfile(null);
-                alert("Nenhuma vaga encontrada!");
+                alert("Nenhum usuário encontrado");
             }
         };
-
         getUserProfile();
     }, [decryptedId]);
 
+
     useEffect(() => {
-        alert(decryptedId)
         const getVagas = async () => {
             const VagasCollection = collection(db, "Vagas");
             const data = await getDocs(VagasCollection);
@@ -40,13 +42,13 @@ const Vagaslist = () => {
             const empresasTemp = {};
 
             await Promise.all(vagasArray.map(async (vaga) => {
-                const EmpresasCollection = collection(db, "Empresa");
-                const empresaQuery = query(EmpresasCollection, where("name", "==", vaga.empresa));
-                const empresaSnapshot = await getDocs(empresaQuery);
-
-                if (!empresaSnapshot.empty) {
-                    const empresaDoc = empresaSnapshot.docs[0];
-                    empresasTemp[vaga.empresa] = empresaDoc.data().imageUrl;
+                if (vaga.empresaId) {
+                    const empresaDoc = await getDoc(doc(db, "Empresa", vaga.empresaId));
+                    if (empresaDoc.exists()) {
+                        empresasTemp[vaga.empresaId] = empresaDoc.data().imageUrl;
+                    } else {
+                        console.log(`Empresa não encontrada para o ID: ${vaga.empresaId}`);
+                    }
                 }
             }));
 
@@ -59,8 +61,7 @@ const Vagaslist = () => {
     }, []);
 
     const handleButtonClick = (vagaId) => {
-        alert(vagaId)
-        const encryptedVaga = encrypt(vagaId)
+        const encryptedVaga = encrypt(vagaId);
         navigate(`/entrarvaga/${encodeURIComponent(encryptedVaga)}`);
     };
 
@@ -73,10 +74,10 @@ const Vagaslist = () => {
             ) : (
                 Array.isArray(vagas) && vagas.length > 0 ? (
                     vagas.map((vaga) => (
-                        <div key={vaga.id} className='h-vagacard shadow-xl w-96 bg-gray-800 rounded-2xl flex border-2 overflow-hidden '>
+                        <div key={vaga.id} className='h-vagacard w-vagacard shadow-xl bg-gray-800 rounded-2xl flex border-2 overflow-hidden '>
                             <div className='flex flex-col h-full w-2/6 justify-center items-center gap-1'>
                                 <img
-                                    src={empresas[vaga.empresa] || 'default-image-url.jpg'}
+                                    src={empresas[vaga.empresaId] || defaultempresaicon}
                                     className="w-12 h-12 object-cover rounded-full border-2 border-blue-600 "
                                     alt="logo empresa"
                                 />

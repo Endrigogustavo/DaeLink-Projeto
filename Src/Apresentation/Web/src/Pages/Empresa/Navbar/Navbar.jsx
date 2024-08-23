@@ -77,7 +77,7 @@ export default function Navbar() {
                         {loading ? (
                             <div className="w-8 h-8 rounded-full bg-gray-300"></div> // Placeholder enquanto carrega
                         ) : userProfile?.imageUrl ? (
-                            <img src={userProfile.imageUrl} alt="Profile" className="w-8 h-8 rounded-full border-2 border-blue-500 rounded-full" />
+                            <img src={userProfile.imageUrl} alt="Profile" className="w-8 h-8 rounded-full" />
                         ) : (
                             <div className="w-8 h-8 rounded-full bg-gray-300"></div> // Placeholder se não houver imagem
                         )}
