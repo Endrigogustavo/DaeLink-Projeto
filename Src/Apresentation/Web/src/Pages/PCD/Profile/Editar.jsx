@@ -3,7 +3,7 @@ import { doc, collection, updateDoc, getDoc, getDocs } from "firebase/firestore"
 import { db, storage } from "../../../Database/Firebase"; 
 import { useParams, useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
-import { decrypt } from "../../../Auth/Cryptography_Rotes";
+import { decrypt } from "../../../Secutity/Cryptography_Rotes";
 
 const EditarPerfil = () => {
   // Função de navegação do site

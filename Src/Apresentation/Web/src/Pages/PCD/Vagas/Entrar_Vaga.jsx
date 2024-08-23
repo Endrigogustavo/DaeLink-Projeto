@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { doc, updateDoc, arrayUnion, collection, addDoc } from "firebase/firestore";
 import { auth, db } from "../../../Database/Firebase";
 import { useParams, useNavigate } from 'react-router-dom';
-import { decrypt } from "../../../Auth/Cryptography_Rotes";
+import { decrypt } from "../../../Secutity/Cryptography_Rotes";
 import { onAuthStateChanged } from 'firebase/auth';
 
 const EntrarVaga = () => {

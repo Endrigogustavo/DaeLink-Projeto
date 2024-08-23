@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { logout } from '../../../Auth/Auth';
-import { decrypt, encrypt } from '../../../Auth/Cryptography_Rotes';
+import { decrypt, encrypt } from '../../../Secutity/Cryptography_Rotes';
 
 
 function Profile() {

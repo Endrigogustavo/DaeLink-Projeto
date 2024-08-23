@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { decrypt } from '../../../Auth/Cryptography_Rotes';
+import { decrypt, encrypt } from '../../../Secutity/Cryptography_Rotes';
 function Visualizar_Processo() {
     //Utilizado para pegar o id do usuario na tela anterior
     const { encryptedId } = useParams();
@@ -61,6 +61,7 @@ function Visualizar_Processo() {
 
     //Botão para is para a tela de enviar documento, enviando o ID do usuario e o da vaga
     const EnviarDoc = (vagaId) => {
+        const encryptedId = encodeURIComponent(encrypt(decryptedId))
         navigate(`/enviardocumento/${encryptedId}/${vagaId}`);
     };
 
