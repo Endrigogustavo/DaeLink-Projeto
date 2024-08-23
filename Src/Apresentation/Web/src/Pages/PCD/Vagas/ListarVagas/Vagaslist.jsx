@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../../Database/Firebase';
 import { doc, getDoc, getDocs, collection, query, where } from 'firebase/firestore';
-import { decrypt, encrypt } from '../../../../Auth/Cryptography_Rotes';
+import { decrypt, encrypt } from '../../../../Secutity/Cryptography_Rotes';
 
 const Vagaslist = () => {
     const [userId, setUserId] = useState("");

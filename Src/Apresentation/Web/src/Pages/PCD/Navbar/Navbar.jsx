@@ -7,7 +7,7 @@ import { IoSearch } from "react-icons/io5";
 import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { encrypt } from '../../../Auth/Cryptography_Rotes';
+import { encrypt } from '../../../Secutity/Cryptography_Rotes';
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
