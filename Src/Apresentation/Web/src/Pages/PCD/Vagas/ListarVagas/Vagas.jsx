@@ -7,7 +7,7 @@ import Navbar from '../../Navbar/Navbar';
 import VagasPage from './VagasPage';
 
 function Vagas() {
-
+	
 	return (
 		<>
 			<Navbar />
