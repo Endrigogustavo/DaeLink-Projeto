@@ -4,6 +4,7 @@ import { FiMenu } from 'react-icons/fi';
 import { IoCloseOutline, IoSearch } from 'react-icons/io5';
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
+
 import { encrypt, decrypt } from '../../../Auth/Cryptography_Rotes';
 
 export default function Navbar() {

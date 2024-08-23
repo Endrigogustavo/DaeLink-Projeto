@@ -9,6 +9,7 @@ const AddDocumentoForm = () => {
   const navigate = useNavigate();
   //Utilizado para pegar o id do usuario e da vaga na tela anterior
   const { id, vagaId } = useParams();
+
   const [userId, setUserId] = useState(id);
   const [vagaUid, setVagaUid] = useState(vagaId);
 
