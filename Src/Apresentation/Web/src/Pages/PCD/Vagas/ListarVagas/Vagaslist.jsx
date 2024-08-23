@@ -16,6 +16,7 @@ const Vagaslist = () => {
     const defaultempresaicon = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy7OOS70yj8sex-Sw9mgQOnJKzNsUN3uWZCw&s";
 
     useEffect(() => {
+        const decryptedId = decrypt(decodeURIComponent(id));
         const getUserProfile = async () => {
             const ProfileUser = doc(db, "PCD", decryptedId);
             const GetProfileUser = await getDoc(ProfileUser);
@@ -24,12 +25,12 @@ const Vagaslist = () => {
                 setUserId(GetProfileUser.id);
             } else {
                 setUserProfile(null);
-                alert("Nenhuma vaga encontrada!");
+                alert("Nenhum usuário encontrado");
             }
         };
-
         getUserProfile();
     }, [decryptedId]);
+
 
     useEffect(() => {
         const getVagas = async () => {
@@ -75,7 +76,7 @@ const Vagaslist = () => {
                         <div key={vaga.id} className='h-vagacard w-vagacard shadow-xl bg-gray-800 rounded-2xl flex border-2 overflow-hidden '>
                             <div className='flex flex-col h-full w-2/6 justify-center items-center gap-1'>
                                 <img
-                                    src={empresas[vaga.empresaId] || defaulticon}
+                                    src={empresas[vaga.empresaId] || defaultempresaicon}
                                     className="w-12 h-12 object-cover rounded-full border-2 border-blue-600 "
                                     alt="logo empresa"
                                 />
