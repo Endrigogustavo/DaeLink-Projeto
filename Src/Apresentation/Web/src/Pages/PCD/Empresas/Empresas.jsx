@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { encrypt } from '../../../Secutity/Cryptography_Rotes';
+import { encrypt } from '../../../Security/Cryptography_Rotes';
 
 function Empresas() {
     //Variaveis onde as informações serão setadas

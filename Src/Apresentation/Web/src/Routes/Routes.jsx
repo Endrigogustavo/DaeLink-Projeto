@@ -34,7 +34,7 @@ import EditarUser from '../Pages/PCD/Profile/Editar';
 import VisualizarPerfilEmpresa from '../Pages/PCD/Profile/PerfilEmpresa';
 import ChatPCD from '../Pages/PCD/Chat/Chat';
 
-import PrivateRoute from '../Secutity/PrivateRoute';
+import PrivateRoute from '../Security/PrivateRoute';
 
 function App() {
   return (
