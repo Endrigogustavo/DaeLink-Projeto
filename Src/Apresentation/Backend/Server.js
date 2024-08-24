@@ -28,15 +28,37 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
+app.use(express.json());
 
 app.get('/', (req, res) => {
-console.log("foi")
+  console.log("foi")
 })
 
-app.put('/documentos/', async (req, res) => {
-   
+app.post('/criarvaga/:id', async (req, res) => {
+  const ID = req.params.id
+try {
+  db.collection("Vagas").add({
+    vaga: req.body.vaga,
+    detalhes:req.body.detalhes,
+    area: req.body.area,
+    empresa: req.body.empresa,
+    salario: req.body.salario,
+    tipo: req.body.tipo,
+    local: req.body.local,
+    exigencias: req.body.exigencias,
+    empresaId: ID,
+  })
+  
+  return res.json("Created")
+
+} catch (error) {
+  console.log("Erro ao add:", error)
+  if(err) return res.json(err);
+}
+  
+
 })
+
 
 
 

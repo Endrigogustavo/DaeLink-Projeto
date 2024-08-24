@@ -4,6 +4,7 @@ import { db , auth} from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { registerVaga } from '../../../Auth/Auth';
 
+import axios from 'axios'
 const RegisterVaga = () => {
   //Pegar o id do usuario na tela anterior
   const { id } = useParams();
@@ -46,16 +47,20 @@ const RegisterVaga = () => {
   }, [id]);
 
   //Botão de registrar vaga
-  const handleRegister = async () => {
+  const handleRegister = async (event) => {
+    event.preventDefault();
     const user = auth.currentUser; 
     //Função registrar vaga que esta no Auth.jsx enviando parametros do form
-    const success = await registerVaga(tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId);
-    if (success) {
-      alert("Vaga Cadastrada com sucesso");
+
+    axios.post('http://localhost:3000/criarvaga/'+id, {tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId})
+    .then(res =>{
+      alert("Vaga criada com sucesso")
       navigate(`/homeempresa/${id}`);
-    } else {
+    })
+    .catch(err =>{
+      console.log(err)
       alert("Falha ao criar uma vaga, tente novamente.");
-    }
+    })
   };
 
   return (
