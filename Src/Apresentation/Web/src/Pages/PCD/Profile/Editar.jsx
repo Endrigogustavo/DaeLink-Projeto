@@ -5,6 +5,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { decrypt } from "../../../Security/Cryptography_Rotes";
 
+import axios from 'axios'
+
 const EditarPerfil = () => {
   // Função de navegação do site
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ const EditarPerfil = () => {
 
   // Carregar as informações do usuário do banco de dados
   useEffect(() => {
+    alert(userData.name)
     alert(decryptedId)
     const getUserProfile = async () => {
       const userDoc = doc(db, "PCD", decryptedId);
@@ -53,23 +56,17 @@ const EditarPerfil = () => {
   // Botão para guardar as informações no banco
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const PCDdoc = doc(db, "PCD", userId);
 
-      await updateDoc(PCDdoc, {
-        name: userData.name,
-        email: userData.email,
-        trabalho: userData.trabalho,
-        descrição: userData.descrição,
-        sobre: userData.sobre,
-        experiencias: userData.experiencias,
-        idade: userData.idade,
-        userId: userId,
-        deficiencia: userData.deficiencia,
-      });
-
-      alert("Conta atualizada com sucesso!");
-      navigate(`/userprofile/${userId}`);
+      axios.post('https://localhost:3000/updateprofile/'+decryptedId, {userData})
+     .then(res =>{
+      alert("Perfil atualizado com sucesso")
+     })
+     .catch(err =>{
+      console.log(err)
+      alert("Falha ao criar uma vaga, tente novamente.");
+    })
     } catch (e) {
       console.error("Erro ao adicionar documento: ", e);
       alert("Erro ao adicionar documento.");
