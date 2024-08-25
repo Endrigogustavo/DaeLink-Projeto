@@ -8,6 +8,8 @@ import Logout from '../Pages/Login/Logout';
 import Homeuser from '../Pages/PCD/Home/Home';
 import Homeempresa from '../Pages/Empresa/Home/Home';
 
+import Error404 from  '../Pages/Error/TelaErro404'
+
 import LoginE from '../Pages/Login/LoginEmpresa';
 import CadastroEmpresa from '../Pages/Cadastro/CadastroEmpresa';
 import CadastrarVaga from '../Pages/Empresa/Vagas/CriarVagas';
@@ -42,6 +44,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path='*' element={<Error404/>} />
 
         {/* Rotas privadas da empresa */}
         <Route path="/" element={<PrivateRoute allowedRoles={['Empresa']} />}>
