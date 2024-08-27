@@ -5,6 +5,7 @@ import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { logout } from '../../../Auth/Auth';
 import { decrypt } from '../../../Security/Cryptography_Rotes';
+import CarregamentoTela from "../../../Components/TelaCarregamento/Carregamento"
 
 
 function Profile() {
@@ -36,7 +37,7 @@ function Profile() {
     }, [decryptedId]);
 
     if (!userProfile) {
-        return <div>Loading...</div>;
+        return <CarregamentoTela/>;
     }
 
 

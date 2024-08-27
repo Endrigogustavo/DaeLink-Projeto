@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import axios from 'axios';
 import { doc, getDoc, collection, addDoc } from 'firebase/firestore';
+import CarregamentoTela from '../../../Components/TelaCarregamento/Carregamento';
 
 function Profile() {
     //Pegar o id do usuario na tela anterior
@@ -54,7 +55,7 @@ function Profile() {
 
     //Tela de carregamento
     if (!userProfile) {
-        return <div>Loading...</div>;
+        return <CarregamentoTela/>;
     }
 
     //Botão para adicionar uma pessoa a vaga

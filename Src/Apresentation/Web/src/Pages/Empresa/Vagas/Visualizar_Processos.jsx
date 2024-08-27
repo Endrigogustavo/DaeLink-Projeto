@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../../Database/Firebase';
+import CarregamentoTela from "../../../Components/TelaCarregamento/Carregamento"
 
 function Visualizar_Processo() {
     //Pegar o id do usuario na tela anterior
@@ -44,7 +45,7 @@ function Visualizar_Processo() {
     }, [id]);
 
     if (loading) {
-        return <div>Carregando...</div>;
+        return <CarregamentoTela/>;
     }
 
     if (vagas.length === 0) {

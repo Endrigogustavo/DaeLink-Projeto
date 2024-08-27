@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { logout } from '../../../Auth/Auth';
+import CarregamentoTela from '../../../Components/TelaCarregamento/Carregamento';
 
 
 function Profile() {
@@ -33,7 +34,7 @@ function Profile() {
     }, [id]);
 
     if (!userProfile) {
-        return <div>Loading...</div>;
+        return <CarregamentoTela/>;
     }
 
     function LogoutProfile() {

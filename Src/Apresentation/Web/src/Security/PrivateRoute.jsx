@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { onAuthChange, getUserData } from '../Auth/Auth'; 
+import CarregamentoTela from "../Components/TelaCarregamento/Carregamento"
 
 const PrivateRoute = ({ allowedRoles }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -29,7 +30,7 @@ const PrivateRoute = ({ allowedRoles }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <CarregamentoTela/>;
   }
 
   if (!isAuthenticated) {
