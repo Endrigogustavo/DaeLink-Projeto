@@ -51,9 +51,14 @@ export default function Navbar() {
     }, [id, decryptedId]); // Dependências do id e decryptedId
 
     // Função para navegar para a tela de vagas
-    const handleButtonClick = (id) => {
+    const handleButtonClickVagas = (id) => {
         const encryptedId = encrypt(id);
         navigate(`/homeuser/vagas/${encodeURIComponent(encryptedId)}`);
+    };
+
+    const handleButtonClickEmpresas = (id) => {
+        const encryptedId = encrypt(id);
+        navigate(`/homeuser/empresas/${encodeURIComponent(encryptedId)}`);
     };
 
     // Função para navegar para a tela de processos
@@ -71,8 +76,8 @@ export default function Navbar() {
     const Navlinks = () => (
         <>
             <button onClick={() => handleButtonClickProcess(userId)}>Processos</button>
-            <button onClick={() => handleButtonClick(userId)}>Vagas</button>
-            <NavLink to="/empresas">Empresas</NavLink>
+            <button onClick={() => handleButtonClickVagas(userId)}>Vagas</button>
+            <button onClick={() => handleButtonClickEmpresas(userId)}>Empresas</button>
         </>
     );
 

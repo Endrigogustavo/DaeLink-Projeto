@@ -8,7 +8,7 @@ import Logout from '../Pages/Login/Logout';
 import Homeuser from '../Pages/PCD/Home/Home';
 import Homeempresa from '../Pages/Empresa/Home/Home';
 
-import Error404 from  '../Pages/Error/TelaErro404'
+import Error404 from '../Pages/Error/TelaErro404'
 
 import LoginE from '../Pages/Login/LoginEmpresa';
 import CadastroEmpresa from '../Pages/Cadastro/CadastroEmpresa';
@@ -44,7 +44,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path='*' element={<Error404/>} />
+        <Route path='*' element={<Error404 />} />
 
         {/* Rotas privadas da empresa */}
         <Route path="/" element={<PrivateRoute allowedRoles={['Empresa']} />}>
@@ -56,7 +56,7 @@ function App() {
           <Route path="/processos/:id" element={<VisualizarProcessosEmpresa />} />
           <Route path="/visualizarpessoas/:vagaId" element={<VisualizarPessoasVaga />} />
           <Route path="/visualizardocumentos/:id/:vagaId" element={<VisualizarDocumentos />} />
-          <Route path="/editempresa/:id" element={<EditEmpresa />}/>
+          <Route path="/editempresa/:id" element={<EditEmpresa />} />
           <Route path="/perfilempresa/:id" element={<PerfilEmpresa />} />
           <Route path="/chat/:id/:idempresa" element={<ChatEmpresa />} />
         </Route>
@@ -72,19 +72,20 @@ function App() {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/homeuser/:id" element={<Homeuser />} />
           <Route path="/homeuser/vagas/:id" element={<Vagas />} />
+          <Route path="/homeuser/empresas/:id" element={<Empresas />} />
           <Route path="/entrarvaga/:vaga" element={<EntrarVaga />} />
           <Route path="/enviardocumento/:id/:vagaId" element={<EnviarDocumentos />} />
           <Route path="/homeuser/processos/:encryptedId" element={<VisualizarProcessosUser />} />
-          <Route path="/userprofile/:id" element={<Profile/>}/>
-          <Route path="/edituser/:id" element={<EditarUser/>}/>
-          <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa/>}/>
+          <Route path="/userprofile/:id" element={<Profile />} />
+          <Route path="/edituser/:id" element={<EditarUser />} />
+          <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa />} />
           <Route path="/chatpcd/:id/:empresaId" element={<ChatPCD />} />
         </Route>
 
         {/* Rotas livres do usuario */}
         <Route path="/vagas" element={<Vagas />} />
         <Route path="/cadastrouser" element={<CadastroUser />} />
-        <Route path="/empresas" element={<Empresas />} />
+        <Route path="/empresas/" element={<Empresas />} />
         <Route path="/loginu" element={<LoginU />} />
 
       </Routes>
