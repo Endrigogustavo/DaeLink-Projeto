@@ -49,7 +49,7 @@ function App() {
         {/* Rotas privadas da empresa */}
         <Route path="/" element={<PrivateRoute allowedRoles={['Empresa']} />}>
           <Route path="/homeempresa/cadastrovaga/:id" element={<CadastrarVaga />} />
-          <Route path="/candidatos/:id" element={<Candidatos />} />
+          <Route path="/candidatos/:idempresa" element={<Candidatos />} />
           <Route path="/homeempresa/:id" element={<Homeempresa />} />
           <Route path='/addpessoa/:id/' element={<AddPessoa />} />
           <Route path="/profileadd/:id/:idempresa" element={<ProfileAdd />} />
