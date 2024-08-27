@@ -1,0 +1,38 @@
+.Empresascontainer {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width:1200px) {
+    .Empresascontainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width:800px) {
+    .Empresascontainer {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}
+
+
+
+
+
+
+
+.loader {
+    border-top-color: #3498db;
+    animation: spin 1s ease-in-out infinite;
+}
+
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
