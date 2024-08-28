@@ -16,6 +16,8 @@
 
 /*HeroContainer*/
 
+
+
 .h-vagashero{
     height: 60vh;
 }
@@ -26,7 +28,7 @@
         flex-direction: column;
     }
 
-    .containder-side{
+    .container-side{
         width: 100%;
     }
 
@@ -42,6 +44,8 @@
 
 
 /*Vagas Card*/
+
+
 .h-vagacard{
     height: 12.8rem;
 }

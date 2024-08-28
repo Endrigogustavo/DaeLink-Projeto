@@ -1,5 +1,5 @@
 .Empresascontainer {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 @media (max-width:1200px) {
@@ -14,8 +14,16 @@
     }
 }
 
+.empresa-item {
+    opacity: 0;
+    transform: translateY(20px);
+}
 
-
+.empresa-item.fadeIn {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
 
 
 
@@ -34,5 +42,32 @@
 
     100% {
         transform: rotate(360deg);
+    }
+}
+
+/*Empresas Banner*/
+
+.h-empresashero{
+    height: 60vh;
+}
+
+
+@media (max-width:900px){
+    .h-empresashero{
+        height: fit-content;
+        flex-direction: column;
+    }
+
+    .container-side{
+        width: 100%;
+    }
+
+    .imgcontainer {
+        height: 26rem;
+    }
+
+    .text-side {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
 }
