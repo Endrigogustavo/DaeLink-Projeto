@@ -26,7 +26,7 @@ import ChatEmpresa from '../Pages/Empresa/Chat/Chat';
 
 import LoginU from '../Pages/Login/LoginUser';
 import CadastroUser from '../Pages/Cadastro/CadastrarUser';
-import EntrarVaga from '../Pages/PCD/Vagas/Entrar_Vaga';
+import EntrarVaga from '../Pages/PCD/Vagas/EntrarVaga/Entrar_Vaga';
 import VisualizarProcessosUser from '../Pages/PCD/Vagas/Visualizar_Processos';
 import EnviarDocumentos from '../Pages/PCD/Vagas/Enviar_documentos';
 import Profile from '../Pages/PCD/Profile/Profile';

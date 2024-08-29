@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { doc, updateDoc, arrayUnion, collection, addDoc } from "firebase/firestore";
-import { auth, db } from "../../../Database/Firebase";
+import { auth, db } from "../../../../Database/Firebase";
 import { useParams, useNavigate } from 'react-router-dom';
-import { decrypt } from "../../../Security/Cryptography_Rotes";
+import { decrypt } from "../../../../Security/Cryptography_Rotes";
 import { onAuthStateChanged } from 'firebase/auth';
 
-const EntrarVaga = () => {
+const VagaForm = () => {
   //Função de navegação do site
   const navigate = useNavigate();
   //Utilizado para pegar o id do usuario e da vaga na tela anterior
@@ -85,33 +85,44 @@ const EntrarVaga = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <input
-          type="hidden"
-          value={pessoaId}
-          onChange={(e) => setPessoaId(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Nome</label>
-        <input
-          type="text"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>email de contato:</label>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <button type="submit">Adicionar Pessoa</button>
-    </form>
-  );
+    <>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center">
+          <input
+            type="hidden"
+            value={pessoaId}
+            onChange={(e) => setPessoaId(e.target.value)}
+          />
+
+        <div className="flex flex-col">
+          <label className="text-lg font-medium">Nome</label>
+          <input
+            type="text"
+            className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
+            placeholder="Insira seu Nome Completo"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label className="text-lg font-medium">Email</label>
+          <input
+            type="text"
+            className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
+            placeholder="Insira seu Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <button type="submit" className="w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all"
+        >Candidatar-se</button>
+      </form>
+
+
+
+
+    </>
+  )
 };
 
-export default EntrarVaga;
+export default VagaForm;

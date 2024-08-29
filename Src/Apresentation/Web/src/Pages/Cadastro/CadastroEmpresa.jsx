@@ -115,7 +115,7 @@ const Register = () => {
               <input id="background-image-input" type="file" className='hidden' accept="image/*" onChange={(e) => setBackgroundImage(e.target.files[0])} />
             </div>
 
-            <div className="flex flex-col px-4">
+            <div className="flex flex-col ">
               <label className="text-lg font-medium">Nome da empresa</label>
               <input
                 type="text"
