@@ -4,6 +4,8 @@ import { db } from '../../../../Database/Firebase';
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
 import { decrypt, encrypt } from '../../../../Security/Cryptography_Rotes';
 
+import { FaSquareXmark } from "react-icons/fa6";
+
 const Vagaslist = () => {
     const [userId, setUserId] = useState("");
     const [vagas, setVagas] = useState([]);

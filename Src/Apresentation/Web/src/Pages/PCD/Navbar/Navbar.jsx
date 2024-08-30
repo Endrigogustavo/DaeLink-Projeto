@@ -14,8 +14,9 @@ export default function Navbar() {
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
-    const { id } = useParams(); // Obtendo o id da URL
-    const decryptedId = decrypt(decodeURIComponent(id)); // Descriptografa o id
+    const { id, encryptedId } = useParams(); // Obtendo o id e o encryptedId da URL
+    const decryptedId = id ? decrypt(decodeURIComponent(id)) : null; // Descriptografa o id, se disponível
+    const decryptedEncryptedId = encryptedId ? decrypt(decodeURIComponent(encryptedId)) : null; // Descriptografa o encryptedId, se disponível
 
     // Função para alternar o menu de navegação
     const toggleNavbar = () => {
@@ -25,8 +26,8 @@ export default function Navbar() {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                // Tenta obter o perfil usando o id descriptografado
-                let idToUse = decryptedId || id;
+                // Tenta obter o perfil usando o decryptedId, id, ou decryptedEncryptedId
+                let idToUse = decryptedId || id || decryptedEncryptedId;
                 if (idToUse) {
                     const PCDdoc = doc(db, "PCD", idToUse);
                     const GetPCDInfo = await getDoc(PCDdoc);
@@ -48,7 +49,7 @@ export default function Navbar() {
         };
 
         fetchProfile();
-    }, [id, decryptedId]); // Dependências do id e decryptedId
+    }, [id, decryptedId, decryptedEncryptedId]); // Dependências do id, decryptedId, e decryptedEncryptedId
 
     // Função para navegar para a tela de vagas
     const handleButtonClickVagas = (id) => {
