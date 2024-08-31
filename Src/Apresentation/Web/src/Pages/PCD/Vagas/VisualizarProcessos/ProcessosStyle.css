@@ -16,9 +16,28 @@
 
 /*Processos Cards*/
 .h-processocard{
-    height: 15.8rem;
+    height: 16rem;
 }
 
 .w-processocard{
     width: 23rem;
+}
+
+
+
+/*Vagas Container*/
+.Processoscontainer{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width:1200px){
+    .Processoscontainer{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width:800px){
+    .Processoscontainer{
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
 }

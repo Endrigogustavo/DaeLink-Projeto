@@ -13,6 +13,9 @@ const ProcessosList = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+    const defaultempresaicon = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy7OOS70yj8sex-Sw9mgQOnJKzNsUN3uWZCw&s";
+    const defaultempresawallpaper = "https://c4.wallpaperflare.com/wallpaper/251/165/174/building-lights-usa-night-wallpaper-preview.jpg";
+
     useEffect(() => {
         const GetVagas = async () => {
             try {
@@ -75,7 +78,7 @@ const ProcessosList = () => {
 
     return (
         <>
-            <div className='h-fit w-full grid gap-4 justify-items-center items-center py-4'>
+            <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : 'grid Processoscontainer gap-4 justify-items-center items-center pb-4'}`}>
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
@@ -84,30 +87,33 @@ const ProcessosList = () => {
                     Array.isArray(vagas) && vagas.length > 0 ? (
                         vagas.map((vaga) => {
                             return (
-                                <div key={vaga.id} className='h-processocard w-processocard shadow-xl bg-gray-800 rounded-2xl flex flex-col border-2 overflow-hidden'>
+                                <div key={vaga.id} className='h-processocard w-processocard  shadow-xl bg-gray-800 rounded-2xl flex  border-2 overflow-hidden'>
                                     {/* Render empresa details */}
                                     {vaga.empresa && (
-                                        <div className='w-full h-3/6 flex flex-col items-center justify-center gap-3'>
-                                            <img src={vaga.empresa.imageProfile} alt="Empresa Profile" className='w-full h-full relative object-cover opacity-80' />
-                                            <img src={vaga.empresa.imageUrl} alt="Empresa Logo" className='rounded-full w-24 h-24 object-cover absolute border-blue-500 border-4' />
+                                        <div className='flex flex-col h-full w-2/6 justify-center items-center relative'>
+                                            <img src={vaga.empresa.imageProfile || defaultempresawallpaper} alt="Empresa Profile" className='w-full h-full relative object-cover opacity-80' />
+                                            <img src={vaga.empresa.imageUrl || defaultempresaicon} alt="Empresa Logo" className='rounded-full w-24 h-24 object-cover absolute border-blue-500 border-4' />
+                                            <h1 className='font-medium text-white text-center text-lg'>{vaga.empresa.name}</h1>
                                         </div>
                                     )}
                                     {
                                         <>
-                                            <div className="w-full flex flex-col justify-center">
-                                                <h1 className='font-medium text-xl text-center text-white'>{vaga.vaga}</h1>
-                                                <p className='text-white opacity-80 text-sm px-4 truncate'>Cod-Vaga: {vaga.id} </p>
-                                                <p className='text-white opacity-80 text-sm px-4 truncate'>Tipo: {vaga.tipo}  </p>
-                                                <p className='text-white opacity-80 text-sm px-4 truncate'>Salário: {vaga.salario}</p>
-                                            </div>
-                                            <div className='w-full flex justify-center'>
-                                                <button
-                                                    onClick={() => EnviarDoc(vaga.id)}
-                                                    type="submit"
-                                                    className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
-                                                >
-                                                    Enviar Documentos
-                                                </button>
+                                            <div className='flex flex-col bg-gray-900 rounded-2xl h-full w-4/6 justify-center items-center overflow-hidden gap-2'>
+                                                <div className="w-full flex flex-col justify-center gap-1 ">
+                                                    <h1 className='font-medium text-xl text-center text-white'>{vaga.vaga}</h1>
+                                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Cod-Vaga: {vaga.id} </p>
+                                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Tipo: {vaga.tipo}  </p>
+                                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Salário: {vaga.salario}</p>
+                                                </div>
+                                                <div className='w-full flex justify-center'>
+                                                    <button
+                                                        onClick={() => EnviarDoc(vaga.id)}
+                                                        type="submit"
+                                                        className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
+                                                    >
+                                                        Enviar Documentos
+                                                    </button>
+                                                </div>
                                             </div>
                                         </>
                                     }
