@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Configurar o Firebase
-cred_path = os.path.join(os.path.dirname(__file__), 'Database/daelink-projeto-firebase-adminsdk-knxeu-b9eef02b6f.json')
+cred_path = os.path.join(os.path.dirname(__file__), 'Database/FirebaseDaeLink.json')
 
 if not os.path.exists(cred_path):
     print("Arquivo de credenciais não encontrado. Verifique o caminho.")

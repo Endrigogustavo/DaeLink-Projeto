@@ -79,7 +79,7 @@ function App() {
           <Route path="/userprofile/:id" element={<Profile />} />
           <Route path="/edituser/:id" element={<EditarUser />} />
           <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa />} />
-          <Route path="/chatpcd/:id/:empresaId" element={<ChatPCD />} />
+          <Route path="/chatpcd/:encryptedId/:empresaId" element={<ChatPCD />} />
         </Route>
 
         {/* Rotas livres do usuario */}

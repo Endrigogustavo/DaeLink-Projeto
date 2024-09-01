@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { auth, db } from "../../../Database/Firebase"
 import { addDoc, collection, orderBy, query, where, serverTimestamp , limit, getDocs} from "firebase/firestore";
 import { useState, useRef, useEffect } from "react";
+import { decrypt } from "../../../Security/Cryptography_Rotes";
 
 const App = () => {
     const [user] = useAuthState(auth)
@@ -23,16 +24,19 @@ const App = () => {
 export default App;
 
 const ChatRoom = () => {
-    const { id, empresaId } = useParams();
+    
+    const { encryptedId, empresaId } = useParams();
+    const decryptedId = decodeURIComponent(decrypt(encryptedId))
     const dummy = useRef();
     const [messages, setMessages] = useState([]);
     const [formValue, setFormValue] = useState("");
     const [messageRef, setMessageRef] = useState(null);
 
     useEffect(() => {
+        alert(decryptedId)
         const GetChatMessage = async () => {
             const ChatCollection = collection(db, "Chat");
-            const GetQueryPCDId = query(ChatCollection, where("userId", "==",  id));
+            const GetQueryPCDId = query(ChatCollection, where("userId", "==",  decryptedId));
             const GetQueryCompanyId = query(GetQueryPCDId, where("empresaId", "==", empresaId));
             const GetChatWithCompanyAndPCD = await getDocs(GetQueryCompanyId);
             
@@ -50,7 +54,7 @@ const ChatRoom = () => {
         };
 
         GetChatMessage();
-    }, [id]);
+    }, [decryptedId]);
 
     const CreateNewMessage = async (e) => {
         e.preventDefault();
