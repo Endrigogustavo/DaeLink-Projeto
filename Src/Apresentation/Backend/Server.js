@@ -56,6 +56,8 @@ try {
 }
 })
 
+
+
 app.post('/criarvaga/:id', async (req, res) => {
   const ID = req.params.id
 try {
