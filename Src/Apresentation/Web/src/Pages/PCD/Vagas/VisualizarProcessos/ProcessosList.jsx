@@ -113,7 +113,7 @@ const ProcessosList = () => {
                                                         type="submit"
                                                         className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
                                                     >
-                                                        CHAT
+                                                        Chat
                                                     </button>
                                                     <button
                                                         onClick={() => EnviarDoc(vaga.id)}

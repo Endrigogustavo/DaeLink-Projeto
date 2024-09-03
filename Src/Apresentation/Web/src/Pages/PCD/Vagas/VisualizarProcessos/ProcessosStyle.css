@@ -14,6 +14,36 @@
     }
 }
 
+
+/**/
+
+
+.h-processoshero{
+    height: 60vh;
+}
+
+@media (max-width:900px){
+    .h-processoshero{
+        height: fit-content;
+        flex-direction: column;
+    }
+
+    .container-side{
+        width: 100%;
+    }
+
+    .imgcontainer {
+        height: 26rem;
+    }
+
+    .text-side {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
+
+
+
 /*Processos Cards*/
 .h-processocard{
     height: 16rem;

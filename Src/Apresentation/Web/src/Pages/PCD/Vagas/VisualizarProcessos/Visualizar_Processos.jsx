@@ -5,14 +5,15 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { decrypt, encrypt } from '../../../../Security/Cryptography_Rotes';
 import CarregamentoTela from "../../../../Components/TelaCarregamento/Carregamento"
 import "./ProcessosStyle.css";
+import Navbar from '../../Navbar/Navbar';
 import Processos_Page from './ProcessosPage';
 
 
 function Visualizar_Processo() {
     return (
         <>
-            <Processos_Page/>
-            
+            <Navbar />
+            <Processos_Page />
         </>
     );
 }
