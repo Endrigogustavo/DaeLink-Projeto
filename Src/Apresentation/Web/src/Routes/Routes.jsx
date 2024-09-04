@@ -28,7 +28,7 @@ import LoginU from '../Pages/Login/LoginUser';
 import CadastroUser from '../Pages/Cadastro/CadastrarUser';
 import EntrarVaga from '../Pages/PCD/Vagas/EntrarVaga/Entrar_Vaga';
 import VisualizarProcessosUser from '../Pages/PCD/Vagas/VisualizarProcessos/Visualizar_Processos';
-import EnviarDocumentos from '../Pages/PCD/Vagas/Enviar_documentos';
+import EnviarDocumentos from '../Pages/PCD/Vagas/EnviarDocumentos/Enviar_documentos';
 import Profile from '../Pages/PCD/Profile/Profile';
 import Empresas from '../Pages/PCD/Empresas/Empresas';
 import List from '../Components/Listar/Listar';
