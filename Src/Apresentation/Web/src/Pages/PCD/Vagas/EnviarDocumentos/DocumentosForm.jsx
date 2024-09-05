@@ -4,6 +4,7 @@ import { db, storage } from "../../../../Database/Firebase";
 import { useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import DocumentosStates from "./DocumentosStates";
+import { FaFile  } from "react-icons/fa6";
 
 const DocumentosForm = () => {
     const {
@@ -115,8 +116,23 @@ const DocumentosForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="w-full h-fit flex flex-col gap-2">
+        <>
+            <div className="h-64 w-full flex items-center justify-center">
+                <div className='w-3/12 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
+                    <div className='w-2/6 h-full flex items-center justify-center'>
+                        <FaFile  className='text-5xl text-gray-900  text-center' />
+                    </div>
+                    <div className='w-5/6 h-full flex items-center justify-center flex-col'>
+                        <p className='font-medium text-lg text-center'>Envio de Documentos</p>
+                        <p className='font-normal text-base text-left w-4/4'>Coloque aqueles que comprovem sua 
+                            Deficiência, Currículo, Dipliomas...
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <form onSubmit={handleSubmit} className="h-fit w-full grid grid-cols-2 gap-y-2 items-center justify-items-center py-8">
+
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Nome</label>
                     <input
@@ -172,22 +188,24 @@ const DocumentosForm = () => {
                         onChange={(e) => setIdade(e.target.value)}
                     />
                 </div>
-            </div>
 
-            <div className="flex flex-col mt-4">
-                <label className="text-lg font-medium">Documento:</label>
-                <input
-                    type="file"
-                    onChange={(e) => setDocumento(e.target.files[0])}
-                />
-            </div>
-            <button
-                type="submit"
-                className="mt-4 p-2 bg-blue-500 text-white rounded-full"
-            >
-                Adicionar Documento
-            </button>
-        </form>
+
+                <div className="flex flex-col mt-4">
+                    <label className="text-lg font-medium">Documento:</label>
+                    <input
+                        type="file"
+                        onChange={(e) => setDocumento(e.target.files[0])}
+                    />
+                </div>
+                <button
+                    type="submit"
+                    className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all"
+                >
+                    Adicionar Documentos
+                </button>
+            </form>
+        </>
+
     );
 };
 
