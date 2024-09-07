@@ -34,6 +34,7 @@ const ChatRoom = () => {
 
     useEffect(() => {
         alert(decryptedId)
+        alert(decryptedId)
         const GetChatMessage = async () => {
             const ChatCollection = collection(db, "Chat");
             const GetQueryPCDId = query(ChatCollection, where("userId", "==",  decryptedId));

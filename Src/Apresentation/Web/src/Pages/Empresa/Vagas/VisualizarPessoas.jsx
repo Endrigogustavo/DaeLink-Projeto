@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { collection, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../../../Database/Firebase';
+import { collection, getDocs, doc, getDoc, updateDoc, addDoc } from 'firebase/firestore';
+import { auth, db } from '../../../Database/Firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 
 function VisualizarPessoas() {
@@ -12,8 +13,23 @@ function VisualizarPessoas() {
   //Variaveis para setar dados do banco
   const [candidatos, setCandidatos] = useState([]);
   const [vaga, setVaga] = useState(null);
+  const [user, setUser] = useState(null);
   //Variavel para setar erros
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    //Pega os dados com base no perfil de empresa logado utilizando o auth do Firebase
+    const AuthProfile = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => AuthProfile();
+  }, []);
+
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
@@ -91,7 +107,7 @@ function VisualizarPessoas() {
   }
 
   const AceitarCandidato = async (id) => {
-    
+    alert(id)
     try {
       const situação = "Aprovado"
       const vagaRef = doc(db, "Vagas", vagaId, 'candidatos', id);
@@ -122,6 +138,20 @@ function VisualizarPessoas() {
     }
   };
 
+  const ChatUser = async(userId) => {
+    try {
+        const ChatCollection = collection(db, "Chat");
+        await addDoc(ChatCollection, {
+            userId: userId,
+            empresaId: user.uid
+        });
+        alert("Pessoa adicionada com sucesso!");
+        navigate(`/chat/${userId}/${user.uid}`)
+    } catch (error) {
+        console.error('Erro ao adicionar pessoa:', error);
+        alert(`Erro ao adicionar pessoa: ${error.message}`);
+    }
+}
 
   return (
     <>
@@ -176,6 +206,11 @@ function VisualizarPessoas() {
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <button onClick={() => RecusarCandidato(candidato.id)} type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-red-700 border border-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-res-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                           <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Recusar Candidato
+                        </button>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <button onClick={() => ChatUser(candidato.userId)} type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-purple-700 border border-purple-700 rounded-lg hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-res-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
+                          <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Contatar
                         </button>
                       </td>
 
