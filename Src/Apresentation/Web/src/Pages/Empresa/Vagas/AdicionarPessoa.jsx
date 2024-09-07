@@ -14,6 +14,8 @@ const AddPessoa = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [user, setUser] = useState(null);
   const [vagas, setVagas] = useState([]);
+  const [situação, setSituação] = useState("Pendente");
+
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
@@ -92,7 +94,8 @@ const AddPessoa = () => {
           await addDoc(CandidatosCollection, {
               userId: id,
               name: userInfo.name,
-              email: userInfo.email
+              email: userInfo.email,
+              situação: situação
           });
           alert("Pessoa adicionada com sucesso!");
           navigate(`/homeempresa/${IdEmpresa}`)

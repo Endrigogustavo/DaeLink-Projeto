@@ -60,6 +60,7 @@ try {
 
 app.post('/criarvaga/:id', async (req, res) => {
   const ID = req.params.id
+
 try {
   db.collection("Vagas").add({
     vaga: req.body.vaga,
@@ -71,6 +72,7 @@ try {
     local: req.body.local,
     exigencias: req.body.exigencias,
     empresaId: ID,
+
   })
   
   return res.json("Created")

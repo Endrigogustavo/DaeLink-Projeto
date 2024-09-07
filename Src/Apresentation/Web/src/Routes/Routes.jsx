@@ -35,6 +35,7 @@ import List from '../Components/Listar/Listar';
 import EditarUser from '../Pages/PCD/Profile/Editar';
 import VisualizarPerfilEmpresa from '../Pages/PCD/Profile/PerfilEmpresa';
 import ChatPCD from '../Pages/PCD/Chat/Chat';
+import ApuraçãoPCD from '../Pages/PCD/Vagas/VisualizarProcessos/VisualizarApuração'
 
 import PrivateRoute from '../Security/PrivateRoute';
 
@@ -80,6 +81,7 @@ function App() {
           <Route path="/edituser/:id" element={<EditarUser />} />
           <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa />} />
           <Route path="/chatpcd/:encryptedId/:empresaId" element={<ChatPCD />} />
+          <Route path="/ApuraçãoPCD/:encryptedId/:vagaId" element={<ApuraçãoPCD />} />
         </Route>
 
         {/* Rotas livres do usuario */}

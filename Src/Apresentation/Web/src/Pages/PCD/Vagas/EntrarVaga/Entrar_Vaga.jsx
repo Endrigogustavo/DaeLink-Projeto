@@ -44,12 +44,14 @@ const EntrarVaga = () => {
     }
 
     try {
+      const situação = "Pendente"
       const vagaRef = doc(db, "Vagas", decryptedVaga);
       const candidatosRef = collection(vagaRef, 'candidatos');
       await addDoc(candidatosRef, {
         userId: pessoaId,
         nome: nome,
         email: email,
+        situação: situação
       });
       alert("Pessoa adicionada com sucesso!");
       setVagaUid("");

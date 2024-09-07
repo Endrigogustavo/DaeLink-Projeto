@@ -18,6 +18,7 @@ const VagaForm = () => {
   const [pessoaId, setPessoaId] = useState(null);
   const [email, setEmail] = useState("")
   const [nome, setNome] = useState("")
+  const [situação, setSituação] = useState("Pendente")
 
 
   useEffect(() => {
@@ -56,23 +57,15 @@ const VagaForm = () => {
     }
 
     try {
-
-      {/* 
-        Exemplo de Atualizar
-      await updateDoc(vagaRef, {
-        candidato: arrayUnion(pessoaId),
-        emailcandidato: arrayUnion(email)
-      });
-*/}
-
       //Informações do banco
       const vagaRef = doc(db, "Vagas", decryptedVaga);
       const candidatosRef = collection(vagaRef, 'candidatos');
       //Add informações no banco
       await addDoc(candidatosRef, {
         userId: pessoaId,
-        nome: nome,
-        email: email
+        name: nome,
+        email: email,
+        situação: situação
       });
       alert("Pessoa adicionada com sucesso!");
       setVagaUid("");

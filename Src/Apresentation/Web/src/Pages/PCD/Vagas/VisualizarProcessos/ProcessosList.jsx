@@ -78,6 +78,12 @@ const ProcessosList = () => {
         navigate(`/chatpcd/${encryptedId}/${empresaId}`);
     };
 
+    const ApuraçãoResultado = (vagaId) => {
+        const encryptedId = encodeURIComponent(encrypt(decryptedId))
+        alert(decryptedId)
+        navigate(`/ApuraçãoPCD/${encryptedId}/${vagaId}`);
+    };
+
     return (
         <>
             <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : 'grid Processoscontainer gap-4 justify-items-center items-center pb-4'}`}>
@@ -121,6 +127,13 @@ const ProcessosList = () => {
                                                         className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
                                                     >
                                                         Enviar Documentos
+                                                    </button>
+                                                    <button
+                                                        onClick={() => ApuraçãoResultado(vaga.id)}
+                                                        type="submit"
+                                                        className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
+                                                    >
+                                                        Apuração
                                                     </button>
                                                 </div>
                                             </div>
