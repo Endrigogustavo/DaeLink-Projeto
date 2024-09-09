@@ -8,7 +8,10 @@ import { FaFile } from "react-icons/fa6";
 import { IoAddCircleSharp } from "react-icons/io5";
 
 const DocumentosForm = () => {
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile1, setSelectedFile1] = useState(null);
+    const [selectedFile2, setSelectedFile2] = useState(null);
+    const [selectedFile3, setSelectedFile3] = useState(null);
+
     const {
         userId, setUserId,
         vagaUid, setVagaUid,
@@ -35,7 +38,9 @@ const DocumentosForm = () => {
 
     const navigate = useNavigate();
     const textareaRef = useRef(null);
-    const inputFileRef = useRef(null);
+    const inputFileRef1 = useRef(null);
+    const inputFileRef2 = useRef(null);
+    const inputFileRef3 = useRef(null);
 
     const adjustTextareaHeight = (ref) => {
         if (ref.current) {
@@ -50,26 +55,59 @@ const DocumentosForm = () => {
         }
     }, []);
 
-    const handleFileChange = (e) => {
+    const handleFileChange1 = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setSelectedFile(file);
-            setDocumento(file);  // Atualize o estado do documento
+            setSelectedFile1(file);
+            setFormacao1a(file);
+            inputFileRef1.current.style.display = 'none';
+
+        }
+    };
+
+    const handleFileChange2 = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedFile2(file);
+            setFormacao2a(file);
+            inputFileRef2.current.style.display = 'none';
+        }
+    };
+
+    const handleFileChange3 = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedFile3(file);
+            setFormacao3a(file);
+            inputFileRef3.current.style.display = 'none';
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
-            if (!selectedFile) {
-                alert("Por favor, selecione um documento para enviar.");
+            // Verifica se um arquivo foi selecionado
+            if (!selectedFile1 && !selectedFile2 && !selectedFile3) {
+                alert("Por favor, selecione pelo menos um documento para enviar.");
                 return;
             }
 
-            const storageRef = ref(storage, `documentos/${selectedFile.name}`);
-            await uploadBytes(storageRef, selectedFile);
-            const downloadURL = await getDownloadURL(storageRef);
+            // Função para fazer o upload de um arquivo e obter sua URL
+            const uploadFile = async (file) => {
+                const storageRef = ref(storage, `documentos/${file.name}`);
+                await uploadBytes(storageRef, file);
+                return await getDownloadURL(storageRef);
+            };
 
+            // Obtemos a URL de download de todos os arquivos selecionados
+            const downloadURLs = await Promise.all([
+                selectedFile1 ? uploadFile(selectedFile1) : null,
+                selectedFile2 ? uploadFile(selectedFile2) : null,
+                selectedFile3 ? uploadFile(selectedFile3) : null,
+            ]);
+
+            // Referência para a coleção de candidatos
             const candidatosRef = collection(db, "Vagas", vagaUid, "candidatos");
             const QueryCandidatos = query(candidatosRef, where("userId", "==", userId));
             const ResultCandidatos = await getDocs(QueryCandidatos);
@@ -80,6 +118,7 @@ const DocumentosForm = () => {
                 const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", candidatoId);
                 const documentosRef = collection(candidatoDocRef, "documentos");
 
+                // Adiciona o documento à coleção de documentos do candidato
                 await addDoc(documentosRef, {
                     nome,
                     endereco,
@@ -90,9 +129,9 @@ const DocumentosForm = () => {
                     experiencia1,
                     experiencia2,
                     experiencia3,
-                    formacao_academica1: formacao1a,
-                    formacao_academica2: formacao2a,
-                    formacao_academica3: formacao3a,
+                    formacao_academica1: selectedFile1 ? downloadURLs[0] : null,
+                    formacao_academica2: selectedFile2 ? downloadURLs[1] : null,
+                    formacao_academica3: selectedFile3 ? downloadURLs[2] : null,
                     qualificacao1,
                     qualificacao2,
                     qualificacao3,
@@ -101,12 +140,13 @@ const DocumentosForm = () => {
                     idioma1: idiomas1,
                     idioma2: idiomas2,
                     informatica,
-                    url: downloadURL,
                     userId
                 });
 
                 alert("Documento adicionado com sucesso!");
-                setSelectedFile(null);
+                setSelectedFile1(null);
+                setSelectedFile2(null);
+                setSelectedFile3(null);
                 setDocumento(null);
                 navigate(`/homeuser/${userId}`);
             } else {
@@ -119,6 +159,7 @@ const DocumentosForm = () => {
         }
     };
 
+
     return (
         <>
             <div className="h-64 w-full flex items-center justify-center">
@@ -128,14 +169,13 @@ const DocumentosForm = () => {
                     </div>
                     <div className='w-5/6 h-full flex items-center justify-center flex-col'>
                         <p className='font-medium text-lg text-center'>Envio de Documentos</p>
-                        <p className='font-normal text-base text-left w-full'>Coloque aqueles que comprovem sua
-                            Deficiência, Currículo, Diplomas...
+                        <p className='font-normal text-base text-left w-full'>
+                            Coloque aqueles que comprovem sua Deficiência, Currículo, Diplomas...
                         </p>
                     </div>
                 </div>
             </div>
             <form onSubmit={handleSubmit} className="h-fit w-full grid grid-cols-2 gap-y-2 items-center justify-items-center py-8">
-
                 <div className="flex flex-col">
                     <label className="text-lg font-medium">Nome</label>
                     <input
@@ -198,32 +238,82 @@ const DocumentosForm = () => {
                         <p className="opacity-80 text-sm">limite 3</p>
                     </label>
                     <div className="flex gap-2">
+                        {/* Formacao 1 */}
                         <div>
                             <label
-                                htmlFor="doc-input"
-                                className='w-16 h-fit py-2 border-2 border-blue-500 font-bold rounded-xl transition-all hover:bg-blue-500 cursor-pointer hover:text-white flex items-center justify-center'
+                                htmlFor="formacao1-input"
+                                className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl flex flex-col items-center justify-center cursor-pointer ${selectedFile1 ? 'w-32' : 'w-16'
+                                    }`}
                             >
-                                <IoAddCircleSharp size={32} />
+                                {selectedFile1 ? (
+                                    <>
+                                        <FaFile size={32} />
+                                        <p className="truncate w-5/6">{selectedFile1.name}</p>
+                                    </>
+                                ) : (
+                                    <IoAddCircleSharp size={32} />
+                                )}
                             </label>
                             <input
-                                id="doc-input"
+                                id="formacao1-input"
                                 type="file"
                                 className='hidden'
                                 accept=".pdf,.doc,.docx"
-                                ref={inputFileRef}
-                                onChange={handleFileChange}
-                                multiple
+                                ref={inputFileRef1}
+                                onChange={handleFileChange1}
                             />
                         </div>
 
-                        {selectedFile && (
-                            <div className="flex">
-                                <label className='w-fit h-fit py-5 px-3 border-2 border-blue-500 font-bold rounded-xl flex flex-col items-center justify-center'>
-                                    <FaFile size={32} />
-                                    <p>{selectedFile.name}</p>
-                                </label>
-                            </div>
-                        )}
+                        {/* Formacao 2 */}
+                        <div>
+                            <label
+                                htmlFor="formacao2-input"
+                                className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl flex flex-col items-center justify-center cursor-pointer ${selectedFile2 ? 'w-32' : 'w-16'
+                                    }`}
+                            >
+                                {selectedFile2 ? (
+                                    <>
+                                        <FaFile size={32} />
+                                        <p className="truncate  w-5/6"> {selectedFile2.name}</p>
+                                    </>
+                                ) : (
+                                    <IoAddCircleSharp size={32} />
+                                )}
+                            </label>
+                            <input
+                                id="formacao2-input"
+                                type="file"
+                                className='hidden'
+                                accept=".pdf,.doc,.docx"
+                                ref={inputFileRef2}
+                                onChange={handleFileChange2}
+                            />
+                        </div>
+
+                        {/* Formacao 3 */}
+                        <div>
+                            <label
+                                htmlFor="formacao3-input"
+                                className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl flex flex-col items-center justify-center cursor-pointer ${selectedFile3 ? 'w-32' : 'w-16'
+                                    }`}>
+                                {selectedFile3 ? (
+                                    <>
+                                        <FaFile size={32} />
+                                        <p className="truncate w-5/6">{selectedFile3.name}</p>
+                                    </>
+                                ) : (
+                                    <IoAddCircleSharp size={32} />
+                                )}
+                            </label>
+                            <input
+                                id="formacao3-input"
+                                type="file"
+                                className='hidden'
+                                accept=".pdf,.doc,.docx"
+                                ref={inputFileRef3}
+                                onChange={handleFileChange3}
+                            />
+                        </div>
                     </div>
                 </div>
 
