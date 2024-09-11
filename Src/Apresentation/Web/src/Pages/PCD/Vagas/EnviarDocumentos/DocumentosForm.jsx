@@ -22,8 +22,6 @@ const DocumentosForm = () => {
         idade, setIdade,
         objetivo, setObjetivo,
         experiencia1, setExperiencia1,
-        experiencia2, setExperiencia2,
-        experiencia3, setExperiencia3,
         formacao1a, setFormacao1a,
         formacao2a, setFormacao2a,
         formacao3a, setFormacao3a,
@@ -42,6 +40,9 @@ const DocumentosForm = () => {
     const inputFileRef2 = useRef(null);
     const inputFileRef3 = useRef(null);
 
+    const enderecoRef = useRef(null);
+    const experienciaRef = useRef(null);
+
     const adjustTextareaHeight = (ref) => {
         if (ref.current) {
             ref.current.style.height = 'auto';
@@ -50,10 +51,14 @@ const DocumentosForm = () => {
     };
 
     useEffect(() => {
-        if (textareaRef.current) {
-            adjustTextareaHeight(textareaRef);
+        if (enderecoRef.current) {
+            adjustTextareaHeight(enderecoRef); // Ajustar o textarea de endereço
+        }
+        if (experienciaRef.current) {
+            adjustTextareaHeight(experienciaRef); // Ajustar o textarea de experiência
         }
     }, []);
+
 
     const handleFileChange1 = (e) => {
         const file = e.target.files[0];
@@ -127,16 +132,12 @@ const DocumentosForm = () => {
                     idade,
                     objetivo,
                     experiencia1,
-                    experiencia2,
-                    experiencia3,
                     formacao_academica1: selectedFile1 ? downloadURLs[0] : null,
                     formacao_academica2: selectedFile2 ? downloadURLs[1] : null,
                     formacao_academica3: selectedFile3 ? downloadURLs[2] : null,
                     qualificacao1,
                     qualificacao2,
                     qualificacao3,
-                    qualificacao4,
-                    qualificacao5,
                     idioma1: idiomas1,
                     idioma2: idiomas2,
                     informatica,
@@ -190,7 +191,7 @@ const DocumentosForm = () => {
                     <label className="text-lg font-medium">Email</label>
                     <input
                         type="text"
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent "
                         placeholder="Insira seu Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -211,13 +212,13 @@ const DocumentosForm = () => {
                 <div className="flex flex-col">
                     <label className="text-lg font-medium">Endereço</label>
                     <textarea
-                        ref={textareaRef}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                        ref={enderecoRef}
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent "
                         placeholder="Insira seu Endereço"
                         value={endereco}
                         onChange={(e) => {
                             setEndereco(e.target.value);
-                            adjustTextareaHeight(textareaRef);
+                            adjustTextareaHeight(enderecoRef);
                         }}
                     />
                 </div>
@@ -315,6 +316,20 @@ const DocumentosForm = () => {
                             />
                         </div>
                     </div>
+                </div>
+
+                <div className="flex flex-col">
+                    <label className="text-lg font-medium">Experiências</label>
+                    <textarea
+                        ref={experienciaRef}
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                        placeholder="Fale brevemente de suas experiências profissionais"
+                        value={experiencia1}
+                        onChange={(e) => {
+                            setExperiencia1(e.target.value);
+                            adjustTextareaHeight(experienciaRef);
+                        }}
+                    />
                 </div>
 
                 <button
