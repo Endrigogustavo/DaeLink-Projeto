@@ -71,3 +71,9 @@
         grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 }
+
+/*Apuração*/
+
+.h-apuracaostatus{
+    height: 80vh;
+}
