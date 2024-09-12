@@ -51,7 +51,7 @@ export default function Navbar() {
     };
 
     const handleButtonProfileCompany = (id) => {
-        navigate(`/perfilempresa/${id}`);
+        navigate(`/editempresa/${id}`);
     };
 
     const Navlinks = () => (

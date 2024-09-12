@@ -80,10 +80,10 @@ function App() {
           <Route path="/edituser/:id" element={<EditarUser />} />
           <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa />} />
           <Route path="/chatpcd/:encryptedId/:empresaId" element={<ChatPCD />} />
+          <Route path="/vagas" element={<Vagas />} />
         </Route>
 
         {/* Rotas livres do usuario */}
-        <Route path="/vagas" element={<Vagas />} />
         <Route path="/cadastrouser" element={<CadastroUser />} />
         <Route path="/empresas/" element={<Empresas />} />
         <Route path="/loginu" element={<LoginU />} />

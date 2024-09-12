@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { doc, collection, updateDoc, getDoc, getDocs } from "firebase/firestore";
+import { doc, collection, updateDoc, getDoc, getDocs, deleteDoc } from "firebase/firestore";
 import { db, storage } from "../../../Database/Firebase"; 
 import { useParams, useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
@@ -73,7 +73,23 @@ const EditarPerfil = () => {
     }
   };
 
+  const DeleteProfile = async(id) =>{
+    var response = confirm("Deseja Deletar a conta?");
+
+    if(response == true){
+    try {
+      const UserInfo = doc(db, "PCD", id)
+      await deleteDoc(UserInfo)
+      navigate('/');
+    } catch (error) {
+      alert("Erro", error)
+    }
+  }
+
+  }
+
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <div>
         <input
@@ -156,6 +172,9 @@ const EditarPerfil = () => {
       </div>
       <button type="submit">Adicionar Documento</button>
     </form>
+<br/>
+<button onClick={() => DeleteProfile(decryptedId)}>Deletar conta</button>
+    </>
   );
 };
 

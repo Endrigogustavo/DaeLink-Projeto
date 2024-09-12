@@ -172,7 +172,7 @@ function Profile() {
 
                                             <div>
                                                 <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                                                    <span clas="text-green-500">
+                                                    <span className="text-green-500">
                                                     </span>
                                                 </div>
                                             </div>
