@@ -53,6 +53,7 @@ const EditarPerfil = () => {
     }));
   };
 
+  {/*
   // Botão para guardar as informações no banco
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,8 +66,35 @@ const EditarPerfil = () => {
      })
      .catch(err =>{
       console.log(err)
-      alert("Falha ao criar uma vaga, tente novamente.");
+      alert("Falha ao atualizar, tente novamente.");
     })
+    } catch (e) {
+      console.error("Erro ao adicionar documento: ", e);
+      alert("Erro ao adicionar documento.");
+    }
+  };
+
+  */}
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userDoc = doc(db, "PCD", decryptedId);
+
+      await updateDoc(userDoc, {
+        name: userData.name,
+        email: userData.email,
+        trabalho: userData.trabalho,
+        descrição: userData.descrição,
+        sobre: userData.sobre,
+        experiencias: userData.experiencias,
+        idade: userData.idade,
+        userId: userId,
+        deficiencia: userData.deficiencia,
+      });
+
+      alert("Conta atualizada com sucesso!");
+      navigate(`/userprofile/${decryptedId}`);
     } catch (e) {
       console.error("Erro ao adicionar documento: ", e);
       alert("Erro ao adicionar documento.");

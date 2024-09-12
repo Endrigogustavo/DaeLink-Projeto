@@ -37,16 +37,7 @@ function Profile() {
         return <CarregamentoTela/>;
     }
 
-    function LogoutProfile() {
-        var response = confirm("Deseja fazer Logout?");
-        if (response == true) {
-            //Função do Auth.jsx para deslogar
-            logout();
-            // Redireciona para a página de login após o logout
-            navigate('/');
-        }
 
-    }
     const EditProfile = (id) =>{
         navigate(`/editempresa/${id}`)
     }

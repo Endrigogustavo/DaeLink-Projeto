@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { decrypt } from "../../../../Security/Cryptography_Rotes";
 
 const DocumentosStates = () => {
     const navigate = useNavigate();
     const { id, vagaId } = useParams();
+
+    const decryptedId = encodeURIComponent(decrypt(id))
 
     const [userId, setUserId] = useState(id);
     const [vagaUid, setVagaUid] = useState(vagaId);
@@ -29,8 +32,8 @@ const DocumentosStates = () => {
     const [documento, setDocumento] = useState(null);
 
     useEffect(() => {
-        if (id && vagaId) {
-            setUserId(id);
+        if (decryptedId && vagaId) {
+            setUserId(decryptedId);
             setVagaUid(vagaId);
         }
     }, [id, vagaId]);
