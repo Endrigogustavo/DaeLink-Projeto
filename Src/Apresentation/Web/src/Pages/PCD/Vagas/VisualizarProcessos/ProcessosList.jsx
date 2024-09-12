@@ -78,11 +78,7 @@ const ProcessosList = () => {
         navigate(`/chatpcd/${encryptedId}/${empresaId}`);
     };
 
-    const ApuraçãoResultado = (vagaId) => {
-        const encryptedId = encodeURIComponent(encrypt(decryptedId))
-        alert(decryptedId)
-        navigate(`/ApuraçãoPCD/${encryptedId}/${vagaId}`);
-    };
+  
 
     return (
         <>
@@ -109,7 +105,9 @@ const ProcessosList = () => {
                                             <div className='flex flex-col bg-gray-900 rounded-2xl h-full w-4/6 justify-center items-center overflow-hidden gap-2'>
                                                 <div className="w-full flex flex-col justify-center gap-1 ">
                                                     <h1 className='font-medium text-xl text-center text-white'>{vaga.vaga}</h1>
-                                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Cod-Vaga: {vaga.id} </p>
+                                                    <h1 className={`w-32 text-white text-center font-bold text-sm py-2 px-2 rounded-full ${vaga.situação ? 'bg-blue-700' : 'bg-red-600'}`}>
+                                                        {vaga.situação ? vaga.situação : 'Pendente'}
+                                                    </h1>
                                                     <p className='text-white opacity-80 text-sm px-4 truncate'>Tipo: {vaga.tipo}  </p>
                                                     <p className='text-white opacity-80 text-sm px-4 truncate'>Salário: {vaga.salario}</p>
                                                 </div>
@@ -127,13 +125,6 @@ const ProcessosList = () => {
                                                         className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
                                                     >
                                                         Enviar Documentos
-                                                    </button>
-                                                    <button
-                                                        onClick={() => ApuraçãoResultado(vaga.id)}
-                                                        type="submit"
-                                                        className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
-                                                    >
-                                                        Apuração
                                                     </button>
                                                 </div>
                                             </div>
