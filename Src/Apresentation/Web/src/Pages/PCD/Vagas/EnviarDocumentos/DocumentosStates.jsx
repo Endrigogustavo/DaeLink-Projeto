@@ -24,15 +24,8 @@ const DocumentosStates = () => {
     const [formacao2a, setFormacao2a] = useState("");
     const [formacao3a, setFormacao3a] = useState("");
 
-    const [qualificacao1, setQualificacao1] = useState("");
-    const [qualificacao2, setQualificacao2] = useState("");
-    const [qualificacao3, setQualificacao3] = useState("");
 
-    const [idiomas1, setIdiomas1] = useState("");
-    const [idiomas2, setIdiomas2] = useState("");
-
-    const [informatica, setInformatica] = useState("");
-
+    const [idiomas, setIdiomas] = useState("");
     const [documento, setDocumento] = useState(null);
 
     useEffect(() => {
@@ -57,12 +50,7 @@ const DocumentosStates = () => {
         formacao1a, setFormacao1a,
         formacao2a, setFormacao2a,
         formacao3a, setFormacao3a,
-        qualificacao1, setQualificacao1,
-        qualificacao2, setQualificacao2,
-        qualificacao3, setQualificacao3,
-        idiomas1, setIdiomas1,
-        idiomas2, setIdiomas2,
-        informatica, setInformatica,
+        idiomas, setIdiomas,
         documento, setDocumento
     };
 }

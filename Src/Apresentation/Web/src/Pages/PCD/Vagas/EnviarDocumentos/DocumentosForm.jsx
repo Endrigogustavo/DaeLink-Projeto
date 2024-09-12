@@ -25,17 +25,11 @@ const DocumentosForm = () => {
         formacao1a, setFormacao1a,
         formacao2a, setFormacao2a,
         formacao3a, setFormacao3a,
-        qualificacao1, setQualificacao1,
-        qualificacao2, setQualificacao2,
-        qualificacao3, setQualificacao3,
-        idiomas1, setIdiomas1,
-        idiomas2, setIdiomas2,
-        informatica, setInformatica,
+        idiomas, setIdiomas,
         documento, setDocumento
     } = DocumentosStates();
 
     const navigate = useNavigate();
-    const textareaRef = useRef(null);
     const inputFileRef1 = useRef(null);
     const inputFileRef2 = useRef(null);
     const inputFileRef3 = useRef(null);
@@ -135,12 +129,7 @@ const DocumentosForm = () => {
                     formacao_academica1: selectedFile1 ? downloadURLs[0] : null,
                     formacao_academica2: selectedFile2 ? downloadURLs[1] : null,
                     formacao_academica3: selectedFile3 ? downloadURLs[2] : null,
-                    qualificacao1,
-                    qualificacao2,
-                    qualificacao3,
-                    idioma1: idiomas1,
-                    idioma2: idiomas2,
-                    informatica,
+                    idiomas,
                     userId
                 });
 
@@ -164,7 +153,7 @@ const DocumentosForm = () => {
     return (
         <>
             <div className="h-64 w-full flex items-center justify-center">
-                <div className='w-3/12 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
+                <div className='w-96 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
                     <div className='w-2/6 h-full flex items-center justify-center'>
                         <FaFile className='text-5xl text-gray-900 text-center' />
                     </div>
@@ -231,6 +220,35 @@ const DocumentosForm = () => {
                         value={idade}
                         onChange={(e) => setIdade(e.target.value)}
                     />
+                </div>
+
+                <div className="flex flex-col">
+                    <label className="text-lg font-medium">Experiências</label>
+                    <textarea
+                        ref={experienciaRef}
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                        placeholder="Fale brevemente de suas experiências profissionais"
+                        value={experiencia1}
+                        onChange={(e) => {
+                            setExperiencia1(e.target.value);
+                            adjustTextareaHeight(experienciaRef);
+                        }}
+                    />
+                </div>
+
+                <div className="flex flex-col">
+                    <label className="text-lg font-medium">Idioma Secundário</label>
+                    <select
+                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                        value={idiomas}
+                        onChange={(e) => setIdiomas(e.target.value)}
+                    >
+                        <option value="">Selecione um idioma</option>
+                        <option value="Inglês">Inglês</option>
+                        <option value="Castellano">Castellano</option>
+                        <option value="Alemão">Alemão</option>
+                        <option value="Italiano">Italiano</option>
+                    </select>
                 </div>
 
                 <div className="flex flex-col">
@@ -318,25 +336,11 @@ const DocumentosForm = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium">Experiências</label>
-                    <textarea
-                        ref={experienciaRef}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
-                        placeholder="Fale brevemente de suas experiências profissionais"
-                        value={experiencia1}
-                        onChange={(e) => {
-                            setExperiencia1(e.target.value);
-                            adjustTextareaHeight(experienciaRef);
-                        }}
-                    />
-                </div>
-
                 <button
                     type="submit"
-                    className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all"
+                    className="w-56 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-3 px-4 rounded-full transition-all"
                 >
-                    Adicionar Documentos
+                    Enviar Documentos
                 </button>
             </form>
         </>
