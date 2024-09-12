@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { doc, collection, updateDoc, getDoc, getDocs } from "firebase/firestore";
-import { db, storage } from "../../../Database/Firebase"; 
+import { db, storage, auth } from "../../../Database/Firebase"; 
 import { useParams, useNavigate } from 'react-router-dom';
+import { logout } from '../../../Auth/Auth';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 
 const EditarPerfil = () => {
@@ -46,6 +47,17 @@ const EditarPerfil = () => {
     }));
   };
 
+  function LogoutProfile() {
+    var response = confirm("Deseja fazer Logout?");
+    if (response == true) {
+        //Função do Auth.jsx para deslogar
+        logout();
+        // Redireciona para a página de login após o logout
+        navigate('/');
+    }
+
+}
+
   // Botão para guardar as informações no banco
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,6 +84,7 @@ const EditarPerfil = () => {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <div>
         <input
@@ -135,6 +148,9 @@ const EditarPerfil = () => {
       <br />
       <button type="submit">Adicionar Documento</button>
     </form>
+    <br />
+    <button onClick={LogoutProfile}>Logout</button>
+    </>
   );
 };
 

@@ -149,6 +149,14 @@ const DocumentosForm = () => {
         }
     };
 
+    const DeleteDoc = async(id) =>{
+{/*Codigo de deletar*/}
+    }
+
+    const UpdateDoc = async(id) =>{
+        {/*Codigo de Atualizar*/}
+            }
+
 
     return (
         <>
@@ -215,7 +223,7 @@ const DocumentosForm = () => {
                 <div className="flex flex-col">
                     <label className="text-lg font-medium">Idade</label>
                     <input
-                        type="date"
+                        type="number"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         value={idade}
                         onChange={(e) => setIdade(e.target.value)}
