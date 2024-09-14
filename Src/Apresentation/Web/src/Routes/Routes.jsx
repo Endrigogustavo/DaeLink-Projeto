@@ -17,7 +17,7 @@ import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
 import Vagas from '../Pages/PCD/Vagas/ListarVagas/Vagas';
 import ProfileAdd from '../Pages/Empresa/Profile/Profile';
 import AddPessoa from '../Pages/Empresa/Vagas/AdicionarPessoa';
-import VisualizarProcessosEmpresa from '../Pages/Empresa/Vagas/Visualizar_Processos';
+import VisualizarProcessosEmpresa from '../Pages/Empresa/Candidatos/CandidatosPage';
 import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas';
 import VisualizarDocumentos from '../Pages/Empresa/Vagas/VisualizarDocumentos';
 import PerfilEmpresa from '../Pages/Empresa/Profile/PerfilEmpresa';
