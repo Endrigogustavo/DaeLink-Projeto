@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../../Database/Firebase';
 import CarregamentoTela from "../../../Components/TelaCarregamento/Carregamento"
 
@@ -62,6 +62,8 @@ function Visualizar_Processo() {
             try {
                 const GetVagaInfo = doc(db, "Vagas", vagaId)
                 await deleteDoc(GetVagaInfo)
+                alert("Vaga deletada com sucesso")
+                navigate(0)
             } catch (error) {
                 alert("Erro: ", error)
             }

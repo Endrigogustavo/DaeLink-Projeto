@@ -4,9 +4,10 @@ import { FiMenu } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoSearch } from "react-icons/io5";
 
-export default function Navbar() {
+export default function Navbar({ userType }) {
     const [isOpen, setIsOpen] = useState(false);
 
+    
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
     }
@@ -21,6 +22,62 @@ export default function Navbar() {
         )
     }
 
+    const NavlinksPCD = () => {
+        return (
+            <>
+            <button onClick={() => handleButtonClickProcess(userId)}>Processos</button>
+            <button onClick={() => handleButtonClickVagas(userId)}>Vagas</button>
+            <button onClick={() => handleButtonClickEmpresas(userId)}>Empresas</button>
+            </>
+        )
+    }
+
+    // Função para navegar para a tela de vagas
+    const handleButtonClickVagas = (id) => {
+        const encryptedId = encrypt(id);
+        navigate(`/homeuser/vagas/${encodeURIComponent(encryptedId)}`);
+    };
+
+    const handleButtonClickEmpresas = (id) => {
+        const encryptedId = encrypt(id);
+        navigate(`/homeuser/empresas/${encodeURIComponent(encryptedId)}`);
+    };
+
+    // Função para navegar para a tela de processos
+    const handleButtonClickProcess = (id) => {
+        const encryptedId = encrypt(id);
+        navigate(`/homeuser/processos/${encodeURIComponent(encryptedId)}`);
+    };
+
+    // Função para navegar para a tela de perfil do usuário
+
+
+    const NavlinksEmpresa = () => {
+        return (
+            <>
+            <button onClick={() => handleButtonClick(userId)}>Criar Vaga</button>
+            <button onClick={() => handleButtonClickProfile(userId)}>Candidatos</button>
+            <button onClick={() => handleButtonClickVaga(userId)}>Processos</button>
+            </>
+        )
+    }
+
+    const handleButtonClick = (id) => {
+        navigate(`/homeempresa/cadastrovaga/${id}`);
+    };
+
+    const handleButtonClickProfile = (IdEmpresa) => {
+        navigate(`/candidatos/${IdEmpresa}`);
+    };
+
+    const handleButtonClickVaga = (IdEmpresa) => {
+        navigate(`/processos/${IdEmpresa}`);
+    };
+
+    const handleButtonProfileCompany = (id) => {
+        navigate(`/editempresa/${id}`);
+    };
+
 
 
     return (
@@ -30,7 +87,9 @@ export default function Navbar() {
 
                 <nav className=" flex items-center gap-4">
                     <div className=" hidden md:flex items-center gap-4">
-                        <Navlinks></Navlinks>
+                    {userType === '' && <Navlinks></Navlinks>}
+                    {userType === 'PCD' && <NavlinksPCD></NavlinksPCD>}
+                    {userType === 'Empresa' && <NavlinksEmpresa></NavlinksEmpresa>}
 
                     </div>
                     <IoSearch className='text-black text-2xl cursor-pointer iconhover' />

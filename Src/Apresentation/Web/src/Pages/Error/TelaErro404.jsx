@@ -1,16 +1,23 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 import './style.css'
+
+import error from '../../Img/404.svg'
 
 
 //https://www.deviantart.com/wabisabiwonders/gallery
 
 const Tela404 = () => {
+    const navigate = useNavigate()
+    const BackView =() =>{
+     navigate(-1)
+    }
 
     return (
         <>
             <div className="w-screen h-screen bg-gray-900 flex">
                 <div className="w-5/12 h-full flex items-center justify-center bg-gray-300 img-container">
-                    <img src="https://i.postimg.cc/0NdyNLyF/Bellingham.png" className="" alt="" />
+                    <img src={error} className="" alt="" />
                 </div>
 
                 <div className="w-7/12 h-full flex items-center  side-container flex-col justify-center gap-2">
@@ -20,6 +27,7 @@ const Tela404 = () => {
                     <p className="text-white text-justify r">Talvez essa página não exista ou tenha sido movida</p>
                     <button
                         type="submit"
+                        onClick={BackView}
                         className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
                     >
                         Voltar

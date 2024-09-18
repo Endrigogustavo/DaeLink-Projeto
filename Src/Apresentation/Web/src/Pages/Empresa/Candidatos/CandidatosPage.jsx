@@ -53,7 +53,7 @@ const CandidatosPage = () => {
 
             <div className='w-full bg-gray-800 criarvagacontainer overflow-hidden' >
                 <div className='w-1/2 h-full flex justify-center align-center container-side'>
-                    <img src="https://i.postimg.cc/bYMRV8d8/Andrew.png" className="imgcontainer" alt="Side Image" />
+                    <img src="https://i.postimg.cc/Kzd0sb42/Login.pngg" className="imgcontainer" alt="Side Image" />
                 </div>
                 <div className='w-1/2 h-full flex justify-center align-center bg-gray-900  container-side text-side'>
                     <div className='w-full h-full flex flex-col gap-2 justify-center items-center'>

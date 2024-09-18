@@ -95,3 +95,9 @@
         transform: rotate(360deg);
     }
 }
+
+.Dae{
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+}

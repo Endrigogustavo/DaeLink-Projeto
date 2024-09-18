@@ -2,7 +2,7 @@
 import './ExtraTailwind.css'
 
 
-import Navbar from '../../Components/Navbar/Navbar'
+import Navbar from '../../Components/Navbar/NavbarType'
 import Banner from './Banner';
 import About from './About';
 import Footer from '../../Components/Footer/Footer'
