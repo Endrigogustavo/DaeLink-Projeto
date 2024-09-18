@@ -29,7 +29,7 @@ function Processos_Page() {
         <>
             <div className='h-processoshero w-full flex overflow-hidden bg-gray-300 '>
                 <div className='w-1/2 h-full container-side flex justify-center items-center '>
-                    <img src="https://i.postimg.cc/0NdyNLyF/Bellingham.png" className='h-full imgcontainer' alt="side-image" />
+                  <img src="https://i.postimg.cc/8ktnc47C/Girl-About.png" className='h-full imgcontainer' alt="side-image" />
                 </div>
                 <div className='w-1/2 h-full container-side text-side flex flex-col justify-center items-center bg-gray-800 gap-2 '>
                     <h1 className='text-2xl font-bold text-white text-center'>Processos Ativos</h1>

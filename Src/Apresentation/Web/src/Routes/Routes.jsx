@@ -37,6 +37,7 @@ import EditarUser from '../Pages/PCD/Profile/Editar';
 import VisualizarPerfilEmpresa from '../Pages/PCD/Profile/PerfilEmpresa';
 import ChatPCD from '../Pages/PCD/Chat/Chat';
 
+import Adm from '../Pages/Admin/Dashboard'
 import PrivateRoute from '../Security/PrivateRoute';
 
 function App() {
@@ -90,6 +91,7 @@ function App() {
         <Route path="/empresas/" element={<Empresas />} />
         <Route path="/loginu" element={<LoginU />} />
 
+        <Route path="/adm" element={<Adm />} />
       </Routes>
     </BrowserRouter>
   );
