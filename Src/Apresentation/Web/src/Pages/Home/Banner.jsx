@@ -9,7 +9,7 @@ const Banner = () => {
     return (
         <>
             <div className=" w-full h-88vh banner overflow-hidden ">
-                <div className="w-full flex items-center max-sm-flex-col">
+                <div className="w-full h-full flex items-center max-sm-flex-col">
                     <div className="w-1/2 h-full  pb-24 pl-12 justify-center flex flex-col max-sm-w-full max-sm-pb-0 max-sm-pl-0 max-sm-text-center" >
                         <h1 className="text-5xl font-bold block">DAELINK</h1>
                         <h1 className="text-subtitle pb-8 text-2xl font-bold block">A Plataforma de Empregabilidade PCD</h1>
@@ -26,11 +26,7 @@ const Banner = () => {
                     </div>
 
                 </div>
-
-
-
             </div>
-
         </>
     )
 

@@ -80,11 +80,11 @@ const VagaForm = () => {
   return (
     <>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center">
-          <input
-            type="hidden"
-            value={pessoaId}
-            onChange={(e) => setPessoaId(e.target.value)}
-          />
+        <input
+          type="hidden"
+          value={pessoaId}
+          onChange={(e) => setPessoaId(e.target.value)}
+        />
 
         <div className="flex flex-col">
           <label className="text-lg font-medium">Nome</label>
@@ -110,10 +110,6 @@ const VagaForm = () => {
         <button type="submit" className="w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all"
         >Candidatar-se</button>
       </form>
-
-
-
-
     </>
   )
 };
