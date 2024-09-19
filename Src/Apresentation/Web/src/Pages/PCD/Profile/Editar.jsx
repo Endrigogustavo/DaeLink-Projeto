@@ -94,7 +94,7 @@ const EditarPerfil = () => {
       });
 
       alert("Conta atualizada com sucesso!");
-      navigate(`/userprofile/${decryptedId}`);
+      navigate(-2);
     } catch (e) {
       console.error("Erro ao adicionar documento: ", e);
       alert("Erro ao adicionar documento.");
