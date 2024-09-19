@@ -68,7 +68,7 @@ const EntrarVaga = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center bg-gray-300">
+    <div className="w-screen h-screen flex flex-col items-center justify-center">
       <div className="h-fit w-fit px-4 flex flex-col justify-center gap-2 border-2 border-gray-800 rounded-xl p-8 bg-none">
         <button onClick={handleButtonClickReturn}>
           <FaCircleArrowLeft className="text-3xl text-gray-800" />

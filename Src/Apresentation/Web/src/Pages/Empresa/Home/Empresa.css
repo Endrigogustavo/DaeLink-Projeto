@@ -1,0 +1,25 @@
+.h-EmpresaImg{
+    height: 65vh;
+
+}
+
+.EmpresaImgPr{
+    height: 60%;
+}
+
+.line-clamp-4 {
+    display: -webkit-box; /* Definir o modelo de exibição para comportar o clamping */
+    -webkit-box-orient: vertical; /* Define a orientação da caixa */
+    overflow: hidden; /* Esconde o texto que ultrapassa o limite */
+    -webkit-line-clamp: 4; /* Limita o número de linhas */
+    line-clamp: 4; /* Para compatibilidade futura com outros navegadores */
+  }
+
+
+@media (max-width:1000px){
+    .EmpresaImgContainer{
+        height: fit-content;
+        flex-direction: column-reverse;
+    }
+
+}
