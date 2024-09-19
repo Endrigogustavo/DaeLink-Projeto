@@ -150,7 +150,8 @@ const DocumentosForm = () => {
     };
 
     const DeleteDoc = async(id) =>{
-{/*Codigo de deletar*/}
+        const DocRef = collection(db, "Vagas", vagaUid, "candidatos")
+        const QueryDoc = query(DocRef())
     }
 
     const UpdateDoc = async(id) =>{

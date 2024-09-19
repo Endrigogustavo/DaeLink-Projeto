@@ -15,8 +15,6 @@ function Home() {
 
   return (
     <>
-      
-   
       <Navbar/>
       <Banner/>
       <About/>

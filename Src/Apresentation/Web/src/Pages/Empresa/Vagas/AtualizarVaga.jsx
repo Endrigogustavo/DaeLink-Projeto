@@ -38,6 +38,7 @@ const EditarVaga = () => {
     getCompanyProfile();
   }, [vagaId]);
 
+  
   // Função para lidar com as mudanças nos inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -47,16 +48,6 @@ const EditarVaga = () => {
     }));
   };
 
-  function LogoutProfile() {
-    var response = confirm("Deseja fazer Logout?");
-    if (response == true) {
-        //Função do Auth.jsx para deslogar
-        logout();
-        // Redireciona para a página de login após o logout
-        navigate('/');
-    }
-
-}
 
   // Botão para guardar as informações no banco
   const handleSubmit = async (e) => {
@@ -169,7 +160,6 @@ const EditarVaga = () => {
       <button type="submit">Adicionar Documento</button>
     </form>
     <br />
-    <button onClick={LogoutProfile}>Logout</button>
     </>
   );
 };
