@@ -72,21 +72,21 @@ const ProcessosList = () => {
         const encryptedId = encodeURIComponent(encrypt(decryptedId))
         const VagaInfo = collection(db, "Vagas", vagaId, "candidatos")
         const QueryDocs = query(VagaInfo, where("userId", "==", decryptedId));
-    
+
         const DocResult = await getDocs(QueryDocs)
 
-        if(!DocResult.empty){
-           alert("Usuario encontrado")
-           const DocRef = collection(db, "Vagas", vagaId, "candidatos", DocResult.docs[0].id, "documentos")
-           const GetDoc = await getDocs(DocRef)
-           if(!GetDoc.empty){
-            alert("Documentos ja existe")
-            navigate(`/atualizardocumento/${encryptedId}/${vagaId}`);
-           }else{
-            alert("Sem documentos")
-            navigate(`/enviardocumento/${encryptedId}/${vagaId}`);
-           }
-        }else{
+        if (!DocResult.empty) {
+            alert("Usuario encontrado")
+            const DocRef = collection(db, "Vagas", vagaId, "candidatos", DocResult.docs[0].id, "documentos")
+            const GetDoc = await getDocs(DocRef)
+            if (!GetDoc.empty) {
+                alert("Documentos ja existe")
+                navigate(`/atualizardocumento/${encryptedId}/${vagaId}`);
+            } else {
+                alert("Sem documentos")
+                navigate(`/enviardocumento/${encryptedId}/${vagaId}`);
+            }
+        } else {
             alert("Usuario não encontrado")
         }
     };
@@ -104,11 +104,11 @@ const ProcessosList = () => {
         navigate(`/chatpcd/${encryptedId}/${empresaId}`);
     };
 
-  
+
 
     return (
         <>
-            <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : 'grid Processoscontainer gap-4 justify-items-center items-center pb-4'}`}>
+            <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : (vagas.length > 0 ? 'grid Processoscontainer gap-4 justify-items-center items-center pb-4' : 'flex pb-8')}`}>
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
@@ -117,7 +117,7 @@ const ProcessosList = () => {
                     Array.isArray(vagas) && vagas.length > 0 ? (
                         vagas.map((vaga) => {
                             return (
-                                <div key={vaga.id} className='h-processocard w-processocard  shadow-xl bg-gray-800 rounded-2xl flex  border-2 overflow-hidden'>
+                                <div key={vaga.id} className='h-processocard w-processocard shadow-xl bg-gray-800 rounded-2xl flex border-2 overflow-hidden'>
                                     {/* Render empresa details */}
                                     {vaga.empresa && (
                                         <div className='flex flex-col h-full w-2/6 justify-center items-center relative'>
@@ -126,44 +126,39 @@ const ProcessosList = () => {
                                             <h1 className='font-medium text-white text-center text-lg'>{vaga.empresa.name}</h1>
                                         </div>
                                     )}
-                                    {
-                                        <>
-                                            <div className='flex flex-col bg-gray-900 rounded-2xl h-full w-4/6 justify-center items-center overflow-hidden gap-2'>
-                                                <div className="w-full flex flex-col justify-center gap-1 ">
-                                                    <h1 className='font-medium text-xl text-center text-white'>{vaga.vaga}</h1>
-                                                    <button 
-                                                    onClick={() => ApuraçãoResultado(vaga.id)}>
-                                                    <h1 className={`w-32 text-white text-center font-bold text-sm py-2 px-2 rounded-full ${vaga.situação ? 'bg-blue-700' : 'bg-red-600'}`}>
-                                                        {vaga.situação ? vaga.situação : 'Pendente'}
-                                                    </h1>
-                                                    </button>
-                                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Tipo: {vaga.tipo}  </p>
-                                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Salário: {vaga.salario}</p>
-                                                </div>
-                                                <div className='w-full flex justify-center'>
-                                                    <button
-                                                        onClick={() => ChatEmpresa(vaga.empresaId)}
-                                                        type="submit"
-                                                        className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
-                                                    >
-                                                        Chat
-                                                    </button>
-                                                    <button
-                                                        onClick={() => EnviarDoc(vaga.id)}
-                                                        type="submit"
-                                                        className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
-                                                    >
-                                                        Enviar Documentos
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </>
-                                    }
+                                    <div className='flex flex-col bg-gray-900 rounded-2xl h-full w-4/6 justify-center items-center overflow-hidden gap-2'>
+                                        <div className="w-full flex flex-col justify-center gap-1">
+                                            <h1 className='font-medium text-xl text-center text-white'>{vaga.vaga}</h1>
+                                            <button onClick={() => ApuraçãoResultado(vaga.id)}>
+                                                <h1 className={`w-32 text-white text-center font-bold text-sm py-2 px-2 rounded-full ${vaga.situação ? 'bg-blue-700' : 'bg-red-600'}`}>
+                                                    {vaga.situação ? vaga.situação : 'Pendente'}
+                                                </h1>
+                                            </button>
+                                            <p className='text-white opacity-80 text-sm px-4 truncate'>Tipo: {vaga.tipo}</p>
+                                            <p className='text-white opacity-80 text-sm px-4 truncate'>Salário: {vaga.salario}</p>
+                                        </div>
+                                        <div className='w-full flex justify-center'>
+                                            <button
+                                                onClick={() => ChatEmpresa(vaga.empresaId)}
+                                                type="submit"
+                                                className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
+                                            >
+                                                Chat
+                                            </button>
+                                            <button
+                                                onClick={() => EnviarDoc(vaga.id)}
+                                                type="submit"
+                                                className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
+                                            >
+                                                Enviar Documentos
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             );
                         })
                     ) : (
-                        <div className='w-3/12 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
+                        <div className='w-96 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
                             <div className='w-2/6 h-full flex items-center justify-center'>
                                 <FaSquareXmark className='text-5xl text-gray-900 text-center' />
                             </div>
@@ -176,7 +171,8 @@ const ProcessosList = () => {
                 )}
             </div>
         </>
-    )
+    );
+
 }
 
 export default ProcessosList;
