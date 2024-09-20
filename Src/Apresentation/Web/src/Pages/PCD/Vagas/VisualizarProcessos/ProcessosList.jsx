@@ -5,6 +5,7 @@ import { collection, query, where, getDocs, getDoc, doc } from 'firebase/firesto
 import { decrypt, encrypt } from '../../../../Security/Cryptography_Rotes';
 import CarregamentoTela from "../../../../Components/TelaCarregamento/Carregamento";
 import { FaSquareXmark } from "react-icons/fa6";
+import assert from 'assert';
 
 const ProcessosList = () => {
     const { encryptedId } = useParams();
@@ -67,9 +68,27 @@ const ProcessosList = () => {
         GetVagas();
     }, [encryptedId, decryptedId]);
 
-    const EnviarDoc = (vagaId) => {
+    const EnviarDoc = async (vagaId) => {
         const encryptedId = encodeURIComponent(encrypt(decryptedId))
-        navigate(`/enviardocumento/${encryptedId}/${vagaId}`);
+        const VagaInfo = collection(db, "Vagas", vagaId, "candidatos")
+        const QueryDocs = query(VagaInfo, where("userId", "==", decryptedId));
+    
+        const DocResult = await getDocs(QueryDocs)
+
+        if(!DocResult.empty){
+           alert("Usuario encontrado")
+           const DocRef = collection(db, "Vagas", vagaId, "candidatos", DocResult.docs[0].id, "documentos")
+           const GetDoc = await getDocs(DocRef)
+           if(!GetDoc.empty){
+            alert("Documentos ja existe")
+            navigate(`/atualizardocumento/${encryptedId}/${vagaId}`);
+           }else{
+            alert("Sem documentos")
+            navigate(`/enviardocumento/${encryptedId}/${vagaId}`);
+           }
+        }else{
+            alert("Usuario não encontrado")
+        }
     };
 
     const ApuraçãoResultado = (vagaId) => {
