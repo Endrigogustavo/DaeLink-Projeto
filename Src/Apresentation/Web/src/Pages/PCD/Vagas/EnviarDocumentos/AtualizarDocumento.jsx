@@ -1,16 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import { doc, collection, addDoc, getDocs, query, where } from "firebase/firestore";
-import { db, storage } from "../../../../Database/Firebase";
-import { useNavigate } from 'react-router-dom';
+import { db, storage, auth } from "../../../../Database/Firebase";
+import { useNavigate, useParams } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import DocumentosStates from "./DocumentosStates";
 import { FaFile } from "react-icons/fa6";
 import { IoAddCircleSharp } from "react-icons/io5";
+import { decrypt } from "../../../../Security/Cryptography_Rotes";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const DocumentosForm = () => {
     const [selectedFile1, setSelectedFile1] = useState(null);
     const [selectedFile2, setSelectedFile2] = useState(null);
     const [selectedFile3, setSelectedFile3] = useState(null);
+    const [userUid, setUserUid] = useState(null)
 
     const {
         userId, setUserId,
@@ -43,6 +46,20 @@ const DocumentosForm = () => {
             ref.current.style.height = `${ref.current.scrollHeight}px`;
         }
     };
+
+  useEffect(() => {
+    const auth = getAuth();
+    
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserUid(user.uid)
+      } else {
+        setUserUid(null)
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
     useEffect(() => {
         if (enderecoRef.current) {
@@ -82,6 +99,8 @@ const DocumentosForm = () => {
         }
     };
 
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -118,7 +137,7 @@ const DocumentosForm = () => {
                 const documentosRef = collection(candidatoDocRef, "documentos");
 
                 // Adiciona o documento à coleção de documentos do candidato
-                await addDoc(documentosRef, {
+                await UpdateDoc(documentosRef, {
                     nome,
                     endereco,
                     telefone,
@@ -148,6 +167,11 @@ const DocumentosForm = () => {
             alert("Erro ao adicionar documento.");
         }
     };
+
+    const DeleteDoc = async(id) =>{
+        const DocRef = collection(db, "Vagas", vagaUid, "candidatos")
+        const QueryDoc = query(DocRef())
+    }
 
     return (
         <>

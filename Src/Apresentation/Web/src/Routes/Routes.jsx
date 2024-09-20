@@ -37,6 +37,7 @@ import EditarUser from '../Pages/PCD/Profile/Editar';
 import VisualizarPerfilEmpresa from '../Pages/PCD/Profile/PerfilEmpresa';
 import ChatPCD from '../Pages/PCD/Chat/Chat';
 import Apuração from '../Pages/PCD/Vagas/VisualizarProcessos/VisualizarApuração'
+import AtualizarDoc from '../Pages/PCD/Vagas/EnviarDocumentos/AtualizarDocumento'
 
 import Adm from '../Pages/Admin/Dashboard'
 import PrivateRoute from '../Security/PrivateRoute';
@@ -79,6 +80,7 @@ function App() {
           <Route path="/homeuser/empresas/:id" element={<Empresas />} />
           <Route path="/entrarvaga/:vaga" element={<EntrarVaga />} />
           <Route path="/enviardocumento/:id/:vagaId" element={<EnviarDocumentos />} />
+          <Route path="/atualizardocumento/:id/:vagaId" element={<AtualizarDoc />} />
           <Route path="/homeuser/processos/:encryptedId" element={<VisualizarProcessosUser />} />
           <Route path="/userprofile/:id" element={<Profile />} />
           <Route path="/edituser/:id" element={<EditarUser />} />
