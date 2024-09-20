@@ -12,7 +12,7 @@ import { FaCircleArrowLeft } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 
 const ChatRoom = () => {
-
+const navigate = useNavigate();
     const { encryptedId, empresaId } = useParams();
     const decryptedId = decodeURIComponent(decrypt(encryptedId))
     const dummy = useRef();
