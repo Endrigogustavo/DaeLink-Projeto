@@ -56,7 +56,6 @@ const AboutEmpresa = () => {
 
     return (
         <>
-
             <div className="h-75vh flex justify-center items-center  aboutcontainer overflow-hidden ">
                 <img src="https://i.postimg.cc/3NqbdRXY/Andrew.png" alt="" className="flex " />
                 <div className="bg-gray-900 w-4/6 h-5/6 rounded-64px flex aboutextcontainer">

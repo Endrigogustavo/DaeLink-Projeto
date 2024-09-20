@@ -11,7 +11,7 @@ const  CarouselSlider = () => {
         { image: "https://projy.s3.amazonaws.com/uploads/80133c3b17c74fe4a3959ba67d95b4dd.jpg" },
         { image: "https://cdnsjengenhariae.nuneshost.com/wp-content/uploads/2024/04/microsoft-.jpeg" },
         { image: "https://seele.com/fileadmin/user_upload/images/01_References/Apple-Retail-Store-Singapur/AppleKnightsbridge_c_BrianChongCheeKang__2_.jpg" },
-        { image: "https://www.commercialappeal.com/gcdn/presto/2019/07/18/PSAL/4010fe7f-35e9-4108-9954-96f6f521bab1-AmazonFulfillmentCenter_ar_01.JPG" }
+        { image: "https://i0.wp.com/www.nationalreview.com/wp-content/uploads/2018/02/amazon-sphere-02.jpg?fit=1481%2C864&ssl=1" }
     ];
 
     return (
