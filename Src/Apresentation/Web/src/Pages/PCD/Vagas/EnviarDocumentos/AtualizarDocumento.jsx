@@ -14,6 +14,19 @@ const DocumentosForm = () => {
     const [selectedFile2, setSelectedFile2] = useState(null);
     const [selectedFile3, setSelectedFile3] = useState(null);
     const [userUid, setUserUid] = useState(null)
+    const [docProfile, setDocProfile] =  useState({
+        nome: '',
+        email: '',
+        telefone: '',
+        endereco: '',
+        idade: '',
+        idade: '',
+        experiencia1: '',
+        formacao_academica1: '',
+        formacao_academica2: '',
+        formacao_academica2: '',
+        idiomas: ''
+      })
 
     const {
         userId, setUserId,
@@ -49,7 +62,6 @@ const DocumentosForm = () => {
 
   useEffect(() => {
     const auth = getAuth();
-    
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserUid(user.uid)
@@ -69,6 +81,32 @@ const DocumentosForm = () => {
             adjustTextareaHeight(experienciaRef); // Ajustar o textarea de experiência
         }
     }, []);
+
+    useEffect(() => {
+        const getCompanyProfile = async () => {
+            const DocRef = collection(db, "Vagas", vagaUid, "candidatos");
+            const QueryDoc = query(DocRef, where("userId", "==", userId));
+            const ResultDoc = await getDocs(QueryDoc);
+    
+            if (!ResultDoc.empty) {
+                ResultDoc.forEach(async (doc) => {
+                    const documentosRef = collection(doc.ref, 'documentos');
+                    const ResultDocumentos = await getDocs(documentosRef);
+                    if (!ResultDocumentos.empty) {
+                        alert("Documento ok");
+                        setDocProfile(ResultDocumentos)
+                    } else {
+                        setDocProfile(null)
+                        alert("Não achou documentos");
+                    }
+                });
+            } else {
+                alert("Não achou candidatos");
+            }
+        };
+        getCompanyProfile();
+    }, [vagaUid, userUid]);
+    
 
 
     const handleFileChange1 = (e) => {
@@ -195,7 +233,7 @@ const DocumentosForm = () => {
                         type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         placeholder="Insira seu Nome Completo"
-                        value={nome}
+                        value={docProfile.email}
                         onChange={(e) => setNome(e.target.value)}
                     />
                 </div>
