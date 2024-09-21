@@ -1,17 +1,23 @@
-.h-AppPCD{
+.h-AppPCD {
     height: 65vh;
 
 }
 
-.APPimg{
+.APPimg {
     height: 100%;
 }
 
 
-@media (max-width:1000px){
-    .AppPCDContainer{
+@media (max-width:1000px) {
+    .AppPCDContainer {
         height: fit-content;
         flex-direction: column;
     }
+
+    .app-textside {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
 
 }
