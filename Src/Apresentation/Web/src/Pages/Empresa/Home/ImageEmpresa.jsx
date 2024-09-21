@@ -51,7 +51,7 @@ const ImageEmpresa = () => {
                 <div className="w-1/2 h-full flex items-center justify-center side-container">
                     <img src={userProfile.imageProfile} className='EmpresaImgPr rounded-xl' />
                 </div>
-                <div className="w-1/2 h-full flex items-center justify-center side-container bg-gray-900">
+                <div className="w-1/2 h-full flex items-center justify-center side-container bg-gray-900 textempresa-side">
                     <div className='w-full h-full flex items-center justify-center flex-col gap-2'>
                         <h1 className="text-white carousel-text text-2xl font-bold flex">Seu Crescimento é nosso Foco</h1>
                         <p className="text-white text-justify font-normal w-4/5 ">{texto}</p>
