@@ -16,7 +16,6 @@ const BannerPCD = () => {
     const [motivationalText, setMotivationalText] = useState('');
 
     useEffect(() => {
-        alert(id);
         const getPCDprofile = async () => {
             const PCDdoc = doc(db, "PCD", id);
             const GetPCDInfo = await getDoc(PCDdoc);

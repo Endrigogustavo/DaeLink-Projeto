@@ -14,7 +14,6 @@ const AboutPCD = () => {
     const [userProfile, setUserProfile] = useState(null);
 
     useEffect(() => {
-        alert(id);
         const getPCDprofile = async () => {
             const PCDdoc = doc(db, "PCD", id);
             const GetPCDInfo = await getDoc(PCDdoc);
