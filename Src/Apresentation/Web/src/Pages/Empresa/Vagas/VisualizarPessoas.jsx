@@ -107,34 +107,54 @@ function VisualizarPessoas() {
   }
 
   const AceitarCandidato = async (id) => {
-    alert(id)
     try {
-      const situação = "Aprovado"
-      const vagaRef = doc(db, "Vagas", vagaId, 'candidatos', id);
-     
-      await updateDoc(vagaRef, {
-        situação: situação
-      });
-      alert("Pessoa adicionada com sucesso!");
+      const GetDoc = collection(db, "Vagas", vagaId, 'candidatos', id, 'documentos')
+      const DocResult = await getDocs(GetDoc)
+      if(!DocResult.empty){
+        try {
+          const situação = "Aprovado"
+          const vagaRef = doc(db, "Vagas", vagaId, 'candidatos', id)
+         
+          await updateDoc(vagaRef, {
+            situação: situação
+          });
+          alert("Apuração enviada com sucesso!")
+        } catch (e) {
+          console.error("Erro ao adicionar pessoa: ", e)
+          alert("Erro ao adicionar pessoa.")
+        }
+      }else{
+        alert("Sem documentos para poder apurar, aguarde!!!")
+      }
     } catch (e) {
-      console.error("Erro ao adicionar pessoa: ", e);
-      alert("Erro ao adicionar pessoa.");
+      console.error("Erro ao adicionar pessoa: ", e)
+      alert("Erro ao adicionar pessoa.")
     }
   };
 
   const RecusarCandidato = async (id) => {
-    
     try {
-      const situação = "Recusado"
-      const vagaRef = doc(db, "Vagas", vagaId, 'candidatos', id);
-     
-      await updateDoc(vagaRef, {
-        situação: situação
-      });
-      alert("Pessoa adicionada com sucesso!");
+      const GetDoc = collection(db, "Vagas", vagaId, 'candidatos', id, 'documentos')
+      const DocResult = await getDocs(GetDoc)
+      if(!DocResult.empty){
+        try {
+          const situação = "Recusado"
+          const vagaRef = doc(db, "Vagas", vagaId, 'candidatos', id)
+         
+          await updateDoc(vagaRef, {
+            situação: situação
+          });
+          alert("Apuração enviada com sucesso!")
+        } catch (e) {
+          console.error("Erro ao adicionar pessoa: ", e)
+          alert("Erro ao adicionar pessoa.")
+        }
+      }else{
+        alert("Sem documentos para poder apurar, aguarde!!!")
+      }
     } catch (e) {
-      console.error("Erro ao adicionar pessoa: ", e);
-      alert("Erro ao adicionar pessoa.");
+      console.error("Erro ao adicionar pessoa: ", e)
+      alert("Erro ao adicionar pessoa.")
     }
   };
 
