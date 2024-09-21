@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../Database/Firebase';
+import { useNavigate, useParams } from 'react-router-dom';
+import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore';
+import { db, auth } from '../../../Database/Firebase';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 function VisualizarDocumentos() {
+  const navigate = useNavigate()
+
   //Pegar o id do usuario na tela anterior
   const { vagaId, id } = useParams();
   //Variaveis para setar dados do banco
@@ -12,6 +15,7 @@ function VisualizarDocumentos() {
   const [vaga, setVaga] = useState(null);
   //Variavel para setar os erros
   const [error, setError] = useState('');
+  const [empresa, setEmpresa] = useState('')
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
@@ -87,6 +91,33 @@ function VisualizarDocumentos() {
     ))
   }
 
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setEmpresa(user.uid);
+      } else {
+        setEmpresa(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const ChatUser = async(userId) => {
+    try {
+        const ChatCollection = collection(db, "Chat");
+        await addDoc(ChatCollection, {
+            userId: userId,
+            empresaId: empresa
+        });
+        alert("Pessoa adicionada com sucesso!");
+        navigate(`/chat/${userId}/${empresa}`)
+    } catch (error) {
+        console.error('Erro ao adicionar pessoa:', error);
+        alert(`Erro ao adicionar pessoa: ${error.message}`);
+    }
+}
+
   return (
     <>
       <div className="bg-white p-8 rounded-md w-full">
@@ -128,6 +159,11 @@ function VisualizarDocumentos() {
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <button onClick={() => handleButtonClick(candidato.id)} type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                           <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Documentos
+                        </button>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <button onClick={() => ChatUser(candidato.userId)} type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-purple-700 border border-purple-700 rounded-lg hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-res-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
+                          <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Contatar
                         </button>
                       </td>
 
