@@ -54,7 +54,7 @@ function Footer() {
             {/**DAELINK */}
             <div className="py-8 px-4">
               <Link className="text-subtitle font-bold text-2xl">DAELINK</Link>
-              <p className="text-gray-600 lg:pr-24 pt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere deserunt vero reprehenderit corporis?</p>
+              <p className="text-gray-600 lg:pr-24 pt-3">Um sistema focado na melhora pessoal, e profissional.</p>
               <p className="text-gray-500 mt-4 mb-4"> TCC realizado por</p>
               <a className="w-14 bg-blue-500  text-white py-2 px-4 font-bold rounded-full ">Danilo - Alex - Endrigo</a>
             </div>
