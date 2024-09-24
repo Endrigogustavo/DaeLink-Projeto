@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { doc, collection, updateDoc, getDoc, getDocs, deleteDoc } from "firebase/firestore";
-import { db, storage } from "../../../Database/Firebase"; 
+import { db, storage, auth } from "../../../Database/Firebase"; 
 import { useParams, useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { decrypt } from "../../../Security/Cryptography_Rotes";
+import { getAuth, updateEmail, sendPasswordResetEmail, deleteUser } from "firebase/auth";
 
 import axios from 'axios'
+
+
 
 const EditarPerfil = () => {
   // Função de navegação do site
@@ -26,6 +29,8 @@ const EditarPerfil = () => {
     experiencias: '',
     deficiencia: ''
   });
+
+
 
   // Carregar as informações do usuário do banco de dados
   useEffect(() => {
@@ -76,6 +81,21 @@ const EditarPerfil = () => {
 
   */}
 
+  const PassReset = () =>{
+
+const auth = getAuth();
+sendPasswordResetEmail(auth, email)
+  .then(() => {
+    // Password reset email sent!
+    // ..
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -93,6 +113,13 @@ const EditarPerfil = () => {
         deficiencia: userData.deficiencia,
       });
 
+      updateEmail(auth.currentUser, userData.email).then(() => {
+        // Email updated!
+        // ...
+      }).catch((error) => {
+        // An error occurred
+        // ...
+      });
       alert("Conta atualizada com sucesso!");
       navigate(-2);
     } catch (e) {
@@ -106,6 +133,15 @@ const EditarPerfil = () => {
 
     if(response == true){
     try {
+      const auth = getAuth();
+const user = auth.currentUser;
+
+deleteUser(user).then(() => {
+  // User deleted.
+}).catch((error) => {
+  // An error ocurred
+  // ...
+});
       const UserInfo = doc(db, "PCD", id)
       await deleteDoc(UserInfo)
       navigate('/');
@@ -202,6 +238,7 @@ const EditarPerfil = () => {
     </form>
 <br/>
 <button onClick={() => DeleteProfile(decryptedId)}>Deletar conta</button>
+<button onClick={PassReset}>Trocar senha</button>
     </>
   );
 };
