@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { auth, db } from '../../config/firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
-import { FontAwesome, MaterialIcons, Ionicons , Feather} from '@expo/vector-icons';
-import {doc, getDoc} from 'firebase/firestore';
+import { FontAwesome, MaterialIcons, Ionicons, Feather } from '@expo/vector-icons';
+import { doc, getDoc } from 'firebase/firestore';
 import styles from './style';
 import load from '../load/load';
 
@@ -19,19 +19,19 @@ export default function Home() {
     }).catch(error => alert(error.message));
   };
 
-useEffect(()=>{
-  const fetchUserData = async() => {
-    const docRef = doc(db, 'PCD', auth.currentUser.uid);
-    const docSnap = await getDoc(docRef);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const docRef = doc(db, 'PCD', auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      setUserData(docSnap.data());
-    }else{
-      console.log('Não encontrado documento');
-  }
-};
-fetchUserData();
-},[]);
+      if (docSnap.exists()) {
+        setUserData(docSnap.data());
+      } else {
+        console.log('Não encontrado documento');
+      }
+    };
+    fetchUserData();
+  }, []);
 
   const handlePerfil = () => {
     navigation.navigate("perfil");
@@ -52,19 +52,19 @@ fetchUserData();
   if (!userData) {
     return (
       <View style={load.container2}>
-      <View style={load.carregando}>
-        <Image source={require('../../img/logo.png')} style={load.logo} />
-        <Text style={load.text}>Loading...</Text>
+        <View style={load.carregando}>
+          <Image source={require('../../img/logo.png')} style={load.logo} />
+          <Text style={load.text}>Loading...</Text>
+        </View>
       </View>
-    </View>
     );
   }
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-         <Image
-          source={{ uri: userData.imageUrl || 'https://via.placeholder.com/150' }} 
+        <Image
+          source={{ uri: userData.imageUrl || 'https://via.placeholder.com/150' }}
           style={styles.perfilImage}
         />
         <Text style={styles.bemvindoText}>Bem vindo, {auth.currentUser.email}</Text>
