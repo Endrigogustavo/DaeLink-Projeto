@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { getAuth } from "firebase/auth";
+import { getAuth,  } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirestore, doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
@@ -16,10 +16,9 @@ const firebaseConfig = {
   projectId: "daelink-projeto",
   storageBucket: "daelink-projeto.appspot.com",
   messagingSenderId: "775363508579",
-  appId: "1:775363508579:web:0426976db91adb4bd8fb56",
-  measurementId: "G-TXSH5BXCHZ"
+  appId: "1:775363508579:web:9a406587262c0d96d8fb56",
+  measurementId: "G-9TT9PJ9HZ9"
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);

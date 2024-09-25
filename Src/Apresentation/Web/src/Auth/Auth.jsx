@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth , sendEmailVerification} from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth} from "firebase/auth";
 import { doc, setDoc, getDoc, getFirestore , addDoc, collection} from "firebase/firestore"; 
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
@@ -11,11 +11,6 @@ export const registerUser = async (name, email, password, idade, deficiencia, de
     //Autenticar usuario unico
     const user = PCDCredential.user;
 
-sendEmailVerification(auth.currentUser)
-  .then(() => {
-    // Email verification sent!
-    // ...
-  });
 
 
     // Upload da imagem de perfil
