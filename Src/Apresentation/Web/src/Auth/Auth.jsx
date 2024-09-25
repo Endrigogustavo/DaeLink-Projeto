@@ -1,5 +1,5 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth} from "firebase/auth";
-import { doc, setDoc, getDoc, getFirestore , addDoc, collection} from "firebase/firestore"; 
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth } from "firebase/auth";
+import { doc, setDoc, getDoc, getFirestore, addDoc, collection } from "firebase/firestore";
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
@@ -94,7 +94,7 @@ export const registerEmpresa = async (
       endereco,
       cep,
       tipo,
-      imageProfile: backgroundImageUrl, 
+      imageProfile: backgroundImageUrl,
       imageUrl: profileImageUrl,
       ...additionalData
     };
@@ -134,7 +134,7 @@ export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias,
 
     console.log("Vaga adicionada com ID: ", VagaDocAdd.id);
 
-    
+
     return true;
   } catch (error) {
     console.error("Registration error: ", error);
@@ -150,7 +150,7 @@ export const loginUser = async (email, password) => {
     console.log("User logged in successfully:", uid);
 
     // Acessar a tabela específica com base no UID
-    const PCDDocRef = doc(db, "PCD", uid); 
+    const PCDDocRef = doc(db, "PCD", uid);
     const GetPCDDoc = await getDoc(PCDDocRef);
 
     if (GetPCDDoc.exists()) {
@@ -175,12 +175,12 @@ export const loginEmpresa = async (email, password) => {
     console.log("User logged in successfully:", uid);
 
     // Acessar a tabela específica com base no UID
-    const CompanyDoc = doc(db, "Empresa", uid); 
+    const CompanyDoc = doc(db, "Empresa", uid);
     const GetCompanyDoc = await getDoc(CompanyDoc);
 
     if (GetCompanyDoc.exists()) {
       console.log("User data:", GetCompanyDoc.data());
-      return { uid, ...GetCompanyDoc.data() }; 
+      return { uid, ...GetCompanyDoc.data() };
     } else {
       console.log("No such document!");
       return null;
@@ -214,11 +214,11 @@ export const getUserData = async (uid) => {
   const PCDDoc = await getDoc(doc(db, "PCD", uid));
   if (CompanyDoc.exists()) {
     return CompanyDoc.data();
-  } 
-  if(PCDDoc.exists()){
+  }
+  if (PCDDoc.exists()) {
     return PCDDoc.data();
   }
-    else {
+  else {
     throw new Error("User not found");
   }
 };

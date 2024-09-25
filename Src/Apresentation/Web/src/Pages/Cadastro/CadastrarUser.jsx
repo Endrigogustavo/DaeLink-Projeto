@@ -46,11 +46,11 @@ const Register = () => {
     const response = await registerUser(name, email, password, idade, deficiencia, descrição, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, {});
     if (response.success) {
       const auth = getAuth()
-      sendEmailVerification(auth.currentUser)
-      .then(() => {
-        alert("Email de verificação enviado com sucesso!!!")
-      });
-    
+      await sendEmailVerification(auth.currentUser)
+        .then(() => {
+          alert("Email de verificação enviado com sucesso!!!")
+        });
+
       //Sucesso
       alert("Cadastrado com sucesso");
       navigate(`/homeuser/${response.uid}`);
@@ -112,7 +112,7 @@ const Register = () => {
         <div className='w-full  lg:w-3/6 overflow-hidden overflow-y-scroll px-4 lg:px-0 containerresponsiveform'>
           <h1 className='font-bold text-2xl text-center my-4 uppercase'>Cadastro de Usuário</h1>
           <div className='bg-gray-100 my-4 h-max py-4  w-full px-4 grid-responsiveform grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-2 justify-items-center rounded-3xl border-2 border-blue-500 lg:border-none '>
-            
+
             <div className='flex flex-col items-center gap-4 '>
 
               <img src={profileImagePreview} className="w-32 h-32 rounded-full border-4 border-gray-500" alt="Preview Perfil" />
