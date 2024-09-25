@@ -40,8 +40,6 @@ const EditarPerfil = () => {
 
   // Carregar as informações do usuário do banco de dados
   useEffect(() => {
-    alert(userData.name)
-    alert(decryptedId)
     const getUserProfile = async () => {
       const userDoc = doc(db, "PCD", decryptedId);
       const GetUser = await getDoc(userDoc);
@@ -113,7 +111,7 @@ sendPasswordResetEmail(auth, userData.email)
           .catch((error) => {
             alert(error.message);
           });
-      }
+      
       const userDoc = doc(db, "PCD", decryptedId);
 
       await updateDoc(userDoc, {
@@ -129,7 +127,7 @@ sendPasswordResetEmail(auth, userData.email)
         deficiencia: userData.deficiencia,
       });
 
-    
+    }
       alert("Conta atualizada com sucesso!");
       navigate(-2);
     } catch (e) {
