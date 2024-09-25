@@ -4,7 +4,7 @@ import { db, storage, auth } from "../../../Database/Firebase";
 import { useParams, useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { decrypt } from "../../../Security/Cryptography_Rotes";
-import { getAuth, updateEmail, sendPasswordResetEmail, deleteUser } from "firebase/auth";
+import { getAuth, updateEmail, sendPasswordResetEmail, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 import axios from 'axios'
 
@@ -24,6 +24,7 @@ const EditarPerfil = () => {
   const decryptedId = decrypt(decodeURIComponent(id))
   const [userId, setUserId] = useState(decryptedId);
 
+  const [senha, setSenha] = useState("");
   // Informações do usuario
   const [userData, setUserProfile] = useState({
     name: '',
@@ -102,6 +103,14 @@ sendPasswordResetEmail(auth, userData.email)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        senha 
+      );
+    
+      reauthenticateWithCredential(user, credential).then(() => {
+      })
 
       if (user) {
         updateEmail(user, userData.email)
@@ -240,6 +249,16 @@ deleteUser(user).then(() => {
           placeholder="Deficiencia"
           value={userData.deficiencia}
           onChange={handleInputChange}
+        />
+      </div>
+           <br />
+      <div>
+        <input
+          type="text"
+          name="senha"
+          placeholder="senha"
+          
+          onChange={(e) => setSenha(e.target.value)}
         />
       </div>
       <button type="submit">Adicionar Documento</button>

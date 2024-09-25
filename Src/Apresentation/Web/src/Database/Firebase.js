@@ -28,4 +28,5 @@ const provider = new GoogleAuthProvider();
 
 auth.useDeviceLanguage();
 
+
 export { auth, db, storage };
