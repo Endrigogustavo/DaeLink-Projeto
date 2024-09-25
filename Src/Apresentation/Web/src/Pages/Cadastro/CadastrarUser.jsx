@@ -2,8 +2,10 @@ import './CadastroCss.css';
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { registerUser } from '../../Auth/Auth';
+import { auth } from '../../Database/Firebase'
 import { FaCloudUploadAlt } from "react-icons/fa";
 import CadastroU from '../../Img/CadastroU.png'
+import { getAuth, sendEmailVerification } from 'firebase/auth';
 
 const Register = () => {
   //Variaveis onde as informações serão setadas
@@ -43,6 +45,12 @@ const Register = () => {
 
     const response = await registerUser(name, email, password, idade, deficiencia, descrição, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, {});
     if (response.success) {
+      const auth = getAuth()
+      sendEmailVerification(auth.currentUser)
+      .then(() => {
+        alert("Email de verificação enviado com sucesso!!!")
+      });
+    
       //Sucesso
       alert("Cadastrado com sucesso");
       navigate(`/homeuser/${response.uid}`);
