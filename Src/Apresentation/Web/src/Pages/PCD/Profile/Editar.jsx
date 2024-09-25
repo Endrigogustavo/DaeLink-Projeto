@@ -11,6 +11,12 @@ import axios from 'axios'
 
 
 const EditarPerfil = () => {
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+
+
   // Função de navegação do site
   const navigate = useNavigate();
   // Utilizado para pegar o id do usuario e da vaga na tela anterior
@@ -84,10 +90,9 @@ const EditarPerfil = () => {
   const PassReset = () =>{
 
 const auth = getAuth();
-sendPasswordResetEmail(auth, email)
+sendPasswordResetEmail(auth, userData.email)
   .then(() => {
-    // Password reset email sent!
-    // ..
+   alert("Email para a alteração de senha foi enviado")
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -99,9 +104,20 @@ sendPasswordResetEmail(auth, email)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+
+      if (user) {
+        updateEmail(user, userData.email)
+          .then(() => {
+            alert('Email atualizado com sucesso');
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      }
       const userDoc = doc(db, "PCD", decryptedId);
 
       await updateDoc(userDoc, {
+        
         name: userData.name,
         email: userData.email,
         trabalho: userData.trabalho,
@@ -113,13 +129,7 @@ sendPasswordResetEmail(auth, email)
         deficiencia: userData.deficiencia,
       });
 
-      updateEmail(auth.currentUser, userData.email).then(() => {
-        // Email updated!
-        // ...
-      }).catch((error) => {
-        // An error occurred
-        // ...
-      });
+    
       alert("Conta atualizada com sucesso!");
       navigate(-2);
     } catch (e) {
