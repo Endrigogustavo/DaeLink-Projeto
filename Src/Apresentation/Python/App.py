@@ -62,19 +62,44 @@ descriptions = [job['descrição'] for job in jobs]
 tfidf = TfidfVectorizer().fit_transform(descriptions)
 
 # Função para encontrar o índice do trabalho pelo título
-def find_job_index_by_title(title):
+def find_job_index_by_title(description):
     for index, job in enumerate(jobs):
-        if job.get('trabalho', '').lower() == title.lower():
+        if job.get('descrição', '').lower() == description.lower():
             return index
     return None
+
+
+def find_job_index_by_similar_description(description):
+    # Crie uma lista com todas as descrições de trabalho
+    job_descriptions = [job.get('descrição', '') for job in jobs]
+
+    # Adicione a descrição recebida à lista (será usada como referência)
+    job_descriptions.append(description)
+
+    # Crie a matriz TF-IDF para todas as descrições
+    tfidf_vectorizer = TfidfVectorizer()
+    tfidf_matrix = tfidf_vectorizer.fit_transform(job_descriptions)
+
+    # Calcule a similaridade cosseno entre a descrição recebida e todas as vagas
+    cosine_similarities = linear_kernel(tfidf_matrix[-1:], tfidf_matrix[:-1]).flatten()
+
+    # Encontre o índice da vaga mais similar
+    most_similar_job_index = cosine_similarities.argmax()
+
+    # Retorne o índice da vaga mais similar se a similaridade for suficiente
+    if cosine_similarities[most_similar_job_index] > 0.1:  # Defina um limiar de similaridade
+        return most_similar_job_index
+
+    return None
+
 # Rota para recomendação de vagas
 @app.route('/recommend', methods=['POST'])
 def recommend():
     data = request.json
-    job_title = data.get('trabalho')
+    job_title = data.get('descrição')
     print(f"Recebido título da vaga: {job_title}")
 
-    job_index = find_job_index_by_title(job_title)
+    job_index = find_job_index_by_similar_description(job_title)
 
     if job_index is None:
         return jsonify({"error": "Esta vaga não existe"}), 404
