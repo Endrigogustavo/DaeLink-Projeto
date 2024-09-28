@@ -4,7 +4,7 @@ import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 //Função para cadastrar um novo usuario
-export const registerUser = async (name, email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, additionalData) => {
+export const registerUser = async (name, email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, laudomedico, additionalData) => {
   try {
     //Autenticador do Firebase
     const PCDCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -23,6 +23,12 @@ export const registerUser = async (name, email, password, idade, deficiencia, de
     await uploadBytes(backgroundImageRef, background);
     const backgroundImageUrl = await getDownloadURL(backgroundImageRef);
 
+    // Upload laudo medico
+    const LaudoDoc = ref(storage, `laudo_medico/${laudomedico.name}`);
+    await uploadBytes(LaudoDoc, laudomedico);
+    const LaudoURL = await getDownloadURL(LaudoDoc);
+
+
     //Dados a serem salvos em uma variavel
     const dataToSave = {
       name,
@@ -36,6 +42,7 @@ export const registerUser = async (name, email, password, idade, deficiencia, de
       sobre,
       experiencias,
       imageProfile: backgroundImageUrl,
+      laudo: LaudoURL,
       ...additionalData
     };
 

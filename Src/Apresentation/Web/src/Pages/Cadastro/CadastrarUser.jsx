@@ -9,6 +9,7 @@ import { getAuth, sendEmailVerification } from 'firebase/auth';
 
 const Register = () => {
   //Variaveis onde as informações serão setadas
+  const [laudomedico, setLaudoMedico] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
   const [backgroundImage, setBackgroundImage] = useState(null);
@@ -43,7 +44,7 @@ const Register = () => {
 
     //Função do Auth.jsx para fazer login enviando os parametros do form
 
-    const response = await registerUser(name, email, password, idade, deficiencia, descrição, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, {});
+    const response = await registerUser(name, email, password, idade, deficiencia, descrição, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, laudomedico, {});
     if (response.success) {
       const auth = getAuth()
       await sendEmailVerification(auth.currentUser)
@@ -109,7 +110,7 @@ const Register = () => {
           {/*<img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="object-cover" alt="Side Image" /> */}
           <img src={CadastroU} className="object-cover Img-Cadastro" alt="Side Image" />
         </div>
-        <div className='w-full  lg:w-3/6 overflow-hidden overflow-y-scroll px-4 lg:px-0 containerresponsiveform'>
+        <div className='w-full  lg:w-4/6 overflow-hidden overflow-y-scroll px-4 lg:px-0 containerresponsiveform'>
           <h1 className='font-bold text-2xl text-center my-4 uppercase'>Cadastro de Usuário</h1>
           <div className='bg-gray-100 my-4 h-max py-4  w-full px-4 grid-responsiveform grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-2 justify-items-center rounded-3xl border-2 border-blue-500 lg:border-none '>
 
@@ -118,7 +119,7 @@ const Register = () => {
               <img src={profileImagePreview} className="w-32 h-32 rounded-full border-4 border-gray-500" alt="Preview Perfil" />
               <p className='text-lg font-medium mb-2 text-center'>Foto de Perfil</p>
               <label htmlFor="profile-image-input" className='text-center w-32 border-2 border-gray-500 font-bold py-2 px-4 rounded-full transition-all hover:bg-gray-500 cursor-pointer hover:text-white'>Upload</label>
-              <input id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
+              <input required id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
             </div>
 
             <div>
@@ -126,12 +127,13 @@ const Register = () => {
               <label htmlFor="background-image-input" className='w-max lg:h-40 border-2 border-blue-500 font-bold py-2 px-4 rounded-xl transition-all hover:bg-blue-500 cursor-pointer hover:text-white flex gap-2 items-center justify-center'>
                 <FaCloudUploadAlt size={18} /> Upload Wallpaper
               </label>
-              <input id="background-image-input" type="file" className='hidden' accept="image/*" onChange={(e) => setBackgroundImage(e.target.files[0])} />
+              <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={(e) => setBackgroundImage(e.target.files[0])} />
             </div>
 
             <div className="flex flex-col ">
               <label className="text-lg font-medium">Nome</label>
               <input
+                required
                 type="text"
                 className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
                 placeholder="Insira seu Nome Completo"
@@ -149,7 +151,9 @@ const Register = () => {
                 onChange={(e) => {
                   setSobre(e.target.value);
                   adjustTextareaHeight(textareaRefs.sobre);
+
                 }}
+                required
               />
             </div>
             <div className="flex flex-col">
@@ -163,11 +167,13 @@ const Register = () => {
                   setExperiencia(e.target.value);
                   adjustTextareaHeight(textareaRefs.experiencias);
                 }}
+                required
               />
             </div>
             <div className="flex flex-col">
               <label className="text-lg font-medium">Email</label>
               <input
+                required
                 type="text"
                 className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
                 placeholder="Insira seu Email"
@@ -178,6 +184,7 @@ const Register = () => {
             <div className="flex flex-col">
               <label className="text-lg font-medium">Senha</label>
               <input
+                required
                 type="password"
                 className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
                 placeholder="Insira sua Senha"
@@ -188,6 +195,7 @@ const Register = () => {
             <div className="flex flex-col">
               <label className="text-lg font-medium">Idade</label>
               <input
+                required
                 type="date"
                 className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
                 placeholder="Coloque sua idade"
@@ -198,6 +206,7 @@ const Register = () => {
             <div className="flex flex-col">
               <label className="text-lg font-medium">Area de atuação</label>
               <textarea
+                required
                 ref={textareaRefs.trabalho}
                 className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent respon-w-input "
                 placeholder="Fale sobre sua área de atuação"
@@ -211,6 +220,7 @@ const Register = () => {
             <div className="flex flex-col">
               <label className="text-lg font-medium">Descrição do trabalho</label>
               <textarea
+                required
                 ref={textareaRefs.descrição}
                 className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent respon-w-input "
                 placeholder="Nos diga um pouco do seu trabalho"
@@ -224,6 +234,7 @@ const Register = () => {
             <div className="flex flex-col">
               <label className="text-lg font-medium">Deficiência</label>
               <input
+                required
                 type="text"
                 className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
                 placeholder="Fale sua deficiência"
@@ -231,6 +242,24 @@ const Register = () => {
                 onChange={(e) => setDeficiencia(e.target.value)}
               />
             </div>
+
+            <label for="dropzone-file" class="mx-auto cursor-pointer flex w-full max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 p-6 text-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+
+              <h2 class="mt-4 text-xl font-medium text-gray-700 tracking-wide">Laudo médico</h2>
+
+              <p class="mt-2 text-gray-500 tracking-wide">Upload or darg & drop your file SVG, PNG, JPG or GIF. </p>
+
+              <input id="dropzone-file"
+                required
+                accept=".pdf,.doc,.docx"
+                type="file" class="hidden"
+                onChange={(e) => setLaudoMedico(e.target.files[0])}
+              />
+            </label>
+
 
 
             <div className='w-full px-19 flex justify-center items-center gap-5'>
