@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth } from "firebase/auth";
-import { doc, setDoc, getDoc, getFirestore, addDoc, collection } from "firebase/firestore";
+import { doc, setDoc, getDoc, getFirestore, addDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
@@ -46,10 +46,19 @@ export const registerUser = async (name, email, password, idade, deficiencia, de
       ...additionalData
     };
 
+    const TesteEmail = collection(db, "PCD")
+    const q = query(TesteEmail, where("email", "==", email));
+    const VerifiEmail = getDocs(q)
+
+    if(VerifiEmail.exists()){
+      alert("Erro, Tente novamente")
+    }else{
     // Adicione o usuário ao Firestore
     const PCDdoc = doc(db, "PCD", user.uid);
     //Adicionando os dados junto do usuario no banco
     await setDoc(PCDdoc, dataToSave);
+    }
+
 
     return { success: true, uid: user.uid };
   } catch (error) {
