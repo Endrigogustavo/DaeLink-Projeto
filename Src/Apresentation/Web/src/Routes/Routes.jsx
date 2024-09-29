@@ -42,9 +42,12 @@ import AtualizarDoc from '../Pages/PCD/Vagas/EnviarDocumentos/AtualizarDocumento
 import Adm from '../Pages/Admin/Dashboard'
 import PrivateRoute from '../Security/PrivateRoute';
 
+
+import Watson from '../Watson/Watson'
 function App() {
   return (
     <BrowserRouter>
+    <Watson/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/logout" element={<Logout />} />

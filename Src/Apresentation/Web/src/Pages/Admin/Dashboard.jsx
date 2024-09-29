@@ -1,6 +1,48 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { db, auth } from '../../Database/Firebase'
+import { collection, getDocs } from 'firebase/firestore';
 
 const Dashboard = () => {
+  const [listPCD, setListPCD] = useState([])
+  const [listVagas, setListVagas] = useState([])
+  const [listEmpresas, setListEmpresas] = useState([])
+  const [listAtual, setListAtual] = useState([])
+
+  useEffect(() => {
+    const ListPCD = async () => {
+      const PCDref = collection(db, "PCD")
+      const data = await getDocs(PCDref)
+      setListPCD(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+
+    }
+
+    const ListVagas = async () => {
+      const Vagasref = collection(db, "Vagas")
+      const data = await getDocs(Vagasref)
+      setListVagas(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    }
+
+    const ListEmpresas = async () => {
+      const Empresasref = collection(db, "Empresa")
+      const data = await getDocs(Empresasref)
+      setListEmpresas(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    }
+
+    ListPCD()
+    ListEmpresas()
+    ListVagas()
+
+  }, [])
+
+  const AltListPCD = () =>{
+    setListAtual(listPCD)
+  } 
+  const AltListVagas = () =>{
+    setListAtual(listVagas)
+  } 
+  const AltListEmpresa = () =>{
+    setListAtual(listEmpresas)
+  } 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       {/* Barra de navegação superior */}
@@ -12,7 +54,6 @@ const Dashboard = () => {
               alt="Logo"
               className="w-28 h-18 mr-2"
             />
-            <h2 className="font-bold text-xl">Nombre de la Aplicación</h2>
           </div>
           <div className="md:hidden flex items-center">
             <button id="menuBtn">
@@ -56,49 +97,47 @@ const Dashboard = () => {
           </a>
 
           <div className="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mt-2"></div>
-          <p className="mb-1 px-5 py-3 text-left text-xs text-cyan-500">Copyright WCSLAT@2023</p>
         </div>
 
         {/* Área de conteúdo principal */}
         <div className="flex-1 p-4 w-full md:w-1/2">
-          {/* Campo de pesquisa */}
-          <div className="relative max-w-md w-full">
-            <div className="absolute top-1 left-2 inline-flex items-center p-2">
-              <i className="fas fa-search text-gray-400"></i>
-            </div>
-            <input
-              className="w-full h-10 pl-10 pr-4 py-1 text-base placeholder-gray-500 border rounded-full focus:shadow-outline"
-              type="search"
-              placeholder="Buscar..."
-            />
-          </div>
-
           {/* Contenedor de Gráficas */}
           <div className="mt-8 flex flex-wrap space-x-0 space-y-2 md:space-x-4 md:space-y-0">
             {/* Seção 1 - Gráfica de Usuários */}
-            <div className="flex-1 bg-white p-4 shadow rounded-lg md:w-1/2">
+            <button onClick={AltListPCD} className="flex-1 bg-white p-4 shadow rounded-lg md:w-1/2">
               <h2 className="text-gray-500 text-lg font-semibold pb-1">Usuarios</h2>
               <div className="my-1"></div>
               <div className="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
               <div className="chart-container" style={{ position: 'relative', height: '150px', width: '100%' }}>
                 <canvas id="usersChart"></canvas>
               </div>
-            </div>
+            </button>
 
             {/* Seção 2 - Gráfica de Comercios */}
-            <div className="flex-1 bg-white p-4 shadow rounded-lg md:w-1/2">
-              <h2 className="text-gray-500 text-lg font-semibold pb-1">Comercios</h2>
+            <button onClick={AltListVagas} className="flex-1 bg-white p-4 shadow rounded-lg md:w-1/2">
+              <h2 className="text-gray-500 text-lg font-semibold pb-1">Vagas</h2>
               <div className="my-1"></div>
               <div className="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
               <div className="chart-container" style={{ position: 'relative', height: '150px', width: '100%' }}>
                 <canvas id="commercesChart"></canvas>
               </div>
-            </div>
+            </button>
+
+            {/* Seção 1 - Gráfica de Usuários */}
+            <button onClick={AltListEmpresa} className="flex-1 bg-white p-4 shadow rounded-lg md:w-1/2">
+              <h2 className="text-gray-500 text-lg font-semibold pb-1">Empresas</h2>
+              <div className="my-1"></div>
+              <div className="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
+              <div className="chart-container" style={{ position: 'relative', height: '150px', width: '100%' }}>
+                <canvas id="usersChart"></canvas>
+              </div>
+            </button>
+
           </div>
 
           {/* Seção 3 - Tabla de Autorizaciones Pendientes */}
           <div className="mt-8 bg-white p-4 shadow rounded-lg">
-            <h2 className="text-gray-500 text-lg font-semibold pb-4">Autorizaciones Pendientes</h2>
+            <h2 className="text-gray-500 text-lg font-semibold pb-4">Usuarios</h2>
             <div className="my-1"></div>
             <div className="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
             <table className="w-full table-auto text-sm">
@@ -110,19 +149,14 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { name: "Juan Pérez", role: "Comercio" },
-                  { name: "María Gómez", role: "Usuario" },
-                  { name: "Carlos López", role: "Usuario" },
-                  { name: "Laura Torres", role: "Comercio" },
-                  { name: "Ana Ramírez", role: "Usuario" },
-                ].map((user, index) => (
-                  <tr className="hover:bg-grey-lighter" key={index}>
+
+                {listAtual.map((list) => (
+                  <tr className="hover:bg-grey-lighter" key={list.id}>
                     <td className="py-2 px-4 border-b border-grey-light">
-                      <img src="https://via.placeholder.com/40" alt="Foto Perfil" className="rounded-full h-10 w-10" />
+                      <img src={list.imageProfile} alt="Foto Perfil" className="rounded-full h-10 w-10" />
                     </td>
-                    <td className="py-2 px-4 border-b border-grey-light">{user.name}</td>
-                    <td className="py-2 px-4 border-b border-grey-light">{user.role}</td>
+                    <td className="py-2 px-4 border-b border-grey-light">{list.name}</td>
+                    <td className="py-2 px-4 border-b border-grey-light">{list.email}</td>
                   </tr>
                 ))}
               </tbody>
