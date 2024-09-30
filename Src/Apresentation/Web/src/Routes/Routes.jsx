@@ -40,6 +40,7 @@ import Apuração from '../Pages/PCD/Vagas/VisualizarProcessos/VisualizarApuraç
 import AtualizarDoc from '../Pages/PCD/Vagas/EnviarDocumentos/AtualizarDocumento'
 
 import Adm from '../Pages/Admin/Dashboard'
+import LoginAdm from '../Pages/Admin/Login'
 import PrivateRoute from '../Security/PrivateRoute';
 
 
@@ -98,7 +99,8 @@ function App() {
         <Route path="/empresas/" element={<Empresas />} />
         <Route path="/loginu" element={<LoginU />} />
 
-        <Route path="/adm" element={<Adm />} />
+        <Route path="/adm/:uid" element={<Adm />} />
+        <Route path="/loginadm" element={<LoginAdm />} />
       </Routes>
     </BrowserRouter>
   );
