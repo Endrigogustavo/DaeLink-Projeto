@@ -83,7 +83,7 @@ const DocumentosForm = () => {
     }, []);
 
     useEffect(() => {
-        const getCompanyProfile = async () => {
+        const getDocPCD = async () => {
             const DocRef = collection(db, "Vagas", vagaUid, "candidatos");
             const QueryDoc = query(DocRef, where("userId", "==", userId));
             const ResultDoc = await getDocs(QueryDoc);
