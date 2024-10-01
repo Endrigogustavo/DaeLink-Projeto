@@ -75,9 +75,11 @@ const ProcessosList = () => {
         if (!DocResult.empty) {
             const DocRef = collection(db, "Vagas", vagaId, "candidatos", DocResult.docs[0].id, "documentos");
             const GetDoc = await getDocs(DocRef);
+            const idDoc = GetDoc.docs[0].id
             if (!GetDoc.empty) {
+                alert(idDoc)
                 alert("Documentos já existem");
-                navigate(`/atualizardocumento/${encryptedId}/${vagaId}`);
+                navigate(`/atualizardocumento/${encryptedId}/${vagaId}/${idDoc}`);
             } else {
                 alert("Sem documentos");
                 navigate(`/enviardocumento/${encryptedId}/${vagaId}`);

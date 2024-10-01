@@ -41,6 +41,10 @@ import AtualizarDoc from '../Pages/PCD/Vagas/EnviarDocumentos/AtualizarDocumento
 
 import Adm from '../Pages/Admin/Dashboard'
 import LoginAdm from '../Pages/Admin/Login'
+import PCDadm from '../Pages/Admin/PCD'
+import EmpresaAdm from '../Pages/Admin/Empresas'
+import VagasAdm from '../Pages/Admin/Vagas'
+
 import PrivateRoute from '../Security/PrivateRoute';
 
 
@@ -84,7 +88,7 @@ function App() {
           <Route path="/homeuser/empresas/:id" element={<Empresas />} />
           <Route path="/entrarvaga/:vaga" element={<EntrarVaga />} />
           <Route path="/enviardocumento/:id/:vagaId" element={<EnviarDocumentos />} />
-          <Route path="/atualizardocumento/:id/:vagaId" element={<AtualizarDoc />} />
+          <Route path="/atualizardocumento/:id/:vagaId/:idDoc" element={<AtualizarDoc />} />
           <Route path="/homeuser/processos/:encryptedId" element={<VisualizarProcessosUser />} />
           <Route path="/userprofile/:id" element={<Profile />} />
           <Route path="/edituser/:id" element={<EditarUser />} />
@@ -99,8 +103,15 @@ function App() {
         <Route path="/empresas/" element={<Empresas />} />
         <Route path="/loginu" element={<LoginU />} />
 
+        
         <Route path="/adm/:uid" element={<Adm />} />
+        <Route path="/pcdadm/:id" element={<PCDadm />} />
+        <Route path="/empresaadm/:id" element={<EmpresaAdm />} />
+        <Route path="/vagaadm/:vagaId" element={<VagasAdm />} />
+       
         <Route path="/loginadm" element={<LoginAdm />} />
+
+        
       </Routes>
     </BrowserRouter>
   );
