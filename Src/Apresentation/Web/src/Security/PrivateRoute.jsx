@@ -42,6 +42,8 @@ const PrivateRoute = ({ allowedRoles }) => {
     return <Navigate to="/homeempresa" />;
     if(userType.tipo == "PCD")
       return <Navigate to="/homeuser" />;
+    if(userType.tipo == "Adm")
+      return <Navigate to="/adm" />;
   }
 
   return <Outlet />;
