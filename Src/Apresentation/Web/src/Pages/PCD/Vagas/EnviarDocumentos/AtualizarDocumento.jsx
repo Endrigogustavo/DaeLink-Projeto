@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { doc, collection, updateDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
+import { doc, collection, updateDoc, getDocs, query, where, deleteDoc, getDoc } from "firebase/firestore";
 import { db, storage, auth } from "../../../../Database/Firebase";
 import { useNavigate, useParams } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
@@ -208,9 +208,13 @@ const DocumentosForm = () => {
     const DeletarDoc = async() =>{
         
        try {
-        const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", userId);
-        const documentoDocRef = doc(candidatoDocRef, "documentos", idDoc);
-    
+        const candidatosRef = collection(db, "Vagas", vagaUid, "candidatos");
+            const QueryCandidatos = query(candidatosRef, where("userId", "==", userId));
+            const ResultCandidatos = await getDocs(QueryCandidatos);
+                const candidatoDoc = ResultCandidatos.docs[0];
+                const candidatoId = candidatoDoc.id;
+                const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", candidatoId);
+                const documentoDocRef = doc(candidatoDocRef, "documentos", idDoc);
         await deleteDoc(documentoDocRef)
         alert("Documento deletado com sucesso")
        } catch (error) {
