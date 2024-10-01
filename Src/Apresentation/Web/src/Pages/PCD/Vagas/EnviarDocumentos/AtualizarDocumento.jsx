@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { doc, collection, updateDoc, getDocs, query, where } from "firebase/firestore";
+import { doc, collection, updateDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
 import { db, storage, auth } from "../../../../Database/Firebase";
 import { useNavigate, useParams } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
@@ -64,7 +64,6 @@ const DocumentosForm = () => {
   }, []);
 
     useEffect(() => {
-        alert(idDoc)
         if (enderecoRef.current) {
             adjustTextareaHeight(enderecoRef); // Ajustar o textarea de endereço
         }
@@ -89,11 +88,9 @@ const DocumentosForm = () => {
                     const ResultDocumentos = await getDocs(documentosRef);
     
                     if (!ResultDocumentos.empty) {
-                        alert("Documento ok");
                         setDocProfile(ResultDocumentos);
                     } else {
                         setDocProfile(null);
-                        alert("Não achou documentos");
                     }
                 } else {
                     alert("Não achou candidatos");
@@ -208,9 +205,18 @@ const DocumentosForm = () => {
         }
     };
 
-    const DeleteDoc = async(id) =>{
-        const DocRef = collection(db, "Vagas", vagaUid, "candidatos")
-        const QueryDoc = query(DocRef())
+    const DeletarDoc = async() =>{
+        
+       try {
+        const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", userId);
+        const documentoDocRef = doc(candidatoDocRef, "documentos", idDoc);
+    
+        await deleteDoc(documentoDocRef)
+        alert("Documento deletado com sucesso")
+       } catch (error) {
+        console.log(error)
+        alert("Erro ao deletar documento", error.message)
+       }
     }
 
     return (
@@ -405,7 +411,16 @@ const DocumentosForm = () => {
                 >
                     Enviar Documentos
                 </button>
+
+                
             </form>
+            <button
+                onClick={() => DeletarDoc()}
+                    type="submit"
+                    className="w-56 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-3 px-4 rounded-full transition-all"
+                >
+                    Deletar Documento
+                </button>
         </>
     );
 };
