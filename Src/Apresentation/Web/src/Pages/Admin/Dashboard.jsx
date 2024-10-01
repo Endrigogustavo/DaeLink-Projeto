@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { db, auth } from '../../Database/Firebase'
 import { collection, getDocs } from 'firebase/firestore';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+
+  const navigate = useNavigate()
   const [listPCD, setListPCD] = useState([])
   const [listVagas, setListVagas] = useState([])
   const [listEmpresas, setListEmpresas] = useState([])
@@ -34,15 +37,28 @@ const Dashboard = () => {
 
   }, [])
 
-  const AltListPCD = () =>{
+  const AltListPCD = () => {
     setListAtual(listPCD)
-  } 
-  const AltListVagas = () =>{
+  }
+  const AltListVagas = () => {
     setListAtual(listVagas)
-  } 
-  const AltListEmpresa = () =>{
+  }
+  const AltListEmpresa = () => {
     setListAtual(listEmpresas)
-  } 
+  }
+
+  const UpdateInfo = (id, tipo) => {
+    if(tipo == "PCD"){
+      navigate(`/pcdadm/${id}`)
+    }
+    if(tipo == "Empresa"){
+      navigate(`/empresaadm/${id}`)
+    }
+  }
+
+  const UpdateVaga = (id) => {
+    navigate(`/vagaadm/${id}`)
+  }
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       {/* Barra de navegação superior */}
@@ -77,16 +93,27 @@ const Dashboard = () => {
         {/* Barra lateral de navegação (oculta em dispositivos pequenos) */}
         <div className="p-2 bg-white w-full md:w-60 flex flex-col md:flex hidden" id="sideNav">
           <nav>
-            {['Inicio', 'Autorizaciones', 'Usuarios', 'Comercios', 'Transacciones'].map((item, index) => (
-              <a
-                key={index}
-                className="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-cyan-500 hover:text-white"
-                href="#"
-              >
-                <i className={`fas fa-${item.toLowerCase()} mr-2`}></i>
-                {item}
-              </a>
-            ))}
+            <a
+              className="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-cyan-500 hover:text-white"
+              href="#"
+            >
+              <i className="fas mr-2"></i>
+              PCD
+            </a>
+            <a
+              className="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-cyan-500 hover:text-white"
+              href="#"
+            >
+              <i className="fas mr-2"></i>
+              Vagas
+            </a>
+            <a
+              className="block text-gray-500 py-2.5 px-4 my-4 rounded transition duration-200 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-cyan-500 hover:text-white"
+              href="#"
+            >
+              <i className="fas mr-2"></i>
+              Empresas
+            </a>
           </nav>
 
           <a
@@ -144,8 +171,8 @@ const Dashboard = () => {
               <thead>
                 <tr className="text-sm leading-normal">
                   <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Foto</th>
-                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Nombre</th>
-                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Rol</th>
+                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Nome</th>
+                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Email</th>
                 </tr>
               </thead>
               <tbody>
@@ -157,6 +184,7 @@ const Dashboard = () => {
                     </td>
                     <td className="py-2 px-4 border-b border-grey-light">{list.name}</td>
                     <td className="py-2 px-4 border-b border-grey-light">{list.email}</td>
+                    <button onClick={() =>UpdateInfo(list.id, list.tipo)} class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Atualizar</button>
                   </tr>
                 ))}
               </tbody>
@@ -168,29 +196,26 @@ const Dashboard = () => {
 
           {/* Seção 4 - Tabla de Transacciones */}
           <div className="mt-8 bg-white p-4 shadow rounded-lg">
-            <h2 className="text-gray-500 text-lg font-semibold pb-4">Transacciones</h2>
+            <h2 className="text-gray-500 text-lg font-semibold pb-4">Vagas</h2>
             <div className="my-1"></div>
             <div className="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6"></div>
             <table className="w-full table-auto text-sm">
               <thead>
                 <tr className="text-sm leading-normal">
-                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Nombre</th>
-                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Fecha</th>
-                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Monto</th>
+                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Empresa</th>
+                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">Area</th>
+                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Tipo</th>
+                  <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light text-right">Exigencias</th>
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { name: "Carlos Sánchez", date: "27/07/2023", amount: "$1500" },
-                  { name: "Pedro Hernández", date: "02/08/2023", amount: "$1950" },
-                  { name: "Sara Ramírez", date: "03/08/2023", amount: "$1200" },
-                  { name: "Luz María", date: "04/08/2023", amount: "$3000" },
-                  { name: "Juan Carlos", date: "05/08/2023", amount: "$1800" },
-                ].map((transaction, index) => (
-                  <tr className="hover:bg-grey-lighter" key={index}>
-                    <td className="py-2 px-4 border-b border-grey-light">{transaction.name}</td>
-                    <td className="py-2 px-4 border-b border-grey-light">{transaction.date}</td>
-                    <td className="py-2 px-4 border-b border-grey-light text-right">{transaction.amount}</td>
+              {listVagas.map((list) => (
+                  <tr className="hover:bg-grey-lighter" key={list.id}>
+                    <td className="py-2 px-4 border-b border-grey-light">{list.empresa}</td>
+                    <td className="py-2 px-4 border-b border-grey-light">{list.area}</td>
+                    <td className="py-2 px-4 border-b border-grey-light">{list.tipo}</td>
+                    <td className="py-2 px-4 border-b border-grey-light">{list.exigencias}</td>
+                    <button onClick={() =>UpdateVaga(list.id)} class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Atualizar Vaga</button>
                   </tr>
                 ))}
               </tbody>
