@@ -20,9 +20,9 @@ const Banner = () => {
                             <Link to={"loginu"} className="ml-5  flex items-center iconhover">Login <CiLogin className="flex text-2xl  " /> </Link>
                         </div>
                     </div>
-                    <div className="w-1/2 h-full justify-center flex overflow-hidden">
+                    <div className="w-1/2 h-full justify-end items-center flex overflow-hidden">
 
-                        <img src={ImgHome} className="Banner-Image" alt="" />
+                        <img src={ImgHome} className="h-full" />
                     </div>
 
                 </div>

@@ -16,7 +16,7 @@ const Carousel = () => {
                     <CarouselSlider />
 
                 </div>
-                <div className="w-1/2 flexfulltext px-12">
+                <div className="w-1/2 flexfulltext sm:px-12">
                     <div className="flex w-full h-full flex-col items-center justify-center gap-4  sm-carouseltextcontainer  bg-gray-800  rounded-lg p-8">
                         <h1 className="text-white carousel-text text-2xl font-bold flex">Empresas ao redor do Mundo <MdTravelExplore /></h1>
                         <p className="text-white text-justify font-normal ">Devido ao nosso comprometimento e desempenho excepcionais em realizar nosso objetivo, conquistamos a confiança das principais empresas do mercado, como IBM, Apple, Microsoft, Google, Amazon, e muitas outras. Nosso sucesso é refletido não apenas na nossa capacidade de atender às necessidades dos nossos clientes, mas também na nossa dedicação contínua à inovação e à excelência. </p>

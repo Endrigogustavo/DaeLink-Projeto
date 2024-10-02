@@ -48,18 +48,18 @@ const AboutPCD = () => {
                             <h1 className="text-3xl font-bold uppercase text-white pt-2 text-center">{userProfile?.name}</h1>
                             <h2 className="text-2xl font-medium text-white pb-8 text-center ">O que vamos melhorar hoje?</h2>
                         </div>
-                        <div className="flex w-full  justify-center px-16 gap-8 pb-8  itemscontentsd">
+                        <div className="flex w-full justify-center px-16 gap-8 pb-8  itemscontentsd">
                             <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                                 <FaGraduationCap className='text-white text-3xl ' />
-                                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg  font-normal">{texto1}</p>
+                                <p className="text-justify text-white bg-gray-800 h-4/5 p-3 rounded-lg  font-normal">{texto1}</p>
                             </div>
                             <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                                 <FaBuilding className='text-white text-3xl  ' />
-                                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal">{texto2}</p>
+                                <p className="text-justify text-white bg-gray-800 h-4/5 p-3 rounded-lg font-normal">{texto2}</p>
                             </div>
                             <div className="w-1/3 flex flex-col items-center gap-4  itemstextboxsd">
                                 <FaAccessibleIcon className='text-white text-3xl  ' />
-                                <p className="text-justify text-white bg-gray-800 px-3 rounded-lg font-normal">{texto3}</p>
+                                <p className="text-justify text-white bg-gray-800 h-4/5 px-3 rounded-lg font-normal">{texto3}</p>
                             </div>
                         </div>
 
