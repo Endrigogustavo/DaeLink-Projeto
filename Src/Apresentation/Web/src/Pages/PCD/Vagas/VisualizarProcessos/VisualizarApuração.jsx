@@ -18,7 +18,6 @@ function VisualizarApuração() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        alert(vagaId)
         const GetVagas = async () => {
             try {
                 //Caminho dos dados da tabela PCD do banco

@@ -16,11 +16,10 @@ const CandidatosTable = () => {
 
     useEffect(() => {
         setEmpresa(idempresa);
-        alert(idempresa)
     }, [idempresa]);
 
     const handleSubmit = async (event) => {
-        
+
         event.preventDefault();
         setLoading(true); // Inicia o carregamento
         setHasSearched(true); // Define que a pesquisa foi feita

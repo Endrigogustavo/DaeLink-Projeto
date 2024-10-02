@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { doc, collection, updateDoc, getDoc, getDocs } from "firebase/firestore";
-import { db } from "../../Database/Firebase"; 
+import { db } from "../../Database/Firebase";
 import { useParams, useNavigate } from 'react-router-dom';
 
 
@@ -38,7 +38,7 @@ const EditarVaga = () => {
     getCompanyProfile();
   }, [vagaId]);
 
-  
+
   // Função para lidar com as mudanças nos inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -75,94 +75,94 @@ const EditarVaga = () => {
   };
 
 
-  
+
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
-      <div>
-        <input
-          type="text"
-          name="area"
-          placeholder="area"
-          value={userData.area}
-          onChange={handleInputChange}
-        />
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            type="text"
+            name="area"
+            placeholder="area"
+            value={userData.area}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="detalhes"
+            placeholder="detalhes"
+            value={userData.detalhes}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="empresa"
+            placeholder="empresa"
+            value={userData.empresa}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="exigencias"
+            placeholder="exigencias"
+            value={userData.exigencias}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="local"
+            placeholder="local"
+            value={userData.local}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="salario"
+            placeholder="salario"
+            value={userData.salario}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="tipo"
+            placeholder="tipo"
+            value={userData.tipo}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="vaga"
+            placeholder="vaga"
+            value={userData.vaga}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <button type="submit">Adicionar Documento</button>
+      </form>
       <br />
-      <div>
-        <input
-          type="text"
-          name="detalhes"
-          placeholder="detalhes"
-          value={userData.detalhes}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="empresa"
-          placeholder="empresa"
-          value={userData.empresa}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="exigencias"
-          placeholder="exigencias"
-          value={userData.exigencias}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="local"
-          placeholder="local"
-          value={userData.local}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="salario"
-          placeholder="salario"
-          value={userData.salario}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="tipo"
-          placeholder="tipo"
-          value={userData.tipo}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="vaga"
-          placeholder="vaga"
-          value={userData.vaga}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <button type="submit">Adicionar Documento</button>
-    </form>
-    <br />
     </>
   );
 };

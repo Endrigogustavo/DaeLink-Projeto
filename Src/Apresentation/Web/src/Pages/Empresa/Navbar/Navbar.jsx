@@ -26,7 +26,7 @@ export default function Navbar() {
                 setUserId(userSnap.id);
             } else {
                 setUserProfile(null);
-                alert("No such document!");
+                alert("Sem documentos!");
             }
             setLoading(false); // Carregamento concluído
         };

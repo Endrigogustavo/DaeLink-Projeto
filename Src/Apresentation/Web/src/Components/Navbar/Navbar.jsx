@@ -7,7 +7,7 @@ import { IoSearch } from "react-icons/io5";
 export default function Navbar({ userType }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    
+
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
     }
@@ -25,9 +25,9 @@ export default function Navbar({ userType }) {
     const NavlinksPCD = () => {
         return (
             <>
-            <button onClick={() => handleButtonClickProcess(userId)}>Processos</button>
-            <button onClick={() => handleButtonClickVagas(userId)}>Vagas</button>
-            <button onClick={() => handleButtonClickEmpresas(userId)}>Empresas</button>
+                <button onClick={() => handleButtonClickProcess(userId)}>Processos</button>
+                <button onClick={() => handleButtonClickVagas(userId)}>Vagas</button>
+                <button onClick={() => handleButtonClickEmpresas(userId)}>Empresas</button>
             </>
         )
     }
@@ -55,9 +55,9 @@ export default function Navbar({ userType }) {
     const NavlinksEmpresa = () => {
         return (
             <>
-            <button onClick={() => handleButtonClick(userId)}>Criar Vaga</button>
-            <button onClick={() => handleButtonClickProfile(userId)}>Candidatos</button>
-            <button onClick={() => handleButtonClickVaga(userId)}>Processos</button>
+                <button onClick={() => handleButtonClick(userId)}>Criar Vaga</button>
+                <button onClick={() => handleButtonClickProfile(userId)}>Candidatos</button>
+                <button onClick={() => handleButtonClickVaga(userId)}>Processos</button>
             </>
         )
     }
@@ -87,9 +87,9 @@ export default function Navbar({ userType }) {
 
                 <nav className=" flex items-center gap-4">
                     <div className=" hidden md:flex items-center gap-4">
-                    {userType === '' && <Navlinks></Navlinks>}
-                    {userType === 'PCD' && <NavlinksPCD></NavlinksPCD>}
-                    {userType === 'Empresa' && <NavlinksEmpresa></NavlinksEmpresa>}
+                        {userType === '' && <Navlinks></Navlinks>}
+                        {userType === 'PCD' && <NavlinksPCD></NavlinksPCD>}
+                        {userType === 'Empresa' && <NavlinksEmpresa></NavlinksEmpresa>}
 
                     </div>
                     <IoSearch className='text-black text-2xl cursor-pointer iconhover' />

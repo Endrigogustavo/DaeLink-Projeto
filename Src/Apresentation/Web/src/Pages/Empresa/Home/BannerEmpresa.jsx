@@ -23,7 +23,7 @@ const BannerEmpresa = () => {
                 setUserId(userSnap.id);
             } else {
                 setUserProfile(null);
-                alert("No such document!");
+                ("No such document!");
             }
             setLoading(false); // Carregamento concluído
         };

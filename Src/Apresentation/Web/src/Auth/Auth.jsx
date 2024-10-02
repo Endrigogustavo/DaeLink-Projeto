@@ -50,13 +50,13 @@ export const registerUser = async (name, email, password, idade, deficiencia, de
     const q = query(TesteEmail, where("email", "==", email));
     const VerifiEmail = getDocs(q)
 
-    if(VerifiEmail.exists()){
+    if (VerifiEmail.exists()) {
       alert("Erro, Tente novamente")
-    }else{
-    // Adicione o usuário ao Firestore
-    const PCDdoc = doc(db, "PCD", user.uid);
-    //Adicionando os dados junto do usuario no banco
-    await setDoc(PCDdoc, dataToSave);
+    } else {
+      // Adicione o usuário ao Firestore
+      const PCDdoc = doc(db, "PCD", user.uid);
+      //Adicionando os dados junto do usuario no banco
+      await setDoc(PCDdoc, dataToSave);
     }
 
 

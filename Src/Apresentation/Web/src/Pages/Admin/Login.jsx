@@ -21,7 +21,7 @@ const LoginEmpresa = () => {
       const uid = PCDCredential.user.uid;
       const PCDDocRef = doc(db, "Admin", uid);
       const GetPCDDoc = await getDoc(PCDDocRef);
-  
+
       if (GetPCDDoc.exists()) {
         alert("Logado com sucesso")
         navigate(`/adm/${uid}`);

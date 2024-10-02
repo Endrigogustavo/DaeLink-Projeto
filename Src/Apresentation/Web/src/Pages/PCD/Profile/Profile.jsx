@@ -18,7 +18,6 @@ function Profile() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        alert(id)
         const getPCDprofile = async () => {
             //Caminho das informações do banco com base no ID
             const PCDdoc = doc(db, "PCD", decryptedId);

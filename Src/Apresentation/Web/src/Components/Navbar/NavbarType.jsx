@@ -27,14 +27,14 @@ export default function NavbarType() {
       try {
         const userId = user.uid; // Obtenha o ID do usuário autenticado
         let userDoc;
-        
+
         // Verifique se o usuário está na coleção PCD
         userDoc = await db.collection('PCD').doc(userId).get();
         if (userDoc.exists) {
           setUserType(userDoc.data().tipo);
           return;
         }
-        
+
         // Se não estiver na coleção PCD, verifique a coleção Empresa
         userDoc = await firestore.collection('Empresa').doc(userId).get();
         if (userDoc.exists) {
@@ -55,5 +55,5 @@ export default function NavbarType() {
     </div>
   );
 
-  
+
 }

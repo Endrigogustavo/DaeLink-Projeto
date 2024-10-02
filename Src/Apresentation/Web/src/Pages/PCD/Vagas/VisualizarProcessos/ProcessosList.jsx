@@ -77,7 +77,6 @@ const ProcessosList = () => {
             const GetDoc = await getDocs(DocRef);
             const idDoc = GetDoc.docs[0].id
             if (!GetDoc.empty) {
-                alert(idDoc)
                 alert("Documentos já existem");
                 navigate(`/atualizardocumento/${encryptedId}/${vagaId}/${idDoc}`);
             } else {

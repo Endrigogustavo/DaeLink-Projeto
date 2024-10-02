@@ -17,8 +17,6 @@ function Profile() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        alert(id)
-        alert(idempresa)
         //Pegando o sistema de recomendação do App.py para listar usuarios semelhantes
         const Recommendations = async () => {
             try {
@@ -45,7 +43,7 @@ function Profile() {
             } else {
                 //Erro
                 setUserProfile(null);
-                alert("No such document!");
+                alert("Sem documentos!");
             }
         };
         //Iniciando as funções
