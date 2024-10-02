@@ -64,9 +64,9 @@ const AboutEmpresa = () => {
               <h1 className="text-3xl font-bold uppercase text-white pt-2 text-center">{userProfile.name}</h1>
               <h2 className="text-2xl font-medium text-white pb-8 text-center ">O que podemos fazer hoje?</h2>
             </div>
-            <div className="flex flex-wrap w-full justify-center px-4 md:px-16 gap-8 pb-8">
+            <div className="flex w-full  justify-center px-16 gap-8 pb-8  itemscontentsd">
               {/* Item 1 */}
-              <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
+              <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                 <FaClipboardUser className="text-white text-3xl" />
                 <p className="text-justify  h-4/5 text-white bg-gray-800 p-3 rounded-lg font-normal w-full">
                   {texto1}
@@ -74,7 +74,7 @@ const AboutEmpresa = () => {
               </div>
 
               {/* Item 2 */}
-              <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
+              <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                 <FaChartLine className="text-white text-3xl" />
                 <p className="text-justify h-4/5 text-white bg-gray-800 p-3 rounded-lg font-normal w-full">
                   {texto2}
@@ -82,7 +82,7 @@ const AboutEmpresa = () => {
               </div>
 
               {/* Item 3 */}
-              <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
+              <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                 <FaDove className="text-white text-3xl" />
                 <p className="text-justify  h-4/5 text-white bg-gray-800 p-3 rounded-lg font-normal w-full">
                   {texto3}
