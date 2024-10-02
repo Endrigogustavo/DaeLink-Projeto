@@ -88,9 +88,9 @@ function EmpresasList() {
                                 </div>
                                 <div className="w-full flex flex-col justify-center">
                                     <h1 className='font-medium text-xl text-center text-white'>{empresa.name || "Nome"}</h1>
-                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Email: {empresa.email}</p>
-                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Endereço: {empresa.endereco}</p>
-                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Área: {empresa.area}</p>
+                                    <p className='text-white opacity-80 text-sm px-4 truncate'>{empresa.email}</p>
+                                    <p className='text-white opacity-80 text-sm px-4 truncate'>{empresa.endereco}</p>
+                                    <p className='text-white opacity-80 text-sm px-4 truncate'>{empresa.area}</p>
                                 </div>
                                 <div className='w-full flex justify-center'>
                                     <button
