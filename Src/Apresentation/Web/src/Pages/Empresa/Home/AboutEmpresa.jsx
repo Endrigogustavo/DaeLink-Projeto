@@ -23,7 +23,7 @@ const AboutEmpresa = () => {
                 setUserId(userSnap.id);
             } else {
                 setUserProfile(null);
-                alert("No such document!");
+                alert("Sem documentos!");
             }
             setLoading(false); // Carregamento concluído
         };
@@ -64,20 +64,32 @@ const AboutEmpresa = () => {
                             <h1 className="text-3xl font-bold uppercase text-white pt-2 text-center">{userProfile.name}</h1>
                             <h2 className="text-2xl font-medium text-white pb-8 text-center ">O que podemos fazer hoje?</h2>
                         </div>
-                        <div className="flex w-full  justify-center px-16 gap-8 pb-8  itemscontentsd">
-                            <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
-                                <FaClipboardUser className='text-white text-3xl ' />
-                                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg  font-normal">{texto1}</p>
-                            </div>
-                            <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
-                                <FaChartLine className='text-white text-3xl  ' />
-                                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal">{texto2}</p>
-                            </div>
-                            <div className="w-1/3 flex flex-col items-center gap-4  itemstextboxsd">
-                                <FaDove className='text-white text-3xl  ' />
-                                <p className="text-justify text-white bg-gray-800 px-3 rounded-lg font-normal">{texto3}</p>
-                            </div>
-                        </div>
+                        <div className="flex flex-wrap w-full justify-center px-4 md:px-16 gap-8 pb-8">
+  {/* Item 1 */}
+  <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
+    <FaClipboardUser className="text-white text-3xl" />
+    <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal w-full">
+      {texto1}
+    </p>
+  </div>
+
+  {/* Item 2 */}
+  <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
+    <FaChartLine className="text-white text-3xl" />
+    <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal w-full">
+      {texto2}
+    </p>
+  </div>
+
+  {/* Item 3 */}
+  <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
+    <FaDove className="text-white text-3xl" />
+    <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal w-full">
+      {texto3}
+    </p>
+  </div>
+</div>
+
 
                     </div>
                 </div>

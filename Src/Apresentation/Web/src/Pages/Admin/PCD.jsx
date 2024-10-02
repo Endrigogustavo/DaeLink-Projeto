@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { doc, collection, updateDoc, getDoc, getDocs, deleteDoc } from "firebase/firestore";
-import { db } from "../../Database/Firebase"; 
+import { db } from "../../Database/Firebase";
 import { useParams, useNavigate } from 'react-router-dom';
 
 import axios from 'axios'
@@ -83,7 +83,7 @@ const EditarPerfil = () => {
       const userDoc = doc(db, "PCD", id);
 
       await updateDoc(userDoc, {
-        
+
         name: userData.name,
         email: userData.email,
         trabalho: userData.trabalho,
@@ -95,7 +95,7 @@ const EditarPerfil = () => {
         deficiencia: userData.deficiencia,
       });
 
-    
+
       alert("Conta atualizada com sucesso!");
       navigate(-1);
     } catch (e) {
@@ -104,112 +104,113 @@ const EditarPerfil = () => {
     }
   };
 
-  const DeleteProfile = async(id) =>{
+  const DeleteProfile = async (id) => {
     var response = confirm("Deseja Deletar a conta?");
 
-    if(response == true){
-    try {
-      const UserInfo = doc(db, "PCD", id)
-      await deleteDoc(UserInfo)
-      navigate('/');
-    } catch (error) {
-      alert("Erro", error)
+    if (response == true) {
+      try {
+        const UserInfo = doc(db, "PCD", id)
+        await deleteDoc(UserInfo)
+        navigate('/');
+      } catch (error) {
+        alert("Erro", error)
+      }
     }
-  }
 
   }
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
-      <div>
-        <input
-          type="text"
-          name="name"
-          placeholder="name"
-          value={userData.name}
-          onChange={handleInputChange}
-        />
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            type="text"
+            name="name"
+            placeholder="name"
+            value={userData.name}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="email"
+            placeholder="Email"
+            value={userData.email}
+            onChange={handleInputChange}
+            disabled
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="trabalho"
+            placeholder="Trabalho"
+            value={userData.trabalho}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="descrição"
+            placeholder="Descrição"
+            value={userData.descrição}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="date"
+            name="idade"
+            placeholder="Idade"
+            value={userData.idade}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="sobre"
+            placeholder="Sobre"
+            value={userData.sobre}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="experiencias"
+            placeholder="Experiencias"
+            value={userData.experiencias}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="deficiencia"
+            placeholder="Deficiencia"
+            value={userData.deficiencia}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+
+        <button type="submit">Adicionar Documento</button>
+      </form>
       <br />
-      <div>
-        <input
-          type="text"
-          name="email"
-          placeholder="Email"
-          value={userData.email}
-          onChange={handleInputChange}
-          disabled
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="trabalho"
-          placeholder="Trabalho"
-          value={userData.trabalho}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="descrição"
-          placeholder="Descrição"
-          value={userData.descrição}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="date"
-          name="idade"
-          placeholder="Idade"
-          value={userData.idade}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="sobre"
-          placeholder="Sobre"
-          value={userData.sobre}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="experiencias"
-          placeholder="Experiencias"
-          value={userData.experiencias}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="deficiencia"
-          placeholder="Deficiencia"
-          value={userData.deficiencia}
-          onChange={handleInputChange}
-        />
-      </div>
-           <br />
-   
-      <button type="submit">Adicionar Documento</button>
-    </form>
-<br/>
-<button onClick={() => DeleteProfile(id)}>Deletar conta</button>
+      <button onClick={() => DeleteProfile(id)}>Deletar conta</button>
     </>
   );
 };
+
 
 export default EditarPerfil;

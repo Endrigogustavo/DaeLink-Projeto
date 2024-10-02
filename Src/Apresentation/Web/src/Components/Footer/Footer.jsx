@@ -109,7 +109,7 @@ function Footer() {
       </div>
       <div className="w-full bg-gray-900 h-16 ">
         <div className="flex w-full h-full items-center justify-center gap-4">
-          <Link><FaSquareInstagram className="text-3xl text-gray-200 opacity-80  mediahover" /></Link>
+          <Link to="/loginadm"><FaSquareInstagram className="text-3xl text-gray-200 opacity-80  mediahover" /></Link>
           <Link><FaSquareXTwitter className="text-3xl text-gray-200 opacity-80 mediahover" /></Link>
           <Link><FaSquareGithub className="text-3xl text-gray-200 opacity-80 mediahover" /></Link>
         </div>

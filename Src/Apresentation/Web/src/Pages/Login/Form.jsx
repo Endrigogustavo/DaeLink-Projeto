@@ -20,10 +20,10 @@ const Form = () => {
                  
                 navigate(`/homeuser/${PCDData.uid}`);
             } else {
-                alert('Failed to login. Please check your credentials.');
+                alert('Erro ao fazer login, tente novamente.');
             }
         } catch (error) {
-            alert('Failed to login. Please check your credentials.');
+            alert('Erro ao fazer login, tente novamente.');
         }
     };
 
@@ -33,7 +33,7 @@ const Form = () => {
             const result = await signInWithPopup(auth, provider);
             navigate('/homeuser');
         } catch (error) {
-            alert('Failed to login with Google. Please try again.');
+            alert('Erro ao fazer login com o google, tente novamente.');
         }
     };
 

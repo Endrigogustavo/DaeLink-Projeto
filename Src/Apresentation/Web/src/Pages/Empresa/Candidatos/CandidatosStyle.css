@@ -74,7 +74,7 @@
 
 }
 
-@media (max-width:580px){
+@media (max-width:580px) {
     .Pcdscontainer {
         grid-template-columns: repeat(1, minmax(0, 1fr));
     }
@@ -96,7 +96,7 @@
     }
 }
 
-.Dae{
+.Dae {
     width: 100%;
     align-items: center;
     justify-items: center;

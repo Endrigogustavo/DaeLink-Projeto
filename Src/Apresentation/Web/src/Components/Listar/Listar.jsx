@@ -8,7 +8,7 @@ const Listar = () => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [users, setUsers] = useState([]);
-  
+
   const userCollection = collection(db, "users");
 
   const criarCadastro = async () => {

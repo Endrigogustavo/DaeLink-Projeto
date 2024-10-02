@@ -37,7 +37,7 @@ export default function Navbar() {
                     } else {
                         setUserProfile(null);
                         setUserId(""); // Limpa userId se o usuário não for encontrado
-                        alert("No such document!");
+                        alert("Sem documentos!");
                     }
                 }
             } catch (error) {

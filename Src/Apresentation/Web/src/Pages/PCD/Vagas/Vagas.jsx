@@ -45,7 +45,6 @@ function Vagas() {
 
 	//useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
 	useEffect(() => {
-		alert(decryptedId)
 		//Vai pegar todas a vagas da coleção
 		const VagasCollection = collection(db, "Vagas");
 

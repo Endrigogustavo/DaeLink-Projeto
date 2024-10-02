@@ -37,7 +37,6 @@ const VagaForm = () => {
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
-    alert(decryptedVaga)
     //Inicializando os IDs
     if (pessoaId && decryptedVaga) {
       setPessoaId(pessoaId);
@@ -50,8 +49,6 @@ const VagaForm = () => {
     e.preventDefault();
     //Tratamento de erro no form
     if (!vagaUid || !pessoaId) {
-      alert(pessoaId)
-      alert(decryptedVaga)
       alert("Por favor, preencha todos os campos.");
       return;
     }
