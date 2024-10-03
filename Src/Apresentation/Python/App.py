@@ -10,13 +10,12 @@ app = Flask(__name__)
 CORS(app)
 
 # Configurar o Firebase
-cred_path = os.path.join(os.path.dirname(__file__), 'Database/FirebaseDaeLink.json')
+cred_path = os.path.join(os.path.dirname(__file__), 'Database/daelink-projeto-firebase-adminsdk-knxeu-8e81c3b99a.json')
 
 if not os.path.exists(cred_path):
     print("Arquivo de credenciais não encontrado. Verifique o caminho.")
 else:
     print("Arquivo de credenciais encontrado.")
-
 
 cred = credentials.Certificate(cred_path)
 firebase_admin.initialize_app(cred)
@@ -25,7 +24,6 @@ db = firestore.client()
 
 collection_name = 'PCD'
 
-
 collections = db.collections()
 collection_exists = any(collection.id == collection_name for collection in collections)
 
@@ -33,13 +31,6 @@ if collection_exists:
     # Recupera todos os documentos da coleção
     docs = db.collection(collection_name).get()
 
-    # Itera sobre os documentos e imprime os dados
-    for doc in docs:
-        print(f'{doc.id} => {doc.to_dict()}')
-else:
-    print(f'A coleção "{collection_name}" não foi encontrada.')
-    
-    
 def get_jobs_from_firestore():
     jobs_ref = db.collection('PCD')
     docs = jobs_ref.stream()
@@ -50,6 +41,7 @@ def get_jobs_from_firestore():
         jobs.append(job)
     return jobs
 
+
 jobs = get_jobs_from_firestore()
 
 for job in jobs:
@@ -57,8 +49,8 @@ for job in jobs:
         print(f"Documento sem 'descrição': {job}")
     else:
         print(f"Descrição encontrada")
-        
-descriptions = [job['descrição'] for job in jobs]
+
+descriptions = [job['descrição'] for job in jobs if 'descrição' in job]
 tfidf = TfidfVectorizer().fit_transform(descriptions)
 
 # Função para encontrar o índice do trabalho pelo título
@@ -70,8 +62,11 @@ def find_job_index_by_title(description):
 
 
 def find_job_index_by_similar_description(description):
+    # Verificação se a descrição fornecida é válida
+    if not description:
+        return None
+
     # Crie uma lista com todas as descrições de trabalho
-    jobs = get_jobs_from_firestore()
     job_descriptions = [job.get('descrição', '') for job in jobs]
 
     # Adicione a descrição recebida à lista (será usada como referência)
@@ -97,14 +92,20 @@ def find_job_index_by_similar_description(description):
 @app.route('/recommend', methods=['POST'])
 def recommend():
     data = request.json
-    job_title = data.get('descrição')
+    job_title = data.get('trabalho')
+
+    # Verifique se o job_title não é None
+    if job_title is None:
+        return jsonify({"error": "O campo 'descrição' é necessário."}), 400
+
     print(f"Recebido título da vaga: {job_title}")
 
-    jobs = get_jobs_from_firestore()
+    # Chame a função de recomendação
     job_index = find_job_index_by_similar_description(job_title)
 
+    # Caso não encontre uma vaga correspondente
     if job_index is None:
-        return jsonify({"error": "Esta vaga não existe"}), 404
+        return jsonify({"error": "Nenhuma vaga correspondente encontrada."}), 404
 
     # Calcular similaridades com base no TF-IDF
     cosine_similarities = linear_kernel(tfidf[job_index:job_index+1], tfidf).flatten()
@@ -115,7 +116,7 @@ def recommend():
 
     # Colocar a vaga solicitada no início das recomendações
     recommendations.insert(0, jobs[job_index]) 
-    
+
     return jsonify(recommendations)
 
 
@@ -123,9 +124,13 @@ def recommend():
 def recommend_profile():
     data = request.json
     job_id = data.get('id')
-    print(f"Recebido título da vaga: {job_id}")
+    print(f"Recebido ID da vaga: {job_id}")
 
-    job_index = next(index for (index, job) in enumerate(jobs) if job["id"] == job_id)
+    # Encontre o índice da vaga com o ID correspondente
+    job_index = next((index for (index, job) in enumerate(jobs) if job["id"] == job_id), None)
+
+    if job_index is None:
+        return jsonify({"error": "Nenhuma vaga encontrada com o ID fornecido."}), 404
 
     # Calcular similaridades com base no TF-IDF
     cosine_similarities = linear_kernel(tfidf[job_index:job_index+1], tfidf).flatten()
@@ -134,10 +139,11 @@ def recommend_profile():
     # Preparar recomendações
     recommendations = [jobs[i] for i in related_docs_indices if i != job_index]
 
-     # Colocar a vaga solicitada no início das recomendações
+    # Colocar a vaga solicitada no início das recomendações
     recommendations.insert(0, jobs[job_index]) 
 
     return jsonify(recommendations)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

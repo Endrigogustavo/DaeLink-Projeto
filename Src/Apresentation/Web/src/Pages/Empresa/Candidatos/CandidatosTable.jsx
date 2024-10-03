@@ -26,6 +26,11 @@ const CandidatosTable = () => {
         try {
             const response = await axios.post('http://localhost:5000/recommend', { trabalho: trabalho });
             setRecommendations(response.data);
+
+            if(!recommendations == null){
+                alert("Erro ao achar a vaga")
+                setRecommendations(null)
+            }
         } catch (error) {
             console.error('Error fetching recommendations:', error);
         } finally {

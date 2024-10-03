@@ -47,6 +47,7 @@ import VagasAdm from '../Pages/Admin/Vagas'
 
 import SelecionarCadastro from '../Pages/Cadastro/SelecionarUser/SelecionarUser'
 import PrivateRoute from '../Security/PrivateRoute';
+import Termos from '../Pages/Cadastro/TermosUso'
 
 
 import Watson from '../Watson/Watson'
@@ -113,6 +114,7 @@ function App() {
 
         <Route path="/loginu" element={<LoginU />} />
         <Route path="/cadastro" element={<SelecionarCadastro />} />
+        <Route path="/termos" element={<Termos />} />
 
       </Routes>
     </BrowserRouter>
