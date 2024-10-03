@@ -71,6 +71,7 @@ def find_job_index_by_title(description):
 
 def find_job_index_by_similar_description(description):
     # Crie uma lista com todas as descrições de trabalho
+    jobs = get_jobs_from_firestore()
     job_descriptions = [job.get('descrição', '') for job in jobs]
 
     # Adicione a descrição recebida à lista (será usada como referência)
@@ -99,6 +100,7 @@ def recommend():
     job_title = data.get('descrição')
     print(f"Recebido título da vaga: {job_title}")
 
+    jobs = get_jobs_from_firestore()
     job_index = find_job_index_by_similar_description(job_title)
 
     if job_index is None:

@@ -1,0 +1,41 @@
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: lightgrey;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  #progressbar li {
+    list-style-type: none;
+    font-size: 15px;
+    position: relative;
+    font-weight: 400;
+    flex: 1; /* Garante que todos os itens tenham o mesmo tamanho */
+    text-align: center; /* Centraliza o texto e ícone */
+  }
+  
+  #progressbar li i {
+    font-size: 20px; /* Ajusta o tamanho do ícone */
+    display: block; /* Exibe o ícone em um bloco separado do texto */
+    margin-bottom: 5px; /* Espaçamento entre o ícone e o texto */
+  }
+  
+  #progressbar li:before {
+    width: 50px;
+    height: 50px;
+    line-height: 45px;
+    display: block;
+    font-size: 20px;
+    color: #ffffff;
+    background: lightgray;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    padding: 2px;
+  }
+  
+  #progressbar li.active:before,
+  #progressbar li.active:after {
+    background: #673AB7; /* Cor da etapa ativa */
+  }
+  
