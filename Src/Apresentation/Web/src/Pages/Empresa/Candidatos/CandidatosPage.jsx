@@ -1,10 +1,8 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams,useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import CandidatosTable from './CandidatosTable';
 import './CandidatosStyle.css'
-
 
 import {
     FaMagento, FaWpforms,

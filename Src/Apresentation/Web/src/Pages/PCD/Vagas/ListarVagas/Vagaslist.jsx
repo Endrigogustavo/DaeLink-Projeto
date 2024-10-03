@@ -2,9 +2,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../../Database/Firebase';
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
+import { BsFillXSquareFill } from "react-icons/bs";
 import { decrypt, encrypt } from '../../../../Security/Cryptography_Rotes';
 
-import { FaSquareXmark } from "react-icons/fa6";
+
 
 const Vagaslist = () => {
     const [userId, setUserId] = useState("");
@@ -119,7 +120,7 @@ const Vagaslist = () => {
                 ) : (
                     <div className='w-3/12 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
                         <div className='w-2/6 h-full flex items-center justify-center'>
-                            <FaSquareXmark className='text-5xl text-gray-900  text-center' />
+                            <BsFillXSquareFill className='text-5xl text-gray-900  text-center' />
                         </div>
                         <div className='w-5/6 h-full flex items-center justify-center flex-col'>
                             <p className='font-medium text-lg text-center'>Sem vagas disponíveis</p>
