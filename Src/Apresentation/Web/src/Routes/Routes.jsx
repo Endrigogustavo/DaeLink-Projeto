@@ -10,7 +10,7 @@ import Homeempresa from '../Pages/Empresa/Home/Home';
 
 import Error404 from '../Pages/Error/TelaErro404'
 
-import LoginE from '../Pages/Login/LoginEmpresa';
+
 import CadastroEmpresa from '../Pages/Cadastro/CadastroEmpresa';
 import CadastrarVaga from '../Pages/Empresa/Vagas/CriarVagas';
 import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
@@ -45,6 +45,7 @@ import PCDadm from '../Pages/Admin/PCD'
 import EmpresaAdm from '../Pages/Admin/Empresas'
 import VagasAdm from '../Pages/Admin/Vagas'
 
+import SelecionarCadastro from '../Pages/Cadastro/SelecionarUser/SelecionarUser'
 import PrivateRoute from '../Security/PrivateRoute';
 
 
@@ -78,7 +79,6 @@ function App() {
         <Route path="/candidatos" element={<Candidatos />} />
         <Route path="/cadastroempresa" element={<CadastroEmpresa />} />
         <Route path="/list" element={<List />} />
-        <Route path="/logine" element={<LoginE />} />
 
         {/* Rotas privadas do usuario */}
         <Route path="/" element={<PrivateRoute allowedRoles={['PCD']} />}>
@@ -101,17 +101,19 @@ function App() {
         {/* Rotas livres do usuario */}
         <Route path="/cadastrouser" element={<CadastroUser />} />
         <Route path="/empresas/" element={<Empresas />} />
-        <Route path="/loginu" element={<LoginU />} />
+        
 
         
         <Route path="/adm/:uid" element={<Adm />} />
         <Route path="/pcdadm/:id" element={<PCDadm />} />
         <Route path="/empresaadm/:id" element={<EmpresaAdm />} />
         <Route path="/vagaadm/:vagaId" element={<VagasAdm />} />
-       
         <Route path="/loginadm" element={<LoginAdm />} />
 
-        
+
+        <Route path="/loginu" element={<LoginU />} />
+        <Route path="/cadastro" element={<SelecionarCadastro />} />
+
       </Routes>
     </BrowserRouter>
   );

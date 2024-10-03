@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaApple } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser } from '../../Auth/Auth';
+import { loginEmpresa, loginUser } from '../../Auth/Auth';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 
@@ -16,11 +16,17 @@ const Form = () => {
     const handleLogin = async () => {
         try {
             const PCDData = await loginUser(email, password);
-            if (PCDData) {
-                 
-                navigate(`/homeuser/${PCDData.uid}`);
+            const CompanyData = await loginEmpresa(email, password);
+            if (CompanyData) {
+              //Sucesso
+              console.log("User data:", CompanyData);
+              navigate(`/homeempresa/${CompanyData.uid}`);
             } else {
-                alert('Erro ao fazer login, tente novamente.');
+                if (PCDData) {
+                    navigate(`/homeuser/${PCDData.uid}`);
+                } else {
+                    alert('Erro ao fazer login, tente novamente.');
+                }
             }
         } catch (error) {
             alert('Erro ao fazer login, tente novamente.');
@@ -74,10 +80,7 @@ const Form = () => {
                 </button>
                 <div className="w-full mt-4 text-center">
                     <p className="mb-2">
-                        Não possui conta? <Link to="/cadastrouser" className="text-blue-700">Cadastre-se</Link>
-                    </p>
-                    <p className="mb-2">
-                        Login empresa <Link to="/logine" className="text-blue-700">Login</Link>
+                        Não possui conta? <Link to="/cadastro" className="text-blue-700">Cadastre-se</Link>
                     </p>
                     <div className="flex flex-col gap-2 justify-center items-center">
                         <button className="flex items-center justify-center w-52 text-sm text-white bg-gray-900 rounded-full py-2 px-4">

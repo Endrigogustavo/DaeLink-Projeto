@@ -1,14 +1,14 @@
 import './CadastroCss.css';
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../Auth/Auth';
-import { auth } from '../../Database/Firebase'
-import { FaCloudUploadAlt } from "react-icons/fa";
-import CadastroU from '../../Img/CadastroU.png'
 import { getAuth, sendEmailVerification } from 'firebase/auth';
+import { FaCloudUploadAlt, FaUser, FaIdCard, FaClipboardList } from 'react-icons/fa';
+
+import CadastroU from '../../Img/CadastroU.png';
 
 const Register = () => {
-  //Variaveis onde as informações serão setadas
+  const [step, setStep] = useState(1);
   const [laudomedico, setLaudoMedico] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
@@ -17,60 +17,70 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [trabalho, setTrabalho] = useState("");
-  const [descrição, setDescrição] = useState("");
+  const [descricao, setDescricao] = useState("");
   const [idade, setIdade] = useState("");
   const [sobre, setSobre] = useState("");
   const [experiencias, setExperiencia] = useState("");
   const [deficiencia, setDeficiencia] = useState("");
-  //Variavel para fazer gerenciamento de nivel de acesso
   const [tipo, setTipo] = useState("PCD");
-  //Função de navegação do site
+
   const navigate = useNavigate();
-
-  const textareaRefs = {
-    sobre: useRef(null),
-    experiencias: useRef(null),
-    trabalho: useRef(null),
-    descrição: useRef(null),
-  };
-
-  // Borão para fazer Cadastro
 
   const handleRegister = async () => {
     if (!/\S+@\S+\.\S+/.test(email)) {
-      alert("O formato de email é invalido, tente novamente.");
+      alert("O formato de email é inválido, tente novamente.");
       return;
     }
 
-    //Função do Auth.jsx para fazer login enviando os parametros do form
-
-    const response = await registerUser(name, email, password, idade, deficiencia, descrição, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, laudomedico, {});
+    const response = await registerUser(name, email, password, idade, deficiencia, descricao, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, laudomedico, {});
     if (response.success) {
-      const auth = getAuth()
+      const auth = getAuth();
       await sendEmailVerification(auth.currentUser)
         .then(() => {
-          alert("Email de verificação enviado com sucesso!!!")
+          alert("Email de verificação enviado com sucesso!!!");
         });
-
-      //Sucesso
       alert("Cadastrado com sucesso");
       navigate(`/homeuser/${response.uid}`);
     } else {
-      //Erro
       alert("Falha ao cadastrar, tente novamente.");
     }
   };
 
-  const adjustTextareaHeight = (ref) => {
-    if (ref.current) {
-      ref.current.style.height = 'auto';
-      ref.current.style.height = `${ref.current.scrollHeight}px`;
+  const handleNext = () => {
+    let isValid = true;
+
+    // Validação para a etapa 1
+    if (step === 1) {
+      if (!name || !email || !password) {
+        alert("Por favor, preencha todos os campos da Etapa 1.");
+        isValid = false;
+      }
+    }
+
+    const validateDate = (dateString) => {
+      const today = new Date();
+      const selectedDate = new Date(dateString);
+
+      // Verifica se a data é válida e não está no futuro
+      return selectedDate <= today && !isNaN(selectedDate);
+    };
+
+    // Validação para a etapa 2
+    if (step === 2) {
+      if (!idade || !trabalho || !descricao || !experiencias) {
+        alert("Por favor, preencha todos os campos da Etapa 2.");
+        isValid = false;
+      } else if (!validateDate(idade)) {
+        alert("Data de nascimento inválida. Por favor, escolha uma data válida.");
+        isValid = false;
+      }
+    }
+
+    // Se todas as validações forem bem-sucedidas, avançar para o próximo passo
+    if (isValid) {
+      setStep(step + 1);
     }
   };
-
-  useEffect(() => {
-    Object.values(textareaRefs).forEach(adjustTextareaHeight);
-  }, []);
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0];
@@ -87,6 +97,10 @@ const Register = () => {
     }
   };
 
+  const handlePrevious = () => {
+    setStep(step - 1);
+  };
+
   const handleClear = () => {
     setProfileImage(null);
     setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
@@ -95,186 +109,153 @@ const Register = () => {
     setPassword("");
     setName("");
     setTrabalho("");
-    setDescrição("");
+    setDescricao("");
     setIdade("");
     setSobre("");
     setExperiencia("");
     setDeficiencia("");
     setTipo("PCD");
+    setStep(1); // Reiniciar para o primeiro passo
   };
+
+  const progressPercentage = (step / 3) * 100; // Calcular a porcentagem de progresso
 
   return (
     <>
-      <div className='w-full flex w-full h-screen  '>
-        <div className='hidden lg:flex lg:w-3/6 h-full items-center justify-center'>
-          {/*<img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="object-cover" alt="Side Image" /> */}
-          <img src={CadastroU} className="object-cover Img-Cadastro" alt="Side Image" />
-        </div>
-        <div className='w-full  lg:w-4/6 overflow-hidden overflow-y-scroll px-4 lg:px-0 containerresponsiveform'>
-          <h1 className='font-bold text-2xl text-center my-4 uppercase'>Cadastro de Usuário</h1>
-          <div className='bg-gray-100 my-4 h-max py-4  w-full px-4 grid-responsiveform grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-2 justify-items-center rounded-3xl border-2 border-blue-500 lg:border-none '>
+      <div className="relative py-10 bg-gradient-to-br from-sky-50 to-gray-200 w-full">
+        <div className="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40">
+          <div className="m-auto lg:w-8/12 xl:w-7/12">
+            <div className="rounded-xl bg-white shadow-xl">
+              <div className="p-6 sm:p-16">
+                <div className="space-y-4">
+                  <img src="https://i.postimg.cc/vB5MHPX1/DaeLink.png" loading="lazy" className="w-40" alt="tailus logo" />
+                  <h2 className="mb-8 text-2xl text-cyan-900 font-bold">Cadastro de usuario</h2>
+                </div>
+                <div className="mt-16 grid space-y-4">
 
-            <div className='flex flex-col items-center gap-4 '>
+                  {/* Barra de Progresso */}
+                  <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                    <div className="bg-blue-500 h-full rounded-full" style={{ width: `${progressPercentage}%` }}></div>
+                  </div>
 
-              <img src={profileImagePreview} className="w-32 h-32 rounded-full border-4 border-gray-500" alt="Preview Perfil" />
-              <p className='text-lg font-medium mb-2 text-center'>Foto de Perfil</p>
-              <label htmlFor="profile-image-input" className='text-center w-32 border-2 border-gray-500 font-bold py-2 px-4 rounded-full transition-all hover:bg-gray-500 cursor-pointer hover:text-white'>Upload</label>
-              <input required id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
+                  {/* Ícones das Etapas */}
+                  <div className="flex justify-between mb-4 w-full">
+                    <div className="flex flex-col items-center">
+                      <FaUser size={30} className={`${step === 1 ? 'text-blue-500' : 'text-gray-400'}`} />
+                      <span className={`${step === 1 ? 'text-blue-500' : 'text-gray-400'}`}>Informações </span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <FaIdCard size={30} className={`${step === 2 ? 'text-blue-500' : 'text-gray-400'}`} />
+                      <span className={`${step === 2 ? 'text-blue-500' : 'text-gray-400'}`}>Detalhes</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <FaClipboardList size={30} className={`${step === 3 ? 'text-blue-500' : 'text-gray-400'}`} />
+                      <span className={`${step === 3 ? 'text-blue-500' : 'text-gray-400'}`}>Laudo Médico</span>
+                    </div>
+                  </div>
+
+                  <div className=' flex flex-col items-center'>
+
+                    {/* Etapa 1: Informações Pessoais */}
+                    {step === 1 && (
+                      <>
+
+
+                        <img src={profileImagePreview} className="w-32 h-32 rounded-full border-4 border-gray-500" alt="Preview Perfil" />
+                        <p className='text-lg font-medium mb-2 text-center'>Foto de Perfil</p>
+                        <label htmlFor="profile-image-input" className='text-center w-32 border-2 border-gray-500 font-bold py-2 px-4 rounded-full transition-all hover:bg-gray-500 cursor-pointer hover:text-white'>Upload</label>
+                        <input required id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
+
+                        <br />
+
+                        <div>
+                          <p className='text-lg font-medium text-center'>Wallpaper de Perfil</p>
+                          <label htmlFor="background-image-input" className='w-max lg:h-40 border-2 border-blue-500 font-bold py-2 px-4 rounded-xl transition-all hover:bg-blue-500 cursor-pointer hover:text-white flex gap-2 items-center justify-center'>
+                            <FaCloudUploadAlt size={18} /> Upload Wallpaper
+                          </label>
+                          <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={(e) => setBackgroundImage(e.target.files[0])} />
+                        </div>
+                        <br />
+                        <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Nome</label>
+                          <input required type="text" className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira seu Nome Completo" value={name} onChange={(e) => setName(e.target.value)} />
+                        </div>
+                        <br />
+                        <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Email</label>
+                          <input required type="text" className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira seu Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        </div>
+                        <br />
+                        <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Senha</label>
+                          <input required type="password" className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira sua Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </div>
+                        <br />
+                        <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Confirmar senha</label>
+                          <input required type="password" className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira sua Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </div>
+                      </>
+                    )}
+
+                    {/* Etapa 2: Detalhes */}
+                    {step === 2 && (
+                      <>
+                        <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Idade</label>
+                          <input required type="date" className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira sua Idade" value={idade} onChange={(e) => setIdade(e.target.value)} />
+                        </div>
+                        <br />
+                        <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Área de Atuação</label>
+                          <input required type="text" className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira sua área de atuação" value={trabalho} onChange={(e) => setTrabalho(e.target.value)} />
+                        </div>
+                        <br />
+                        <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Descrição</label>
+                          <textarea required className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira uma breve descrição sobre você" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
+                        </div>
+                        <br />
+                        <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Experiências anteriores</label>
+                          <textarea required className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Descreva suas experiências anteriores" value={experiencias} onChange={(e) => setExperiencia(e.target.value)} />
+                        </div>
+                      </>
+                    )}
+
+                    {/* Etapa 3: Laudo Médico */}
+                    {step === 3 && (
+                      <>
+                        <br />
+                        <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Laudo Médico</label>
+                          <input type="file" className="mt-2" accept=".pdf,.doc,.docx" onChange={(e) => setLaudoMedico(e.target.files[0])} />
+                        </div>
+                      </>
+                    )}
+
+                    {/* Botões de Navegação */}
+                    <div className="mt-6 flex justify-between w-full">
+                      {step > 1 && (
+                        <button onClick={handlePrevious} className="bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-full hover:bg-gray-400 transition-colors">Voltar</button>
+                      )}
+                      {step < 3 ? (
+                        <button onClick={handleNext} className="bg-blue-500 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-600 transition-colors">Próximo</button>
+                      ) : (
+                        <button onClick={handleRegister} className="bg-green-500 text-white font-bold py-2 px-4 rounded-full hover:bg-green-600 transition-colors">Cadastrar</button>
+                      )}
+                    </div>
+                    <br />
+                    <button onClick={handleClear} className="bg-red-500 text-white font-bold py-2 px-4 rounded-full hover:bg-red-600 transition-colors">Limpar Campos</button>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div>
-              <p className='text-lg font-medium text-center'>Wallpaper de Perfil</p>
-              <label htmlFor="background-image-input" className='w-max lg:h-40 border-2 border-blue-500 font-bold py-2 px-4 rounded-xl transition-all hover:bg-blue-500 cursor-pointer hover:text-white flex gap-2 items-center justify-center'>
-                <FaCloudUploadAlt size={18} /> Upload Wallpaper
-              </label>
-              <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={(e) => setBackgroundImage(e.target.files[0])} />
-            </div>
-
-            <div className="flex flex-col ">
-              <label className="text-lg font-medium">Nome</label>
-              <input
-                required
-                type="text"
-                className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
-                placeholder="Insira seu Nome Completo"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-lg font-medium">Sobre Você</label>
-              <textarea
-                ref={textareaRefs.sobre}
-                className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent respon-w-input "
-                placeholder="Fale um pouco sobre você"
-                value={sobre}
-                onChange={(e) => {
-                  setSobre(e.target.value);
-                  adjustTextareaHeight(textareaRefs.sobre);
-
-                }}
-                required
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-lg font-medium">Experiências</label>
-              <textarea
-                ref={textareaRefs.experiencias}
-                className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent respon-w-input "
-                placeholder="Nos diga algumas de suas experiências"
-                value={experiencias}
-                onChange={(e) => {
-                  setExperiencia(e.target.value);
-                  adjustTextareaHeight(textareaRefs.experiencias);
-                }}
-                required
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-lg font-medium">Email</label>
-              <input
-                required
-                type="text"
-                className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
-                placeholder="Insira seu Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-lg font-medium">Senha</label>
-              <input
-                required
-                type="password"
-                className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
-                placeholder="Insira sua Senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-lg font-medium">Idade</label>
-              <input
-                required
-                type="date"
-                className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
-                placeholder="Coloque sua idade"
-                value={idade}
-                onChange={(e) => setIdade(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-lg font-medium">Area de atuação</label>
-              <textarea
-                required
-                ref={textareaRefs.trabalho}
-                className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent respon-w-input "
-                placeholder="Fale sobre sua área de atuação"
-                value={trabalho}
-                onChange={(e) => {
-                  setTrabalho(e.target.value);
-                  adjustTextareaHeight(textareaRefs.trabalho);
-                }}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-lg font-medium">Descrição do trabalho</label>
-              <textarea
-                required
-                ref={textareaRefs.descrição}
-                className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent respon-w-input "
-                placeholder="Nos diga um pouco do seu trabalho"
-                value={descrição}
-                onChange={(e) => {
-                  setDescrição(e.target.value);
-                  adjustTextareaHeight(textareaRefs.descrição);
-                }}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-lg font-medium">Deficiência</label>
-              <input
-                required
-                type="text"
-                className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
-                placeholder="Fale sua deficiência"
-                value={deficiencia}
-                onChange={(e) => setDeficiencia(e.target.value)}
-              />
-            </div>
-
-            <label for="dropzone-file" class="mx-auto cursor-pointer flex w-full max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 p-6 text-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-              </svg>
-
-              <h2 class="mt-4 text-xl font-medium text-gray-700 tracking-wide">Laudo médico</h2>
-
-              <p class="mt-2 text-gray-500 tracking-wide">Upload or darg & drop your file SVG, PNG, JPG or GIF. </p>
-
-              <input id="dropzone-file"
-                required
-                accept=".pdf,.doc,.docx"
-                type="file" class="hidden"
-                onChange={(e) => setLaudoMedico(e.target.files[0])}
-              />
-            </label>
-
-
-
-            <div className='w-full px-19 flex justify-center items-center gap-5'>
-              <button onClick={handleRegister} className="w-32 h-12 bg-blue-500 hover:bg-blue-700 transition-all text-white py-2 px-4 rounded-full">Cadastrar</button>
-              <button onClick={handleClear} className="w-32 h-12 bg-gray-500  hover:bg-gray-700 transition-al text-white py-2 px-4 rounded-full">Limpar</button>
-            </div>
-
           </div>
         </div>
-
-
-
       </div>
     </>
   );
-}
+};
 
 export default Register;
