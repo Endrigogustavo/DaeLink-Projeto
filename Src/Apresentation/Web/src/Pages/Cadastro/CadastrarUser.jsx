@@ -1,6 +1,6 @@
 import './CadastroCss.css';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../../Auth/Auth';
 import { getAuth, sendEmailVerification } from 'firebase/auth';
 import { FaCloudUploadAlt, FaUser, FaIdCard, FaClipboardList } from 'react-icons/fa';
@@ -23,6 +23,11 @@ const Register = () => {
   const [experiencias, setExperiencia] = useState("");
   const [deficiencia, setDeficiencia] = useState("");
   const [tipo, setTipo] = useState("PCD");
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
 
   const navigate = useNavigate();
 
@@ -163,7 +168,7 @@ const Register = () => {
 
                         <img src={profileImagePreview} className="w-32 h-32 rounded-full border-4 border-gray-500" alt="Preview Perfil" />
                         <p className='text-lg font-medium mb-2 text-center'>Foto de Perfil</p>
-                        <label htmlFor="profile-image-input" className='text-center w-32 border-2 border-gray-500 font-bold py-2 px-4 rounded-full transition-all hover:bg-gray-500 cursor-pointer hover:text-white'>Upload</label>
+                        <label htmlFor="profile-image-input" className='text-center w-32 border-1 border-gray-500 font-bold py-2 px-4 rounded-full transition-all hover:bg-gray-500 cursor-pointer hover:text-white'>Upload</label>
                         <input required id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
 
                         <br />
@@ -213,7 +218,7 @@ const Register = () => {
                         <br />
                         <div className="flex flex-col w-full items-center">
                           <label className="text-lg font-medium">Descrição</label>
-                          <textarea required className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira uma breve descrição sobre você" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
+                          <textarea required className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Importante!!! você será recomendado atarvez dessa informação" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
                         </div>
                         <br />
                         <div className="flex flex-col w-full items-center">
@@ -231,8 +236,22 @@ const Register = () => {
                           <label className="text-lg font-medium">Laudo Médico</label>
                           <input type="file" className="mt-2" accept=".pdf,.doc,.docx" onChange={(e) => setLaudoMedico(e.target.files[0])} />
                         </div>
+                        <br />
                       </>
                     )}
+
+<br /><br />
+                    <div className="flex flex-row w-full items-center justify-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={handleCheckboxChange}
+                        className="h-5 w-5"
+                      />
+                      <span className="text-gray-700">
+                        Aceito os <Link to="/termos" className="text-blue-700">Termos</Link> de Uso
+                      </span>
+                    </div>
 
                     {/* Botões de Navegação */}
                     <div className="mt-6 flex justify-between w-full">
