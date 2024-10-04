@@ -10,8 +10,8 @@ export default function Example() {
   const navigate = useNavigate();
   const { vagaId } = useParams();
 
-  const [vaga, setVaga] = useState(null); 
-  const [empresa, setEmpresas] = useState(null); 
+  const [vaga, setVaga] = useState(null);
+  const [empresa, setEmpresas] = useState(null);
   const [pessoaId, setPessoaId] = useState(null);
   const [id, setUserId] = useState(null);
   const [email, setEmail] = useState("");
@@ -38,7 +38,7 @@ export default function Example() {
       } else {
         console.log("Vaga não encontrada!");
       }
-      
+
     };
 
     getInfo();
@@ -46,20 +46,20 @@ export default function Example() {
 
   useEffect(() => {
     const getInfoPCD = async () => {
-        const storedUserId = localStorage.getItem('userId');
-        if (storedUserId) {
-            const userId = storedUserId;
-            setUserId(userId)
+      const storedUserId = localStorage.getItem('userId');
+      if (storedUserId) {
+        const userId = storedUserId;
+        setUserId(userId)
 
-            const PCDDoc = await getDoc(doc(db, "PCD", id));
-            if (PCDDoc.exists()) {
-                const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
-                setPessoaId(PCDData);
-              } else {
-                console.log("Pessoa não encontrada!");
-              }
+        const PCDDoc = await getDoc(doc(db, "PCD", id));
+        if (PCDDoc.exists()) {
+          const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
+          setPessoaId(PCDData);
+        } else {
+          console.log("Pessoa não encontrada!");
         }
-      
+      }
+
     };
 
     getInfoPCD();
@@ -68,37 +68,37 @@ export default function Example() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = confirm("Deseja entrar na vaga?");
-    
+
     if (response === true) {
       try {
         const vagaRef = doc(db, "Vagas", vagaId);
         const candidatosRef = collection(vagaRef, 'candidatos');
-        
+
         // Verifica se pessoaId está definido
         if (!pessoaId || !pessoaId.id) {
           alert("Informações do candidato não carregadas corretamente.");
           return;
         }
-  
+
         // Buscar todos os candidatos da vaga
         const candidatosSnapshot = await getDocs(candidatosRef);
-  
+
         const userExists = candidatosSnapshot.docs.some(doc => doc.data().userId === pessoaId.id);
-  
+
         if (userExists) {
           alert("Você já se candidatou a esta vaga.");
           navigate(-1);
           return;
         }
-  
+
         // Se o userId não existir, adicione o novo candidato
         await addDoc(candidatosRef, {
-          userId: pessoaId.id, 
+          userId: pessoaId.id,
           name: pessoaId.name,
           email: pessoaId.email,
           situação: situação
         });
-  
+
         alert("Pessoa adicionada com sucesso!");
         navigate(`/homeuser`);
       } catch (e) {
@@ -107,14 +107,14 @@ export default function Example() {
       }
     }
   };
-  
-  
+
+
   return (
     <>
       <Navbar />
       <br />
       <div className='flex justify-center items-center min-h-screen'>
-        <div className='px-6 w-3/4'> 
+        <div className='px-6 w-3/4'>
           <div className="px-6 sm:px-0 text-center">
             <h3 className="text-base font-semibold leading-7 text-gray-950">Informações da vaga</h3>
           </div>
@@ -151,6 +151,10 @@ export default function Example() {
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt className="text-sm font-medium leading-6 text-gray-900">Endereço da empresa</dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{vaga ? vaga.local : 'Carregando...'}</dd>
+              </div>
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-medium leading-6 text-gray-900">Situação da vaga</dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><h1>{vaga ? vaga.status : 'Carregando...'}</h1></dd>
               </div>
               {/** Descrição da vaga */}
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -195,16 +199,15 @@ export default function Example() {
               </div>
             </dl>
           </div>
-         
-            <div className='flex justify-between mt-8'>
-              <button
-              onClick={handleSubmit}
-                type='submit'
-                className='bg-blue-500 text-white px-4 py-2 rounded-md'
-              >
-                Candidatar-se
-              </button>
-            </div>
+
+          <div>
+            <p>Status: {vaga ? vaga.status : 'Carregando...'}</p>
+            {vaga && vaga.status === 'Aberta' && (
+              <button  className='bg-blue-500 text-white px-4 py-2 rounded-md' onClick={handleSubmit}>Candidatar</button>
+            )}
+            {vaga && vaga.status === 'Fechada' && <p>A vaga está fechada.</p>}
+            {vaga && vaga.status === 'Preenchida' && <p>A vaga ja foi preenchida.</p>}
+          </div>
         </div>
       </div>
     </>

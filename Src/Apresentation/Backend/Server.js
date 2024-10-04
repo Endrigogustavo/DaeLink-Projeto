@@ -62,6 +62,7 @@ try {
 
 app.post('/criarvaga/:id', async (req, res) => {
   const ID = req.params.id
+  const Status = "Aberto"
 
 try {
   db.collection("Vagas").add({
@@ -74,6 +75,7 @@ try {
     local: req.body.local,
     exigencias: req.body.exigencias,
     empresaId: ID,
+    status: Status
 
   })
   

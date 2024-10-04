@@ -50,12 +50,23 @@ const DocumentosForm = () => {
                     console.log("Pessoa não encontrada!");
                 }
             }
-
         };
 
         getInfoPCD();
     }, [userId]);
 
+    // Atualiza os estados quando o pessoaId for carregado
+    useEffect(() => {
+        if (pessoaId) {
+            setNome(pessoaId.name || '');
+            setEmail(pessoaId.email || '');
+            setTelefone(pessoaId.telefone || '');
+            setEndereco(pessoaId.endereco || '');
+            setIdade(pessoaId.idade || '');
+            setExperiencia1(pessoaId.experiencias || '');
+            setIdiomas(pessoaId.idiomas || '');
+        }
+    }, [pessoaId]);
 
     const adjustTextareaHeight = (ref) => {
         if (ref.current) {
@@ -85,14 +96,11 @@ const DocumentosForm = () => {
         return await getDownloadURL(storageRef);
     };
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
 
         try {
-            // Verifica se pelo menos um arquivo foi selecionado
             if (selectedFiles.every(file => !file)) {
                 alert("Por favor, selecione pelo menos um documento para enviar.");
                 setIsLoading(false);
@@ -164,7 +172,7 @@ const DocumentosForm = () => {
                         type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         placeholder="Insira seu Nome Completo"
-                        value={pessoaId ? pessoaId.name : ''}
+                        value={nome} // Estado controlado
                         onChange={(e) => setNome(e.target.value)}
                         required
                     />
@@ -175,35 +183,29 @@ const DocumentosForm = () => {
                         type="email"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent "
                         placeholder="Insira seu Email"
-                        value={pessoaId ? pessoaId.email : ''}
+                        value={email} // Estado controlado
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
-
                 <div className="flex flex-col">
-                    <div className="flex flex-col">
-            <label className="text-lg font-medium">Telefone</label>
-            <InputMask
-                mask="(99) 99999-9999"
-                value={telefone}
-                onChange={(e) => setTelefone(e.target.value)}
-                className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                placeholder="Insira seu telefone"
-                required
-            />
-        </div>
-
-
+                    <label className="text-lg font-medium">Telefone</label>
+                    <InputMask
+                        mask="(99) 99999-9999"
+                        value={telefone} // Estado controlado
+                        onChange={(e) => setTelefone(e.target.value)}
+                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                        placeholder="Insira seu telefone"
+                        required
+                    />
                 </div>
-
                 <div className="flex flex-col">
                     <label className="text-lg font-medium">Endereço</label>
                     <textarea
                         ref={enderecoRef}
                         className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent "
                         placeholder="Insira seu Endereço"
-                        value={endereco}
+                        value={endereco} // Estado controlado
                         onChange={(e) => {
                             setEndereco(e.target.value);
                             adjustTextareaHeight(enderecoRef);
@@ -211,25 +213,23 @@ const DocumentosForm = () => {
                         required
                     />
                 </div>
-
                 <div className="flex flex-col">
                     <label className="text-lg font-medium">Idade</label>
                     <input
                         type="date"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        value={pessoaId ? pessoaId.idade : ''}
+                        value={idade} // Estado controlado
                         onChange={(e) => setIdade(e.target.value)}
                         required
                     />
                 </div>
-
                 <div className="flex flex-col">
                     <label className="text-lg font-medium">Experiências</label>
                     <textarea
                         ref={experienciaRef}
                         className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
-                        placeholder="Fale brevemente sobre suas experiências"
-                        value={pessoaId ? pessoaId.experiencias : ''}
+                        placeholder="Insira suas Experiências"
+                        value={experiencia1} // Estado controlado
                         onChange={(e) => {
                             setExperiencia1(e.target.value);
                             adjustTextareaHeight(experienciaRef);
@@ -237,15 +237,25 @@ const DocumentosForm = () => {
                         required
                     />
                 </div>
-
                 <div className="flex flex-col">
-                    <label className="text-lg font-medium">Idiomas secundarios</label>
+                    <label className="text-lg font-medium">Idiomas</label>
+                    <input
+                        type="text"
+                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent "
+                        placeholder="Insira os Idiomas"
+                        value={idiomas} // Estado controlado
+                        onChange={(e) => setIdiomas(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="flex flex-col">
+                    <label className="text-lg font-medium">Objetivo</label>
                     <input
                         type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        placeholder="Insira os Idiomas que fala"
-                        value={idiomas}
-                        onChange={(e) => setIdiomas(e.target.value)}
+                        placeholder="Insira seu Objetivo"
+                        value={objetivo} // Estado controlado
+                        onChange={(e) => setObjetivo(e.target.value)}
                         required
                     />
                 </div>
@@ -265,13 +275,11 @@ const DocumentosForm = () => {
                     </div>
                 ))}
 
-                <button
-                    type="submit"
-                    className={`bg-blue-500 text-white rounded-full py-2 px-4 mt-4 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={isLoading}
-                >
-                    {isLoading ? 'Enviando...' : 'Enviar Documentos'}
-                </button>
+                <div className="col-span-2 flex justify-center">
+                    <button type="submit" className="w-48 h-12 bg-blue-500 text-white rounded-full hover:bg-blue-600">
+                        {isLoading ? 'Enviando...' : 'Enviar'}
+                    </button>
+                </div>
             </form>
         </>
     );

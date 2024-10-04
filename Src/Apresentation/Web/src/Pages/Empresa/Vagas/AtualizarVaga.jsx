@@ -74,6 +74,56 @@ const EditarVaga = () => {
     }
   };
 
+
+  const VagaPreenchida = async (id) => {
+        try {
+          const situação = "Preenchida"
+          const vagaRef = doc(db, "Vagas", vagaId)
+         
+          await updateDoc(vagaRef, {
+            status: situação
+          });
+          alert("Situação enviada com sucesso!")
+        } catch (e) {
+          console.error("Erro ao adicionar pessoa: ", e)
+          alert("Erro ao adicionar pessoa.")
+        }
+    
+  };
+
+  const FecharVaga = async (id) => {
+   
+        try {
+          const situação = "Fechada"
+          const vagaRef = doc(db, "Vagas", vagaId)
+         
+          await updateDoc(vagaRef, {
+            status: situação
+          });
+          alert("Situação enviada com sucesso!")
+        } catch (e) {
+          console.error("Erro ao adicionar pessoa: ", e)
+          alert("Erro ao adicionar pessoa.")
+        }
+    
+      }
+
+  const AbrirVaga = async (id) => {
+    
+        try {
+          const situação = "Aberta"
+          const vagaRef = doc(db, "Vagas", vagaId)
+         
+          await updateDoc(vagaRef, {
+            status: situação
+          });
+          alert("Situação enviada com sucesso!")
+        } catch (e) {
+          console.error("Erro ao adicionar pessoa: ", e)
+          alert("Erro ao adicionar pessoa.")
+        }
+  };
+
   return (
     <>
     <form onSubmit={handleSubmit}>
@@ -160,6 +210,13 @@ const EditarVaga = () => {
       <button type="submit">Adicionar Documento</button>
     </form>
     <br />
+    <h1>Status atual da vaga: {userData.status}</h1>
+    <br />
+    <button type="submit" onClick={() => AbrirVaga(userData.id)}>Abrir Vaga</button>
+    <br />
+    <button type="submit" onClick={() => FecharVaga(userData.id)}>Fechar Vaga</button>
+    <br />
+    <button type="submit" onClick={() => VagaPreenchida(userData.id)}>Vaga Preenchida</button>
     </>
   );
 };

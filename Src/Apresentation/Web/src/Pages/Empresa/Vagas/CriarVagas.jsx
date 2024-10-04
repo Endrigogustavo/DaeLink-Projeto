@@ -50,6 +50,12 @@ const RegisterVaga = () => {
     getCompanyProfile();
   }, [userId]);
 
+  useEffect(() => {
+    if (userProfile) {
+        setEmpresa(userProfile.name || '');
+        setLocal(userProfile.endereco || '');
+    }
+}, [userProfile]);
   
   //Botão de registrar vaga
   const handleRegister = async (event) => {
@@ -159,7 +165,7 @@ const RegisterVaga = () => {
       <input
         type="text"
         placeholder="Nome da empresa"
-        value={userProfile ? userProfile.name: ''}
+        value={empresa}
         onChange={(e) => setEmpresa(e.target.value)}
       />
       <input
@@ -177,7 +183,7 @@ const RegisterVaga = () => {
       <input
         type="text"
         placeholder="Local da empresa"
-        value={userProfile ? userProfile.local: ''}
+        value={local}
         onChange={(e) => setLocal(e.target.value)}
       />
       <input

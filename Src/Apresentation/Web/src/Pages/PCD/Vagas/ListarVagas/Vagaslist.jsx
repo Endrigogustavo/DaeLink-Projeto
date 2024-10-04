@@ -106,11 +106,13 @@ const Vagaslist = () => {
                                 <div className='flex flex-col bg-gray-900 rounded-2xl h-full w-4/6 justify-center items-center overflow-hidden gap-1'>
                                     <h1 className='text-white text-xl font-medium text-center'>{vaga.area}</h1>
                                     <div className='flex flex-row gap-2 justify-center w-full'>
+                                        
                                         <p className='text-white opacity-90 text-base'>{vaga.vaga}</p>
                                         <p className='text-white opacity-90 text-base'>-</p>
                                         <p className='text-white opacity-90 text-base'>{vaga.tipo}</p>
                                     </div>
                                     <div className='flex flex-col w-full gap-1'>
+                                    <p className='text-white opacity-80 text-sm px-4'>{vaga.status}</p>
                                         <p className='text-white opacity-80 text-sm px-4'>Salário: {vaga.salario}</p>
                                         <p className='text-white opacity-80 text-sm px-4'>Exigências: {vaga.exigencias}</p>
                                         <p className='text-white opacity-80 text-sm px-4'>Local: {vaga.local}</p>
