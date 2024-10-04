@@ -8,15 +8,22 @@ import CarregamentoTela from '../../../Components/TelaCarregamento/Carregamento'
 
 function Profile() {
     //Pegar o id do usuario na tela anterior
-    const { id, idempresa } = useParams();
+    const { id } = useParams();
     //Função de navegação do site
     const navigate = useNavigate();
     //Variaveis para setar dados do banco
     const [userProfile, setUserProfile] = useState(null);
     const [recommendations, setRecommendations] = useState([]);
+    const [idempresa, setUserId] = useState('');
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
+        const storedUserId = localStorage.getItem('userId');
+            if (storedUserId) {
+                const userId = storedUserId;
+                setUserId(userId)
+            }
+        
         //Pegando o sistema de recomendação do App.py para listar usuarios semelhantes
         const Recommendations = async () => {
             try {
@@ -69,7 +76,7 @@ function Profile() {
                 empresaId: idempresa
             });
             alert("Pessoa adicionada com sucesso!");
-            navigate(`/chat/${id}/${idempresa}`)
+            navigate(`/chat/${id}/`)
         } catch (error) {
             console.error('Erro ao adicionar pessoa:', error);
             alert(`Erro ao adicionar pessoa: ${error.message}`);

@@ -9,13 +9,19 @@ import { MdWork, MdDelete, MdEdit } from "react-icons/md";
 import './ProcessoEmpresas.css'
 
 function ProcessosList() {
-    const { id } = useParams();
     const [vagas, setVagas] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [ id, setUserId ] = useState('')
     const navigate = useNavigate();
 
     useEffect(() => {
         const getVagas = async () => {
+            const storedUserId = localStorage.getItem('userId');
+            if (storedUserId) {
+                const userId = storedUserId;
+                setUserId(userId)
+            }
+        
             try {
                 const vagasCollection = collection(db, 'Vagas');
                 const queryVagas = query(vagasCollection, where('empresaId', '==', id));
@@ -51,6 +57,8 @@ function ProcessosList() {
     const atualizarVaga = (vagaId) => {
         navigate(`/atualizarvaga/${vagaId}`);
     };
+
+    
 
     const deleteVaga = async (vagaId) => {
         const response = window.confirm("Deseja deletar a vaga?");

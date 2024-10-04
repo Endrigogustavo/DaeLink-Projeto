@@ -97,7 +97,7 @@ const AddPessoa = () => {
               situação: situação
           });
           alert("Pessoa adicionada com sucesso!");
-          navigate(`/homeempresa/${IdEmpresa}`)
+          navigate(`/homeempresa/`)
       } catch (error) {
           console.error('Erro ao adicionar pessoa:', error);
           alert(`Erro ao adicionar pessoa: ${error.message}`);

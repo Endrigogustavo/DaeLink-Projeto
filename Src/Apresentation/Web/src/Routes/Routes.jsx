@@ -64,17 +64,17 @@ function App() {
 
         {/* Rotas privadas da empresa */}
         <Route path="/" element={<PrivateRoute allowedRoles={['Empresa']} />}>
-          <Route path="/homeempresa/cadastrovaga/:id" element={<CadastrarVaga />} />
+          <Route path="/homeempresa/cadastrovaga/" element={<CadastrarVaga />} />
           <Route path="/candidatos/:idempresa" element={<Candidatos />} />
-          <Route path="/homeempresa/:id" element={<Homeempresa />} />
-          <Route path='/addpessoa/:id/' element={<AddPessoa />} />
-          <Route path="/profileadd/:id/:idempresa" element={<ProfileAdd />} />
-          <Route path="/processos/:id" element={<VisualizarProcessosEmpresa />} />
+          <Route path="/homeempresa/" element={<Homeempresa />} />
+          <Route path='/addpessoa/:id' element={<AddPessoa />} />
+          <Route path="/profileadd/:id/" element={<ProfileAdd />} />
+          <Route path="/processos/" element={<VisualizarProcessosEmpresa />} />
           <Route path="/visualizarpessoas/:vagaId" element={<VisualizarPessoasVaga />} />
           <Route path="/visualizardocumentos/:id/:vagaId" element={<VisualizarDocumentos />} />
-          <Route path="/editempresa/:id" element={<EditEmpresa />} />
-          <Route path="/perfilempresa/:id" element={<PerfilEmpresa />} />
-          <Route path="/chat/:id/:idempresa" element={<ChatEmpresa />} />
+          <Route path="/editempresa/" element={<EditEmpresa />} />
+          <Route path="/perfilempresa/" element={<PerfilEmpresa />} />
+          <Route path="/chat/:id" element={<ChatEmpresa />} />
           <Route path="/atualizarvaga/:vagaId" element={<EditVaga />} />
         </Route>
 
@@ -97,7 +97,7 @@ function App() {
           <Route path="/userprofile/" element={<Profile />} />
           <Route path="/edituser/:id" element={<EditarUser />} />
           <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa />} />
-          <Route path="/chatpcd/:encryptedId/:empresaId" element={<ChatPCD />} />
+          <Route path="/chatpcd/:empresaId" element={<ChatPCD />} />
           <Route path="/vagas" element={<Vagas />} />
           <Route path="/ApuraçãoPCD/:encryptedId/:vagaId" element={<Apuração />} />
         </Route>

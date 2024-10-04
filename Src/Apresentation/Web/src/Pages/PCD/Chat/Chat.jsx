@@ -11,8 +11,8 @@ import { IoSend } from "react-icons/io5";
 
 const ChatRoom = () => {
     const navigate = useNavigate();
-    const { encryptedId, empresaId } = useParams();
-    const decryptedId = decodeURIComponent(decrypt(encryptedId));
+    const { empresaId } = useParams();
+
     const [loading, setLoading] = useState(true);
 
     // States for storing user and empresa profile
@@ -22,26 +22,32 @@ const ChatRoom = () => {
     const [messages, setMessages] = useState([]);
     const [formValue, setFormValue] = useState("");
     const [messageRef, setMessageRef] = useState(null);
+    const [id, setUserId] = useState('')
 
-    
 
     // Fetch chat messages and profiles
     useEffect(() => {
         const GetChatMessage = async () => {
             try {
-              
+                const storedUserId = localStorage.getItem('userId');
+                if (storedUserId) {
+                    const userId = storedUserId;
+                    setUserId(userId)
+                }
+
+
                 // Chat collection and query
                 const ChatCollection = collection(db, "Chat");
-                const GetQueryPCDId = query(ChatCollection, where("userId", "==", decryptedId));
+                const GetQueryPCDId = query(ChatCollection, where("userId", "==", id));
                 const GetQueryCompanyId = query(GetQueryPCDId, where("empresaId", "==", empresaId));
                 const GetChatWithCompanyAndPCD = await getDocs(GetQueryCompanyId);
 
                 // Get PCD profile
                 const getPCDprofile = async () => {
-                    const PCDdoc = doc(db, "PCD", decryptedId);
+                    const PCDdoc = doc(db, "PCD", id);
                     const GetPCDInfo = await getDoc(PCDdoc);
                     if (GetPCDInfo.exists()) {
-                       
+
                         setUserProfile(GetPCDInfo.data());
                     } else {
                         console.warn("No PCD profile found!");
@@ -56,7 +62,7 @@ const ChatRoom = () => {
                     const empresaSnap = await getDoc(empresaDoc);
 
                     if (empresaSnap.exists()) {
-                         setEmpresaProfile(empresaSnap.data());
+                        setEmpresaProfile(empresaSnap.data());
                     } else {
                         console.warn("No Empresa profile found!");
                         setEmpresaProfile(null);
@@ -74,7 +80,7 @@ const ChatRoom = () => {
 
                         const GetMessages = await getDocs(MessagesQuery);
                         setMessages(GetMessages.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-                           }
+                    }
                 } else {
                     console.warn("No chat found for this user and company");
                 }
@@ -87,7 +93,7 @@ const ChatRoom = () => {
         };
 
         GetChatMessage();
-    }, [decryptedId, empresaId]);
+    }, [id, empresaId]);
 
     // Create new message
     const CreateNewMessage = async (e) => {
@@ -99,7 +105,7 @@ const ChatRoom = () => {
                 await addDoc(messageRef, {
                     text: formValue, // Texto da mensagem
                     uid, // UID do usuário autenticado
-                    pcdId: decryptedId, // ID do PCD (decryptedId)
+                    pcdId: id, // ID do PCD (id)
                     pcdImageUrl: userProfile.imageUrl || null, // URL da imagem do perfil do PCD (ou null se não existir)
                     createdAt: serverTimestamp(), // Timestamp do servidor
 

@@ -3,42 +3,44 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore';
 import { db, auth } from '../../../Database/Firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
+import Navbar from '../Navbar/Navbar';
+import { PaperClipIcon } from '@heroicons/react/24/outline';
 
 function VisualizarDocumentos() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  //Pegar o id do usuario na tela anterior
+  // Pegar o id do usuario na tela anterior
   const { vagaId, id } = useParams();
-  //Variaveis para setar dados do banco
+
+  // Variaveis para setar dados do banco
   const [candidatos, setCandidatos] = useState([]);
   const [vaga, setVaga] = useState(null);
-  //Variavel para setar os erros
+  
+  // Variavel para setar os erros
   const [error, setError] = useState('');
-  const [empresa, setEmpresa] = useState('')
+  const [empresa, setEmpresa] = useState('');
 
-  //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
+  // useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
     const GetCandidatos = async () => {
       try {
-        //Tratamento de erros com base do ID da vaga
-        if (vagaId) {
-          //Caminho dos dados da tabela PCD do banco
+        // Tratamento de erros com base no ID da vaga
+        if (vagaId && id) {
+          // Caminho dos dados da tabela PCD do banco
           const CandidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos', id, 'documentos');
           
-          //Pegando dados
+          // Pegando dados
           const GetCandidatos = await getDocs(CandidatosCollection);
-          //Utilizando a função map para guardar as informações
+          // Utilizando a função map para guardar as informações
           const candidatosList = GetCandidatos.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
           }));
 
-
-          //Setando informações
+          // Setando informações
           setCandidatos(candidatosList);
         } else {
-          setError('ID da vaga não fornecido');
+          setError('ID da vaga ou candidato não fornecido');
         }
       } catch (error) {
         console.error('Erro ao buscar candidatos:', error);
@@ -46,24 +48,22 @@ function VisualizarDocumentos() {
       }
     };
 
-    //Função para procurar vagas
+    // Função para procurar vagas
     const GetVaga = async () => {
       try {
-        //Tratamento de erro com base do ID da vaga
+        // Tratamento de erro com base no ID da vaga
         if (vagaId) {
-          //Caminho das informações
+          // Caminho das informações
           const VagasDoc = doc(db, 'Vagas', vagaId);
-          //Pegando as informações
+          // Pegando as informações
           const GetVagas = await getDoc(VagasDoc);
 
-          //Tratamento e setando dados em variaveis
+          // Tratamento e setando dados em variáveis
           if (GetVagas.exists()) {
-            //Sucesso
+            // Sucesso
             const vagaData = { id: GetVagas.id, ...GetVagas.data() };
-           
             setVaga(vagaData);
           } else {
-            //Erro
             console.log('Nenhum documento encontrado!');
             setError('Nenhuma vaga encontrada');
           }
@@ -76,17 +76,12 @@ function VisualizarDocumentos() {
       }
     };
 
-    //Chamando as funções
+    // Chamando as funções
     GetCandidatos();
     GetVaga();
-  }, [vagaId]);
+  }, [vagaId, id]);
 
-  {
-    candidatos.map(candidato => (
-      <li key={candidato.id}>{candidato.nome}</li>
-    ))
-  }
-
+  // Controle de autenticação
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -99,6 +94,7 @@ function VisualizarDocumentos() {
     return () => unsubscribe();
   }, []);
 
+  // Função para iniciar o chat com um usuário
   const ChatUser = async(userId) => {
     try {
         const ChatCollection = collection(db, "Chat");
@@ -107,72 +103,66 @@ function VisualizarDocumentos() {
             empresaId: empresa
         });
         alert("Pessoa adicionada com sucesso!");
-        navigate(`/chat/${userId}/${empresa}`)
+        navigate(`/chat/${userId}`);
     } catch (error) {
         console.error('Erro ao adicionar pessoa:', error);
         alert(`Erro ao adicionar pessoa: ${error.message}`);
     }
-}
+  };
 
   return (
     <>
-      <div className="bg-white p-8 rounded-md w-full">
-        <div>
-          <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-            <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-              <table className="min-w-full leading-normal">
-                <thead>
-                  <tr>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Nome
-                    </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Documentos
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {candidatos.map(candidato => (
-                    <tr>
+      <Navbar />
+      <br />
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='px-6 w-3/4'> 
+          <div className="px-6 sm:px-0 text-center">
+            <h3 className="text-base font-semibold leading-7 text-gray-950">Informações da vaga</h3>
+          </div>
+          <div className="mt-6 border-t border-gray-300">
+            <dl className="divide-y divide-gray-100">
+              {vaga && (
+                <>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Nome da empresa</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{vaga.nome}</dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Descrição da vaga</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{vaga.descricao}</dd>
+                  </div>
+                </>
+              )}
 
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <div className="flex items-center">
-                          <div className="ml-3">
-                            <p className="text-gray-900 whitespace-no-wrap">
-                              {candidato.nome}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p className="text-gray-900 whitespace-no-wrap">
-                          {candidato.email}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <button onClick={() => handleButtonClick(candidato.id)} type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-blue-700 border border-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                          <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Documentos
-                        </button>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <button onClick={() => ChatUser(candidato.userId)} type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-purple-700 border border-purple-700 rounded-lg hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-res-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
-                          <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Contatar
-                        </button>
-                      </td>
-
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-medium leading-6 text-gray-900">Candidatos</dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  <ul className="list-disc">
+                    {candidatos.length > 0 ? (
+                      candidatos.map(candidato => (
+                        <li key={candidato.id}>{candidato.nome}</li>
+                      
+                      ))
+                    ) : (
+                      <li>Nenhum candidato encontrado.</li>
+                    )}
+                  </ul>
+                </dd>
+              </div>
+            </dl>
+          </div>
+          <div className='flex justify-between mt-8'>
+            <button
+              type='submit'
+              className='bg-blue-500 text-white px-4 py-2 rounded-md'
+            >
+              Candidatar-se
+            </button>
           </div>
         </div>
       </div>
     </>
   );
-};
+}
 
 export default VisualizarDocumentos;

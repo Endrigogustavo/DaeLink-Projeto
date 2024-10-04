@@ -7,7 +7,6 @@ import DaeLogo from '../../../assets/Dae.svg'
 
 const CandidatosTable = () => {
     const navigate = useNavigate();
-    const { idempresa } = useParams();
     const [empresaid, setEmpresa] = useState(null);
     const [trabalho, setTrabalho] = useState('');
     const [recommendations, setRecommendations] = useState([]);
@@ -15,8 +14,13 @@ const CandidatosTable = () => {
     const [hasSearched, setHasSearched] = useState(false); // Estado para rastrear se a pesquisa foi feita
 
     useEffect(() => {
-        setEmpresa(idempresa);
-    }, [idempresa]);
+        const storedUserId = localStorage.getItem('userId');
+            if (storedUserId) {
+                const userId = storedUserId;
+                setEmpresa(userId)
+            }
+        
+    }, []);
 
     const handleSubmit = async (event) => {
 
@@ -39,7 +43,7 @@ const CandidatosTable = () => {
     };
 
     const handleButtonClick = (id) => {
-        navigate(`/profileadd/${id}/${idempresa}`);
+        navigate(`/profileadd/${id}/`);
     };
 
     return (

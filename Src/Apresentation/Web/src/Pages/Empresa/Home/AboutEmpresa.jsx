@@ -11,11 +11,17 @@ const AboutEmpresa = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [userId, setUserId] = useState("");
   const navigate = useNavigate();
-  const { id } = useParams();
+
 
   useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+        const userId = storedUserId;
+        setUserId(userId)
+    }
+
     const getUserProfile = async () => {
-      const userDoc = doc(db, "Empresa", id);
+      const userDoc = doc(db, "Empresa", userId);
       const userSnap = await getDoc(userDoc);
 
       if (userSnap.exists()) {
@@ -29,7 +35,7 @@ const AboutEmpresa = () => {
     };
 
     getUserProfile();
-  }, [id]);
+  }, [userId]);
 
 
   if (loading) {

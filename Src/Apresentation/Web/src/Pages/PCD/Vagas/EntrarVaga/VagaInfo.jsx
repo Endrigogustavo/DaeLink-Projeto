@@ -67,39 +67,47 @@ export default function Example() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    var response = confirm("Deseja entrar na vaga?");
-
-    if(response == true){
-    try {
-      const vagaRef = doc(db, "Vagas", vagaId);
-      const candidatosRef = collection(vagaRef, 'candidatos');
-      
-      // Buscar todos os candidatos da vaga
-      const candidatosSnapshot = await getDocs(candidatosRef);
- 
-      const userExists = candidatosSnapshot.docs.some(doc => doc.data().userId === id);
-
-    if (userExists) {
-      alert("Você já se candidatou a esta vaga.");
-      navigate(-1)
-      return;
-    }
-      // Se o userId não existir, adicione o novo candidato
-      await addDoc(candidatosRef, {
-        userId: pessoaId, // Corrigido de id para pessoaId
-        name: pessoaId.name,
-        email: pessoaId.email,
-        situação: situação
-      });
-      
-      alert("Pessoa adicionada com sucesso!");
-      navigate(`/homeuser`);
-    } catch (e) {
-      console.error("Erro ao adicionar pessoa: ", e);
-      alert("Erro ao adicionar pessoa.");
+    const response = confirm("Deseja entrar na vaga?");
+    
+    if (response === true) {
+      try {
+        const vagaRef = doc(db, "Vagas", vagaId);
+        const candidatosRef = collection(vagaRef, 'candidatos');
+        
+        // Verifica se pessoaId está definido
+        if (!pessoaId || !pessoaId.id) {
+          alert("Informações do candidato não carregadas corretamente.");
+          return;
+        }
+  
+        // Buscar todos os candidatos da vaga
+        const candidatosSnapshot = await getDocs(candidatosRef);
+  
+        const userExists = candidatosSnapshot.docs.some(doc => doc.data().userId === pessoaId.id);
+  
+        if (userExists) {
+          alert("Você já se candidatou a esta vaga.");
+          navigate(-1);
+          return;
+        }
+  
+        // Se o userId não existir, adicione o novo candidato
+        await addDoc(candidatosRef, {
+          userId: pessoaId.id, 
+          name: pessoaId.name,
+          email: pessoaId.email,
+          situação: situação
+        });
+  
+        alert("Pessoa adicionada com sucesso!");
+        navigate(`/homeuser`);
+      } catch (e) {
+        console.error("Erro ao adicionar pessoa: ", e);
+        alert("Erro ao adicionar pessoa.");
+      }
     }
   };
-}
+  
   
   return (
     <>

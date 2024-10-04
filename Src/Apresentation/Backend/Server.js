@@ -4,7 +4,7 @@ const { initializeApp, applicationDefault, cert } = require('firebase-admin/app'
 const { getFirestore } = require('firebase-admin/firestore');
 const admin = require('firebase-admin');
 const bodyParser = require('body-parser');
-const serviceAccount = require('./FirebaseDaeLink.json');
+const serviceAccount = require('./daelink-projeto-firebase-adminsdk-knxeu-2c9cee419b.json');
 
 
 initializeApp({
@@ -29,6 +29,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   console.log("foi")

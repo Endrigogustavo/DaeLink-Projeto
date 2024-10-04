@@ -7,7 +7,6 @@ import { registerVaga } from '../../../Auth/Auth';
 import axios from 'axios'
 const RegisterVaga = () => {
   //Pegar o id do usuario na tela anterior
-  const { id } = useParams();
 
   //Variaveis para enviar os dados para o banco
   const [vaga, setVaga] = useState("");
@@ -20,7 +19,7 @@ const RegisterVaga = () => {
   const [tipo, setTipo] = useState("");
   const [userProfile, setUserProfile] = useState(null);
   const [userId, setUserId] = useState("");
-  const [empresaId] = useState(id);
+  const [empresaId] = useState(userId);
 
   //Função de navegação do site
   const navigate = useNavigate();
@@ -28,15 +27,20 @@ const RegisterVaga = () => {
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
     const getCompanyProfile = async () => {
+      const storedUserId = localStorage.getItem('userId');
+      if (storedUserId) {
+          const userId = storedUserId;
+          setUserId(userId)
+      }
+  
       //Caminho dos dados da tabela Empresa do banco com base no ID
-      const CompanyDoc = doc(db, "Empresa", id);
+      const CompanyDoc = doc(db, "Empresa", userId);
       //Pegando dados tratados
       const GetCompanyDoc = await getDoc(CompanyDoc);
       //Tratamento e setando as variaveis
       if (GetCompanyDoc.exists()) {
-        //Sucesso
-        setUserProfile(GetCompanyDoc.data());
-        setUserId(GetCompanyDoc.id);
+        const CompanyData = { id: GetCompanyDoc.id, ...GetCompanyDoc.data() };
+        setUserProfile(CompanyData);
       } else {
         setUserProfile(null);
         alert("Tente novamente!");
@@ -44,18 +48,19 @@ const RegisterVaga = () => {
     };
     //Iniciando a função
     getCompanyProfile();
-  }, [id]);
+  }, [userId]);
 
+  
   //Botão de registrar vaga
   const handleRegister = async (event) => {
     event.preventDefault();
     const user = auth.currentUser;
     //Função registrar vaga que esta no Auth.jsx enviando parametros do form
 
-    axios.post('http://localhost:3000/criarvaga/' + id, { tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId })
+    axios.post('http://localhost:3000/criarvaga/' + userId, { tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId })
       .then(res => {
         alert("Vaga criada com sucesso")
-        navigate(`/homeempresa/${id}`);
+        navigate(`/homeempresa/`);
       })
       .catch(err => {
         console.log(err)
@@ -154,7 +159,7 @@ const RegisterVaga = () => {
       <input
         type="text"
         placeholder="Nome da empresa"
-        value={empresa}
+        value={userProfile ? userProfile.name: ''}
         onChange={(e) => setEmpresa(e.target.value)}
       />
       <input
@@ -172,7 +177,7 @@ const RegisterVaga = () => {
       <input
         type="text"
         placeholder="Local da empresa"
-        value={local}
+        value={userProfile ? userProfile.local: ''}
         onChange={(e) => setLocal(e.target.value)}
       />
       <input

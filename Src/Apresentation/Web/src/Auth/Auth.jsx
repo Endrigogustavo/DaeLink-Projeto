@@ -169,14 +169,11 @@ export const loginUser = async (email, password) => {
   try {
     const PCDCredential = await signInWithEmailAndPassword(auth, email, password);
     const uid = PCDCredential.user.uid;
-    console.log("User logged in successfully:", uid);
-
     // Acessar a tabela específica com base no UID
     const PCDDocRef = doc(db, "PCD", uid);
     const GetPCDDoc = await getDoc(PCDDocRef);
 
     if (GetPCDDoc.exists()) {
-    
       return { uid, ...GetPCDDoc.data() };
     } else {
       console.log("No such document!");
