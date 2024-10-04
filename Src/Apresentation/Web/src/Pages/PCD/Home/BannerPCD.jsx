@@ -11,12 +11,18 @@ import { encrypt } from '../../../Security/Cryptography_Rotes';
 
 const BannerPCD = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
+ 
     const [userProfile, setUserProfile] = useState(null);
     const [motivationalText, setMotivationalText] = useState('');
+    const [id, setUserId] = useState('');
 
     useEffect(() => {
         const getPCDprofile = async () => {
+            const storedUserId = localStorage.getItem('userId');
+            if (storedUserId) {
+                const userId = storedUserId;
+                setUserId(userId)
+               
             const PCDdoc = doc(db, "PCD", id);
             const GetPCDInfo = await getDoc(PCDdoc);
             if (GetPCDInfo.exists()) {
@@ -24,7 +30,9 @@ const BannerPCD = () => {
             } else {
                 setUserProfile(null);
                 alert("Sem documentos!");
+                navigate('/')
             }
+        }
         };
         getPCDprofile();
 
@@ -43,13 +51,13 @@ const BannerPCD = () => {
     }, [id]);
 
     const handleButtonClickProcess = (id) => {
-        const encryptedId = encrypt(id);
-        navigate(`/homeuser/processos/${encodeURIComponent(encryptedId)}`);
+        
+        navigate(`/homeuser/processos/`);
     };
 
     const handleButtonClickProfile = (id) => {
-        const encryptedId = encrypt(id);
-        navigate(`/userprofile/${encodeURIComponent(encryptedId)}`);
+        
+        navigate(`/userprofile/`);
     };
 
     return (

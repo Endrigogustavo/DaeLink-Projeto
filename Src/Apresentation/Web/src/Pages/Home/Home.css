@@ -28,3 +28,7 @@
         width: 150%; /* Ocupa toda a largura em telas pequenas */
     }
 }
+
+.imgFun{
+    right: -70px;
+}

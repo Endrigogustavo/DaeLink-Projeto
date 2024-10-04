@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaGraduationCap, FaBuilding, FaAccessibleIcon } from 'react-icons/fa';
-
-
 
 import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
@@ -10,23 +8,29 @@ import { doc, getDoc } from 'firebase/firestore';
 
 const AboutPCD = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
     const [userProfile, setUserProfile] = useState(null);
 
     useEffect(() => {
         const getPCDprofile = async () => {
-            const PCDdoc = doc(db, "PCD", id);
+            const storedUserId = localStorage.getItem('userId');
+            if (storedUserId) {
+                const userId = storedUserId;
+               
+            const PCDdoc = doc(db, "PCD", userId);
             const GetPCDInfo = await getDoc(PCDdoc);
             if (GetPCDInfo.exists()) {
                 setUserProfile(GetPCDInfo.data());
+
             } else {
                 setUserProfile(null);
                 alert("Sem documentos!");
+                navigate('/')
             }
+        }
         };
         getPCDprofile();
 
-    }, [id]);
+    }, []);
 
 
     const texto1 = `A busca pelo crescimento profissional é constante. Invista em novas habilidades, 

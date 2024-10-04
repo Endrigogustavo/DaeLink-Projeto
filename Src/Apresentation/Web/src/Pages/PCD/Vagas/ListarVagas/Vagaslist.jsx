@@ -8,31 +8,36 @@ import { decrypt, encrypt } from '../../../../Security/Cryptography_Rotes';
 
 
 const Vagaslist = () => {
-    const [userId, setUserId] = useState("");
+    const [id, SetUserId] = useState("");
     const [vagas, setVagas] = useState([]);
     const [empresas, setEmpresas] = useState({});
     const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { id } = useParams();
-    const decryptedId = decrypt(decodeURIComponent(id));
+
     const navigate = useNavigate();
     const defaultempresaicon = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy7OOS70yj8sex-Sw9mgQOnJKzNsUN3uWZCw&s";
     const defaultempresawallpaper = "https://c4.wallpaperflare.com/wallpaper/251/165/174/building-lights-usa-night-wallpaper-preview.jpg";
 
     useEffect(() => {
+
+        const storedUserId = localStorage.getItem('userId');
+        if (storedUserId) {
+            const userId = storedUserId;
+            SetUserId(userId)
+        }
+
         const getUserProfile = async () => {
-            const ProfileUser = doc(db, "PCD", decryptedId);
+            const ProfileUser = doc(db, "PCD", id);
             const GetProfileUser = await getDoc(ProfileUser);
             if (GetProfileUser.exists()) {
                 setUserProfile(GetProfileUser.data());
-                setUserId(GetProfileUser.id);
             } else {
                 setUserProfile(null);
                 alert("Nenhum usuário encontrado");
             }
         };
         getUserProfile();
-    }, [decryptedId]);
+    }, [id]);
 
     useEffect(() => {
         const getVagas = async () => {
@@ -68,8 +73,7 @@ const Vagaslist = () => {
     }, []);
 
     const handleButtonClick = (vagaId) => {
-        const encryptedVaga = encrypt(vagaId);
-        navigate(`/entrarvaga/${encodeURIComponent(encryptedVaga)}`);
+        navigate(`/vagainfo/${vagaId}`);
     };
 
     return (

@@ -1,16 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
-import { doc, collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { doc, collection, addDoc, getDocs, query, where, getDoc } from "firebase/firestore";
 import { db, storage } from "../../../../Database/Firebase";
 import { useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import DocumentosStates from "./DocumentosStates";
 import { FaFile } from "react-icons/fa6";
 import { IoAddCircleSharp } from "react-icons/io5";
+import InputMask from 'react-input-mask';
 
 const DocumentosForm = () => {
-    const [selectedFile1, setSelectedFile1] = useState(null);
-    const [selectedFile2, setSelectedFile2] = useState(null);
-    const [selectedFile3, setSelectedFile3] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([null, null, null]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [pessoaId, setPessoaId] = useState(null);
 
     const {
         userId, setUserId,
@@ -30,12 +31,31 @@ const DocumentosForm = () => {
     } = DocumentosStates();
 
     const navigate = useNavigate();
-    const inputFileRef1 = useRef(null);
-    const inputFileRef2 = useRef(null);
-    const inputFileRef3 = useRef(null);
-
+    const inputFileRefs = [useRef(null), useRef(null), useRef(null)];
     const enderecoRef = useRef(null);
     const experienciaRef = useRef(null);
+
+    useEffect(() => {
+        const getInfoPCD = async () => {
+            const storedUserId = localStorage.getItem('userId');
+            if (storedUserId) {
+                const userId = storedUserId;
+                setUserId(userId)
+
+                const PCDDoc = await getDoc(doc(db, "PCD", userId));
+                if (PCDDoc.exists()) {
+                    const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
+                    setPessoaId(PCDData);
+                } else {
+                    console.log("Pessoa não encontrada!");
+                }
+            }
+
+        };
+
+        getInfoPCD();
+    }, [userId]);
+
 
     const adjustTextareaHeight = (ref) => {
         if (ref.current) {
@@ -45,68 +65,42 @@ const DocumentosForm = () => {
     };
 
     useEffect(() => {
-        if (enderecoRef.current) {
-            adjustTextareaHeight(enderecoRef); // Ajustar o textarea de endereço
-        }
-        if (experienciaRef.current) {
-            adjustTextareaHeight(experienciaRef); // Ajustar o textarea de experiência
-        }
+        adjustTextareaHeight(enderecoRef);
+        adjustTextareaHeight(experienciaRef);
     }, []);
 
-
-    const handleFileChange1 = (e) => {
+    const handleFileChange = (index) => (e) => {
         const file = e.target.files[0];
         if (file) {
-            setSelectedFile1(file);
-            setFormacao1a(file);
-            inputFileRef1.current.style.display = 'none';
-
+            const updatedFiles = [...selectedFiles];
+            updatedFiles[index] = file;
+            setSelectedFiles(updatedFiles);
+            inputFileRefs[index].current.style.display = 'none';
         }
     };
 
-    const handleFileChange2 = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setSelectedFile2(file);
-            setFormacao2a(file);
-            inputFileRef2.current.style.display = 'none';
-        }
+    const uploadFile = async (file) => {
+        const storageRef = ref(storage, `documentos/${file.name}`);
+        await uploadBytes(storageRef, file);
+        return await getDownloadURL(storageRef);
     };
 
-    const handleFileChange3 = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setSelectedFile3(file);
-            setFormacao3a(file);
-            inputFileRef3.current.style.display = 'none';
-        }
-    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         try {
-            // Verifica se um arquivo foi selecionado
-            if (!selectedFile1 && !selectedFile2 && !selectedFile3) {
+            // Verifica se pelo menos um arquivo foi selecionado
+            if (selectedFiles.every(file => !file)) {
                 alert("Por favor, selecione pelo menos um documento para enviar.");
+                setIsLoading(false);
                 return;
             }
 
-            // Função para fazer o upload de um arquivo e obter sua URL
-            const uploadFile = async (file) => {
-                const storageRef = ref(storage, `documentos/${file.name}`);
-                await uploadBytes(storageRef, file);
-                return await getDownloadURL(storageRef);
-            };
+            const downloadURLs = await Promise.all(selectedFiles.map(file => file ? uploadFile(file) : null));
 
-            // Obtemos a URL de download de todos os arquivos selecionados
-            const downloadURLs = await Promise.all([
-                selectedFile1 ? uploadFile(selectedFile1) : null,
-                selectedFile2 ? uploadFile(selectedFile2) : null,
-                selectedFile3 ? uploadFile(selectedFile3) : null,
-            ]);
-
-            // Referência para a coleção de candidatos
             const candidatosRef = collection(db, "Vagas", vagaUid, "candidatos");
             const QueryCandidatos = query(candidatosRef, where("userId", "==", userId));
             const ResultCandidatos = await getDocs(QueryCandidatos);
@@ -117,7 +111,6 @@ const DocumentosForm = () => {
                 const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", candidatoId);
                 const documentosRef = collection(candidatoDocRef, "documentos");
 
-                // Adiciona o documento à coleção de documentos do candidato
                 await addDoc(documentosRef, {
                     nome,
                     endereco,
@@ -126,19 +119,17 @@ const DocumentosForm = () => {
                     idade,
                     objetivo,
                     experiencia1,
-                    formacao_academica1: selectedFile1 ? downloadURLs[0] : null,
-                    formacao_academica2: selectedFile2 ? downloadURLs[1] : null,
-                    formacao_academica3: selectedFile3 ? downloadURLs[2] : null,
+                    formacao_academica1: selectedFiles[0] ? downloadURLs[0] : null,
+                    formacao_academica2: selectedFiles[1] ? downloadURLs[1] : null,
+                    formacao_academica3: selectedFiles[2] ? downloadURLs[2] : null,
                     idiomas,
                     userId
                 });
 
                 alert("Documento adicionado com sucesso!");
-                setSelectedFile1(null);
-                setSelectedFile2(null);
-                setSelectedFile3(null);
+                setSelectedFiles([null, null, null]);
                 setDocumento(null);
-                navigate(`/homeuser/${userId}`);
+                navigate(`/homeuser`);
             } else {
                 console.error("Candidato não encontrado.");
                 alert("Erro ao adicionar documento: candidato não encontrado.");
@@ -146,6 +137,8 @@ const DocumentosForm = () => {
         } catch (e) {
             console.error("Erro ao adicionar documento: ", e);
             alert("Erro ao adicionar documento.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -171,30 +164,37 @@ const DocumentosForm = () => {
                         type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         placeholder="Insira seu Nome Completo"
-                        value={nome}
+                        value={pessoaId ? pessoaId.name : ''}
                         onChange={(e) => setNome(e.target.value)}
+                        required
                     />
                 </div>
                 <div className="flex flex-col">
                     <label className="text-lg font-medium">Email</label>
                     <input
-                        type="text"
+                        type="email"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent "
                         placeholder="Insira seu Email"
-                        value={email}
+                        value={pessoaId ? pessoaId.email : ''}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
                     />
                 </div>
 
                 <div className="flex flex-col">
-                    <label className="text-lg font-medium">Telefone</label>
-                    <input
-                        type="text"
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        placeholder="Insira seu Telefone"
-                        value={telefone}
-                        onChange={(e) => setTelefone(e.target.value)}
-                    />
+                    <div className="flex flex-col">
+            <label className="text-lg font-medium">Telefone</label>
+            <InputMask
+                mask="(99) 99999-9999"
+                value={telefone}
+                onChange={(e) => setTelefone(e.target.value)}
+                className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                placeholder="Insira seu telefone"
+                required
+            />
+        </div>
+
+
                 </div>
 
                 <div className="flex flex-col">
@@ -208,16 +208,18 @@ const DocumentosForm = () => {
                             setEndereco(e.target.value);
                             adjustTextareaHeight(enderecoRef);
                         }}
+                        required
                     />
                 </div>
 
                 <div className="flex flex-col">
                     <label className="text-lg font-medium">Idade</label>
                     <input
-                        type="number"
+                        type="date"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        value={idade}
+                        value={pessoaId ? pessoaId.idade : ''}
                         onChange={(e) => setIdade(e.target.value)}
+                        required
                     />
                 </div>
 
@@ -226,120 +228,49 @@ const DocumentosForm = () => {
                     <textarea
                         ref={experienciaRef}
                         className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
-                        placeholder="Fale brevemente de suas experiências profissionais"
-                        value={experiencia1}
+                        placeholder="Fale brevemente sobre suas experiências"
+                        value={pessoaId ? pessoaId.experiencias : ''}
                         onChange={(e) => {
                             setExperiencia1(e.target.value);
                             adjustTextareaHeight(experienciaRef);
                         }}
+                        required
                     />
                 </div>
 
                 <div className="flex flex-col">
-                    <label className="text-lg font-medium">Idioma Secundário</label>
-                    <select
+                    <label className="text-lg font-medium">Idiomas secundarios</label>
+                    <input
+                        type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                        placeholder="Insira os Idiomas que fala"
                         value={idiomas}
                         onChange={(e) => setIdiomas(e.target.value)}
-                    >
-                        <option value="">Selecione um idioma</option>
-                        <option value="Inglês">Inglês</option>
-                        <option value="Castellano">Castellano</option>
-                        <option value="Alemão">Alemão</option>
-                        <option value="Italiano">Italiano</option>
-                    </select>
+                        required
+                    />
                 </div>
 
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium items-center flex gap-2">
-                        Formações
-                        <p className="opacity-80 text-sm">limite 3</p>
-                    </label>
-                    <div className="flex gap-2">
-                        {/* Formacao 1 */}
-                        <div>
-                            <label
-                                htmlFor="formacao1-input"
-                                className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl flex flex-col items-center justify-center cursor-pointer ${selectedFile1 ? 'w-32' : 'w-16'
-                                    }`}
-                            >
-                                {selectedFile1 ? (
-                                    <>
-                                        <FaFile size={32} />
-                                        <p className="truncate w-5/6">{selectedFile1.name}</p>
-                                    </>
-                                ) : (
-                                    <IoAddCircleSharp size={32} />
-                                )}
-                            </label>
-                            <input
-                                id="formacao1-input"
-                                type="file"
-                                className='hidden'
-                                accept=".pdf,.doc,.docx"
-                                ref={inputFileRef1}
-                                onChange={handleFileChange1}
-                            />
-                        </div>
-
-                        {/* Formacao 2 */}
-                        <div>
-                            <label
-                                htmlFor="formacao2-input"
-                                className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl flex flex-col items-center justify-center cursor-pointer ${selectedFile2 ? 'w-32' : 'w-16'
-                                    }`}
-                            >
-                                {selectedFile2 ? (
-                                    <>
-                                        <FaFile size={32} />
-                                        <p className="truncate  w-5/6"> {selectedFile2.name}</p>
-                                    </>
-                                ) : (
-                                    <IoAddCircleSharp size={32} />
-                                )}
-                            </label>
-                            <input
-                                id="formacao2-input"
-                                type="file"
-                                className='hidden'
-                                accept=".pdf,.doc,.docx"
-                                ref={inputFileRef2}
-                                onChange={handleFileChange2}
-                            />
-                        </div>
-
-                        {/* Formacao 3 */}
-                        <div>
-                            <label
-                                htmlFor="formacao3-input"
-                                className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl flex flex-col items-center justify-center cursor-pointer ${selectedFile3 ? 'w-32' : 'w-16'
-                                    }`}>
-                                {selectedFile3 ? (
-                                    <>
-                                        <FaFile size={32} />
-                                        <p className="truncate w-5/6">{selectedFile3.name}</p>
-                                    </>
-                                ) : (
-                                    <IoAddCircleSharp size={32} />
-                                )}
-                            </label>
-                            <input
-                                id="formacao3-input"
-                                type="file"
-                                className='hidden'
-                                accept=".pdf,.doc,.docx"
-                                ref={inputFileRef3}
-                                onChange={handleFileChange3}
-                            />
-                        </div>
+                {selectedFiles.map((file, index) => (
+                    <div key={index} className="flex flex-col">
+                        <label className="text-lg font-medium">Documento {index + 1}</label>
+                        <input
+                            ref={inputFileRefs[index]}
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            onChange={handleFileChange(index)}
+                            className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                            required={!file}
+                        />
+                        {file && <p className="text-sm">Arquivo: {file.name}</p>}
                     </div>
-                </div>
+                ))}
 
                 <button
                     type="submit"
-                    className="w-56 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-3 px-4 rounded-full transition-all"
+                    className={`bg-blue-500 text-white rounded-full py-2 px-4 mt-4 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={isLoading}
                 >
-                    Enviar Documentos
+                    {isLoading ? 'Enviando...' : 'Enviar Documentos'}
                 </button>
             </form>
         </>

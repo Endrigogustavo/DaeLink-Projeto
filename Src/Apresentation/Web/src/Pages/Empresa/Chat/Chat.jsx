@@ -28,8 +28,7 @@ const ChatRoomEmpresa = () => {
     useEffect(() => {
         const GetChatMessage = async () => {
             try {
-                console.log("Getting chat messages for user:", id, "and empresa:", idempresa);
-
+               
                 // Chat collection and query
                 const ChatCollection = collection(db, "Chat");
                 const GetQueryCompanyId = query(ChatCollection, where("empresaId", "==", idempresa));
@@ -41,7 +40,6 @@ const ChatRoomEmpresa = () => {
                     const PCDdoc = doc(db, "PCD", id);
                     const GetPCDInfo = await getDoc(PCDdoc);
                     if (GetPCDInfo.exists()) {
-                        console.log("PCD profile found:", GetPCDInfo.data());
                         setUserProfile(GetPCDInfo.data());
                     } else {
                         console.warn("No PCD profile found!");
@@ -56,7 +54,6 @@ const ChatRoomEmpresa = () => {
                     const empresaSnap = await getDoc(empresaDoc);
 
                     if (empresaSnap.exists()) {
-                        console.log("Empresa profile found:", empresaSnap.data());
                         setEmpresaProfile(empresaSnap.data());
                     } else {
                         console.warn("No Empresa profile found!");
@@ -75,7 +72,7 @@ const ChatRoomEmpresa = () => {
 
                         const GetMessages = await getDocs(MessagesQuery);
                         setMessages(GetMessages.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-                        console.log("Chat messages found:", GetMessages.docs.map(doc => doc.data()));
+                      
                     }
                 } else {
                     console.warn("No chat found for this user and company");

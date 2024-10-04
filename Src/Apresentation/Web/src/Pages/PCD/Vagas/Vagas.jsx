@@ -18,7 +18,6 @@ function Vagas() {
 
 	//useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
 	useEffect(() => {
-		console.log(decryptedId)
 		const getUserProfile = async () => {
 			//Caminho das informações espeficias de um documento com base no ID
 			const ProfileUser = doc(db, "PCD", decryptedId);

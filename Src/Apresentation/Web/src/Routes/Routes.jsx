@@ -38,6 +38,8 @@ import VisualizarPerfilEmpresa from '../Pages/PCD/Profile/PerfilEmpresa';
 import ChatPCD from '../Pages/PCD/Chat/Chat';
 import Apuração from '../Pages/PCD/Vagas/VisualizarProcessos/VisualizarApuração'
 import AtualizarDoc from '../Pages/PCD/Vagas/EnviarDocumentos/AtualizarDocumento'
+import VagasInfo from '../Pages/PCD/Vagas/EntrarVaga/VagaInfo'
+
 
 import Adm from '../Pages/Admin/Dashboard'
 import LoginAdm from '../Pages/Admin/Login'
@@ -83,15 +85,16 @@ function App() {
 
         {/* Rotas privadas do usuario */}
         <Route path="/" element={<PrivateRoute allowedRoles={['PCD']} />}>
-          <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/homeuser/:id" element={<Homeuser />} />
-          <Route path="/homeuser/vagas/:id" element={<Vagas />} />
-          <Route path="/homeuser/empresas/:id" element={<Empresas />} />
+          <Route path="/profile/" element={<Profile />} />
+          <Route path="/homeuser" element={<Homeuser />} />
+          <Route path="/homeuser/vagas/" element={<Vagas />} />
+          <Route path="/homeuser/empresas/" element={<Empresas />} />
           <Route path="/entrarvaga/:vaga" element={<EntrarVaga />} />
-          <Route path="/enviardocumento/:id/:vagaId" element={<EnviarDocumentos />} />
-          <Route path="/atualizardocumento/:id/:vagaId/:idDoc" element={<AtualizarDoc />} />
-          <Route path="/homeuser/processos/:encryptedId" element={<VisualizarProcessosUser />} />
-          <Route path="/userprofile/:id" element={<Profile />} />
+          <Route path="/vagainfo/:vagaId" element={<VagasInfo />} />
+          <Route path="/enviardocumento/:vagaId" element={<EnviarDocumentos />} />
+          <Route path="/atualizardocumento/:vagaId/:idDoc" element={<AtualizarDoc />} />
+          <Route path="/homeuser/processos/" element={<VisualizarProcessosUser />} />
+          <Route path="/userprofile/" element={<Profile />} />
           <Route path="/edituser/:id" element={<EditarUser />} />
           <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa />} />
           <Route path="/chatpcd/:encryptedId/:empresaId" element={<ChatPCD />} />
@@ -101,7 +104,7 @@ function App() {
 
         {/* Rotas livres do usuario */}
         <Route path="/cadastrouser" element={<CadastroUser />} />
-        <Route path="/empresas/" element={<Empresas />} />
+        <Route path="/empresas" element={<Empresas />} />
         
 
         

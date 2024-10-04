@@ -40,7 +40,6 @@ const AddPessoa = () => {
           const GetPCDresult = await getDoc(PCDdoc);
 
           if (GetPCDresult.exists()) {
-              console.log('Documento encontrado:', GetPCDresult.data());
               setUserInfo(GetPCDresult.data());
           } else {
               console.log('Nenhum documento encontrado com o ID:', id);

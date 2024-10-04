@@ -24,7 +24,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      console.log('Logado com:', auth.currentUser.email);
+    
     } catch (error) {
       alert(error.message);
     }

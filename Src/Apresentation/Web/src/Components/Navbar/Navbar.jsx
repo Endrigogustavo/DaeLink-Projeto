@@ -16,8 +16,8 @@ export default function Navbar({ userType }) {
         return (
             <>
                 <NavLink to="/candidatos">Network</NavLink>
-                <NavLink to="/">Media</NavLink>
-                <NavLink to="/vagas">Empresas</NavLink>
+                <NavLink to="/vagas">Vagas</NavLink>
+                <NavLink to="/empresas">Empresas</NavLink>
             </>
         )
     }

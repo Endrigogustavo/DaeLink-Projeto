@@ -20,9 +20,8 @@ const EditarPerfil = () => {
   // Função de navegação do site
   const navigate = useNavigate();
   // Utilizado para pegar o id do usuario e da vaga na tela anterior
-  const { id } = useParams();
-  const decryptedId = decrypt(decodeURIComponent(id))
-  const [userId, setUserId] = useState(decryptedId);
+ 
+  const [userId, setUserId] = useState('');
 
   const [senha, setSenha] = useState("");
   // Informações do usuario
@@ -41,8 +40,15 @@ const EditarPerfil = () => {
 
   // Carregar as informações do usuário do banco de dados
   useEffect(() => {
+
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+        const userId = storedUserId;
+        setUserId(userId)
+    }
+
     const getUserProfile = async () => {
-      const userDoc = doc(db, "PCD", decryptedId);
+      const userDoc = doc(db, "PCD", userId);
       const GetUser = await getDoc(userDoc);
       if (GetUser.exists()) {
         setUserProfile(GetUser.data());
@@ -52,7 +58,7 @@ const EditarPerfil = () => {
       }
     };
     getUserProfile();
-  }, [decryptedId]);
+  }, [userId]);
 
   // Função para lidar com as mudanças nos inputs
   const handleInputChange = (e) => {
@@ -70,7 +76,7 @@ const EditarPerfil = () => {
 
     try {
 
-      axios.post('https://localhost:3000/updateprofile/'+decryptedId, {userData})
+      axios.post('https://localhost:3000/updateprofile/'+id, {userData})
      .then(res =>{
       alert("Perfil atualizado com sucesso")
      })
@@ -121,7 +127,7 @@ sendPasswordResetEmail(auth, userData.email)
             alert(error.message);
           });
       
-      const userDoc = doc(db, "PCD", decryptedId);
+      const userDoc = doc(db, "PCD", userId);
 
       await updateDoc(userDoc, {
         
@@ -161,6 +167,7 @@ deleteUser(user).then(() => {
 });
       const UserInfo = doc(db, "PCD", id)
       await deleteDoc(UserInfo)
+      localStorage.removeItem('userId');
       navigate('/');
     } catch (error) {
       alert("Erro", error)
@@ -252,19 +259,11 @@ deleteUser(user).then(() => {
         />
       </div>
            <br />
-      <div>
-        <input
-          type="text"
-          name="senha"
-          placeholder="senha"
-          
-          onChange={(e) => setSenha(e.target.value)}
-        />
-      </div>
+   
       <button type="submit">Adicionar Documento</button>
     </form>
 <br/>
-<button onClick={() => DeleteProfile(decryptedId)}>Deletar conta</button>
+<button onClick={() => DeleteProfile(id)}>Deletar conta</button>
 <button onClick={PassReset}>Trocar senha</button>
     </>
   );

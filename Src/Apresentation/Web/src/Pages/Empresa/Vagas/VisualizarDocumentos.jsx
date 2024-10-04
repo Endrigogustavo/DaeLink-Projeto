@@ -25,8 +25,7 @@ function VisualizarDocumentos() {
         if (vagaId) {
           //Caminho dos dados da tabela PCD do banco
           const CandidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos', id, 'documentos');
-          //Mensagem dos dados coletados
-          console.log('candidatosCollection:', CandidatosCollection);
+          
           //Pegando dados
           const GetCandidatos = await getDocs(CandidatosCollection);
           //Utilizando a função map para guardar as informações
@@ -35,8 +34,7 @@ function VisualizarDocumentos() {
             ...doc.data()
           }));
 
-          //Mensagem das informações
-          console.log('Candidatos:', candidatosList);
+
           //Setando informações
           setCandidatos(candidatosList);
         } else {
@@ -55,8 +53,6 @@ function VisualizarDocumentos() {
         if (vagaId) {
           //Caminho das informações
           const VagasDoc = doc(db, 'Vagas', vagaId);
-          //Mensagem para ver se esta ok
-          console.log('vagaDoc:', VagasDoc);
           //Pegando as informações
           const GetVagas = await getDoc(VagasDoc);
 
@@ -64,7 +60,7 @@ function VisualizarDocumentos() {
           if (GetVagas.exists()) {
             //Sucesso
             const vagaData = { id: GetVagas.id, ...GetVagas.data() };
-            console.log('Vaga:', vagaData);
+           
             setVaga(vagaData);
           } else {
             //Erro

@@ -17,12 +17,14 @@ const Banner = () => {
 
                         <div className="flex w-full items-center max-sm-jusify">
                             <Link to={"cadastrouser"}><button className=" w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all">Cadastrar-se</button></Link>
-                            <Link to={"loginu"} className="ml-5  flex items-center iconhover">Login <CiLogin className="flex text-2xl  " /> </Link>
+                            <Link to={"loginu"} className="ml-5  flex items-center iconhover">Entrar <CiLogin className="flex text-2xl  " /> </Link>
                         </div>
                     </div>
-                    <div className="w-1/2 h-full justify-end items-center flex overflow-hidden">
-
-                        <img src={ImgHome} className="h-full" />
+                    <div className="w-1/2 h-full justify-end items-center flex relative">
+                        <img
+                            src={ImgHome}
+                            className="h-full absolute top-[-50px] right-[-50px] imgFun w-auto min-w-full min-h-full object-cover"
+                        />
                     </div>
 
                 </div>

@@ -7,10 +7,10 @@ import CarregamentoTela from "../../../../Components/TelaCarregamento/Carregamen
 import { FaSquareXmark } from "react-icons/fa6";
 
 const ProcessosList = () => {
-    const { encryptedId } = useParams();
-    const decryptedId = decrypt(decodeURIComponent(encryptedId));
+
     const [vagas, setVagas] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [id, SetUserId] = useState(true);
     const navigate = useNavigate();
 
     const defaultempresaicon = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy7OOS70yj8sex-Sw9mgQOnJKzNsUN3uWZCw&s";
@@ -20,13 +20,21 @@ const ProcessosList = () => {
         const GetVagas = async () => {
             setLoading(true); // Set loading state before fetching
             try {
+                const storedUserId = localStorage.getItem('userId');
+            if (storedUserId) {
+                const userId = storedUserId;
+                SetUserId(userId)
+            }
+
+
+
                 const vagasRef = collection(db, 'Vagas');
                 const ResultVagas = await getDocs(vagasRef);
                 let vagasDoCandidato = [];
 
                 for (const doc of ResultVagas.docs) {
                     const candidatosRef = collection(doc.ref, 'candidatos');
-                    const QueryCandidatos = query(candidatosRef, where('userId', '==', decryptedId));
+                    const QueryCandidatos = query(candidatosRef, where('userId', '==', id));
                     const GetResultCandidatos = await getDocs(QueryCandidatos);
 
                     if (!GetResultCandidatos.empty) {
@@ -63,41 +71,42 @@ const ProcessosList = () => {
         };
 
         GetVagas();
-    }, [decryptedId]); // Use apenas decryptedId como dependência
+    }, [id]); // Use apenas decryptedId como dependência
     
+
     const EnviarDoc = async (vagaId) => {
-        const encryptedId = encodeURIComponent(encrypt(decryptedId));
         const VagaInfo = collection(db, "Vagas", vagaId, "candidatos");
-        const QueryDocs = query(VagaInfo, where("userId", "==", decryptedId));
-
+        const QueryDocs = query(VagaInfo, where("userId", "==", id));
+    
         const DocResult = await getDocs(QueryDocs);
-
+    
         if (!DocResult.empty) {
-            const DocRef = collection(db, "Vagas", vagaId, "candidatos", DocResult.docs[0].id, "documentos");
+            // Aqui garantimos que DocResult.docs[0] está definido
+            const candidatoDoc = DocResult.docs[0];
+            const DocRef = collection(db, "Vagas", vagaId, "candidatos", candidatoDoc.id, "documentos");
             const GetDoc = await getDocs(DocRef);
-            const idDoc = GetDoc.docs[0].id
+    
             if (!GetDoc.empty) {
+                // Aqui garantimos que GetDoc.docs[0] está definido
+                const idDoc = GetDoc.docs[0].id; 
                 alert("Documentos já existem");
-                navigate(`/atualizardocumento/${encryptedId}/${vagaId}/${idDoc}`);
+                navigate(`/atualizardocumento/${vagaId}/${idDoc}`);
             } else {
                 alert("Sem documentos");
-                navigate(`/enviardocumento/${encryptedId}/${vagaId}`);
+                navigate(`/enviardocumento/${vagaId}`);
             }
         } else {
             alert("Usuário não encontrado");
         }
     };
+    
 
-    const ApuraçãoResultado = (vagaId) => {
-        const encryptedId = encodeURIComponent(encrypt(decryptedId));
-        navigate(`/ApuraçãoPCD/${encryptedId}/${vagaId}`);
-    };
 
     const ChatEmpresa = (empresaId) => {
-        const encryptedId = encodeURIComponent(encrypt(decryptedId));
-        navigate(`/chatpcd/${encryptedId}/${empresaId}`);
+        navigate(`/chatpcd/${empresaId}`);
     };
 
+    
     return (
         <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : (vagas.length > 0 ? 'grid Processoscontainer gap-4 justify-items-center items-center pb-4' : 'flex pb-8')}`}>
             {loading ? (

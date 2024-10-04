@@ -21,10 +21,6 @@ function Footer() {
       title: "Vagas",
       link: "/Vagas"
     },
-    {
-      title: "Visualizar Documentos",
-      link: "/Documentos"
-    },
   ]
 
   const FooterLinks2 = [

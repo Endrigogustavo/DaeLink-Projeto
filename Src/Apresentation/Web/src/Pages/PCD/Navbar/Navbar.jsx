@@ -6,6 +6,7 @@ import { db } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 import { encrypt, decrypt } from '../../../Security/Cryptography_Rotes';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,10 +15,9 @@ export default function Navbar() {
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
-    const { id, encryptedId } = useParams(); // Obtendo o id e o encryptedId da URL
-    const decryptedId = id ? decrypt(decodeURIComponent(id)) : null; // Descriptografa o id, se disponível
-    const decryptedEncryptedId = encryptedId ? decrypt(decodeURIComponent(encryptedId)) : null; // Descriptografa o encryptedId, se disponível
 
+    const { encryptedId } = useParams(); // Obtendo o id e o encryptedId da URL
+   
     // Função para alternar o menu de navegação
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
@@ -26,20 +26,23 @@ export default function Navbar() {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                // Tenta obter o perfil usando o decryptedId, id, ou decryptedEncryptedId
-                let idToUse = decryptedId || id || decryptedEncryptedId;
-                if (idToUse) {
-                    const PCDdoc = doc(db, "PCD", idToUse);
+                const storedUserId = localStorage.getItem('userId');
+                if (storedUserId) {
+                    const userId = storedUserId;
+                    const PCDdoc = doc(db, "PCD", userId);
                     const GetPCDInfo = await getDoc(PCDdoc);
                     if (GetPCDInfo.exists()) {
                         setUserProfile(GetPCDInfo.data());
-                        setUserId(idToUse);
+                        setUserId(userId)
                     } else {
                         setUserProfile(null);
                         setUserId(""); // Limpa userId se o usuário não for encontrado
                         alert("Sem documentos!");
+                        navigate("/");
                     }
-                }
+                
+                } 
+            
             } catch (error) {
                 console.error("Erro ao buscar o perfil do usuário: ", error);
                 alert("Ocorreu um erro ao buscar o perfil do usuário.");
@@ -49,43 +52,40 @@ export default function Navbar() {
         };
 
         fetchProfile();
-    }, [id, decryptedId, decryptedEncryptedId]); // Dependências do id, decryptedId, e decryptedEncryptedId
+    }, []); // Remova 'id' se não for necessário
+
 
     // Função para navegar para a tela de vagas
-    const handleButtonClickVagas = (id) => {
-        const encryptedId = encrypt(id);
-        navigate(`/homeuser/vagas/${encodeURIComponent(encryptedId)}`);
+    const handleButtonClickVagas = () => {
+        navigate(`/homeuser/vagas/`);
     };
 
-    const handleButtonClickEmpresas = (id) => {
-        const encryptedId = encrypt(id);
-        navigate(`/homeuser/empresas/${encodeURIComponent(encryptedId)}`);
+    const handleButtonClickEmpresas = () => {
+        navigate(`/homeuser/empresas/`);
     };
 
     // Função para navegar para a tela de processos
-    const handleButtonClickProcess = (id) => {
-        const encryptedId = encrypt(id);
-        navigate(`/homeuser/processos/${encodeURIComponent(encryptedId)}`);
+    const handleButtonClickProcess = () => {
+        navigate(`/homeuser/processos/`);
     };
 
     // Função para navegar para a tela de perfil do usuário
-    const handleButtonClickProfile = (id) => {
-        const encryptedId = encrypt(id);
-        navigate(`/userprofile/${encodeURIComponent(encryptedId)}`);
+    const handleButtonClickProfile = () => {
+        navigate(`/userprofile/`);
     };
 
     const Navlinks = () => (
         <>
-            <button onClick={() => handleButtonClickProcess(userId)}>Processos</button>
-            <button onClick={() => handleButtonClickVagas(userId)}>Vagas</button>
-            <button onClick={() => handleButtonClickEmpresas(userId)}>Empresas</button>
+            <button onClick={() => handleButtonClickProcess()}>Processos</button>
+            <button onClick={() => handleButtonClickVagas()}>Vagas</button>
+            <button onClick={() => handleButtonClickEmpresas()}>Empresas</button>
         </>
     );
 
     return (
         <>
             <header className="flex justify-between px-12 items-center py-6 bg-state-50 border-b-2 border-gray-500">
-                <Link to={`/homeuser/${userId}`}>
+                <Link to={`/homeuser/`}>
                     <img src="https://i.postimg.cc/vB5MHPX1/DaeLink.png" className='max-sm-logo w-40' alt="Logo" />
                 </Link>
 

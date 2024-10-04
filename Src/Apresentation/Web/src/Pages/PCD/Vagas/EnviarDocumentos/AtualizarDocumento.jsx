@@ -50,18 +50,27 @@ const DocumentosForm = () => {
         }
     };
 
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserUid(user.uid)
-      } else {
-        setUserUid(null)
-      }
-    });
+    useEffect(() => {
+        const getInfoPCD = async () => {
+            const storedUserId = localStorage.getItem('userId');
+            if (storedUserId) {
+                const userId = storedUserId;
+                setUserId(userId)
 
-    return () => unsubscribe();
-  }, []);
+                const PCDDoc = await getDoc(doc(db, "PCD", userId));
+                if (PCDDoc.exists()) {
+                   const PCDData = { id: PCDDoc.id, ...PCDDoc.data() }; 
+                    setPessoaId(PCDData);
+                } else {
+                    console.log("Pessoa não encontrada!");
+                }
+            }
+
+        };
+
+        getInfoPCD();
+    }, [userId]);
+
 
     useEffect(() => {
         if (enderecoRef.current) {
@@ -73,36 +82,45 @@ const DocumentosForm = () => {
     }, []);
 
     useEffect(() => {
-        const getDocPCD = async () => {
-            try {
-                const DocRef = collection(db, "Vagas", vagaUid, "candidatos");
-                const QueryDoc = query(DocRef, where("userId", "==", userId));
-                const ResultDoc = await getDocs(QueryDoc);
-    
-                if (!ResultDoc.empty) {
-                    // Apenas um candidato é esperado com base na consulta
-                    const candidatoDoc = ResultDoc.docs[0];
-                    
-                    // Referência para a coleção de documentos do candidato
-                    const documentosRef = collection(candidatoDoc.ref, "documentos");
-                    const ResultDocumentos = await getDocs(documentosRef);
-    
-                    if (!ResultDocumentos.empty) {
-                        setDocProfile(ResultDocumentos);
-                    } else {
-                        setDocProfile(null);
-                    }
+    const getDocPCD = async () => {
+        try {
+            const DocRef = collection(db, "Vagas", vagaUid, "candidatos");
+            const QueryDoc = query(DocRef, where("userId", "==", userId));
+            const ResultDoc = await getDocs(QueryDoc);
+
+            if (!ResultDoc.empty) {
+                // Apenas um candidato é esperado com base na consulta
+                const candidatoDoc = ResultDoc.docs[0];
+
+                // Referência para a coleção de documentos do candidato
+                const documentosRef = collection(candidatoDoc.ref, "documentos");
+                const ResultDocumentos = await getDocs(documentosRef);
+
+                if (!ResultDocumentos.empty) {
+                    // Aqui você pode iterar sobre os documentos ou pegar o primeiro
+                    const documentosData = ResultDocumentos.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+
+                    // Se você quiser apenas o primeiro documento
+                    const PCDData = documentosData[0]; // ou ajuste conforme necessário
+                    setDocProfile(PCDData);
                 } else {
-                    alert("Não achou candidatos");
+                    setDocProfile(null);
                 }
-            } catch (error) {
-                console.error("Erro ao buscar documentos:", error);
-                alert("Ocorreu um erro ao buscar documentos.");
+            } else {
+                alert("Não achou candidatos");
             }
-        };
-    
-        getDocPCD();
-    }, [vagaUid, userId]);
+        } catch (error) {
+            console.error("Erro ao buscar documentos:", error);
+            alert("Ocorreu um erro ao buscar documentos.");
+        }
+    };
+
+    getDocPCD();
+}, [vagaUid, userId]);
+
     
     
 
@@ -194,7 +212,7 @@ const DocumentosForm = () => {
                 setSelectedFile2(null);
                 setSelectedFile3(null);
                 setDocumento(null);
-                navigate(`/homeuser/${userId}`);
+                navigate(`/homeuser`);
             } else {
                 console.error("Candidato não encontrado.");
                 alert("Erro ao adicionar documento: candidato não encontrado.");
@@ -217,6 +235,7 @@ const DocumentosForm = () => {
                 const documentoDocRef = doc(candidatoDocRef, "documentos", idDoc);
         await deleteDoc(documentoDocRef)
         alert("Documento deletado com sucesso")
+        navigate(`/homeuser`);
        } catch (error) {
         console.log(error)
         alert("Erro ao deletar documento", error.message)
@@ -245,7 +264,7 @@ const DocumentosForm = () => {
                         type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         placeholder="Insira seu Nome Completo"
-                        value={docProfile.email}
+                        value={nome}
                         onChange={(e) => setNome(e.target.value)}
                     />
                 </div>

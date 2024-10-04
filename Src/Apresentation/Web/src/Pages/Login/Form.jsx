@@ -17,13 +17,18 @@ const Form = () => {
         try {
             const PCDData = await loginUser(email, password);
             const CompanyData = await loginEmpresa(email, password);
+            
             if (CompanyData) {
               //Sucesso
-              console.log("User data:", CompanyData);
-              navigate(`/homeempresa/${CompanyData.uid}`);
+              const id = CompanyData.uid
+              localStorage.setItem('userId', id);
+
+              navigate(`/homeempresa`);
             } else {
                 if (PCDData) {
-                    navigate(`/homeuser/${PCDData.uid}`);
+                    const id = PCDData.uid
+                    localStorage.setItem('userId', id);
+                    navigate(`/homeuser`);
                 } else {
                     alert('Erro ao fazer login, tente novamente.');
                 }

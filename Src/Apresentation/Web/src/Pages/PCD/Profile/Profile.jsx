@@ -11,16 +11,21 @@ import CarregamentoTela from "../../../Components/TelaCarregamento/Carregamento"
 function Profile() {
     const navigate = useNavigate();
     //Utilizado para pegar o id do usuario e da vaga na tela anterior
-    const { id } = useParams();
-    const decryptedId = decrypt(decodeURIComponent(id))
+    const [id, setUserId] = useState("")
     //Variaveis onde as informações serão setadas
     const [userProfile, setUserProfile] = useState(null);
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
+        const storedUserId = localStorage.getItem('userId');
+        if (storedUserId) {
+            const userId = storedUserId;
+            setUserId(userId)
+        }
+
         const getPCDprofile = async () => {
             //Caminho das informações do banco com base no ID
-            const PCDdoc = doc(db, "PCD", decryptedId);
+            const PCDdoc = doc(db, "PCD", id);
             //Pegando os dados
             const GetPCDInfo = await getDoc(PCDdoc);
             //Tratamento e setando dados recebidos em uma variavel
@@ -33,7 +38,7 @@ function Profile() {
         };
         //Iniciando a função
         getPCDprofile();
-    }, [decryptedId]);
+    }, [id]);
 
     if (!userProfile) {
         return <CarregamentoTela/>;
@@ -44,6 +49,7 @@ function Profile() {
         if (response == true) {
             //Função do Auth.jsx para deslogar
             logout();
+            localStorage.removeItem('userId');
             // Redireciona para a página de login após o logout
             navigate('/');
         }
@@ -99,7 +105,7 @@ function Profile() {
                         <div class="sm:block hidden">
                             <button
                                 type="button"
-                                onClick={() => EditProfile(decryptedId)}
+                                onClick={() => EditProfile(id)}
                                 class="flex button-profile -mt-12 w-auto cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 transition hover:border-gray-300 focus:border-gray-300 focus:outline-none focus:ring-0"
                             >
                                 Editar Perfil
@@ -161,7 +167,7 @@ function Profile() {
                                     </div>
                                     <div>
                                         <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                                            <span clas="text-green-500">
+                                            <span class="text-green-500">
                                             </span>
                                         </div>
                                     </div>

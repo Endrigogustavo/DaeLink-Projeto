@@ -39,8 +39,7 @@ function VisualizarPessoas() {
         if (vagaId) {
           //Caminho dos dados da tabela PCD do banco
           const CandidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos');
-          //Mensagem dos dados coletados
-          console.log('candidatosCollection:', CandidatosCollection);
+          
           //Pegando dados
           const GetCandidatos = await getDocs(CandidatosCollection);
           //Utilizando a função map para guardar as informações
@@ -48,8 +47,6 @@ function VisualizarPessoas() {
             id: doc.id,
             ...doc.data()
           }));
-          //Mensagem das informações
-          console.log('Candidatos:', candidatosList);
           //Setando informações
           setCandidatos(candidatosList);
         } else {
@@ -67,8 +64,7 @@ function VisualizarPessoas() {
         if (vagaId) {
           //Caminho das informações
           const VagaDoc = doc(db, 'Vagas', vagaId);
-          //Mensagem para ver se esta ok
-          console.log('vagaDoc:', VagaDoc);
+         
           //Pegando as informações
           const GetVagas = await getDoc(VagaDoc);
 
@@ -76,11 +72,11 @@ function VisualizarPessoas() {
           if (GetVagas.exists()) {
             //Sucesso
             const vagaData = { id: GetVagas.id, ...GetVagas.data() };
-            console.log('Vaga:', vagaData);
+            ('Vaga:', vagaData);
             setVaga(vagaData);
           } else {
             //Erro
-            console.log('Nenhum documento encontrado!');
+            ('Nenhum documento encontrado!');
             setError('Nenhuma vaga encontrada');
           }
         } else {

@@ -154,7 +154,7 @@ export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias,
     // Adicione a vaga ao Firestore
     const VagaDocAdd = await addDoc(collection(db, "Vagas"), dataToSave);
 
-    console.log("Vaga adicionada com ID: ", VagaDocAdd.id);
+   
 
 
     return true;
@@ -176,7 +176,7 @@ export const loginUser = async (email, password) => {
     const GetPCDDoc = await getDoc(PCDDocRef);
 
     if (GetPCDDoc.exists()) {
-      console.log("User data:", GetPCDDoc.data());
+    
       return { uid, ...GetPCDDoc.data() };
     } else {
       console.log("No such document!");
@@ -194,14 +194,14 @@ export const loginEmpresa = async (email, password) => {
   try {
     const CompanyCredential = await signInWithEmailAndPassword(auth, email, password);
     const uid = CompanyCredential.user.uid;
-    console.log("User logged in successfully:", uid);
+ 
 
     // Acessar a tabela específica com base no UID
     const CompanyDoc = doc(db, "Empresa", uid);
     const GetCompanyDoc = await getDoc(CompanyDoc);
 
     if (GetCompanyDoc.exists()) {
-      console.log("User data:", GetCompanyDoc.data());
+    
       return { uid, ...GetCompanyDoc.data() };
     } else {
       console.log("No such document!");
