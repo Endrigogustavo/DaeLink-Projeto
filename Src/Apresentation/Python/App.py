@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Configurar o Firebase
-cred_path = os.path.join(os.path.dirname(__file__), 'Database/daelink-projeto-firebase-adminsdk-knxeu-8e81c3b99a.json')
+cred_path = os.path.join(os.path.dirname(__file__), 'Database/daelink-projeto-firebase-adminsdk-knxeu-2c9cee419b.json')
 
 if not os.path.exists(cred_path):
     print("Arquivo de credenciais não encontrado. Verifique o caminho.")
@@ -24,15 +24,8 @@ db = firestore.client()
 
 collection_name = 'PCD'
 
-collections = db.collections()
-collection_exists = any(collection.id == collection_name for collection in collections)
-
-if collection_exists:
-    # Recupera todos os documentos da coleção
-    docs = db.collection(collection_name).get()
-
 def get_jobs_from_firestore():
-    jobs_ref = db.collection('PCD')
+    jobs_ref = db.collection(collection_name)
     docs = jobs_ref.stream()
     jobs = []
     for doc in docs:
@@ -41,38 +34,18 @@ def get_jobs_from_firestore():
         jobs.append(job)
     return jobs
 
-
-jobs = get_jobs_from_firestore()
-
-for job in jobs:
-    if 'descrição' not in job:
-        print(f"Documento sem 'descrição': {job}")
-    else:
-        print(f"Descrição encontrada")
-
-descriptions = [job['descrição'] for job in jobs if 'descrição' in job]
-tfidf = TfidfVectorizer().fit_transform(descriptions)
-
-# Função para encontrar o índice do trabalho pelo título
-def find_job_index_by_title(description):
-    for index, job in enumerate(jobs):
-        if job.get('descrição', '').lower() == description.lower():
-            return index
-    return None
-
-
-def find_job_index_by_similar_description(description):
+def find_job_index_by_similar_description(description, jobs):
     # Verificação se a descrição fornecida é válida
     if not description:
         return None
 
     # Crie uma lista com todas as descrições de trabalho
     job_descriptions = [job.get('descrição', '') for job in jobs]
-
-    # Adicione a descrição recebida à lista (será usada como referência)
+    
+    # Adicione a descrição recebida à lista
     job_descriptions.append(description)
 
-    # Crie a matriz TF-IDF para todas as descrições
+    # Crie a matriz TF-IDF
     tfidf_vectorizer = TfidfVectorizer()
     tfidf_matrix = tfidf_vectorizer.fit_transform(job_descriptions)
 
@@ -88,62 +61,57 @@ def find_job_index_by_similar_description(description):
 
     return None
 
+
 # Rota para recomendação de vagas
 @app.route('/recommend', methods=['POST'])
 def recommend():
+    jobs = get_jobs_from_firestore()  # Chama a função aqui para obter os dados mais recentes
     data = request.json
     job_title = data.get('trabalho')
 
-    # Verifique se o job_title não é None
     if job_title is None:
-        return jsonify({"error": "O campo 'descrição' é necessário."}), 400
+        return jsonify({"error": "O campo 'trabalho' é necessário."}), 400
 
     print(f"Recebido título da vaga: {job_title}")
 
-    # Chame a função de recomendação
-    job_index = find_job_index_by_similar_description(job_title)
+    job_index = find_job_index_by_similar_description(job_title, jobs)  # Passa 'jobs' como argumento
 
-    # Caso não encontre uma vaga correspondente
     if job_index is None:
         return jsonify({"error": "Nenhuma vaga correspondente encontrada."}), 404
 
-    # Calcular similaridades com base no TF-IDF
-    cosine_similarities = linear_kernel(tfidf[job_index:job_index+1], tfidf).flatten()
+    # Crie a matriz TF-IDF para as vagas
+    job_descriptions = [job.get('descrição', '') for job in jobs]
+    tfidf_vectorizer = TfidfVectorizer()
+    tfidf = tfidf_vectorizer.fit_transform(job_descriptions)
+
+    cosine_similarities = linear_kernel(tfidf[job_index:job_index + 1], tfidf).flatten()
     related_docs_indices = cosine_similarities.argsort()[:-20:-1]
 
-    # Preparar recomendações
     recommendations = [jobs[i] for i in related_docs_indices if i != job_index]
-
-    # Colocar a vaga solicitada no início das recomendações
-    recommendations.insert(0, jobs[job_index]) 
+    recommendations.insert(0, jobs[job_index])  # Colocar a vaga solicitada no início
 
     return jsonify(recommendations)
 
-
 @app.route('/profile', methods=['POST'])
 def recommend_profile():
+    jobs = get_jobs_from_firestore()  # Chama a função aqui para obter os dados mais recentes
     data = request.json
     job_id = data.get('id')
+
     print(f"Recebido ID da vaga: {job_id}")
 
-    # Encontre o índice da vaga com o ID correspondente
     job_index = next((index for (index, job) in enumerate(jobs) if job["id"] == job_id), None)
 
     if job_index is None:
         return jsonify({"error": "Nenhuma vaga encontrada com o ID fornecido."}), 404
 
-    # Calcular similaridades com base no TF-IDF
-    cosine_similarities = linear_kernel(tfidf[job_index:job_index+1], tfidf).flatten()
+    cosine_similarities = linear_kernel(tfidf[job_index:job_index + 1], tfidf).flatten()
     related_docs_indices = cosine_similarities.argsort()[:-5:-1]
 
-    # Preparar recomendações
     recommendations = [jobs[i] for i in related_docs_indices if i != job_index]
-
-    # Colocar a vaga solicitada no início das recomendações
-    recommendations.insert(0, jobs[job_index]) 
+    recommendations.insert(0, jobs[job_index])  # Colocar a vaga solicitada no início
 
     return jsonify(recommendations)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
