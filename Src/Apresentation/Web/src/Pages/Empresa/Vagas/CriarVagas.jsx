@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db, auth } from '../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { registerVaga } from '../../../Auth/Auth';
 
 import axios from 'axios'
 const RegisterVaga = () => {

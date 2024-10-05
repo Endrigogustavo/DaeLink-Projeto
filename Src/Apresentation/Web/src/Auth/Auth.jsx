@@ -121,9 +121,27 @@ export const registerEmpresa = async (
       ...additionalData
     };
 
-    // Adiciona o usuário ao Firestore
-    const CompanyDoc = doc(db, "Empresa", user.uid);
-    await setDoc(CompanyDoc, dataToSave);
+    
+    const TesteEmailPCD = collection(db, "PCD")
+    const q = query(TesteEmailPCD, where("email", "==", email));
+    const VerifiEmailPCD = await getDocs(q)
+
+    const TesteEmailEmpresa = collection(db, "PCD")
+    const a = query(TesteEmailEmpresa, where("email", "==", email));
+    const VerifiEmailEmpresa = await getDocs(a)
+
+
+    if (!VerifiEmailPCD.empty) {
+      alert("Erro, Tente novamente")
+    } else {
+      if (!VerifiEmailEmpresa.empty) {
+        alert("Erro, Tente novamente")
+      } else{ const PCDdoc = doc(db, "Empresa", user.uid);
+        await setDoc(PCDdoc, dataToSave);}
+     
+    }
+
+
     return { success: true, uid: user.uid };
   } catch (error) {
     console.error("Erro ao registrar, tente novamente: ", error);
@@ -133,37 +151,6 @@ export const registerEmpresa = async (
     return { success: false, message: error.message };
   }
 };
-
-
-export const registerVaga = async (tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId, additionalData) => {
-  try {
-    // Dados a serem salvos no Firestore
-    const dataToSave = {
-      vaga,
-      detalhes,
-      area,
-      empresa,
-      salario,
-      tipo,
-      local,
-      exigencias,
-      empresaId,
-      ...additionalData
-    };
-
-    // Adicione a vaga ao Firestore
-    const VagaDocAdd = await addDoc(collection(db, "Vagas"), dataToSave);
-
-   
-
-
-    return true;
-  } catch (error) {
-    console.error("Registration error: ", error);
-    return false;
-  }
-};
-
 
 export const loginUser = async (email, password) => {
   try {

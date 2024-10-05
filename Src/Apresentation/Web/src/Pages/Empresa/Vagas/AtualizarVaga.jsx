@@ -84,6 +84,7 @@ const EditarVaga = () => {
             status: situação
           });
           alert("Situação enviada com sucesso!")
+          navigate(0)
         } catch (e) {
           console.error("Erro ao adicionar pessoa: ", e)
           alert("Erro ao adicionar pessoa.")
@@ -101,6 +102,7 @@ const EditarVaga = () => {
             status: situação
           });
           alert("Situação enviada com sucesso!")
+          navigate(0)
         } catch (e) {
           console.error("Erro ao adicionar pessoa: ", e)
           alert("Erro ao adicionar pessoa.")
@@ -118,6 +120,7 @@ const EditarVaga = () => {
             status: situação
           });
           alert("Situação enviada com sucesso!")
+          navigate(0)
         } catch (e) {
           console.error("Erro ao adicionar pessoa: ", e)
           alert("Erro ao adicionar pessoa.")

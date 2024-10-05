@@ -9,8 +9,8 @@ const EditarPerfil = () => {
   // Função de navegação do site
   const navigate = useNavigate();
   // Utilizado para pegar o id do usuario e da vaga na tela anterior
-  const { id } = useParams();
-  const [userId, setUserId] = useState(id);
+ 
+  const [userId, setUserId] = useState('');
 
   // Informações do usuario
   const [userData, setUserProfile] = useState({
@@ -25,8 +25,13 @@ const EditarPerfil = () => {
 
   // Carregar as informações do usuário do banco de dados
   useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+        const userId = storedUserId;
+        setUserId(userId)
+    }
     const getCompanyProfile = async () => {
-      const CompanyDoc = doc(db, "Empresa", id);
+      const CompanyDoc = doc(db, "Empresa", userId);
       const GetCompany = await getDoc(CompanyDoc);
       if (GetCompany.exists()) {
         setUserProfile(GetCompany.data());
@@ -36,7 +41,7 @@ const EditarPerfil = () => {
       }
     };
     getCompanyProfile();
-  }, [id]);
+  }, [userId]);
 
   // Função para lidar com as mudanças nos inputs
   const handleInputChange = (e) => {
@@ -76,7 +81,7 @@ const EditarPerfil = () => {
       });
 
       alert("Conta atualizada com sucesso!");
-      navigate(`/perfilempresa/${userId}`);
+      navigate(-1);
     } catch (e) {
       console.error("Erro ao adicionar documento: ", e);
       alert("Erro ao adicionar documento.");

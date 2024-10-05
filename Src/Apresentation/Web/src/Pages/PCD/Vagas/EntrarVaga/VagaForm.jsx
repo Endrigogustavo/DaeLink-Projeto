@@ -77,6 +77,7 @@ const VagaForm = () => {
   return (
     <>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center">
+      
         <input
           type="hidden"
           value={pessoaId}
