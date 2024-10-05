@@ -110,6 +110,7 @@ function VisualizarDocumentos() {
     }
   };
 
+
   return (
     <>
       <Navbar />
@@ -117,47 +118,70 @@ function VisualizarDocumentos() {
       <div className='flex justify-center items-center min-h-screen'>
         <div className='px-6 w-3/4'> 
           <div className="px-6 sm:px-0 text-center">
-            <h3 className="text-base font-semibold leading-7 text-gray-950">Informações da vaga</h3>
+            <h3 className="text-base font-semibold leading-7 text-gray-950">Informações do candidato</h3>
           </div>
           <div className="mt-6 border-t border-gray-300">
             <dl className="divide-y divide-gray-100">
-              {vaga && (
-                <>
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-gray-900">Nome da empresa</dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{vaga.nome}</dd>
-                  </div>
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-gray-900">Descrição da vaga</dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{vaga.descricao}</dd>
-                  </div>
-                </>
-              )}
-
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Candidatos</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  <ul className="list-disc">
-                    {candidatos.length > 0 ? (
+            {candidatos.length > 0 ? (
                       candidatos.map(candidato => (
-                        <li key={candidato.id}>{candidato.nome}</li>
-                      
-                      ))
-                    ) : (
-                      <li>Nenhum candidato encontrado.</li>
-                    )}
-                  </ul>
-                </dd>
-              </div>
+                        
+                <>
+                 <li key={candidato.id}>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Nome</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.nome}</dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Email</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.email}</dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Experiencia</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.experiencia1}</dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Data de nascimento</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.idade}</dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Idiomas</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.idiomas}</dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Objetivo</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.objetivo}</dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Telefone</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.telefone}</dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Formação academica 1</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><a href= {candidato.formacao_academica1} target="_blank" rel="noopener noreferrer">PDF, DOC ou DOCX</a></dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Formação academica 2</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><a href= {candidato.formacao_academica2} target="_blank" rel="noopener noreferrer">PDF, DOC ou DOCX</a></dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Formação academica 3</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><a href= {candidato.formacao_academica3} target="_blank" rel="noopener noreferrer">PDF, DOC ou DOCX</a></dd>
+                  </div>
+                  </li>
+                  
+                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <button onClick={() => ChatUser(candidato.userId)} type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-purple-700 border border-purple-700 rounded-lg hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-res-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
+                          <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Contatar
+                        </button>
+                  </td>
+                </>
+              ))
+            ) : (
+              <li>Nenhum candidato encontrado.</li>
+            )}
+
+            
             </dl>
-          </div>
-          <div className='flex justify-between mt-8'>
-            <button
-              type='submit'
-              className='bg-blue-500 text-white px-4 py-2 rounded-md'
-            >
-              Candidatar-se
-            </button>
           </div>
         </div>
       </div>

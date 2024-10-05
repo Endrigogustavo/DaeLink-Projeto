@@ -169,6 +169,7 @@ const ChatRoom = () => {
                     className="h-full border-2 bg-gray-700 respon-w-input rounded-full flex w-4/5 text-white p-4 mt-1"
                     value={formValue}
                     onChange={(e) => setFormValue(e.target.value)}
+                    required
                 />
                 <button className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center">
                     <IoSend className="text-white text-3xl" />
