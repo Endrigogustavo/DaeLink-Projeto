@@ -115,6 +115,7 @@ function VisualizarPessoas() {
             situação: situação
           });
           alert("Apuração enviada com sucesso!")
+          navigate(0)
         } catch (e) {
           console.error("Erro ao adicionar pessoa: ", e)
           alert("Erro ao adicionar pessoa.")
@@ -141,6 +142,7 @@ function VisualizarPessoas() {
             situação: situação
           });
           alert("Apuração enviada com sucesso!")
+          navigate(0)
         } catch (e) {
           console.error("Erro ao adicionar pessoa: ", e)
           alert("Erro ao adicionar pessoa.")
@@ -172,6 +174,9 @@ function VisualizarPessoas() {
                       Email
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Situação
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                       Documentos
                     </th>
                   </tr>
@@ -192,6 +197,11 @@ function VisualizarPessoas() {
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p className="text-gray-900 whitespace-no-wrap">
                           {candidato.email}
+                        </p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {candidato.situação}
                         </p>
                       </td>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
