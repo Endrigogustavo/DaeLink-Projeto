@@ -18,7 +18,7 @@ import Vagas from '../Pages/PCD/Vagas/ListarVagas/Vagas';
 import ProfileAdd from '../Pages/Empresa/Profile/Profile';
 import AddPessoa from '../Pages/Empresa/Vagas/AdicionarPessoa';
 import VisualizarProcessosEmpresa from '../Pages/Empresa/Vagas/VisualizarProcessos/Visualizar_Processos';
-import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas';
+import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas/VisualizarPessoas';
 import VisualizarDocumentos from '../Pages/Empresa/Vagas/VisualizarDocumentos';
 import PerfilEmpresa from '../Pages/Empresa/Profile/PerfilEmpresa';
 import EditEmpresa from '../Pages/Empresa/Profile/EditarPerfilEmpresa';
@@ -56,7 +56,7 @@ import Watson from '../Watson/Watson'
 function App() {
   return (
     <BrowserRouter>
-    <Watson/>
+      <Watson />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/logout" element={<Logout />} />
@@ -105,9 +105,9 @@ function App() {
         {/* Rotas livres do usuario */}
         <Route path="/cadastrouser" element={<CadastroUser />} />
         <Route path="/empresas" element={<Empresas />} />
-        
 
-        
+
+
         <Route path="/adm/:uid" element={<Adm />} />
         <Route path="/pcdadm/:id" element={<PCDadm />} />
         <Route path="/empresaadm/:id" element={<EmpresaAdm />} />

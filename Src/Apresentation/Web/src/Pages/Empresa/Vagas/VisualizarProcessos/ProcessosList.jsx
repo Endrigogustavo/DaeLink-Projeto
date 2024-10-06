@@ -104,7 +104,7 @@ function ProcessosList() {
                 </div>
             ))}
             {vagas.length === 0 && (
-                <div className='w-3/12 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
+                <div className='w-90 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
                     <div className='w-2/6 h-full flex items-center justify-center'>
                         <BsFillXSquareFill className='text-5xl text-gray-900 text-center' />
                     </div>

@@ -150,10 +150,10 @@ const FormEditarVaga = () => {
                 </div>
 
             </div>
-            <h1 className='font-bold text-2xl text-center'>Edição de Vaga</h1>
+            <h1 className='font-bold text-2xl text-center'>Informações da Vaga</h1>
             <form onSubmit={handleSubmit} className="w-full h-fit p-4 editvaga-div gap-2">
                 <div className="flex flex-col ">
-                    <label className="text-lg font-medium">Vaga</label>
+                    <label className="text-lg font-medium">Cargo</label>
                     <input
                         type="text"
                         name="vaga"
