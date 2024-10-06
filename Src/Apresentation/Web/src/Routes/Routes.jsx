@@ -23,7 +23,7 @@ import VisualizarDocumentos from '../Pages/Empresa/Vagas/VisualizarDocumentos';
 import PerfilEmpresa from '../Pages/Empresa/Profile/PerfilEmpresa';
 import EditEmpresa from '../Pages/Empresa/Profile/EditarPerfilEmpresa';
 import ChatEmpresa from '../Pages/Empresa/Chat/Chat';
-import EditVaga from '../Pages/Empresa/Vagas/AtualizarVaga'
+import EditVaga from '../Pages/Empresa/Vagas/AtualizarVaga/AtualizarVaga'
 
 import LoginU from '../Pages/Login/LoginUser';
 import CadastroUser from '../Pages/Cadastro/CadastrarUser';

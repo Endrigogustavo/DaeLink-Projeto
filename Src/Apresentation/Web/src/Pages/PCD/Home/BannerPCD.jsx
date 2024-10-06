@@ -68,7 +68,7 @@ const BannerPCD = () => {
                         <h1 className="text-5xl font-bold block">Olá {userProfile?.name}!</h1>
                         <h1 className="pb-8 text-xl font-bold block">Como vai meu {userProfile?.trabalho} favorito?</h1>
                         <p className="text-justify line-clamp-4">
-                            Frase do momento: "{motivationalText}"
+                            Frase Motivacional: "{motivationalText}"
                         </p>
 
                         <div className="flex w-full items-center max-sm-jusify gap-2 pt-2">

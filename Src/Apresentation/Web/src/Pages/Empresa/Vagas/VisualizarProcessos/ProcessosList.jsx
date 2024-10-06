@@ -11,7 +11,7 @@ import './ProcessoEmpresas.css'
 function ProcessosList() {
     const [vagas, setVagas] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [ id, setUserId ] = useState('')
+    const [id, setUserId] = useState('')
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,7 +21,7 @@ function ProcessosList() {
                 const userId = storedUserId;
                 setUserId(userId)
             }
-        
+
             try {
                 const vagasCollection = collection(db, 'Vagas');
                 const queryVagas = query(vagasCollection, where('empresaId', '==', id));
@@ -46,9 +46,6 @@ function ProcessosList() {
         return <CarregamentoTela />;
     }
 
-    if (vagas.length === 0) {
-        return <div>Nenhuma vaga encontrada para esta empresa.</div>;
-    }
 
     const handleButtonClick = (vagaId) => {
         navigate(`/visualizarpessoas/${vagaId}`);
@@ -58,7 +55,7 @@ function ProcessosList() {
         navigate(`/atualizarvaga/${vagaId}`);
     };
 
-    
+
 
     const deleteVaga = async (vagaId) => {
         const response = window.confirm("Deseja deletar a vaga?");
@@ -75,11 +72,11 @@ function ProcessosList() {
     };
 
     return (
-        <div className='w-full h-fit px-2 py-2 '>
+        <div className={`w-full h-fit flex justify-center items-center flex-col py-4 ${vagas.length > 0 ? 'grid ProcessosEmpresas gap-y-6 justify-items-center items-center' : ''}`}>
             {vagas.map((vaga) => (
-                <div key={vaga.id} className='h-56 w-96 rounded-3xl shadow-2xl flex bg-white'>
+                <div key={vaga.id} className='h-56 w-96 rounded-3xl shadow-2xl flex bg-white border-gray-500 border-2'>
                     <div className='w-1/4 h-full flex items-center justify-center'>
-                        <MdWork className='text-7xl text-gray-900 text-center bg-white p-4 rounded-full' />
+                        <MdWork className='text-7xl text-gray-900 text-center bg-white p-4 rounded-full border-gray-500 border-2' />
                     </div>
                     <div className='w-3/4 h-full flex flex-col items-center'>
                         <div className='w-full h-2/6 text-center flex items-center justify-center text-wrap overflow-hidden'>
@@ -88,19 +85,19 @@ function ProcessosList() {
                         <div className='w-full h-2/6 flex flex-col '>
                             <p className='opacity-80'>{vaga.local}</p>
                             <p className='opacity-80'>{vaga.tipo}</p>
-                            <p className='opacity-80'>{vaga.salario}</p>
+                            <p className='opacity-80'>R${vaga.salario}</p>
                         </div>
                         <div className='w-full h-2/6 flex justify-center gap-2'>
-                            <button onClick={() => handleButtonClick(vaga.id)} type="submit" class="bg-green">
-                                <FaUserFriends className='text-3xl text-gray-900 text-center' />
+                            <button onClick={() => handleButtonClick(vaga.id)} type="submit" class="bg-green-400 rounded-2xl p-2 h-fit">
+                                <FaUserFriends className='text-3xl text-white text-center' />
                             </button>
 
-                            <button onClick={() => atualizarVaga(vaga.id)} type="submit" class="">
-                                <MdEdit className='text-3xl text-gray-900 text-center ' />
+                            <button onClick={() => atualizarVaga(vaga.id)} type="submit" class="bg-gray-700 rounded-2xl p-2 h-fit">
+                                <MdEdit className='text-3xl text-white text-center ' />
                             </button>
 
-                            <button onClick={() => deleteVaga(vaga.id)} type="submit" class="bg-red">
-                                <MdDelete className='text-3xl text-gray-900 text-center' />
+                            <button onClick={() => deleteVaga(vaga.id)} type="submit" class="bg-red-400 rounded-2xl p-2 h-fit">
+                                <MdDelete className='text-3xl text-white text-center' />
                             </button>
                         </div>
                     </div>
@@ -113,7 +110,7 @@ function ProcessosList() {
                     </div>
                     <div className='w-5/6 h-full flex items-center justify-center flex-col'>
                         <p className='font-medium text-lg text-center'>Sem vagas disponíveis</p>
-                        <p className='font-normal text-base text-center'>Por favor volte em outro momento.</p>
+                        <p className='font-normal text-base text-center'>Por Favor, crie uma.</p>
                     </div>
                 </div>
             )}

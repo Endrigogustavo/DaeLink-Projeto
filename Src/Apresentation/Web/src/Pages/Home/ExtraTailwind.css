@@ -46,6 +46,11 @@
 
 
 @media (max-width:640px) {
+  .daelinktext {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
   .max-sm-w-full {
     width: 100%;
   }
@@ -115,10 +120,7 @@
   .aboutextcontainer {
     height: fit-content;
   }
-
-
 }
-
 
 /*Carousel*/
 
@@ -259,5 +261,37 @@
   .max-sm-h-size {
     height: 15rem;
 
+  }
+}
+
+/*1440+*/
+
+@media (min-width:1920px) {
+  .daelinktitle {
+    font-size: 6rem;
+    line-height: 1;
+  }
+
+  .daelinksubtitle {
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .daelinktext {
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+
+  .Home-Button {
+    width: 18rem;
+    font-size: 1.5rem;
+  }
+
+  .Home-Login{
+    font-size: 1.5rem;
+  }
+
+  .aboutextcontainer {
+    height: fit-content;
   }
 }
