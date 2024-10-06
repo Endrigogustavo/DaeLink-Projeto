@@ -1,150 +1,128 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Container, Typography, Box, Divider, List, ListItem, ListItemIcon, ListItemText, Link } from '@mui/material';
+import { CheckCircle, AccountCircle, Gavel, Work, Lock, AssignmentInd, ContactSupport } from '@mui/icons-material';
 
 const TermsOfUse = () => {
-    const navigate = useNavigate()
-    const Nav = () => {
-        navigate(-1)
-    }
+  const navigate = useNavigate();
+
+  const handleNavigateBack = () => {
+    navigate(-1);
+  };
+
   return (
-    <div className="terms-container p-6">
-      <h1 className="text-3xl font-bold mb-4">Termos de Uso do Daelink</h1>
-      <p className="text-gray-600 mb-2">Última atualização: [Inserir data]</p>
+    <Container maxWidth="md" sx={{ mt: 5, mb: 5, p: 4, bgcolor: '#f5f5f5', borderRadius: 2, boxShadow: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h4" fontWeight="bold" color="primary">Termos de Uso do Daelink</Typography>
+        <CheckCircle sx={{ color: 'green', fontSize: 40 }} />
+      </Box>
 
-      <p className="mb-4">
-        Bem-vindo ao Daelink, uma plataforma que conecta pessoas com deficiência
-        a oportunidades de emprego em empresas. Ao acessar ou utilizar a
-        plataforma, você concorda com os seguintes Termos de Uso. Se você não
-        concordar com estes termos, por favor, não utilize o Daelink.
-      </p>
+      <Typography variant="body2" color="textSecondary" gutterBottom>
+        Última atualização: [Inserir data]
+      </Typography>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">1. Aceitação dos Termos</h2>
-      <p className="mb-4">
-        Ao acessar ou usar o Daelink, você concorda em estar legalmente
-        vinculado a estes Termos de Uso, que podem ser modificados a qualquer
-        momento. Recomendamos revisar regularmente esta página para estar
-        ciente de quaisquer mudanças.
-      </p>
+      <Typography variant="body1" paragraph>
+        Bem-vindo ao Daelink, uma plataforma que conecta pessoas com deficiência a oportunidades de emprego em empresas. Ao acessar ou utilizar a plataforma, você concorda com os seguintes Termos de Uso. Se você não concordar com estes termos, por favor, não utilize o Daelink.
+      </Typography>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">2. Elegibilidade</h2>
-      <p className="mb-4">
-        Para usar o Daelink, você deve ser maior de idade (18 anos ou mais) ou
-        ter permissão legal para trabalhar. Empresas devem estar devidamente
-        registradas e autorizadas a recrutar profissionais. Pessoas com
-        deficiência (PCD) interessadas em se candidatar devem fornecer
-        informações verdadeiras e precisas sobre suas qualificações e
-        necessidades.
-      </p>
+      <Divider sx={{ my: 3 }} />
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">3. Cadastro e Conta</h2>
-      <p className="mb-4">
-        Para usar o Daelink, você precisa criar uma conta, fornecendo
-        informações corretas e atualizadas. Você é responsável por manter a
-        confidencialidade dos seus dados de login e por todas as atividades que
-        ocorram em sua conta.
-      </p>
-      <ul className="list-disc pl-8 mb-4">
-        <li>
-          <strong>PCDs:</strong> Informações como habilidades, qualificações e
-          tipos de deficiência devem ser inseridas de forma clara.
-        </li>
-        <li>
-          <strong>Empresas:</strong> Detalhes da vaga, como requisitos, ambiente
-          de trabalho e acessibilidade, devem ser especificados.
-        </li>
-      </ul>
+      <Box mb={4}>
+        <Typography variant="h5" fontWeight="medium" gutterBottom>
+          1. Aceitação dos Termos
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Ao acessar ou usar o Daelink, você concorda em estar legalmente vinculado a estes Termos de Uso, que podem ser modificados a qualquer momento. Recomendamos revisar regularmente esta página para estar ciente de quaisquer mudanças.
+        </Typography>
+      </Box>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">4. Uso Permitido</h2>
-      <p className="mb-4">
-        Você concorda em usar o Daelink apenas para os propósitos a que ele se
-        destina, ou seja, conectar pessoas com deficiência com oportunidades de
-        emprego. É estritamente proibido:
-      </p>
-      <ul className="list-disc pl-8 mb-4">
-        <li>Fornecer informações falsas ou enganosas.</li>
-        <li>
-          Usar a plataforma para qualquer outro fim além do recrutamento e da
-          busca por emprego.
-        </li>
-        <li>
-          Fazer discriminação de qualquer natureza nas descrições de vagas ou
-          nos processos seletivos.
-        </li>
-      </ul>
+      <Box mb={4}>
+        <Typography variant="h5" fontWeight="medium" gutterBottom>
+          2. Elegibilidade
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Para usar o Daelink, você deve ser maior de idade (18 anos ou mais) ou ter permissão legal para trabalhar. Empresas devem estar devidamente registradas e autorizadas a recrutar profissionais. Pessoas com deficiência (PCD) interessadas em se candidatar devem fornecer informações verdadeiras e precisas sobre suas qualificações e necessidades.
+        </Typography>
+      </Box>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">5. Privacidade</h2>
-      <p className="mb-4">
-        A coleta e uso das informações pessoais dos usuários seguem as
-        diretrizes da nossa <a href="/privacy" className="text-blue-600 underline">Política de Privacidade</a>. Suas informações serão utilizadas
-        exclusivamente para conectar candidatos a oportunidades de trabalho e
-        para melhorar os serviços da plataforma.
-      </p>
+      <Box mb={4}>
+        <Typography variant="h5" fontWeight="medium" gutterBottom>
+          3. Cadastro e Conta
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Para usar o Daelink, você precisa criar uma conta, fornecendo informações corretas e atualizadas. Você é responsável por manter a confidencialidade dos seus dados de login e por todas as atividades que ocorram em sua conta.
+        </Typography>
+        <List>
+          <ListItem>
+            <ListItemIcon>
+              <AccountCircle color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="PCDs: Informações como habilidades, qualificações e tipos de deficiência devem ser inseridas de forma clara." />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <Work color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="Empresas: Detalhes da vaga, como requisitos, ambiente de trabalho e acessibilidade, devem ser especificados." />
+          </ListItem>
+        </List>
+      </Box>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">6. Responsabilidades</h2>
-      <ul className="list-disc pl-8 mb-4">
-        <li>
-          <strong>Para Empresas:</strong> A empresa é responsável por assegurar
-          que todas as vagas publicadas no Daelink estejam em conformidade com a
-          legislação trabalhista, especialmente no que diz respeito às cotas
-          para pessoas com deficiência e à acessibilidade no ambiente de
-          trabalho.
-        </li>
-        <li>
-          <strong>Para Candidatos (PCDs):</strong> O candidato é responsável por
-          garantir a veracidade das informações fornecidas, incluindo
-          habilidades, experiências e dados de contato.
-        </li>
-      </ul>
+      <Divider sx={{ my: 3 }} />
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">7. Propriedade Intelectual</h2>
-      <p className="mb-4">
-        Todo o conteúdo da plataforma, incluindo marca, logo, layout, design,
-        textos, imagens e software, é de propriedade exclusiva do Daelink ou de
-        seus licenciadores. O uso não autorizado desse conteúdo é estritamente
-        proibido.
-      </p>
+      <Box mb={4}>
+        <Typography variant="h5" fontWeight="medium" gutterBottom>
+          4. Uso Permitido
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Você concorda em usar o Daelink apenas para os propósitos a que ele se destina, ou seja, conectar pessoas com deficiência com oportunidades de emprego. É estritamente proibido:
+        </Typography>
+        <List>
+          <ListItem>
+            <ListItemIcon>
+              <Lock color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="Fornecer informações falsas ou enganosas." />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <Lock color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="Usar a plataforma para qualquer outro fim além do recrutamento e da busca por emprego." />
+          </ListItem>
+        </List>
+      </Box>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">8. Limitação de Responsabilidade</h2>
-      <p className="mb-4">
-        O Daelink não se responsabiliza por qualquer dano ou perda resultante do
-        uso ou da impossibilidade de uso da plataforma. A plataforma é
-        fornecida "como está" e sem garantias expressas ou implícitas de
-        qualquer tipo.
-      </p>
+      <Divider sx={{ my: 3 }} />
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">9. Encerramento da Conta</h2>
-      <p className="mb-4">
-        O Daelink reserva-se o direito de suspender ou encerrar contas que
-        violem estes Termos de Uso ou que estejam envolvidas em atividades
-        fraudulentas ou inadequadas.
-      </p>
+      <Box mb={4}>
+        <Typography variant="h5" fontWeight="medium" gutterBottom>
+          5. Privacidade
+        </Typography>
+        <Typography variant="body1" paragraph>
+          A coleta e uso das informações pessoais dos usuários seguem as diretrizes da nossa <Link href="/privacy" color="primary" underline="hover">Política de Privacidade</Link>. Suas informações serão utilizadas exclusivamente para conectar candidatos a oportunidades de trabalho e para melhorar os serviços da plataforma.
+        </Typography>
+      </Box>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">10. Alterações nos Termos</h2>
-      <p className="mb-4">
-        O Daelink pode, a seu critério, alterar estes Termos de Uso a qualquer
-        momento. O uso contínuo da plataforma após as alterações implica a
-        aceitação dos novos termos.
-      </p>
+      <Box mb={8}>
+        <Typography variant="h5" fontWeight="medium" gutterBottom>
+          6. Contato
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Se você tiver dúvidas sobre estes Termos de Uso ou sobre o funcionamento da plataforma, entre em contato conosco através do e-mail: [email de contato].
+        </Typography>
+      </Box>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-2">11. Contato</h2>
-      <p className="mb-4">
-        Se você tiver dúvidas sobre estes Termos de Uso ou sobre o funcionamento
-        da plataforma, entre em contato conosco através do e-mail: [email de
-        contato].
-      </p>
-
-      <footer className="mt-8">
-        <p className="text-gray-600">
-          [DaeLink] <br />
-          [Daelink@gmail.com] <br />
-          [11 9292-9292] <br />
-        </p>
-      </footer>
-
-      <br />
-      <button onClick={Nav} className="bg-green-500 text-white font-bold py-2 px-4 rounded-full hover:bg-green-600 transition-colors">Confirmar</button>
-                    
-    </div>
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        onClick={handleNavigateBack}
+        sx={{ borderRadius: 50 }}
+      >
+        Confirmar
+      </Button>
+    </Container>
   );
 };
 
