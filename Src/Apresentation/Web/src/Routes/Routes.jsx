@@ -76,10 +76,10 @@ function App() {
           <Route path="/perfilempresa/" element={<PerfilEmpresa />} />
           <Route path="/chat/:id" element={<ChatEmpresa />} />
           <Route path="/atualizarvaga/:vagaId" element={<EditVaga />} />
+          <Route path="/candidatos" element={<Candidatos />} />
         </Route>
 
         {/* Rotas livres da empresa */}
-        <Route path="/candidatos" element={<Candidatos />} />
         <Route path="/cadastroempresa" element={<CadastroEmpresa />} />
         <Route path="/list" element={<List />} />
 
