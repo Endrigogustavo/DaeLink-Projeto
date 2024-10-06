@@ -166,7 +166,7 @@ const Register = () => {
               className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent respon-w-input "
               placeholder="Insira seu Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.toLowerCase())}
             />
           </div>
           <div className="flex flex-col">

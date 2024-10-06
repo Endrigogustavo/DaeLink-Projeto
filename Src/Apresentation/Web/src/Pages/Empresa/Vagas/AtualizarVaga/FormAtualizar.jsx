@@ -132,7 +132,7 @@ const FormEditarVaga = () => {
 
     return (
         <>
-            <div className="w-full h-72 flex items-center justify-center">
+            <div className="w-full h-64 flex items-center justify-center">
                 <div className="h-52 w-80 rounded-3xl shadow-2xl flex flex-col items-center justify-center bg-white border-gray-500 border-2 gap-1 py-2">
                     <div className="w-full h-3/6 flex flex-col items-center justify-center mt-1">
                         <MdWork className='text-7xl text-gray-900 text-center bg-white p-4 rounded-full border-gray-500 border-2' />
