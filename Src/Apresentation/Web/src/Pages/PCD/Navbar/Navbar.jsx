@@ -93,7 +93,7 @@ export default function Navbar() {
                     <div className="hidden md:flex items-center gap-4">
                         <Navlinks />
                     </div>
-                    <IoSearch className='text-black text-2xl cursor-pointer iconhover' />
+                  
                     <button onClick={() => handleButtonClickProfile(userId)} className='border-2 border-blue-500 rounded-full'>
                         {loading ? (
                             <div className="w-8 h-8 rounded-full bg-gray-300"></div>

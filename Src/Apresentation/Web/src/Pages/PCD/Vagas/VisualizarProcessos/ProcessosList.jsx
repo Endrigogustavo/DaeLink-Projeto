@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../../../../Database/Firebase';
 import { collection, query, where, getDocs, getDoc, doc } from 'firebase/firestore';
-import { decrypt, encrypt } from '../../../../Security/Cryptography_Rotes';
-import CarregamentoTela from "../../../../Components/TelaCarregamento/Carregamento";
 import { FaSquareXmark } from "react-icons/fa6";
 
 const ProcessosList = () => {
-
     const [vagas, setVagas] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [id, SetUserId] = useState(true);
+    const [id, setUserId] = useState(null);
     const navigate = useNavigate();
 
     const defaultempresaicon = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy7OOS70yj8sex-Sw9mgQOnJKzNsUN3uWZCw&s";
@@ -18,15 +15,12 @@ const ProcessosList = () => {
 
     useEffect(() => {
         const GetVagas = async () => {
-            setLoading(true); // Set loading state before fetching
+            setLoading(true);
             try {
                 const storedUserId = localStorage.getItem('userId');
-            if (storedUserId) {
-                const userId = storedUserId;
-                SetUserId(userId)
-            }
-
-
+                if (storedUserId) {
+                    setUserId(storedUserId);
+                }
 
                 const vagasRef = collection(db, 'Vagas');
                 const ResultVagas = await getDocs(vagasRef);
@@ -38,7 +32,8 @@ const ProcessosList = () => {
                     const GetResultCandidatos = await getDocs(QueryCandidatos);
 
                     if (!GetResultCandidatos.empty) {
-                        vagasDoCandidato.push({ id: doc.id, ...doc.data() });
+                        const candidatoData = GetResultCandidatos.docs[0].data();
+                        vagasDoCandidato.push({ id: doc.id, ...doc.data(), situação: candidatoData.situação });
                     }
                 }
 
@@ -62,7 +57,6 @@ const ProcessosList = () => {
                 );
 
                 setVagas(vagasWithEmpresaDetails);
-
             } catch (error) {
                 console.error('Erro ao buscar vagas: ', error);
             } finally {
@@ -71,24 +65,21 @@ const ProcessosList = () => {
         };
 
         GetVagas();
-    }, [id]); // Use apenas decryptedId como dependência
-    
+    }, [id]);
 
     const EnviarDoc = async (vagaId) => {
         const VagaInfo = collection(db, "Vagas", vagaId, "candidatos");
         const QueryDocs = query(VagaInfo, where("userId", "==", id));
-    
+
         const DocResult = await getDocs(QueryDocs);
-    
+
         if (!DocResult.empty) {
-            // Aqui garantimos que DocResult.docs[0] está definido
             const candidatoDoc = DocResult.docs[0];
             const DocRef = collection(db, "Vagas", vagaId, "candidatos", candidatoDoc.id, "documentos");
             const GetDoc = await getDocs(DocRef);
-    
+
             if (!GetDoc.empty) {
-                // Aqui garantimos que GetDoc.docs[0] está definido
-                const idDoc = GetDoc.docs[0].id; 
+                const idDoc = GetDoc.docs[0].id;
                 alert("Documentos já existem");
                 navigate(`/atualizardocumento/${vagaId}/${idDoc}`);
             } else {
@@ -99,14 +90,24 @@ const ProcessosList = () => {
             alert("Usuário não encontrado");
         }
     };
-    
-
 
     const ChatEmpresa = (empresaId) => {
         navigate(`/chatpcd/${empresaId}`);
     };
 
-    
+    const getSituacaoClass = (situacao) => {
+        switch (situacao) {
+            case 'Aprovado':
+                return 'bg-green-500'; // Verde para aprovado
+            case 'Reprovado':
+                return 'bg-red-600'; // Vermelho para reprovado
+            case 'Pendente':
+                return 'bg-gray-500'; // Cinza para pendente
+            default:
+                return 'bg-yellow-500'; // Cor padrão se necessário
+        }
+    };
+
     return (
         <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : (vagas.length > 0 ? 'grid Processoscontainer gap-4 justify-items-center items-center pb-4' : 'flex pb-8')}`}>
             {loading ? (
@@ -127,17 +128,17 @@ const ProcessosList = () => {
                             <div className='flex flex-col bg-gray-900 rounded-2xl h-full w-4/6 justify-center items-center overflow-hidden gap-2'>
                                 <div className="w-full flex flex-col justify-center gap-1">
                                     <h1 className='font-medium text-xl text-center text-white'>{vaga.vaga}</h1>
-                                    <h1 className={`w-32 text-white text-center font-bold text-sm py-2 px-2 rounded-full ${vaga.situação ? 'bg-blue-700' : 'bg-red-600'}`}>
-                                        {vaga.situação}
+                                    <h1 className={`w-32 text-white text-center font-bold text-sm py-2 px-2 rounded-full ml-2 ${getSituacaoClass(vaga.situação)}`}>
+                                        {vaga.situação || 'Indefinido'}
                                     </h1>
                                     <p className='text-white opacity-80 text-sm px-4 truncate'>Tipo: {vaga.tipo}</p>
                                     <p className='text-white opacity-80 text-sm px-4 truncate'>Salário: {vaga.salario}</p>
                                 </div>
                                 <div className='w-full flex justify-center'>
-                                    <button onClick={() => ChatEmpresa(vaga.empresaId)} className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'>
+                                    <button onClick={() => ChatEmpresa(vaga.empresaId)} className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all ml-2'>
                                         Chat
                                     </button>
-                                    <button onClick={() => EnviarDoc(vaga.id)} className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'>
+                                    <button onClick={() => EnviarDoc(vaga.id)} className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all m-2'>
                                         Enviar Documentos
                                     </button>
                                 </div>

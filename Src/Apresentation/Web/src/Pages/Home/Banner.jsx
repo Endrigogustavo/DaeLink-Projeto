@@ -23,7 +23,7 @@ const Banner = () => {
                     <div className="w-1/2 h-full justify-end items-center flex relative">
                         <img
                             src={ImgHome}
-                            className="object-cover min-h-96"
+                            className="object-cover min-h-96 imgFun"
                         />
                     </div>
 
