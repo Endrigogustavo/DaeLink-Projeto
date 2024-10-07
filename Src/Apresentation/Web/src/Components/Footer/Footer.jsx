@@ -88,7 +88,7 @@ function Footer() {
                 <div>
                   <div className="flex items-center gap-4 ">
                     <FaLocationArrow className="" />
-                    <p>São Paulo, São Paulo</p>
+                    <p>São Paulo,</p>
                     <p>Brasil</p>
                   </div>
                   <div className="flex items-center gap-4 ">
