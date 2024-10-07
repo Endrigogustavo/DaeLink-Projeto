@@ -95,7 +95,7 @@ function App() {
           <Route path="/atualizardocumento/:vagaId/:idDoc" element={<AtualizarDoc />} />
           <Route path="/homeuser/processos/" element={<VisualizarProcessosUser />} />
           <Route path="/userprofile/" element={<Profile />} />
-          <Route path="/edituser/:id" element={<EditarUser />} />
+          <Route path="/edituser/" element={<EditarUser />} />
           <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa />} />
           <Route path="/chatpcd/:empresaId" element={<ChatPCD />} />
           <Route path="/vagas" element={<Vagas />} />

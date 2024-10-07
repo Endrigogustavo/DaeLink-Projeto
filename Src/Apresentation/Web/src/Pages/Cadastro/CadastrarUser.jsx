@@ -16,6 +16,7 @@ const Register = () => {
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [trabalho, setTrabalho] = useState("");
   const [descricao, setDescricao] = useState("");
@@ -27,6 +28,9 @@ const Register = () => {
   const [deficiencia, setDeficiencia] = useState("");
   const [tipo, setTipo] = useState("PCD");
   const [isChecked, setIsChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -35,24 +39,38 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleRegister = async () => {
+    // Validações
+    
+    if (!isChecked) {
+      alert("Você deve aceitar os termos de uso.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert("As senhas não coincidem.");
+      return;
+    }
     if (!/\S+@\S+\.\S+/.test(email)) {
       alert("O formato de email é inválido, tente novamente.");
       return;
     }
 
-    const response = await registerUser(name, email, password, idade, deficiencia, descricao, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, laudomedico, {});
+    const response = await registerUser(name, email, password, idade, deficiencia, descricao, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, laudomedico, CPF, {});
     if (response.success) {
       const auth = getAuth();
+      const user = auth.currentUser; // Certifique-se de obter o 'user' da autenticação
+      const id = user.uid; // Pegue o UID do usuário autenticado
+      localStorage.setItem('userId', id);
+      
       await sendEmailVerification(auth.currentUser)
         .then(() => {
           alert("Email de verificação enviado com sucesso!!!");
         });
+      
       alert("Cadastrado com sucesso");
-      navigate(`/homeuser/${response.uid}`);
-    } else {
-      alert("Falha ao cadastrar, tente novamente.");
+      navigate(`/homeuser/`);
     }
-  };
+    
+  }
 
   const handleNext = () => {
     let isValid = true;
@@ -256,7 +274,7 @@ const Register = () => {
                         <br />
                         <div className="flex flex-col w-full items-center">
                           <label className="text-lg font-medium">Confirmar senha</label>
-                          <input required type="password" className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira sua Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+                          <input required type="password" className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira sua Senha" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         </div>
                       </>
                     )}
@@ -296,12 +314,21 @@ const Register = () => {
                           <label className="text-lg font-medium">Experiências anteriores</label>
                           <textarea required className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Descreva suas experiências anteriores" value={experiencias} onChange={(e) => setExperiencia(e.target.value)} />
                         </div>
+                        <br />
+                        <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Sobre você</label>
+                          <textarea required className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Fale um pouco sobre você" value={sobre} onChange={(e) => setSobre(e.target.value)} />
+                        </div>
                       </>
                     )}
 
                     {/* Etapa 3: Laudo Médico */}
                     {step === 3 && (
                       <>
+                       <div className="flex flex-col w-full items-center">
+                          <label className="text-lg font-medium">Deficiencia</label>
+                          <input required type="text" className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira sua deficiencia" value={deficiencia} onChange={(e) => setDeficiencia(e.target.value)} />
+                        </div>
                         <br />
                         <div className="flex flex-col w-full items-center">
                           <label className="text-lg font-medium">Laudo Médico</label>

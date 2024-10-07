@@ -3,33 +3,20 @@ import { doc, setDoc, getDoc, getFirestore, addDoc, collection, query, where, ge
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
-//Função para cadastrar um novo usuario
-export const registerUser = async (name, email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, laudomedico, additionalData) => {
+export const registerUser = async (name, email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, laudomedico, CPF, additionalData) => {
   try {
-    //Autenticador do Firebase
+    // Autenticador do Firebase
     const PCDCredential = await createUserWithEmailAndPassword(auth, email, password);
-    //Autenticar usuario unico
     const user = PCDCredential.user;
 
+    // Upload das imagens em paralelo
+    const [profileImageUrl, backgroundImageUrl, LaudoURL] = await Promise.all([
+      uploadAndGetDownloadUrl(`images/${image.name}`, image),
+      uploadAndGetDownloadUrl(`background_profile/${background.name}`, background),
+      uploadAndGetDownloadUrl(`laudo_medico/${laudomedico.name}`, laudomedico)
+    ]);
 
-
-    // Upload da imagem de perfil
-    const profileImageRef = ref(storage, `images/${image.name}`);
-    await uploadBytes(profileImageRef, image);
-    const profileImageUrl = await getDownloadURL(profileImageRef);
-
-    // Upload da imagem de fundo
-    const backgroundImageRef = ref(storage, `background_profile/${background.name}`);
-    await uploadBytes(backgroundImageRef, background);
-    const backgroundImageUrl = await getDownloadURL(backgroundImageRef);
-
-    // Upload laudo medico
-    const LaudoDoc = ref(storage, `laudo_medico/${laudomedico.name}`);
-    await uploadBytes(LaudoDoc, laudomedico);
-    const LaudoURL = await getDownloadURL(LaudoDoc);
-
-
-    //Dados a serem salvos em uma variavel
+    // Dados a serem salvos em uma variável
     const dataToSave = {
       name,
       email,
@@ -43,69 +30,51 @@ export const registerUser = async (name, email, password, idade, deficiencia, de
       experiencias,
       imageProfile: backgroundImageUrl,
       laudo: LaudoURL,
+      CPF,
       ...additionalData
     };
 
-    const TesteEmailPCD = collection(db, "PCD")
-    const q = query(TesteEmailPCD, where("email", "==", email));
-    const VerifiEmailPCD = await getDocs(q)
+    // Verifica se o email já está em uso
+    const emailQuery = query(collection(db, "PCD"), where("email", "==", email));
+    const emailSnapshot = await getDocs(emailQuery);
 
-    const TesteEmailEmpresa = collection(db, "PCD")
-    const a = query(TesteEmailEmpresa, where("email", "==", email));
-    const VerifiEmailEmpresa = await getDocs(a)
-
-
-    if (!VerifiEmailPCD.empty) {
-      alert("Erro, Tente novamente")
-    } else {
-      if (!VerifiEmailEmpresa.empty) {
-        alert("Erro, Tente novamente")
-      } else{ const PCDdoc = doc(db, "PCD", user.uid);
-        await setDoc(PCDdoc, dataToSave);}
-     
+    if (!emailSnapshot.empty) {
+      alert("Erro, Tente novamente");
+      return false;
     }
 
+    const PCDdoc = doc(db, "PCD", user.uid);
+    await setDoc(PCDdoc, dataToSave);
 
     return { success: true, uid: user.uid };
   } catch (error) {
     console.error("Erro ao registrar, tente novamente: ", error);
     if (error.code === 'auth/email-already-in-use') {
-      // Manipular o erro de email já registrado
-      alert("O email utilizado esta em uso, tente outro email");
+      alert("O email utilizado está em uso, tente outro email");
     }
     return false;
   }
 };
 
-//Constante de registrar empresa
+// Função para upload e obter URL
+const uploadAndGetDownloadUrl = async (path, file) => {
+  const fileRef = ref(storage, path);
+  await uploadBytes(fileRef, file);
+  return getDownloadURL(fileRef);
+};
 
-export const registerEmpresa = async (
-  email,
-  password,
-  sobre,
-  area,
-  cnpj,
-  endereco,
-  cep,
-  tipo,
-  image,
-  background,
-  additionalData
-) => {
+// Constante de registrar empresa
+export const registerEmpresa = async (email, password, sobre, area, cnpj, endereco, cep, tipo, image, background, additionalData) => {
   try {
     // Autenticação do Firebase
     const CompanyCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = CompanyCredential.user;
 
-    // Upload da imagem do perfil
-    const profileImageRef = ref(storage, `images_company/${image.name}`);
-    await uploadBytes(profileImageRef, image);
-    const profileImageUrl = await getDownloadURL(profileImageRef);
-
-    // Upload da imagem de fundo
-    const backgroundImageRef = ref(storage, `background_profile_company/${background.name}`);
-    await uploadBytes(backgroundImageRef, background);
-    const backgroundImageUrl = await getDownloadURL(backgroundImageRef);
+    // Upload das imagens em paralelo
+    const [profileImageUrl, backgroundImageUrl] = await Promise.all([
+      uploadAndGetDownloadUrl(`images_company/${image.name}`, image),
+      uploadAndGetDownloadUrl(`background_profile_company/${background.name}`, background)
+    ]);
 
     // Informações para salvar no banco
     const dataToSave = {
@@ -121,26 +90,17 @@ export const registerEmpresa = async (
       ...additionalData
     };
 
-    
-    const TesteEmailPCD = collection(db, "PCD")
-    const q = query(TesteEmailPCD, where("email", "==", email));
-    const VerifiEmailPCD = await getDocs(q)
+    // Verifica se o email já está em uso
+    const emailQuery = query(collection(db, "PCD"), where("email", "==", email));
+    const emailSnapshot = await getDocs(emailQuery);
 
-    const TesteEmailEmpresa = collection(db, "PCD")
-    const a = query(TesteEmailEmpresa, where("email", "==", email));
-    const VerifiEmailEmpresa = await getDocs(a)
-
-
-    if (!VerifiEmailPCD.empty) {
-      alert("Erro, Tente novamente")
-    } else {
-      if (!VerifiEmailEmpresa.empty) {
-        alert("Erro, Tente novamente")
-      } else{ const PCDdoc = doc(db, "Empresa", user.uid);
-        await setDoc(PCDdoc, dataToSave);}
-     
+    if (!emailSnapshot.empty) {
+      alert("Erro, Tente novamente");
+      return false;
     }
 
+    const EmpresaDoc = doc(db, "Empresa", user.uid);
+    await setDoc(EmpresaDoc, dataToSave);
 
     return { success: true, uid: user.uid };
   } catch (error) {
