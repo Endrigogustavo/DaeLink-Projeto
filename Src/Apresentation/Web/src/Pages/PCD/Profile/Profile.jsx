@@ -57,8 +57,7 @@ function Profile() {
     }
 
     const EditProfile = (id) =>{
-        const encryptedId = encodeURIComponent(encrypt(id))
-        navigate(`/edituser/${encryptedId}`)
+        navigate(`/edituser/`)
     }
 
     return (

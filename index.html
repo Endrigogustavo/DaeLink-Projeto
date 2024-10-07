@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form action="" method="post">
+        <input type="text" id="Teste">
+        <br>
+        <button type="submit" onclick="fibonate()">Teste</button>
+    </form>
+
+    <script>
+        function fibonate(){
+            const num = parseInt(document.getElementById('Teste').value)
+            let A = 0
+            let B = 1
+            let C = 0
+            alert(num)
+
+            for( let i = 0; i <= num; i++){
+                alert(A)
+                C = A + B
+                A = B
+                B = C
+                
+            }
+            
+        }
+    </script>
+    
+</body>
+</html>

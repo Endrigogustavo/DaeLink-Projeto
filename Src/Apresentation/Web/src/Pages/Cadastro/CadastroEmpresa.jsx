@@ -58,14 +58,17 @@ const Register = () => {
     //Função do Auth.jsx para fazer login enviando os parametros do form
     const response = await registerEmpresa(email, password, sobre, area, cnpj, endereco, cep, tipo, profileImage, backgroundImage, { name });
     if (response.success) {
-      const auth = getAuth
+      const auth = getAuth();
+      const user = auth.currentUser; // Certifique-se de obter o 'user' da autenticação
+      const id = user.uid; // Pegue o UID do usuário autenticado
+      localStorage.setItem('userId', id);
       await sendEmailVerification(auth.currentUser)
         .then(() => {
           alert("Email de verificação enviado com sucesso!!!")
         });
 
       alert("Cadastrado com sucesso");
-      navigate(`/homeempresa/${response.uid}`);
+      navigate(`/homeempresa/`);
     } else {
       alert("Falha ao criar um registro, tente novamente.");
     }
