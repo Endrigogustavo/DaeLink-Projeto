@@ -12,7 +12,7 @@ import Error404 from '../Pages/Error/TelaErro404'
 
 
 import CadastroEmpresa from '../Pages/Cadastro/CadastroEmpresa';
-import CadastrarVaga from '../Pages/Empresa/Vagas/CriarVagas';
+import CadastrarVaga from '../Pages/Empresa/Vagas/CriarVaga/CriarVagas';
 import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
 import Vagas from '../Pages/PCD/Vagas/ListarVagas/Vagas';
 import ProfileAdd from '../Pages/Empresa/Profile/Profile';

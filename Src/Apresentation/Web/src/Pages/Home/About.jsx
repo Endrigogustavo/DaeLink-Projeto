@@ -20,7 +20,7 @@ const About = () => {
               {/* Item 1 */}
               <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
                 <FaClipboardUser className="text-white text-3xl" />
-                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal w-full h-4/5 overflow-y-auto">
+                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal w-full h-4/5 ">
                   Fazemos a integração entre as empresas e as pessoas com deficiência (PCD) de forma ampla, em que a funcionalidade de nossa plataforma é projetada para o maior uso empresarial.
                 </p>
               </div>
@@ -28,7 +28,7 @@ const About = () => {
               {/* Item 2 */}
               <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
                 <FaChartLine className="text-white text-3xl" />
-                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal w-full h-4/5 overflow-y-auto">
+                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal w-full h-4/5 ">
                   Simplificamos o recrutamento de pessoas com deficiência (PCD), através de um sistema de vagas e de encontro de candidatos (Matchs) tornando esse processo mais prático possível.
                 </p>
               </div>
@@ -36,7 +36,7 @@ const About = () => {
               {/* Item 3 */}
               <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
                 <FaDove className="text-white text-3xl" />
-                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal w-full h-4/5 overflow-y-auto">
+                <p className="text-justify text-white bg-gray-800 p-3 rounded-lg font-normal w-full h-4/5 ">
                   Acreditamos que iniciativas através da tecnologia possa trazer uma melhora significativa a vida de pessoas marginalizadas socialmente como em nosso caso os PCD.
                 </p>
               </div>
