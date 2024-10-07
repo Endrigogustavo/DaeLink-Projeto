@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../../Auth/Auth';
 import { getAuth, sendEmailVerification } from 'firebase/auth';
 import { FaCloudUploadAlt, FaUser, FaIdCard, FaClipboardList } from 'react-icons/fa';
+import InputMask from 'react-input-mask';
 
 import CadastroU from '../../Img/CadastroU.png';
 
@@ -20,6 +21,8 @@ const Register = () => {
   const [descricao, setDescricao] = useState("");
   const [idade, setIdade] = useState("");
   const [sobre, setSobre] = useState("");
+  const [CPF, setCPF] = useState("");
+  const [cpfError, setCpfError] = useState('');
   const [experiencias, setExperiencia] = useState("");
   const [deficiencia, setDeficiencia] = useState("");
   const [tipo, setTipo] = useState("PCD");
@@ -123,6 +126,61 @@ const Register = () => {
     setStep(1); // Reiniciar para o primeiro passo
   };
 
+  const validateCPF = (value) => {
+    const cleanCPF = value.replace(/\D/g, '');
+    if (cleanCPF.length !== 11) {
+      return false;
+    }
+
+    let sum = 0;
+    let remainder;
+
+    if (cleanCPF === "00000000000") return false;
+
+    for (let i = 1; i <= 9; i++) {
+      sum += parseInt(cleanCPF.substring(i - 1, i)) * (11 - i);
+    }
+
+    remainder = (sum * 10) % 11;
+
+    if (remainder === 10 || remainder === 11) {
+      remainder = 0;
+    }
+
+    if (remainder !== parseInt(cleanCPF.charAt(9))) {
+      return false;
+    }
+
+    sum = 0;
+
+    for (let i = 1; i <= 10; i++) {
+      sum += parseInt(cleanCPF.substring(i - 1, i)) * (12 - i);
+    }
+
+    remainder = (sum * 10) % 11;
+
+    if (remainder === 10 || remainder === 11) {
+      remainder = 0;
+    }
+
+    if (remainder !== parseInt(cleanCPF.charAt(10))) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleCpfChange = (e) => {
+    const value = e.target.value;
+    setCPF(value);
+    if (validateCPF(value)) {
+      setCpfError('');
+    } else {
+      setCpfError('CPF inválido');
+    }
+  };
+
+
   const progressPercentage = (step / 3) * 100; // Calcular a porcentagem de progresso
 
   return (
@@ -210,6 +268,19 @@ const Register = () => {
                           <label className="text-lg font-medium">Idade</label>
                           <input required type="date" className="w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent" placeholder="Insira sua Idade" value={idade} onChange={(e) => setIdade(e.target.value)} />
                         </div>
+                        <div className="flex flex-col w-full items-center">
+                          <br />
+                          <label className="text-lg font-medium">CPF</label>
+                          <InputMask
+                            required
+                            mask="999.999.999-99"
+                            value={CPF}
+                            onChange={handleCpfChange}
+                            className={`w-96 border-2 border-gray-300 rounded-full p-2 mt-1 bg-transparent ${cpfError ? 'border-red-500' : ''}`}
+                            placeholder="Digite seu CPF"
+                          />
+                          {cpfError && <span className="text-red-500 text-sm">{cpfError}</span>}
+                        </div>
                         <br />
                         <div className="flex flex-col w-full items-center">
                           <label className="text-lg font-medium">Área de Atuação</label>
@@ -240,7 +311,7 @@ const Register = () => {
                       </>
                     )}
 
-<br /><br />
+                    <br /><br />
                     <div className="flex flex-row w-full items-center justify-center space-x-2">
                       <input
                         type="checkbox"
