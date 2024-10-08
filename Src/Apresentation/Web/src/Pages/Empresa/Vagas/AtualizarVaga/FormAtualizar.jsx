@@ -4,6 +4,7 @@ import { db } from "../../../../Database/Firebase";
 import { useParams, useNavigate } from 'react-router-dom';
 import { MdWork } from "react-icons/md";
 import './AtualizarVaga.css'
+import MenuVagas from "./MenuVagas";
 
 const FormEditarVaga = () => {
     const navigate = useNavigate();
@@ -132,25 +133,13 @@ const FormEditarVaga = () => {
 
     return (
         <>
-            <div className="w-full h-64 flex items-center justify-center">
-                <div className="h-52 w-80 rounded-3xl shadow-2xl flex flex-col items-center justify-center bg-white border-gray-500 border-2 gap-1 py-2">
-                    <div className="w-full h-3/6 flex flex-col items-center justify-center mt-1">
-                        <MdWork className='text-7xl text-gray-900 text-center bg-white p-4 rounded-full border-gray-500 border-2' />
-                        <h1 className="font-bold text-center">Status: {userData.status}</h1>
-                    </div>
-                    <div className="w-full h-3/6 flex flex-col items-center justify-center gap-1 py-2 mb-2">
-
-                        <button type="button" onClick={AbrirVaga} className="w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold py-1 px-4 rounded-full transition-all">
-                            Abrir Vaga</button>
-                        <button type="button" onClick={VagaPreenchida} className="w-40 bg-green-400 hover:bg-green-500 text-white font-bold py-1 px-4 rounded-full transition-all">
-                            Preencher</button>
-                        <button type="button" onClick={FecharVaga} className="w-40 bg-red-400 hover:bg-red-500 text-white font-bold py-1 px-4 rounded-full transition-all">
-                            Fechar Vaga</button>
-                    </div>
+            <MenuVagas AbrirVaga={AbrirVaga} VagaPreenchida={VagaPreenchida} FecharVaga={FecharVaga} />
+            <div className='w-full h-52 flex items-center justify-center'>
+                <div className='w-90 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-5'>
+                    <h1 className='font-bold text-2xl text-white'>Editar Vaga </h1>
                 </div>
-
             </div>
-            <h1 className='font-bold text-2xl text-center'>Informações da Vaga</h1>
+            <h1 className='font-bold text-2xl text-center'>Situação: {userData.status}</h1>
             <form onSubmit={handleSubmit} className="w-full h-fit p-4 editvaga-div gap-2">
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Cargo</label>
@@ -206,7 +195,7 @@ const FormEditarVaga = () => {
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Tipo</label>
                     <select
-                        name="tipo" 
+                        name="tipo"
                         value={userData.tipo}
                         onChange={handleInputChange}
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
