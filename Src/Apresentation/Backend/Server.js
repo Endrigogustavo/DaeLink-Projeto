@@ -4,7 +4,9 @@ const { initializeApp, applicationDefault, cert } = require('firebase-admin/app'
 const { getFirestore } = require('firebase-admin/firestore');
 const admin = require('firebase-admin');
 const bodyParser = require('body-parser');
-const serviceAccount = require('./daelink-projeto-firebase-adminsdk-knxeu-2c9cee419b.json');
+const serviceAccount = require('./daelink-producao-firebase-adminsdk-y99vm-e1d8c6c010.json');
+const fs = require('fs');
+const path = require('path');
 
 
 initializeApp({
@@ -62,7 +64,7 @@ try {
 
 app.post('/criarvaga/:id', async (req, res) => {
   const ID = req.params.id
-  const Status = "Aberto"
+  const Status = "Aberta"
 
 try {
   db.collection("Vagas").add({
@@ -85,11 +87,47 @@ try {
   console.log("Erro ao add:", error)
   if(err) return res.json(err);
 }
-  
 
 })
 
+app.get('/seeds', async (req, res) => {
+  try {
+    // Leia o arquivo JSON
+    const filePath = path.join(__dirname, 'users.json');
+    const data = fs.readFileSync(filePath, 'utf8');
+    const users = JSON.parse(data); // Converta o JSON em um objeto
+      const batch = admin.firestore().batch(); // Usamos batch para otimizar inserções múltiplas
 
+      users.forEach((user) => {
+        const docRef = admin.firestore().collection('PCD').doc(); 
+        batch.set(docRef, {
+          name: user.name,
+          email: user.email,
+          idade: user.idade,
+          deficiencia: user.deficiencia,
+          descrição: user.descricao,
+          trabalho: user.trabalho,
+          profileImage: user.profileImage,
+          backgroundImage: user.backgroundImage,
+          sobre: user.sobre,
+          experiencias: user.experiencias,
+          tipo: user.tipo,
+          laudomedico: user.laudomedico,
+          CPF: user.CPF
+        });
+      });
+
+      // Confirma o envio em lote
+      await batch.commit();
+
+      res.status(201).send('20 usuários adicionados com sucesso!');
+      console.log("Sucesso");
+    
+  } catch (error) {
+    console.error('Erro ao adicionar usuários:', error);
+    res.status(500).send('Erro ao adicionar usuários');
+  }
+});
 
 
 app.listen(port, () => console.log(`Servidor funcionando!!! ${port}!`))

@@ -13,6 +13,7 @@ function PessoasList() {
     const [candidatos, setCandidatos] = useState([]);
     const [user, setUser] = useState(null);
     const [error, setError] = useState('');
+    const [userPCD, setUserPCD] = useState('');
 
     const fotodefault = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5JltdoarPr9bRcq-0QN5k6F_v8kYxj5oj8A&s"
 
@@ -39,6 +40,7 @@ function PessoasList() {
                         id: doc.id,
                         ...doc.data()
                     }));
+                    
 
                     await Promise.all(candidatosList.map(async (candidato) => {
                         if (candidato.id) {
