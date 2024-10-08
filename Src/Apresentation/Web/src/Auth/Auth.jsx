@@ -11,7 +11,7 @@ export const registerUser = async (name, email, password, idade, deficiencia, de
 
     // Upload das imagens em paralelo
     const [profileImageUrl, backgroundImageUrl, LaudoURL] = await Promise.all([
-      uploadAndGetDownloadUrl(`images/${image.name}`, image),
+      uploadAndGetDownloadUrl(`pcd_profile/${image.name}`, image),
       uploadAndGetDownloadUrl(`background_profile/${background.name}`, background),
       uploadAndGetDownloadUrl(`laudo_medico/${laudomedico.name}`, laudomedico)
     ]);

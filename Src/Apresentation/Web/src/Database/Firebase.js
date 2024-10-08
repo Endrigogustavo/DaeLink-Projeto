@@ -10,7 +10,10 @@ import { GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+{/*
+  Banco Teste
+
+  const firebaseConfig = {
   apiKey: "AIzaSyAAB_EtOGn5m_rNzXr7SG7D61KcOwDsKgE",
   authDomain: "daelink-projeto.firebaseapp.com",
   projectId: "daelink-projeto",
@@ -19,12 +22,25 @@ const firebaseConfig = {
   appId: "1:775363508579:web:9a406587262c0d96d8fb56",
   measurementId: "G-9TT9PJ9HZ9"
 };
+*/}
+
+//Banco Produção
+const firebaseConfig = {
+  apiKey: "AIzaSyA-aYVeTIWTQWhBXG11iaCaBSWikfQWvlI",
+  authDomain: "daelink-producao.firebaseapp.com",
+  projectId: "daelink-producao",
+  storageBucket: "daelink-producao.appspot.com",
+  messagingSenderId: "1037795223095",
+  appId: "1:1037795223095:web:0803dc2cc54b676a4e01b2"
+};
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app)
-const provider = new GoogleAuthProvider();
+
 
 auth.useDeviceLanguage();
 

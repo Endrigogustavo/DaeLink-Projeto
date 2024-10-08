@@ -28,7 +28,7 @@ const Register = () => {
   const [deficiencia, setDeficiencia] = useState("");
   const [tipo, setTipo] = useState("PCD");
   const [isChecked, setIsChecked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -53,21 +53,28 @@ const Register = () => {
       alert("O formato de email é inválido, tente novamente.");
       return;
     }
-
+    setLoading(true);
     const response = await registerUser(name, email, password, idade, deficiencia, descricao, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, laudomedico, CPF, {});
-    if (response.success) {
-      const auth = getAuth();
-      const user = auth.currentUser; // Certifique-se de obter o 'user' da autenticação
-      const id = user.uid; // Pegue o UID do usuário autenticado
-      localStorage.setItem('userId', id);
-      
-      await sendEmailVerification(auth.currentUser)
-        .then(() => {
-          alert("Email de verificação enviado com sucesso!!!");
-        });
-      
-      alert("Cadastrado com sucesso");
-      navigate(`/homeuser/`);
+    
+    try {
+      if (response.success) {
+        const auth = getAuth();
+        const user = auth.currentUser; // Certifique-se de obter o 'user' da autenticação
+        const id = user.uid; // Pegue o UID do usuário autenticado
+        localStorage.setItem('userId', id);
+        
+        await sendEmailVerification(auth.currentUser)
+          .then(() => {
+            alert("Email de verificação enviado com sucesso!!!");
+          });
+        
+        alert("Cadastrado com sucesso");
+        navigate(`/homeuser/`);
+      }
+    } catch (error) {
+      alert(error.message)
+    } finally {
+      setLoading(false); // Desativar o loading
     }
     
   }
@@ -203,6 +210,12 @@ const Register = () => {
 
   return (
     <>
+     {loading ? (
+    <div className="flex justify-center items-center min-h-screen">
+    <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-32 w-32 mb-4"></div>
+  </div>
+
+  ) : (
       <div className="relative py-10 bg-gradient-to-br from-sky-50 to-gray-200 w-full">
         <div className="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40">
           <div className="m-auto lg:w-8/12 xl:w-7/12">
@@ -359,7 +372,7 @@ const Register = () => {
                       {step < 3 ? (
                         <button onClick={handleNext} className="bg-blue-500 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-600 transition-colors">Próximo</button>
                       ) : (
-                        <button onClick={handleRegister} className="bg-green-500 text-white font-bold py-2 px-4 rounded-full hover:bg-green-600 transition-colors">Cadastrar</button>
+                        <button onClick={handleRegister} disabled={loading} className="bg-green-500 text-white font-bold py-2 px-4 rounded-full hover:bg-green-600 transition-colors">Cadastrar</button>
                       )}
                     </div>
                     <br />
@@ -371,6 +384,7 @@ const Register = () => {
           </div>
         </div>
       </div>
+      )}
     </>
   );
 };
