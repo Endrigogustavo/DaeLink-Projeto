@@ -205,14 +205,17 @@ const FormEditarVaga = () => {
 
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Tipo</label>
-                    <input
-                        type="text"
-                        name="tipo"
-                        placeholder="tipo"
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                    <select
+                        name="tipo" 
                         value={userData.tipo}
                         onChange={handleInputChange}
-                    />
+                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                    >
+                        <option value="" disabled>Selecione o tipo</option>
+                        <option value="Presencial">Presencial</option>
+                        <option value="Online">Online</option>
+                        <option value="Híbrido">Híbrido</option>
+                    </select>
                 </div>
 
                 <div className="flex flex-col ">

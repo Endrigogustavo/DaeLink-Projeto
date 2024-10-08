@@ -1,0 +1,5 @@
+.selecthover:hover{
+    height: 26rem;
+    width: 24rem ;
+    transition: all 0.2s;
+}

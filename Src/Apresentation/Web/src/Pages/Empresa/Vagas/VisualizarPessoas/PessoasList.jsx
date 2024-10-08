@@ -146,7 +146,7 @@ function PessoasList() {
                         <h1 className='text-lg font-medium text-center'>{candidato.name}
                             <h2 className='opacity-75 text-sm'>{candidato.email}</h2>
                         </h1>
-                        <p className='text-justify w-5/6 truncate-multiline font-medium'>{candidato.situação}</p>
+                        <p className='text-justify w-5/6 truncate-multiline font-medium'>{candidato.situação || 'Pendente'}</p>
                         <div className='w-full flex justify-center'>
 
                             <button onClick={() => AceitarCandidato(candidato.id)} type="submit"

@@ -167,15 +167,18 @@ const VagaForm = () => {
                 </div>
 
 
-                <div className="flex flex-col ">
+                <div className="flex flex-col">
                     <label className="text-lg font-medium">Tipo</label>
-                    <input
-                        type="text"
-                        placeholder="Presencial ou online?"
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                    <select
                         value={tipo}
                         onChange={(e) => setTipo(e.target.value)}
-                    />
+                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                    >
+                        <option value="" disabled>Selecione o tipo</option>
+                        <option value="Presencial">Presencial</option>
+                        <option value="Online">Online</option>
+                        <option value="Híbrido">Híbrido</option>
+                    </select>
                 </div>
 
                 <div className="flex flex-col ">
