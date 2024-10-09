@@ -86,3 +86,15 @@ INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:49:24] "OPTIONS /recommend HTTP/1.1"
 INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:49:24] "POST /recommend HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:50:15] "OPTIONS /recommend HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:50:15] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:56:15] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:56:17] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:56:29] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:56:30] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:56:41] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:56:42] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:56:51] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:56:52] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:56:57] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:56:58] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:57:12] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:57:13] "POST /recommend HTTP/1.1" 200 -
