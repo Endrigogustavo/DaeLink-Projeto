@@ -81,7 +81,7 @@ def recommend():
         jobs = get_jobs_from_firestore()  # Obtem todas as vagas do Firestore
         data = request.json
         job_title = data.get('trabalho', '')  # O título da vaga
-        job_description = data.get('descrição', '')  # A descrição da vaga
+        job_description = data.get('trabalho', '')  # A descrição da vaga
 
         if not job_title and not job_description:
             return jsonify({"error": "Os campos 'trabalho' ou 'descrição' são necessários."}), 400
