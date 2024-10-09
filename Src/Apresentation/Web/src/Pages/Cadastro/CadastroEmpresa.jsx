@@ -20,6 +20,8 @@ const Register = () => {
   const [endereco, setEndereco] = useState("");
   const [sobre, setSobre] = useState("");
   const [area, setArea] = useState("");
+  const [loading, setLoading] = useState(false);
+
   //Variavel para fazer gerenciamento de nivel de acesso
   const [tipo] = useState("Empresa");
   //Função de navegação do site
@@ -43,7 +45,7 @@ const Register = () => {
     setIdade("");
     setCnpj("");
     setSobre("");
-    setTipo("PCD");
+    setTipo("Empresa");
   };
 
   // Borão para fazer Cadastro
@@ -53,7 +55,7 @@ const Register = () => {
       alert("O formato de email é invalido, tente novamente.");
       return;
     }
-
+    setLoading(true);
 
     //Função do Auth.jsx para fazer login enviando os parametros do form
     const response = await registerEmpresa(email, password, sobre, area, cnpj, endereco, cep, tipo, profileImage, backgroundImage, { name });
@@ -68,9 +70,11 @@ const Register = () => {
         });
 
       alert("Cadastrado com sucesso");
+      setLoading(false);
       navigate(`/homeempresa/`);
     } else {
       alert("Falha ao criar um registro, tente novamente.");
+      setLoading(false);
     }
   };
 
@@ -101,6 +105,13 @@ const Register = () => {
   };
 
   return (
+    <>
+    {loading ? (
+      <div className="flex justify-center items-center min-h-screen">
+      <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-32 w-32 mb-4"></div>
+    </div>
+  
+    ) : (
     <div className='w-full flex w-full h-screen  '>
       <div className='hidden lg:flex lg:w-3/6 h-full items-center justify-center'>
         {/*<img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="object-cover" alt="Side Image" /> */}
@@ -228,6 +239,8 @@ const Register = () => {
 
 
     </div>
+  )}
+  </>
   );
 };
 

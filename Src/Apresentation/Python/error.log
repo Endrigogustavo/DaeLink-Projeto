@@ -1,0 +1,88 @@
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 125-382-608
+INFO:werkzeug: * Detected change in 'C:\\Users\\endri\\Desktop\\DaeLink-Projeto\\Src\\Apresentation\\python\\App.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 125-382-608
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:21:20] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:21:22] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:21:42] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:21:43] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:21:54] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:21:54] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:22:02] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:22:03] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:22:29] "OPTIONS /profile HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:22:29] "OPTIONS /profile HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:22:29] "POST /profile HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:22:30] "POST /profile HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:22:47] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:22:47] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:22:59] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:22:59] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:23:11] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:23:12] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:23:19] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:23:20] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:23:38] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:23:39] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:24:03] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:24:03] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:24:31] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:24:32] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\endri\\Desktop\\DaeLink-Projeto\\Src\\Apresentation\\python\\app.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 125-382-608
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:28:40] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:28:41] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\endri\\Desktop\\DaeLink-Projeto\\Src\\Apresentation\\python\\app.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 125-382-608
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:28:55] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:28:56] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:29:04] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:29:05] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\endri\\Desktop\\DaeLink-Projeto\\Src\\Apresentation\\python\\App.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 125-382-608
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:29:15] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:29:16] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:29:28] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:29:28] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:29:39] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:29:39] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:29:49] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:29:49] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\endri\\Desktop\\DaeLink-Projeto\\Src\\Apresentation\\python\\App.py', reloading
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 125-382-608
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:32:05] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:32:07] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:32:22] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:32:23] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:32:35] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:32:35] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:32:48] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:32:48] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:32:53] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\endri\\Desktop\\DaeLink-Projeto\\Src\\Apresentation\\python\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 125-382-608
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:34:43] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:34:45] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:35:02] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:35:03] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:35:12] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:35:12] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:48:57] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:48:57] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:49:10] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:49:11] "[33mPOST /recommend HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:49:24] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:49:24] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:50:15] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Oct/2024 20:50:15] "POST /recommend HTTP/1.1" 200 -
