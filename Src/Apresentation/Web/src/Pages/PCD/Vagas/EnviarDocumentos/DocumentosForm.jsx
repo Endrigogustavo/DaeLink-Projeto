@@ -29,6 +29,7 @@ const DocumentosForm = () => {
 
     const navigate = useNavigate();
     const inputFileRefs = [useRef(null), useRef(null), useRef(null)];
+    const [fileNames, setFileNames] = useState(["", "", ""]); // Armazena os nomes dos arquivos
     const enderecoRef = useRef(null);
     const experienciaRef = useRef(null);
 
@@ -79,9 +80,15 @@ const DocumentosForm = () => {
             const updatedFiles = [...selectedFiles];
             updatedFiles[index] = file;
             setSelectedFiles(updatedFiles);
-            inputFileRefs[index].current.style.display = 'none';
+
+            const updatedFileNames = [...fileNames];
+            updatedFileNames[index] = file.name;
+            setFileNames(updatedFileNames);
+
+            inputFileRefs[index].current.style.display = 'none'; // Esconde o input
         }
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -157,10 +164,9 @@ const DocumentosForm = () => {
                 </div>
             </div>
             <form onSubmit={handleSubmit} className="h-fit w-full grid grid-cols-2 gap-y-2 items-center justify-items-center py-8">
-                {/* Inputs de Dados Pessoais */}
                 {[
-                    { label: "Nome", type: "text", value: nome, setter: setNome, placeholder: "Insira seu Nome Completo" },
-                    { label: "Email", type: "email", value: email, setter: setEmail, placeholder: "Insira seu Email" },
+                    { label: "Nome", type: "text", value: nome, setter: setNome, placeholder: "Insira seu Nome Completo", readOnly: true },
+                    { label: "Email", type: "email", value: email, setter: setEmail, placeholder: "Insira seu Email", readOnly: true },
                     { label: "Telefone", type: "masked", value: telefone, setter: setTelefone, placeholder: "Insira seu telefone", InputComponent: InputMask, mask: "(99) 99999-9999" },
                     { label: "Endereço", type: "textarea", value: endereco, setter: setEndereco, ref: enderecoRef, placeholder: "Insira seu Endereço" },
                     { label: "Idade", type: "date", value: idade, setter: setIdade },
@@ -170,8 +176,7 @@ const DocumentosForm = () => {
                     <div key={index} className="flex flex-col">
                         <label className="text-lg font-medium">{input.label}</label>
                         {input.type === "masked" ? (
-                            <input
-                                as={input.InputComponent}
+                            <InputMask
                                 mask={input.mask}
                                 value={input.value}
                                 onChange={(e) => input.setter(e.target.value)}
@@ -198,6 +203,7 @@ const DocumentosForm = () => {
                                 onChange={(e) => input.setter(e.target.value)}
                                 className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                                 placeholder={input.placeholder}
+                                readOnly={input.readOnly} // Torna o campo apenas leitura
                                 required
                             />
                         )}
@@ -219,17 +225,42 @@ const DocumentosForm = () => {
                 </div>
 
                 {/* Inputs de Documentos */}
-                {["1º Documento", "2º Documento", "3º Documento"].map((label, index) => (
-                    <div key={index} className="flex flex-col">
-                        <label className="text-lg font-medium">{label}</label>
-                        <input
-                            type="file"
-                            ref={inputFileRefs[index]}
-                            onChange={handleFileChange(index)}
-                            className="mt-1"
-                        />
+                <div className="flex flex-col">
+                    <label className="text-lg font-medium items-center flex gap-2">
+                        Formações
+                        <p className="opacity-80 text-sm">Max 3</p>
+                    </label>
+                    <div className="flex gap-2">
+                        {["1º Documento", "2º Documento", "3º Documento"].map((label, index) => (
+                            <div key={index} className="flex flex-col">
+                                <label
+                                    htmlFor={inputFileRefs[index].current?.id}
+                                    className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl 
+                                flex flex-col items-center justify-center cursor-pointer ${fileNames[index] ? 'w-32 text-wrap overflow-x-hidden' : 'w-16'
+                                        }`}
+                                >
+
+                                    {fileNames[index] ? (
+                                        <>
+                                            <FaFile size={32} />
+                                            <p className="text-xs break-words text-center px-1 w-full overflow-x-hidden capitalize ">{fileNames[index]}</p>
+                                        </>
+                                    ) : (
+                                        <IoAddCircleSharp size={32} />
+                                    )}
+
+                                </label>
+                                <input
+                                    id={`input-file-${index}`}
+                                    type="file"
+                                    ref={inputFileRefs[index]}
+                                    onChange={handleFileChange(index)}
+                                    hidden
+                                />
+                            </div>
+                        ))}
                     </div>
-                ))}
+                </div>
 
                 <button
                     type="submit"
