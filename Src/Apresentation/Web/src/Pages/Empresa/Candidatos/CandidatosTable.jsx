@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from "react-icons/fa";
 import DaeLogo from '../../../Img/Recommendation.png'
+import { BsFillXSquareFill } from 'react-icons/bs';
 
 const CandidatosTable = () => {
     const navigate = useNavigate();
@@ -11,15 +12,16 @@ const CandidatosTable = () => {
     const [trabalho, setTrabalho] = useState('');
     const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(false); // Estado de carregamento
-    const [hasSearched, setHasSearched] = useState(false); // Estado para rastrear se a pesquisa foi feita
+    const [hasSearched, setHasSearched] = useState(false);
+    const [recommendError, setRecommendError] = useState("")
 
     useEffect(() => {
         const storedUserId = localStorage.getItem('userId');
-            if (storedUserId) {
-                const userId = storedUserId;
-                setEmpresa(userId)
-            }
-        
+        if (storedUserId) {
+            const userId = storedUserId;
+            setEmpresa(userId)
+        }
+
     }, []);
 
     const handleSubmit = async (event) => {
@@ -27,13 +29,15 @@ const CandidatosTable = () => {
         event.preventDefault();
         setLoading(true); // Inicia o carregamento
         setHasSearched(true); // Define que a pesquisa foi feita
+        setRecommendations([]);
         try {
             const response = await axios.post('http://localhost:5000/recommend', { trabalho: trabalho });
             setRecommendations(response.data);
 
-            if(!recommendations == null){
+            if (!recommendations == null) {
                 alert("Erro ao achar a vaga")
                 setRecommendations(null)
+                setRecommendError("Nenhuma vaga encontrada, tente novamente")
             }
         } catch (error) {
             console.error('Error fetching recommendations:', error);
@@ -59,6 +63,7 @@ const CandidatosTable = () => {
                         </button>
                     </div>
                 </form>
+
                 {!hasSearched && !loading && (
                     <p className="text-black font-normal opacity-80">Comece fazendo uma pesquisa básica.</p>
                 )}
@@ -79,17 +84,45 @@ const CandidatosTable = () => {
                         </div>
                     ))
                 ) : (
-                    recommendations.map((rec) => (
-                        <div key={rec.id} className='h-80 w-72 bg-gray-900 rounded-xl flex flex-col items-center justify-center gap-2 border-blue-500 border-4 overflow-x-hidden'>
-                            <img src={rec.imageUrl} className="rounded-full w-28 h-28" alt="" />
-                            <h1 className='text-lg font-medium text-white text-center'>{rec.name}<h2 className='opacity-75 text-sm'>{rec.trabalho}</h2></h1>
-                            <p className='text-white text-justify w-5/6 truncate-multiline'>{rec.descrição}</p>
-                            <button onClick={() => handleButtonClick(rec.id)} type="submit"
-                                className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
+
+
+                    Array.isArray(recommendations) && recommendations.length > 0 ? (
+                        recommendations.map((rec) => {
+                            return (
+                                <>
+                                    {recommendError && <p className="text-red-500">{recommendError}</p>}
+                                    <div key={rec.id} className='h-80 w-72 bg-gray-900 rounded-xl flex flex-col items-center justify-center gap-2 border-blue-500 border-4 overflow-x-hidden'>
+                                        <img src={rec.imageUrl} className="rounded-full w-28 h-28" alt="" />
+                                        <h1 className='text-lg font-medium text-white text-center'>
+                                            {rec.name}
+                                            <h2 className='opacity-75 text-sm'>{rec.trabalho}</h2>
+                                        </h1>
+                                        <p className='text-white text-justify w-5/6 truncate-multiline'>{rec.descrição}</p>
+                                        <button onClick={() => handleButtonClick(rec.id)} type="submit"
+                                            className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
+                                    </div>
+                                </>
+                            );
+                        })
+                        
+                    ) : (
+                        <>
+                        <div className='w-full flex justify-center items-center'>
+                            <div className='w-90 h-32 bg-white border-gray-700 border-2 rounded-full flex overflow-hidden px-4'>
+                                <div className='flex items-center justify-center w-2/6 h-full'>
+                                    <BsFillXSquareFill className='text-5xl text-gray-900 text-center' />
+                                </div>
+                                <div className='flex items-center justify-center w-5/6 h-full'>
+                                    <p className='font-medium text-lg text-center'>Sem candidatos, faça uma pesquisa!!!</p>
+                                </div>
+                            </div>
                         </div>
-                    ))
+                        </>
+                    )
                 )}
-            </div>
+</div>
+
+            
         </>
     );
 }
