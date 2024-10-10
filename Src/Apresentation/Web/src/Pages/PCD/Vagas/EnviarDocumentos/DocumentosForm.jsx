@@ -23,9 +23,6 @@ const DocumentosForm = () => {
         idade, setIdade,
         objetivo, setObjetivo,
         experiencia1, setExperiencia1,
-        formacao1a, setFormacao1a,
-        formacao2a, setFormacao2a,
-        formacao3a, setFormacao3a,
         idiomas, setIdiomas,
         documento, setDocumento
     } = DocumentosStates();
@@ -39,13 +36,10 @@ const DocumentosForm = () => {
         const getInfoPCD = async () => {
             const storedUserId = localStorage.getItem('userId');
             if (storedUserId) {
-                const userId = storedUserId;
-                setUserId(userId)
-
-                const PCDDoc = await getDoc(doc(db, "PCD", userId));
+                setUserId(storedUserId);
+                const PCDDoc = await getDoc(doc(db, "PCD", storedUserId));
                 if (PCDDoc.exists()) {
-                    const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
-                    setPessoaId(PCDData);
+                    setPessoaId({ id: PCDDoc.id, ...PCDDoc.data() });
                 } else {
                     console.log("Pessoa não encontrada!");
                 }
@@ -53,9 +47,8 @@ const DocumentosForm = () => {
         };
 
         getInfoPCD();
-    }, [userId]);
+    }, [setUserId]);
 
-    // Atualiza os estados quando o pessoaId for carregado
     useEffect(() => {
         if (pessoaId) {
             setNome(pessoaId.name || '');
@@ -66,7 +59,7 @@ const DocumentosForm = () => {
             setExperiencia1(pessoaId.experiencias || '');
             setIdiomas(pessoaId.idiomas || '');
         }
-    }, [pessoaId]);
+    }, [pessoaId, setNome, setEmail, setTelefone, setEndereco, setIdade, setExperiencia1, setIdiomas]);
 
     const adjustTextareaHeight = (ref) => {
         if (ref.current) {
@@ -90,12 +83,6 @@ const DocumentosForm = () => {
         }
     };
 
-    const uploadFile = async (file) => {
-        const storageRef = ref(storage, `documentos/${file.name}`);
-        await uploadBytes(storageRef, file);
-        return await getDownloadURL(storageRef);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -103,9 +90,14 @@ const DocumentosForm = () => {
         try {
             if (selectedFiles.every(file => !file)) {
                 alert("Por favor, selecione pelo menos um documento para enviar.");
-                setIsLoading(false);
                 return;
             }
+
+            const uploadFile = async (file) => {
+                const storageRef = ref(storage, `documentos/${file.name}`);
+                await uploadBytes(storageRef, file);
+                return await getDownloadURL(storageRef);
+            };
 
             const downloadURLs = await Promise.all(selectedFiles.map(file => file ? uploadFile(file) : null));
 
@@ -115,8 +107,7 @@ const DocumentosForm = () => {
 
             if (!ResultCandidatos.empty) {
                 const candidatoDoc = ResultCandidatos.docs[0];
-                const candidatoId = candidatoDoc.id;
-                const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", candidatoId);
+                const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", candidatoDoc.id);
                 const documentosRef = collection(candidatoDocRef, "documentos");
 
                 await addDoc(documentosRef, {
@@ -166,120 +157,87 @@ const DocumentosForm = () => {
                 </div>
             </div>
             <form onSubmit={handleSubmit} className="h-fit w-full grid grid-cols-2 gap-y-2 items-center justify-items-center py-8">
+                {/* Inputs de Dados Pessoais */}
+                {[
+                    { label: "Nome", type: "text", value: nome, setter: setNome, placeholder: "Insira seu Nome Completo" },
+                    { label: "Email", type: "email", value: email, setter: setEmail, placeholder: "Insira seu Email" },
+                    { label: "Telefone", type: "masked", value: telefone, setter: setTelefone, placeholder: "Insira seu telefone", InputComponent: InputMask, mask: "(99) 99999-9999" },
+                    { label: "Endereço", type: "textarea", value: endereco, setter: setEndereco, ref: enderecoRef, placeholder: "Insira seu Endereço" },
+                    { label: "Idade", type: "date", value: idade, setter: setIdade },
+                    { label: "Experiências", type: "textarea", value: experiencia1, setter: setExperiencia1, ref: experienciaRef, placeholder: "Insira suas Experiências" },
+                    { label: "Objetivo", type: "text", value: objetivo, setter: setObjetivo, placeholder: "Insira seu Objetivo" },
+                ].map((input, index) => (
+                    <div key={index} className="flex flex-col">
+                        <label className="text-lg font-medium">{input.label}</label>
+                        {input.type === "masked" ? (
+                            <input
+                                as={input.InputComponent}
+                                mask={input.mask}
+                                value={input.value}
+                                onChange={(e) => input.setter(e.target.value)}
+                                className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                                placeholder={input.placeholder}
+                                required
+                            />
+                        ) : input.type === "textarea" ? (
+                            <textarea
+                                ref={input.ref}
+                                value={input.value}
+                                onChange={(e) => {
+                                    input.setter(e.target.value);
+                                    adjustTextareaHeight(input.ref);
+                                }}
+                                className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                                placeholder={input.placeholder}
+                                required
+                            />
+                        ) : (
+                            <input
+                                type={input.type}
+                                value={input.value}
+                                onChange={(e) => input.setter(e.target.value)}
+                                className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                                placeholder={input.placeholder}
+                                required
+                            />
+                        )}
+                    </div>
+                ))}
+                {/* Idioma Secundário */}
                 <div className="flex flex-col">
-                    <label className="text-lg font-medium">Nome</label>
-                    <input
-                        type="text"
+                    <label className="text-lg font-medium">Idioma Secundário</label>
+                    <select
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        placeholder="Insira seu Nome Completo"
-                        value={nome} // Estado controlado
-                        onChange={(e) => setNome(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium">Email</label>
-                    <input
-                        type="email"
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent "
-                        placeholder="Insira seu Email"
-                        value={email} // Estado controlado
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium">Telefone</label>
-                    <InputMask
-                        mask="(99) 99999-9999"
-                        value={telefone} // Estado controlado
-                        onChange={(e) => setTelefone(e.target.value)}
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        placeholder="Insira seu telefone"
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium">Endereço</label>
-                    <textarea
-                        ref={enderecoRef}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent "
-                        placeholder="Insira seu Endereço"
-                        value={endereco} // Estado controlado
-                        onChange={(e) => {
-                            setEndereco(e.target.value);
-                            adjustTextareaHeight(enderecoRef);
-                        }}
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium">Idade</label>
-                    <input
-                        type="date"
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        value={idade} // Estado controlado
-                        onChange={(e) => setIdade(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium">Experiências</label>
-                    <textarea
-                        ref={experienciaRef}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
-                        placeholder="Insira suas Experiências"
-                        value={experiencia1} // Estado controlado
-                        onChange={(e) => {
-                            setExperiencia1(e.target.value);
-                            adjustTextareaHeight(experienciaRef);
-                        }}
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium">Idiomas</label>
-                    <input
-                        type="text"
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent "
-                        placeholder="Insira os Idiomas"
-                        value={idiomas} // Estado controlado
+                        value={idiomas}
                         onChange={(e) => setIdiomas(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label className="text-lg font-medium">Objetivo</label>
-                    <input
-                        type="text"
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        placeholder="Insira seu Objetivo"
-                        value={objetivo} // Estado controlado
-                        onChange={(e) => setObjetivo(e.target.value)}
-                        required
-                    />
+                    >
+                        <option value="" disabled>Selecione</option>
+                        <option value="Inglês">Inglês</option>
+                        <option value="Espanhol">Espanhol</option>
+                        <option value="Francês">Francês</option>
+                    </select>
                 </div>
 
-                {selectedFiles.map((file, index) => (
+                {/* Inputs de Documentos */}
+                {["1º Documento", "2º Documento", "3º Documento"].map((label, index) => (
                     <div key={index} className="flex flex-col">
-                        <label className="text-lg font-medium">Documento {index + 1}</label>
+                        <label className="text-lg font-medium">{label}</label>
                         <input
-                            ref={inputFileRefs[index]}
                             type="file"
-                            accept=".pdf,.doc,.docx"
+                            ref={inputFileRefs[index]}
                             onChange={handleFileChange(index)}
-                            className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                            required={!file}
+                            className="mt-1"
                         />
-                        {file && <p className="text-sm">Arquivo: {file.name}</p>}
                     </div>
                 ))}
 
-                <div className="col-span-2 flex justify-center">
-                    <button type="submit" className="w-48 h-12 bg-blue-500 text-white rounded-full hover:bg-blue-600">
-                        {isLoading ? 'Enviando...' : 'Enviar'}
-                    </button>
-                </div>
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:bg-blue-300"
+                >
+                    {isLoading ? "Enviando..." : "Enviar Documentos"}
+                </button>
             </form>
         </>
     );
