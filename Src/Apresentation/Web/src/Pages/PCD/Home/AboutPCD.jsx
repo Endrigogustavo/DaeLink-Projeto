@@ -63,7 +63,7 @@ const AboutPCD = () => {
                             </div>
                             <div className="w-1/3 flex flex-col items-center gap-4  itemstextboxsd">
                                 <FaAccessibleIcon className='text-white text-3xl  ' />
-                                <p className="text-justify text-white bg-gray-800 h-4/5 px-3 rounded-lg font-normal textinbox">{texto3}</p>
+                                <p className="text-justify text-white bg-gray-800 h-4/5 p-3 rounded-lg font-normal textinbox">{texto3}</p>
                             </div>
                         </div>
 
