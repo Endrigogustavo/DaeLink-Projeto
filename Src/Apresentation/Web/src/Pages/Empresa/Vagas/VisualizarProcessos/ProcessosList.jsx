@@ -87,7 +87,7 @@ function ProcessosList() {
                             <p className='opacity-80'>{vaga.tipo}</p>
                             <p className='opacity-80'>R${vaga.salario}</p>
                         </div>
-                        <div className='w-full h-2/6 flex justify-center gap-2'>
+                        <div className='w-full h-2/6 flex justify-center items-center gap-2'>
                             <button onClick={() => handleButtonClick(vaga.id)} type="submit" class="bg-green-400 rounded-2xl p-2 h-fit">
                                 <FaUserFriends className='text-3xl text-white text-center' />
                             </button>
