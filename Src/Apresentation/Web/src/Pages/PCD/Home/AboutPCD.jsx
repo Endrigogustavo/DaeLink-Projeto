@@ -15,18 +15,18 @@ const AboutPCD = () => {
             const storedUserId = localStorage.getItem('userId');
             if (storedUserId) {
                 const userId = storedUserId;
-               
-            const PCDdoc = doc(db, "PCD", userId);
-            const GetPCDInfo = await getDoc(PCDdoc);
-            if (GetPCDInfo.exists()) {
-                setUserProfile(GetPCDInfo.data());
 
-            } else {
-                setUserProfile(null);
-                alert("Sem documentos!");
-                navigate('/')
+                const PCDdoc = doc(db, "PCD", userId);
+                const GetPCDInfo = await getDoc(PCDdoc);
+                if (GetPCDInfo.exists()) {
+                    setUserProfile(GetPCDInfo.data());
+
+                } else {
+                    setUserProfile(null);
+                    alert("Sem documentos!");
+                    navigate('/')
+                }
             }
-        }
         };
         getPCDprofile();
 
@@ -45,7 +45,7 @@ const AboutPCD = () => {
     return (
         <>
             <div className="h-75vh flex justify-center items-center  aboutcontainer overflow-hidden ">
-                <img src="https://i.postimg.cc/CKmTv0yD/Bellingham.png" alt="" className="flex h-full max-h-96" />
+                <img src="https://i.postimg.cc/CKmTv0yD/Bellingham.png" alt="" className="flex h-full aboutimg" />
                 <div className="bg-gray-900 w-4/6 h-5/6 rounded-64px flex aboutextcontainer">
                     <div className="content w-full h-full flex flex-col items-center  gap-8 py-20">
                         <div className="flex flex-col items-center ">
@@ -55,15 +55,15 @@ const AboutPCD = () => {
                         <div className="flex w-full justify-center px-16 gap-8 pb-8  itemscontentsd">
                             <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                                 <FaGraduationCap className='text-white text-3xl ' />
-                                <p className="text-justify text-white bg-gray-800 h-4/5 p-3 rounded-lg  font-normal">{texto1}</p>
+                                <p className="text-justify text-white bg-gray-800 h-4/5 p-3 rounded-lg  font-normal textinbox">{texto1}</p>
                             </div>
                             <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                                 <FaBuilding className='text-white text-3xl  ' />
-                                <p className="text-justify text-white bg-gray-800 h-4/5 p-3 rounded-lg font-normal">{texto2}</p>
+                                <p className="text-justify text-white bg-gray-800 h-4/5 p-3 rounded-lg font-normal textinbox">{texto2}</p>
                             </div>
                             <div className="w-1/3 flex flex-col items-center gap-4  itemstextboxsd">
                                 <FaAccessibleIcon className='text-white text-3xl  ' />
-                                <p className="text-justify text-white bg-gray-800 h-4/5 px-3 rounded-lg font-normal">{texto3}</p>
+                                <p className="text-justify text-white bg-gray-800 h-4/5 px-3 rounded-lg font-normal textinbox">{texto3}</p>
                             </div>
                         </div>
 

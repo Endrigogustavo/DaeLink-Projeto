@@ -105,6 +105,10 @@
 }
 
 @media (max-width:1400px) {
+  .aboutimg {
+    height: 35rem
+  }
+
   .aboutcontainer {
     flex-direction: column;
     height: max-content;
@@ -119,6 +123,10 @@
 @media (max-width:1580px) {
   .aboutextcontainer {
     height: fit-content;
+  }
+
+  .textinbox {
+    height: 100%;
   }
 }
 
@@ -287,7 +295,7 @@
     font-size: 1.2rem;
   }
 
-  .Home-Login{
+  .Home-Login {
     font-size: 1.2rem;
   }
 

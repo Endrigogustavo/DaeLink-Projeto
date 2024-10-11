@@ -16,8 +16,8 @@ const AboutEmpresa = () => {
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
-        const userId = storedUserId;
-        setUserId(userId)
+      const userId = storedUserId;
+      setUserId(userId)
     }
 
     const getUserProfile = async () => {
@@ -63,7 +63,7 @@ const AboutEmpresa = () => {
   return (
     <>
       <div className="h-75vh flex justify-center items-center  aboutcontainer overflow-hidden ">
-        <img src="https://i.postimg.cc/3NqbdRXY/Andrew.png" alt="" className="flex " />
+        <img src="https://i.postimg.cc/3NqbdRXY/Andrew.png" alt="" className="flex h-full aboutimg" />
         <div className="bg-gray-900 w-4/6 h-5/6 rounded-64px flex aboutextcontainer">
           <div className="content w-full h-full flex flex-col items-center  gap-8 py-20">
             <div className="flex flex-col items-center ">
@@ -74,7 +74,7 @@ const AboutEmpresa = () => {
               {/* Item 1 */}
               <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                 <FaClipboardUser className="text-white text-3xl" />
-                <p className="text-justify  h-4/5 text-white bg-gray-800 p-3 rounded-lg font-normal w-full">
+                <p className="text-justify  h-4/5 text-white bg-gray-800 p-3 rounded-lg font-normal w-full textinbox">
                   {texto1}
                 </p>
               </div>
@@ -82,7 +82,7 @@ const AboutEmpresa = () => {
               {/* Item 2 */}
               <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                 <FaChartLine className="text-white text-3xl" />
-                <p className="text-justify h-4/5 text-white bg-gray-800 p-3 rounded-lg font-normal w-full">
+                <p className="text-justify h-4/5 text-white bg-gray-800 p-3 rounded-lg font-normal w-full textinbox">
                   {texto2}
                 </p>
               </div>
@@ -90,7 +90,7 @@ const AboutEmpresa = () => {
               {/* Item 3 */}
               <div className="w-1/3 flex flex-col items-center gap-4 itemstextboxsd">
                 <FaDove className="text-white text-3xl" />
-                <p className="text-justify  h-4/5 text-white bg-gray-800 p-3 rounded-lg font-normal w-full">
+                <p className="text-justify  h-4/5 text-white bg-gray-800 p-3 rounded-lg font-normal w-full textinbox">
                   {texto3}
                 </p>
               </div>

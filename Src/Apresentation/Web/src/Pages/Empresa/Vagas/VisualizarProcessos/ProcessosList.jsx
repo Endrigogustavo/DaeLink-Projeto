@@ -83,7 +83,7 @@ function ProcessosList() {
                             <h1 className='font-bold text-xl text-center w-4/6'>{vaga.vaga}</h1>
                         </div>
                         <div className='w-full h-2/6 flex flex-col '>
-                            <p className='opacity-80'>{vaga.local}</p>
+                            <p className='opacity-80 truncate'>{vaga.local}</p>
                             <p className='opacity-80'>{vaga.tipo}</p>
                             <p className='opacity-80'>R${vaga.salario}</p>
                         </div>

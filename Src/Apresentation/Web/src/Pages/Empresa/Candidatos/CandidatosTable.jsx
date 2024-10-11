@@ -69,7 +69,7 @@ const CandidatosTable = () => {
             </section>
 
             <div
-                className={`w-full h-fit overflow-x-hidden grid Pcdscontainer gap-4 justify-items-center items-center ${hasSearched ? 'pb-6' : ''}`}
+                className={`w-full h-fit overflow-x-hidden  Pcdscontainer gap-4 justify-items-center justify-center items-center ${hasSearched ? 'pb-6 grid' : ''}`}
             >
                 {loading ? (
                     // Exibe skeleton loaders enquanto está carregando
@@ -84,44 +84,29 @@ const CandidatosTable = () => {
                     ))
                 ) : (
 
+                    recommendations.map((rec) => {
+                        return (
+                            <>
+                                {recommendError && <p className="text-red-500">{recommendError}</p>}
+                                <div key={rec.id} className='h-80 w-72 bg-gray-900 rounded-xl flex flex-col items-center justify-center gap-2 border-blue-500 border-4 overflow-x-hidden'>
+                                    <img src={rec.imageUrl} className="rounded-full w-28 h-28" alt="" />
+                                    <h1 className='text-lg font-medium text-white text-center'>
+                                        {rec.name}
+                                        <h2 className='opacity-75 text-sm'>{rec.trabalho}</h2>
+                                    </h1>
+                                    <p className='text-white text-justify w-5/6 truncate-multiline'>{rec.descrição}</p>
+                                    <button onClick={() => handleButtonClick(rec.id)} type="submit"
+                                        className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
+                                </div>
+                            </>
+                        );
+                    })
 
-                    Array.isArray(recommendations) && recommendations.length > 0 ? (
-                        recommendations.map((rec) => {
-                            return (
-                                <>
-                                    {recommendError && <p className="text-red-500">{recommendError}</p>}
-                                    <div key={rec.id} className='h-80 w-72 bg-gray-900 rounded-xl flex flex-col items-center justify-center gap-2 border-blue-500 border-4 overflow-x-hidden'>
-                                        <img src={rec.imageUrl} className="rounded-full w-28 h-28" alt="" />
-                                        <h1 className='text-lg font-medium text-white text-center'>
-                                            {rec.name}
-                                            <h2 className='opacity-75 text-sm'>{rec.trabalho}</h2>
-                                        </h1>
-                                        <p className='text-white text-justify w-5/6 truncate-multiline'>{rec.descrição}</p>
-                                        <button onClick={() => handleButtonClick(rec.id)} type="submit"
-                                            className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
-                                    </div>
-                                </>
-                            );
-                        })
-                        
-                    ) : (
-                        <>
-                        <div className='w-full flex justify-center items-center'>
-                            <div className='w-90 h-32 bg-white border-gray-700 border-2 rounded-full flex overflow-hidden px-4'>
-                                <div className='flex items-center justify-center w-2/6 h-full'>
-                                    <BsFillXSquareFill className='text-5xl text-gray-900 text-center' />
-                                </div>
-                                <div className='flex items-center justify-center w-5/6 h-full'>
-                                    <p className='font-medium text-lg text-center'>Sem candidatos, faça uma pesquisa!!!</p>
-                                </div>
-                            </div>
-                        </div>
-                        </>
-                    )
+
                 )}
-</div>
+            </div>
 
-            
+
         </>
     );
 }

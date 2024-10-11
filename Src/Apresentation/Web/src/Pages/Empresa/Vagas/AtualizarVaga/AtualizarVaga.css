@@ -10,3 +10,12 @@
     }
 
 }
+
+
+.menuitenhover {
+    transition: transform 0.3s ease;
+}
+
+.menuitenhover:hover {
+    transform: scale(1.1);
+}
