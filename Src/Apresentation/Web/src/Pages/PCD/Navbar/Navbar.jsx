@@ -7,6 +7,8 @@ import { doc, getDoc } from 'firebase/firestore';
 
 import { encrypt, decrypt } from '../../../Security/Cryptography_Rotes';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Cookies from 'js-cookie';
+
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,8 +18,6 @@ export default function Navbar() {
 
     const navigate = useNavigate();
 
-    const { encryptedId } = useParams(); // Obtendo o id e o encryptedId da URL
-   
     // Função para alternar o menu de navegação
     const toggleNavbar = () => {
         setIsOpen(!isOpen);

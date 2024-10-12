@@ -11,6 +11,7 @@ import Carousel from './Carousel';
 import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../Database/Firebase'
+import Cookies from 'js-cookie';
 
 
 
@@ -18,6 +19,7 @@ const Home = () => {
   useEffect(() => {
 
     localStorage.removeItem('userId');
+    
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {

@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { FaApple } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginEmpresa, loginUser } from '../../Auth/Auth';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from "../../Database/Firebase"
+import axios from 'axios'
+import Cookies from 'js-cookie';
 
 
 const Form = () => {
@@ -14,37 +16,29 @@ const Form = () => {
     auth.languageCode = 'it';
 
     const handleLogin = async () => {
-        try {
-            const PCDData = await loginUser(email, password);
-            const CompanyData = await loginEmpresa(email, password);
-            
-            if (CompanyData) {
-              //Sucesso
-              const id = CompanyData.uid
-              localStorage.setItem('userId', id);
 
-              navigate(`/homeempresa`);
+        try {
+            const PCDCredential = await signInWithEmailAndPassword(auth, email, password);
+            const uid = PCDCredential.user.uid
+            const PCDData = await axios.post('http://localhost:3000/loginuser', { uid, email, password }, { withCredentials: true })
+            const CompanyData = await axios.post('http://localhost:3000/loginempresa', { uid, email, password }, { withCredentials: true })
+
+            const token = CompanyData?.data?.token || PCDData?.data?.token;
+            const tokenUid = CompanyData?.data?.tokenUid || PCDData?.data?.TokenUid;
+            const userType = CompanyData.status === 200 ? 'empresa' : 'usuario';
+
+            if (token) {
+                const id = uid;
+                Cookies.set('userType', userType, { expires: 1 });
+                localStorage.setItem('userId', id);
+
+                navigate(`/home${userType}`);
             } else {
-                if (PCDData) {
-                    const id = PCDData.uid
-                    localStorage.setItem('userId', id);
-                    navigate(`/homeuser`);
-                } else {
-                    alert('Erro ao fazer login, tente novamente.');
-                }
+                alert('Erro ao fazer login, tente novamente.');
             }
         } catch (error) {
             alert('Erro ao fazer login, tente novamente.');
-        }
-    };
-
-    const handleGoogleLogin = async () => {
-        const provider = new GoogleAuthProvider();
-        try {
-            const result = await signInWithPopup(auth, provider);
-            navigate('/homeuser');
-        } catch (error) {
-            alert('Erro ao fazer login com o google, tente novamente.');
+            console.log(error)
         }
     };
 
@@ -88,17 +82,7 @@ const Form = () => {
                         Não possui conta? <Link to="/cadastro" className="text-blue-700">Cadastre-se</Link>
                     </p>
                     <div className="flex flex-col gap-2 justify-center items-center">
-                        <button className="flex items-center justify-center w-52 text-sm text-white bg-gray-900 rounded-full py-2 px-4">
-                            <FaApple className="mr-2 text-2xl" />
-                            Continuar com Apple
-                        </button>
-                        <button
-                            onClick={handleGoogleLogin}
-                            className="flex items-center justify-center w-52 text-sm border border-gray-400 rounded-full py-2 px-4"
-                        >
-                            <FcGoogle className="mr-1 text-2xl" />
-                            Continuar com Google
-                        </button>
+
                     </div>
                 </div>
             </div>

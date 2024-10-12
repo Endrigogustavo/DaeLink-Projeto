@@ -112,52 +112,6 @@ export const registerEmpresa = async (email, password, sobre, area, cnpj, endere
   }
 };
 
-export const loginUser = async (email, password) => {
-  try {
-    const PCDCredential = await signInWithEmailAndPassword(auth, email, password);
-    const uid = PCDCredential.user.uid;
-    // Acessar a tabela específica com base no UID
-    const PCDDocRef = doc(db, "PCD", uid);
-    const GetPCDDoc = await getDoc(PCDDocRef);
-
-    if (GetPCDDoc.exists()) {
-      return { uid, ...GetPCDDoc.data() };
-    } else {
-      console.log("No such document!");
-      return null;
-    }
-  } catch (error) {
-    console.error("Login error: ", error.code, error.message);
-    return false;
-  }
-};
-
-
-
-export const loginEmpresa = async (email, password) => {
-  try {
-    const CompanyCredential = await signInWithEmailAndPassword(auth, email, password);
-    const uid = CompanyCredential.user.uid;
- 
-
-    // Acessar a tabela específica com base no UID
-    const CompanyDoc = doc(db, "Empresa", uid);
-    const GetCompanyDoc = await getDoc(CompanyDoc);
-
-    if (GetCompanyDoc.exists()) {
-    
-      return { uid, ...GetCompanyDoc.data() };
-    } else {
-      console.log("No such document!");
-      return null;
-    }
-  } catch (error) {
-    console.error("Login error: ", error.code, error.message);
-    throw error; // Lançar o erro para lidar com ele no componente React
-  }
-};
-
-
 
 export const logout = async () => {
   try {

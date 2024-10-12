@@ -6,6 +6,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { logout } from '../../../Auth/Auth';
 import { decrypt, encrypt } from '../../../Security/Cryptography_Rotes';
 import CarregamentoTela from "../../../Components/TelaCarregamento/Carregamento"
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 
 function Profile() {
@@ -50,6 +52,10 @@ function Profile() {
             //Função do Auth.jsx para deslogar
             logout();
             localStorage.removeItem('userId');
+            const id = Cookies.get('tokenId')
+            const token = Cookies.get('token')
+            axios.post('http://localhost:3000/logout', {id, token}, {withCredentials: false})
+            Cookies.remove('userType')
             // Redireciona para a página de login após o logout
             navigate('/');
         }

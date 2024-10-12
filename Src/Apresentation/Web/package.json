@@ -23,7 +23,9 @@
     "firebase": "^10.13.0",
     "fuse.js": "^7.0.0",
     "ibm-watson": "^9.1.0",
-    "npm": "^10.8.2",
+    "install": "^0.13.0",
+    "js-cookie": "^3.0.5",
+    "npm": "^10.9.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-firebase-hooks": "^5.1.1",
@@ -31,7 +33,8 @@
     "react-input-mask": "^2.0.4",
     "react-phone-number-input": "^3.4.8",
     "react-router-dom": "^6.24.1",
-    "swiper": "^11.1.4"
+    "swiper": "^11.1.4",
+    "universal-cookie": "^7.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
