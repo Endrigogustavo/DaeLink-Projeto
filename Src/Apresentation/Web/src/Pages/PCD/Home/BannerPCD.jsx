@@ -2,37 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import '../../Home/Home.css'
 import './PCD.css'
-
-import { db } from '../../../Database/Firebase';
-import { doc, getDoc } from 'firebase/firestore';
-
-import { encrypt } from '../../../Security/Cryptography_Rotes';
-
+import axios from 'axios'
 
 const BannerPCD = () => {
     const navigate = useNavigate();
- 
+
     const [userProfile, setUserProfile] = useState(null);
     const [motivationalText, setMotivationalText] = useState('');
     const [id, setUserId] = useState('');
 
     useEffect(() => {
         const getPCDprofile = async () => {
-            const storedUserId = localStorage.getItem('userId');
-            if (storedUserId) {
-                const userId = storedUserId;
-                setUserId(userId)
-               
-            const PCDdoc = doc(db, "PCD", id);
-            const GetPCDInfo = await getDoc(PCDdoc);
-            if (GetPCDInfo.exists()) {
-                setUserProfile(GetPCDInfo.data());
-            } else {
-                setUserProfile(null);
-                alert("Sem documentos!");
-                navigate('/')
+            try {
+                const response = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+                setUserProfile(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar os usuários:', error.response ? error.response.data : error.message);
             }
-        }
         };
         getPCDprofile();
 
@@ -51,12 +37,12 @@ const BannerPCD = () => {
     }, [id]);
 
     const handleButtonClickProcess = (id) => {
-        
+
         navigate(`/homeuser/processos/`);
     };
 
     const handleButtonClickProfile = (id) => {
-        
+
         navigate(`/userprofile/`);
     };
 

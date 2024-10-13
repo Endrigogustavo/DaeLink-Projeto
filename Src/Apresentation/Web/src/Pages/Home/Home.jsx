@@ -18,6 +18,7 @@ import Cookies from 'js-cookie';
 const Home = () => {
   useEffect(() => {
 
+
     localStorage.removeItem('userId');
     
     const auth = getAuth();

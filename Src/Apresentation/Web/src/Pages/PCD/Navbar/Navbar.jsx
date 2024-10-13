@@ -2,18 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
 import { FiMenu } from 'react-icons/fi';
 import { IoCloseOutline, IoSearch } from 'react-icons/io5';
-import { db } from '../../../Database/Firebase';
-import { doc, getDoc } from 'firebase/firestore';
-
-import { encrypt, decrypt } from '../../../Security/Cryptography_Rotes';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import Cookies from 'js-cookie';
-
+import axios from 'axios'
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [userProfile, setUserProfile] = useState(null);
-    const [userId, setUserId] = useState("");
+
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
@@ -26,28 +20,10 @@ export default function Navbar() {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const storedUserId = localStorage.getItem('userId');
-                if (storedUserId) {
-                    const userId = storedUserId;
-                    const PCDdoc = doc(db, "PCD", userId);
-                    const GetPCDInfo = await getDoc(PCDdoc);
-                    if (GetPCDInfo.exists()) {
-                        setUserProfile(GetPCDInfo.data());
-                        setUserId(userId)
-                    } else {
-                        setUserProfile(null);
-                        setUserId(""); // Limpa userId se o usuário não for encontrado
-                        alert("Sem documentos!");
-                        navigate("/");
-                    }
-                
-                } 
-            
+                const response = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+                setUserProfile(response.data);
             } catch (error) {
-                console.error("Erro ao buscar o perfil do usuário: ", error);
-                alert("Ocorreu um erro ao buscar o perfil do usuário.");
-            } finally {
-                setLoading(false); // Carregamento concluído
+                console.error('Erro ao buscar os usuários:', error.response ? error.response.data : error.message);
             }
         };
 

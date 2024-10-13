@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { FaGraduationCap, FaBuilding, FaAccessibleIcon } from 'react-icons/fa';
-
-import { db } from '../../../Database/Firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import axios from 'axios'
 
 
 const AboutPCD = () => {
@@ -12,20 +10,11 @@ const AboutPCD = () => {
 
     useEffect(() => {
         const getPCDprofile = async () => {
-            const storedUserId = localStorage.getItem('userId');
-            if (storedUserId) {
-                const userId = storedUserId;
-
-                const PCDdoc = doc(db, "PCD", userId);
-                const GetPCDInfo = await getDoc(PCDdoc);
-                if (GetPCDInfo.exists()) {
-                    setUserProfile(GetPCDInfo.data());
-
-                } else {
-                    setUserProfile(null);
-                    alert("Sem documentos!");
-                    navigate('/')
-                }
+            try {
+                const response = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+                setUserProfile(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar os usuários:', error.response ? error.response.data : error.message);
             }
         };
         getPCDprofile();
