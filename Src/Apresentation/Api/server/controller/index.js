@@ -5,13 +5,7 @@ const serviceAccount = require('../database/daelink-producao-firebase-adminsdk-y
 const { getAuth, signInWithEmailAndPassword } = require('firebase-admin/auth');
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser');
-
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
-const db = admin.firestore();
+const { db } = require('../database/firebase')
 
 exports.logout = (req, res) => {
     res.clearCookie('tokenId');
@@ -30,20 +24,6 @@ exports.cookies = (req, res) => {
   
     res.send('Cookie definido com sucesso!');
 }
-
-exports.getPCD = async (req, res) => {
-  const tokenId = req.cookies.tokenId;
-  try {
-    const docRef = await db.collection("PCD").doc(tokenId).get();
-    if (!docRef.exists) {
-      return res.status(404).send('PCD not found.');
-    }
-    return res.status(200).json(docRef.data());
-  } catch (error) {
-    console.error('Error fetching PCD data:', error);
-    return res.status(500).send('Internal server error.');
-  }
-};
 
 exports.updateProfile = (req, res) => {
     const ID = req.params.decryptedId

@@ -7,6 +7,7 @@ import axios from 'axios'
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [userProfile, setUserProfile] = useState(null);
+    const defaultempresaicon = "https://th.bing.com/th/id/OIP.9C1wSMkDpVtwSZbuxNwEZAAAAA?w=474&h=474&rs=1&pid=ImgDetMain";
 
     const [loading, setLoading] = useState(true);
 
@@ -69,15 +70,24 @@ export default function Navbar() {
                     <div className="hidden md:flex items-center gap-4">
                         <Navlinks />
                     </div>
-                  
-                    <button onClick={() => handleButtonClickProfile(userId)} className='border-2 border-blue-500 rounded-full'>
+
+                    <button onClick={() => handleButtonClickProfile()} className='border-2 border-blue-500 rounded-full'>
                         {loading ? (
-                            <div className="w-8 h-8 rounded-full bg-gray-300"></div>
+                            <img
+                                src={userProfile?.imageUrl || defaultempresaicon}
+                                alt=""
+                                className="w-8 h-8 rounded-full"
+                            />
                         ) : userProfile?.imageUrl ? (
-                            <img src={userProfile.imageUrl} alt="" className="w-8 h-8 rounded-full" />
+                            <img
+                                src={userProfile.imageUrl}
+                                alt=""
+                                className="w-8 h-8 rounded-full"
+                            />
                         ) : (
                             <div className="w-8 h-8 rounded-full bg-gray-300"></div> // Placeholder se não houver imagem
                         )}
+
                     </button>
                     <div className="flex md:hidden">
                         <button onClick={toggleNavbar}>
