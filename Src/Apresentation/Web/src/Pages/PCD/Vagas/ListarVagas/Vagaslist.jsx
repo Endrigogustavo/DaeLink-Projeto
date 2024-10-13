@@ -6,6 +6,7 @@ import { BsFillXSquareFill } from "react-icons/bs";
 import { decrypt, encrypt } from '../../../../Security/Cryptography_Rotes';
 import { FaSearch } from 'react-icons/fa';
 import Fuse from 'fuse.js';
+import axios from 'axios'
 
 
 
@@ -21,27 +22,6 @@ const Vagaslist = () => {
     const navigate = useNavigate();
     const defaultempresaicon = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy7OOS70yj8sex-Sw9mgQOnJKzNsUN3uWZCw&s";
     const defaultempresawallpaper = "https://c4.wallpaperflare.com/wallpaper/251/165/174/building-lights-usa-night-wallpaper-preview.jpg";
-
-    useEffect(() => {
-
-        const storedUserId = localStorage.getItem('userId');
-        if (storedUserId) {
-            const userId = storedUserId;
-            SetUserId(userId)
-        }
-
-        const getUserProfile = async () => {
-            const ProfileUser = doc(db, "PCD", id);
-            const GetProfileUser = await getDoc(ProfileUser);
-            if (GetProfileUser.exists()) {
-                setUserProfile(GetProfileUser.data());
-            } else {
-                setUserProfile(null);
-                alert("Nenhum usuário encontrado");
-            }
-        };
-        getUserProfile();
-    }, [id]);
 
     useEffect(() => {
         const getVagas = async () => {

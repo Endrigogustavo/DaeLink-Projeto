@@ -16,6 +16,7 @@ router.get('/get-PCD', Services.getPCD)
 router.get('/get-all-PCD', Services.getPCDAll)
 router.get('/get-company', Services.getEmpresa)
 router.get('/get-all-company', Services.getEmpresaAll)
+router.get('/get-all-vagas', Services.getAllVagas)
 
 router.post('/criarvaga/:id', Controller.criarVaga)
 

@@ -62,3 +62,20 @@ exports.getEmpresa = async (req, res) => {
         }
   }
 
+  exports.getAllVagas = async (req, res) => {
+    try {
+      const DocVagas = await db.collection("Vagas").get();
+      if(DocVagas.empty){
+        return res.status(404).send('company not found.');
+      }
+      const vagas = [];
+      DocVagas.forEach(doc => {
+        vagas.push({ id: doc.id, ...doc.data() });
+    });
+    return res.status(200).json(vagas)
+    } catch (error) {
+      console.log(error.message, error)
+      res.send("Erro: ", error)
+    }
+  }
+
