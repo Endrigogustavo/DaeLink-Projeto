@@ -46,15 +46,13 @@ function Profile() {
         return <CarregamentoTela/>;
     }
 
-    function LogoutProfile() {
+    async function LogoutProfile () {
         var response = confirm("Deseja fazer Logout?");
         if (response == true) {
             //Função do Auth.jsx para deslogar
             logout();
             localStorage.removeItem('userId');
-            const id = Cookies.get('tokenId')
-            const token = Cookies.get('token')
-            axios.post('http://localhost:3000/logout', {id, token}, {withCredentials: false})
+            await axios.post('http://localhost:3000/logout', {}, {withCredentials: true})
             Cookies.remove('userType')
             // Redireciona para a página de login após o logout
             navigate('/');

@@ -25,7 +25,7 @@ const cors = require('cors');
 const app = express();
 
 const corsOptions = {
-  origin: 'https://localhost:5173',
+  origin: 'http://localhost:5173',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   allowedHeaders: 'Content-Type, Authorization',
@@ -43,28 +43,14 @@ app.get('/', (req, res) => {
   console.log("foi")
 })
 
-app.post('/loginuser', async (req, res) => {
+app.post('/login', async (req, res) => {
   const uid = req.body.uid;
-  const email = req.body.email;
-  const password = req.body.password;
   try {
     const result = db.collection("PCD", uid)
     .get()
     if (!result.empty) {
-      const token = jwt.sign({email, password}, "jwt-secret-key", {expiresIn: '1H'})
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'Strict',  
-        maxAge: 3600000 
-      })
-      res.cookie('tokenId', uid, {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'Strict',  
-        maxAge: 3600000 
-      })
-      return res.status(200).json({ message: 'Login successful', token: token, tokenUid: uid });
+     
+      res.status(200).json({ message: 'Login successful'});
     } else {
       console.log("No such document!");
       return null;
@@ -75,49 +61,28 @@ app.post('/loginuser', async (req, res) => {
   }
 })
 
-app.post('/loginempresa', async (req, res) => {
-  const uid = req.body.uid;
-  const email = req.body.email;
-  const password = req.body.password;
-  try {
-    const result = db.collection("PCD", uid)
-    .get()
-
-    if (!result.empty) {
-      const token = jwt.sign({email, password}, "jwt-secret-key", {expiresIn: '1H'})
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'Strict',  
-        maxAge: 3600000 
-      })
-      res.cookie('tokenId', uid, {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'Strict',  
-        maxAge: 3600000 
-      })
-      return res.status(200).json({ message: 'Login successful', token: token, tokenUid: uid });
-    } else {
-      console.log("No such document!");
-      return null;
-    }
-  } catch (error) {
-    console.error("Login error: ", error.code, error.message);
-    return false;
-  }
-})
-
-app.post('logout', (req, res) =>{
-  const token = req.body.token
-  const tokenId = req.body.id
-  res.clearCookie('token', token, {
-        httpOnly: true
-      });
-      res.clearCookie('tokenId', tokenId, {
+app.post('/logout', (req, res) =>{
+      res.clearCookie('tokenId', {
         httpOnly: true
       });
 })
+
+app.post('/cookie', (req, res) => {
+  const uid = req.body.uid
+  
+  
+  res.cookie('tokenId', uid, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Lax',
+    maxAge: 3600000, // Expira em 1 hora
+    path: '/' // Garante que o cookie seja enviado para todas as rotas
+  });
+
+  res.send('Cookie definido com sucesso!');
+
+});
+
 
 app.post('/updateprofile/:id' , (req, res) =>{
   const ID = req.params.decryptedId

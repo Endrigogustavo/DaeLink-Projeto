@@ -3,9 +3,10 @@ import { FaApple } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 import { useNavigate, Link } from 'react-router-dom';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "../../Database/Firebase"
+import { db, auth } from "../../Database/Firebase"
 import axios from 'axios'
 import Cookies from 'js-cookie';
+import { doc, getDoc } from 'firebase/firestore';
 
 
 const Form = () => {
@@ -20,22 +21,41 @@ const Form = () => {
         try {
             const PCDCredential = await signInWithEmailAndPassword(auth, email, password);
             const uid = PCDCredential.user.uid
-            const PCDData = await axios.post('http://localhost:3000/loginuser', { uid, email, password }, { withCredentials: true })
-            const CompanyData = await axios.post('http://localhost:3000/loginempresa', { uid, email, password }, { withCredentials: true })
+         
+            try {
+                const PCDDocRef = doc(db, "PCD", uid);
+                const GetPCDDoc = await getDoc(PCDDocRef);
 
-            const token = CompanyData?.data?.token || PCDData?.data?.token;
-            const tokenUid = CompanyData?.data?.tokenUid || PCDData?.data?.TokenUid;
-            const userType = CompanyData.status === 200 ? 'empresa' : 'usuario';
+                const EmpresaDocRef = doc(db, "Empresa", uid);
+                const EmpresaDDoc = await getDoc(EmpresaDocRef);
+    
 
-            if (token) {
-                const id = uid;
-                Cookies.set('userType', userType, { expires: 1 });
-                localStorage.setItem('userId', id);
+                if(GetPCDDoc.exists()){
+                    await axios.post('http://localhost:3000/cookie', {uid},{
+                        withCredentials: true 
+                    });
+                    const id = uid;
+                    localStorage.setItem('userId', id);
+                    navigate(`/homeuser`);
+                }
+                if(EmpresaDDoc.exists()){
+                    await axios.post('http://localhost:3000/cookie', {uid},{
+                        withCredentials: true 
+                    });
+                    const id = uid;
+                    localStorage.setItem('userId', id);
+                    navigate(`/homeuser`);
+                }
+                else{
 
-                navigate(`/home${userType}`);
-            } else {
+                }
+                
+            } catch (error) {
                 alert('Erro ao fazer login, tente novamente.');
+            console.log(error)
             }
+    
+            
         } catch (error) {
             alert('Erro ao fazer login, tente novamente.');
             console.log(error)
