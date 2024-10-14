@@ -89,8 +89,7 @@ function App() {
           <Route path="/homeuser" element={<Homeuser />} />
           <Route path="/homeuser/vagas/" element={<Vagas />} />
           <Route path="/homeuser/empresas/" element={<Empresas />} />
-          <Route path="/entrarvaga/:vaga" element={<EntrarVaga />} />
-          <Route path="/vagainfo/:vagaId" element={<VagasInfo />} />
+          <Route path="/vagainfo/" element={<VagasInfo />} />
           <Route path="/enviardocumento/:vagaId" element={<EnviarDocumentos />} />
           <Route path="/atualizardocumento/:vagaId/:idDoc" element={<AtualizarDoc />} />
           <Route path="/homeuser/processos/" element={<VisualizarProcessosUser />} />

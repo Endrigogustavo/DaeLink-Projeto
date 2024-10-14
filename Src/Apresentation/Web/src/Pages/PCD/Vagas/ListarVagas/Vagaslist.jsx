@@ -25,6 +25,8 @@ const Vagaslist = () => {
 
     useEffect(() => {
         const getVagas = async () => {
+            localStorage.removeItem('VagaId');
+    
             const VagasCollection = collection(db, "Vagas");
             const data = await getDocs(VagasCollection);
             const vagasArray = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
@@ -58,7 +60,8 @@ const Vagaslist = () => {
     }, []);
 
     const handleButtonClick = (vagaId) => {
-        navigate(`/vagainfo/${vagaId}`);
+        localStorage.setItem('vagaId', vagaId);
+        navigate(`/vagainfo/`);
     };
 
     const handleSearch = () => {

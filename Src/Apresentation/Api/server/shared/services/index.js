@@ -62,6 +62,25 @@ exports.getEmpresa = async (req, res) => {
         }
   }
 
+  exports.getVaga = async (req, res) => {
+    try {
+      const vagaId = req.body.vagaId
+      const GetVaga = await db.collection("Vagas")
+      .doc(vagaId)
+      .get();
+
+      const vaga = []
+      GetVaga.forEach(doc => {
+        vaga.push({ id: doc.id, ...doc.data()})
+      });
+      return res.status(200).json(vaga)
+    } catch (error) {
+      console.log("Error: ", error)
+      res.send(error)
+    }
+  }
+
+
   exports.getAllVagas = async (req, res) => {
     try {
       const DocVagas = await db.collection("Vagas").get();

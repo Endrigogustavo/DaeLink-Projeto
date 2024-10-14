@@ -3,27 +3,8 @@ const { getFirestore } = require('firebase-admin/firestore');
 const admin = require('firebase-admin');
 const serviceAccount = require('../database/daelink-producao-firebase-adminsdk-y99vm-e1d8c6c010.json');
 const { getAuth, signInWithEmailAndPassword } = require('firebase-admin/auth');
-const jwt = require('jsonwebtoken')
-const cookieParser = require('cookie-parser');
 const { db } = require('../database/firebase')
 
-exports.logout = (req, res) => {
-    res.clearCookie('tokenId');
-    res.send("cookie deletado")
-}
-
-exports.cookies = (req, res) => {
-    const uid = req.body.uid
-    res.cookie('tokenId', uid, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'Lax',
-      maxAge: 3600000, 
-      path: '/' 
-    });
-  
-    res.send('Cookie definido com sucesso!');
-}
 
 exports.updateProfile = (req, res) => {
     const ID = req.params.decryptedId
@@ -46,9 +27,6 @@ exports.updateProfile = (req, res) => {
       if(err) return res.json(err);
     }
 }
-
-
-
 exports.criarVaga = async (req, res) => {
   const ID = req.params.id
   const Status = "Aberta"

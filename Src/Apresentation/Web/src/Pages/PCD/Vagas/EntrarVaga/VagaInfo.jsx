@@ -8,7 +8,6 @@ import Navbar from '../../Navbar/Navbar';
 
 export default function Example() {
   const navigate = useNavigate();
-  const { vagaId } = useParams();
 
   const [vaga, setVaga] = useState(null);
   const [empresa, setEmpresas] = useState(null);
@@ -16,11 +15,18 @@ export default function Example() {
   const [id, setUserId] = useState(null);
   const [email, setEmail] = useState("");
   const [nome, setNome] = useState("");
+  const [vagaId, setVagaId] = useState("")
   const [situação, setSituação] = useState("Pendente");
 
   useEffect(() => {
     const getInfo = async () => {
-      const vagaDoc = doc(db, "Vagas", vagaId);
+      const VagaIdStorage = localStorage.getItem('vagaId');
+      if (VagaIdStorage) {
+        const VagaId = VagaIdStorage;
+        setVagaId(VagaId)
+        
+      
+      const vagaDoc = doc(db, "Vagas", VagaId);
       const vagaSnapshot = await getDoc(vagaDoc);
 
       if (vagaSnapshot.exists()) {
@@ -38,11 +44,12 @@ export default function Example() {
       } else {
         console.log("Vaga não encontrada!");
       }
+    }
 
     };
 
     getInfo();
-  }, [vagaId]);
+  }, []);
 
   useEffect(() => {
     const getInfoPCD = async () => {
@@ -100,6 +107,8 @@ export default function Example() {
         });
 
         alert("Pessoa adicionada com sucesso!");
+        localStorage.removeItem('VagaId');
+    
         navigate(`/homeuser`);
       } catch (e) {
         console.error("Erro ao adicionar pessoa: ", e);
