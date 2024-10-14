@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../../../../Database/Firebase';
 import { collection, query, where, getDocs, getDoc, doc } from 'firebase/firestore';
 import { FaSquareXmark } from "react-icons/fa6";
+import { IoMdChatbubbles } from "react-icons/io";
+import { IoDocumentAttach } from "react-icons/io5";
 
 const ProcessosList = () => {
     const [vagas, setVagas] = useState([]);
@@ -117,29 +119,37 @@ const ProcessosList = () => {
             ) : (
                 Array.isArray(vagas) && vagas.length > 0 ? (
                     vagas.map((vaga) => (
-                        <div key={vaga.id} className='h-processocard w-processocard shadow-xl bg-gray-800 rounded-2xl flex border-2 overflow-hidden'>
+                        <div key={vaga.id} className='h-vagacard w-vagacard shadow-2xl rounded-2xl flex border-gray-400 border-2 overflow-hidden cardhover'>
                             {vaga.empresa && (
-                                <div className='flex flex-col h-full w-2/6 justify-center items-center relative'>
-                                    <img src={vaga.empresa.imageProfile || defaultempresawallpaper} alt="Empresa Profile" className='w-full h-full relative object-cover opacity-80' />
-                                    <img src={vaga.empresa.imageUrl || defaultempresaicon} alt="Empresa Logo" className='rounded-full w-24 h-24 object-cover absolute border-blue-500 border-4' />
-                                    <h1 className='font-medium text-white text-center text-lg'>{vaga.empresa.name}</h1>
+                                <div className='w-2/6 h-full flex flex-col bg-gray-200 justify-center items-center gap-2'>
+                                    <div className='h-4/6 w-full flex items-end justify-center'>
+                                        <img
+                                            src={vaga.empresa.imageUrl}
+                                            className="w-16 h-16 object-cover rounded-full border-2 border-blue-600 "
+                                            alt="logo empresa"
+                                        />
+                                    </div>
+                                    <div className='h-2/6 w-full  flex justify-center'>
+                                        <h1 className='font-medium text-center text-base text-wrap overflow-x-hidden'>{vaga.empresa.name}</h1>
+                                    </div>
                                 </div>
                             )}
-                            <div className='flex flex-col bg-gray-900 rounded-2xl h-full w-4/6 justify-center items-center overflow-hidden gap-2'>
-                                <div className="w-full flex flex-col justify-center gap-1">
-                                    <h1 className='font-medium text-xl text-center text-white'>{vaga.vaga}</h1>
-                                    <h1 className={`w-32 text-white text-center font-bold text-sm py-2 px-2 rounded-full ml-2 ${getSituacaoClass(vaga.situação)}`}>
-                                        {vaga.situação || 'Indefinido'}
-                                    </h1>
-                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Tipo: {vaga.tipo}</p>
-                                    <p className='text-white opacity-80 text-sm px-4 truncate'>Salário: {vaga.salario}</p>
+
+                            <div className='w-4/6 h-full flex flex-col items-center justify-center'>
+                                <div className='w-full h-2/6 text-center flex items-center justify-center text-wrap overflow-hidden'>
+                                    <h1 className='font-bold text-xl text-center w-4/6'>{vaga.vaga}</h1>
                                 </div>
-                                <div className='w-full flex justify-center'>
-                                    <button onClick={() => ChatEmpresa(vaga.empresaId)} className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all ml-2'>
-                                        Chat
+                                <div className='w-full h-2/6 flex flex-col px-2 '>
+                                    <p className='opacity-80 '>{vaga.situação || 'Indefinido'}</p>
+                                    <p className='opacity-80'>{vaga.tipo}</p>
+                                    <p className='opacity-80'>R${vaga.salario}</p>
+                                </div>
+                                <div className='w-full h-2/6 flex justify-center items-center gap-2'>
+                                    <button onClick={() => ChatEmpresa(vaga.empresaId)} className='bg-green-400 rounded-2xl p-2 h-fit'>
+                                        <IoMdChatbubbles className='text-3xl text-white text-center cardhover' />
                                     </button>
-                                    <button onClick={() => EnviarDoc(vaga.id)} className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all m-2'>
-                                        Enviar Documentos
+                                    <button onClick={() => EnviarDoc(vaga.id)} className='bg-gray-700 rounded-2xl p-2 h-fit'>
+                                        <IoDocumentAttach className='text-3xl text-white text-center cardhover' />
                                     </button>
                                 </div>
                             </div>

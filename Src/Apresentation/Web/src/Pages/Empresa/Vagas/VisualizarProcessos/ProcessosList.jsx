@@ -74,37 +74,37 @@ function ProcessosList() {
     return (
         <div className={`w-full h-fit flex justify-center items-center flex-col py-4 ${vagas.length > 0 ? 'grid ProcessosEmpresas gap-y-6 justify-items-center items-center' : ''}`}>
             {vagas.map((vaga) => (
-                <div key={vaga.id} className='h-56 w-96 rounded-3xl shadow-2xl flex bg-white border-gray-500 border-2'>
-                    <div className='w-1/4 h-full flex items-center justify-center'>
-                        <MdWork className='text-7xl text-gray-900 text-center bg-white p-4 rounded-full border-gray-500 border-2' />
+                <div key={vaga.id} className='h-56 w-96 rounded-3xl shadow-2xl flex bg-white border-gray-400 border-2'>
+                    <div className='w-1/4 h-full flex items-center justify-center bg-gray-200  rounded-3xl'>
+                        <MdWork className='text-7xl text-gray-900 text-center bg-white p-4 rounded-full border-2 border-blue-600' />
                     </div>
                     <div className='w-3/4 h-full flex flex-col items-center'>
                         <div className='w-full h-2/6 text-center flex items-center justify-center text-wrap overflow-hidden'>
                             <h1 className='font-bold text-xl text-center w-4/6'>{vaga.vaga}</h1>
                         </div>
-                        <div className='w-full h-2/6 flex flex-col '>
+                        <div className='w-full h-2/6 flex flex-col px-2'>
                             <p className='opacity-80 truncate'>{vaga.local}</p>
                             <p className='opacity-80'>{vaga.tipo}</p>
                             <p className='opacity-80'>R${vaga.salario}</p>
                         </div>
                         <div className='w-full h-2/6 flex justify-center items-center gap-2'>
                             <button onClick={() => handleButtonClick(vaga.id)} type="submit" class="bg-green-400 rounded-2xl p-2 h-fit">
-                                <FaUserFriends className='text-3xl text-white text-center' />
+                                <FaUserFriends className='text-3xl text-white text-center cardhover' />
                             </button>
 
                             <button onClick={() => atualizarVaga(vaga.id)} type="submit" class="bg-gray-700 rounded-2xl p-2 h-fit">
-                                <MdEdit className='text-3xl text-white text-center ' />
+                                <MdEdit className='text-3xl text-white text-center cardhover' />
                             </button>
 
                             <button onClick={() => deleteVaga(vaga.id)} type="submit" class="bg-red-400 rounded-2xl p-2 h-fit">
-                                <MdDelete className='text-3xl text-white text-center' />
+                                <MdDelete className='text-3xl text-white text-center cardhover' />
                             </button>
                         </div>
                     </div>
                 </div>
             ))}
             {vagas.length === 0 && (
-                <div className='w-90 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
+                <div className='w-96 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
                     <div className='w-2/6 h-full flex items-center justify-center'>
                         <BsFillXSquareFill className='text-5xl text-gray-900 text-center' />
                     </div>

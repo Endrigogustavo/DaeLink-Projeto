@@ -88,15 +88,27 @@ const CandidatosTable = () => {
                         return (
                             <>
                                 {recommendError && <p className="text-red-500">{recommendError}</p>}
-                                <div key={rec.id} className='h-80 w-72 bg-gray-900 rounded-xl flex flex-col items-center justify-center gap-2 border-blue-500 border-4 overflow-x-hidden'>
-                                    <img src={rec.imageUrl} className="rounded-full w-28 h-28" alt="" />
-                                    <h1 className='text-lg font-medium text-white text-center'>
-                                        {rec.name}
-                                        <h2 className='opacity-75 text-sm'>{rec.trabalho}</h2>
-                                    </h1>
-                                    <p className='text-white text-justify w-5/6 truncate-multiline'>{rec.descrição}</p>
-                                    <button onClick={() => handleButtonClick(rec.id)} type="submit"
-                                        className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
+                                <div key={rec.id} className='h-profilecard w-72  rounded-3xl flex flex-col 
+                            items-center justify-center border-gray-400 border-2 shadow-2xl overflow-hidden '>
+                                    <div className='h-profilecardbanner w-full flex items-center justify-center overflow-hidden relative'>
+                                        <img src={rec.imageProfile} className='h-full w-full object-cover opacity-20 backprofile-opacity' />
+                                        <img src={rec.imageUrl} className="mt-12 absolute shadow-2xl rounded-full w-28 h-28 object-cover border-4 border-blue-600" />
+                                    </div>
+                                    <div className='h-profilecarditems w-full flex flex-col items-center overflow-hidden'>
+
+                                        <div className='h-2/6 w-full flex flex-col justify-center items-center  py-1'>
+                                            <h1 className='text-xl font-bold text-center'>{rec.name}</h1>
+                                            <h2 className='opacity-75 text-sm truncate'>{rec.trabalho}</h2>
+                                        </div>
+
+                                        <div className='h-2/6 w-full flex overflow-hidden justify-center items-center '>
+                                            <p className='text-sm px-2 truncate-multiline text-center '>{rec.descrição}</p>
+                                        </div>
+                                        <div className='h-2/6 w-full flex overflow-hidden justify-center items-center '>
+                                            <button onClick={() => handleButtonClick(rec.id)} type="submit"
+                                                className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </>
                         );

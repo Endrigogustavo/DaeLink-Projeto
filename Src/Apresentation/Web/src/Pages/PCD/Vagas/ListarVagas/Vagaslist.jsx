@@ -26,7 +26,6 @@ const Vagaslist = () => {
     useEffect(() => {
         const getVagas = async () => {
             localStorage.removeItem('VagaId');
-    
             const VagasCollection = collection(db, "Vagas");
             const data = await getDocs(VagasCollection);
             const vagasArray = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
@@ -66,24 +65,24 @@ const Vagaslist = () => {
 
     const handleSearch = () => {
         if (searchTerm.trim() === '') {
-          alert('Digite um nome de vaga para pesquisar');
-          return;
+            alert('Digite um nome de vaga para pesquisar');
+            return;
         }
-    
+
         // Configurações do Fuse.js para busca fuzzy
         const options = {
-          includeScore: true,  
-          keys: ['area']   
+            includeScore: true,
+            keys: ['area']
         };
-    
+
         const fuse = new Fuse(vagasAll, options);
         const result = fuse.search(searchTerm);
-    
+
         // Extrair apenas os resultados relevantes
         const matches = result.map(({ item }) => item);
         setVagas(matches);
-      };
-    
+    };
+
     return (
         <>
             <section className='w-full flex flex-col justify-center items-center gap-y-3 overflow-hidden'>
@@ -105,44 +104,38 @@ const Vagaslist = () => {
                         vagas.map((vaga) => {
                             const empresa = empresas[vaga.empresaId] || {};
                             return (
-                                <div key={vaga.id} className='h-vagacard w-vagacard shadow-xl bg-gray-800 rounded-2xl flex border-2 overflow-hidden '>
-                                    <div className='flex flex-col h-full w-2/6 justify-center items-center relative'>
-                                        <img
-                                            src={empresa.imageProfile || defaultempresawallpaper}
-                                            alt="Empresa Wallpaper"
-                                            className='w-full h-full relative object-cover object-center opacity-40'
-                                        />
-                                        <div className='h-full w-full flex flex-col items-center justify-center absolute gap-1'>
+                                <div key={vaga.id} className='h-vagacard w-vagacard shadow-2xl rounded-2xl flex border-gray-400 border-2 overflow-hidden cardhover'>
+                                    <div className='w-2/6 h-full flex flex-col bg-gray-200 justify-center items-center gap-2'>
+                                        <div className='h-4/6 w-full flex items-end justify-center'>
                                             <img
                                                 src={empresa.imageUrl || defaultempresaicon}
-                                                className="w-12 h-12 object-cover rounded-full border-2 border-blue-600 "
+                                                className="w-16 h-16 object-cover rounded-full border-2 border-blue-600 "
                                                 alt="logo empresa"
                                             />
-                                            <h1 className='font-medium text-white text-center text-lg'>{vaga.empresa}</h1>
+                                        </div>
+                                        <div className='h-2/6 w-full  flex justify-center'>
+                                            <h1 className='font-bold text-center text-base text-wrap overflow-x-hidden'>{vaga.empresa}</h1>
                                         </div>
                                     </div>
-                                    <div className='flex flex-col bg-gray-900 rounded-2xl h-full w-4/6 justify-center items-center overflow-hidden gap-1'>
-                                        <h1 className='text-white text-xl font-medium text-center'>{vaga.area}</h1>
-                                        <div className='flex flex-row gap-2 justify-center w-full'>
-
-                                            <p className='text-white opacity-90 text-base'>{vaga.vaga}</p>
-                                            <p className='text-white opacity-90 text-base'>-</p>
-                                            <p className='text-white opacity-90 text-base'>{vaga.tipo}</p>
+                                    <div className='w-4/6 h-full flex flex-col items-center justify-center'>
+                                        <div className='w-full h-2/6 text-center flex items-center justify-center text-wrap overflow-hidden'>
+                                            <h1 className='font-bold text-xl text-center w-4/6'>{vaga.vaga}</h1>
                                         </div>
-                                        <div className='flex flex-col w-full gap-1'>
-                                            <p className='text-white opacity-80 text-sm px-4'>{vaga.status}</p>
-                                            <p className='text-white opacity-80 text-sm px-4'>Salário: {vaga.salario}</p>
-                                            <p className='text-white opacity-80 text-sm px-4'>Exigências: {vaga.exigencias}</p>
-                                            <p className='text-white opacity-80 text-sm px-4'>Local: {vaga.local}</p>
+                                        <div className='w-full h-2/6 flex flex-col px-2 '>
+                                            <p className='opacity-80 truncate'>{vaga.status}</p>
+                                            <p className='opacity-80'>{vaga.tipo}</p>
+                                            <p className='opacity-80'>R${vaga.salario}</p>
                                         </div>
-                                        <button className='w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
-                                            type='submit' onClick={() => handleButtonClick(vaga.id)}>Visualizar Vaga</button>
+                                        <div className='w-full h-2/6 flex justify-center items-center gap-2'>
+                                            <button className='w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
+                                                type='submit' onClick={() => handleButtonClick(vaga.id)}>Visualizar Vaga</button>
+                                        </div>
                                     </div>
                                 </div>
                             );
                         })
                     ) : (
-                        <div className='w-90 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
+                        <div className='w-96 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
                             <div className='w-2/6 h-full flex items-center justify-center'>
                                 <BsFillXSquareFill className='text-5xl text-gray-900  text-center' />
                             </div>

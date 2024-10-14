@@ -18,6 +18,9 @@
   background: #e7e7e7;
 }
 
+.textblue {
+  color: #2563eb;
+}
 
 .text-subtitle {
   color: #2563eb;
@@ -104,9 +107,9 @@
 
 }
 
-@media (max-width:1400px) {
+@media (max-width:1440px) {
   .aboutimg {
-    height: 35rem
+    width: 35rem
   }
 
   .aboutcontainer {

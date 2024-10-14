@@ -69,41 +69,37 @@ function EmpresasList() {
                 ) : (
                     empresas.length > 0 ? (
                         empresas.map((empresa) => (
-                            <div
-                            key={empresa.id}
-                            className='empresa-item h-80 w-72 bg-gray-900 rounded-xl flex flex-col gap-2 border-blue-500 border-4 overflow-hidden opacity-0 transform transition-opacity transition-transform duration-500 ease-out'
-                        >
-                            <div className='w-full h-3/6 flex flex-col items-center justify-center gap-3'>
-                                <img
-                                    src={empresa.imageProfile || defaultempresawallpaper}
-                                    alt="Empresa Wallpaper"
-                                    className='w-full h-full relative object-cover opacity-80'
-                                />
-                                <img
-                                    src={empresa.imageUrl || defaultempresaicon}
-                                    alt="Empresa Logo"
-                                    className='rounded-full w-24 h-24 object-cover absolute border-blue-500 border-4'
-                                />
+
+                            <div key={empresa.id} className='h-profilecard w-72  rounded-3xl flex flex-col 
+                            items-center justify-center border-gray-400 border-2 shadow-2xl overflow-hidden '>
+                                <div className='h-profilecardbanner w-full flex items-center justify-center overflow-hidden relative'>
+                                    <img src={empresa.imageProfile} className='h-full w-full object-cover opacity-20 backprofile-opacity' />
+                                    <img src={empresa.imageUrl || fotodefault} className="mt-12 absolute shadow-2xl rounded-full w-28 h-28 object-cover border-4 border-blue-600" />
+                                </div>
+                                <div className='h-profilecarditems w-full flex flex-col items-center overflow-hidden'>
+
+                                    <div className='h-2/6 w-full flex flex-col justify-center items-center  py-1'>
+                                        <h1 className='text-xl font-bold text-center'>{empresa.name}</h1>
+                                        <h2 className='opacity-75 text-sm truncate'>{empresa.area}</h2>
+                                    </div>
+
+                                    <div className='h-2/6 w-full flex overflow-hidden justify-center items-center '>
+                                        <p className='text-sm px-2 truncate-multiline text-center '>{empresa.sobre}</p>
+                                    </div>
+                                    <div className='h-2/6 w-full flex overflow-hidden justify-center items-center '>
+                                        <button
+                                            onClick={() => ViewCompanyProfile(empresa.id)}
+                                            type="submit"
+                                            className='w-32 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
+                                        >
+                                            Conhecer
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="w-full flex flex-col justify-center">
-                                <h1 className='font-medium text-xl text-center text-white'>{empresa.name || "Nome"}</h1>
-                                <p className='text-white opacity-80 text-sm px-4 truncate'>{empresa.email}</p>
-                                <p className='text-white opacity-80 text-sm px-4 truncate'>{empresa.endereco}</p>
-                                <p className='text-white opacity-80 text-sm px-4 truncate'>{empresa.area}</p>
-                            </div>
-                            <div className='w-full flex justify-center'>
-                                <button
-                                    onClick={() => ViewCompanyProfile(empresa.id)}
-                                    type="submit"
-                                    className='w-44 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-2 px-4 rounded-full transition-all'
-                                >
-                                    Visualizar Empresa
-                                </button>
-                            </div>
-                        </div>
                         ))
                     ) : (
-                        <div className='w-90 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
+                        <div className='w-96 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
                             <div className='w-2/6 h-full flex items-center justify-center'>
                                 <FaSquareXmark className='text-5xl text-gray-900  text-center' />
                             </div>

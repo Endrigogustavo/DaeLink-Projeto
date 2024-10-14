@@ -40,7 +40,7 @@ function PessoasList() {
                         id: doc.id,
                         ...doc.data()
                     }));
-                    
+
 
                     await Promise.all(candidatosList.map(async (candidato) => {
                         if (candidato.id) {
@@ -133,7 +133,7 @@ function PessoasList() {
 
             {candidatos.length > 0 && (
                 <div className='w-full h-44 flex items-center justify-center'>
-                    <div className='w-90 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-2'>
+                    <div className='w-96 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-2'>
                         <h1 className='font-bold text-2xl text-white'>Candidatos Disponiveis </h1>
                     </div>
                 </div>
@@ -142,36 +142,41 @@ function PessoasList() {
             <div className={`w-full h-fit flex overflow-x-hidden justify-center items-center ${candidatos.length > 0 ? 'grid Pcdscontainer gap-4 justify-items-center' : ''}`}>
 
                 {candidatos.map(candidato => (
-                    <div key={candidato.id} className='h-80 w-72  rounded-xl flex flex-col items-center justify-center gap-2 border-blue-500 border-4 overflow-x-hidden'>
-
-                        <img src={candidato.imageProfile || fotodefault} className="rounded-full w-28 h-28 object-cover" alt={candidato.name || "Imagem padrão"} />
-                        <h1 className='text-lg font-medium text-center'>{candidato.name}
-                            <h2 className='opacity-75 text-sm'>{candidato.email}</h2>
-                        </h1>
-                        <p className='text-justify w-5/6 truncate-multiline font-medium'>{candidato.situação || 'Pendente'}</p>
-                        <div className='w-full flex justify-center'>
-
-                            <button onClick={() => AceitarCandidato(candidato.id)} type="submit"
-                                className='bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-full transition-all'>
-                                <FaCheck className='text-xl text-white text-center' />
-                            </button>
-                            <button onClick={() => RecusarCandidato(candidato.id)} type="submit"
-                                className='bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full transition-all'>
-                                <FaTimes className='text-xl text-white text-center' />
-                            </button>
+                    <div key={candidato.id} className='h-profilecard w-72  rounded-3xl flex flex-col 
+                     items-center justify-center border-gray-400 border-2 shadow-2xl overflow-hidden '>
+                        <div className='h-profilecardbanner w-full flex items-center justify-center overflow-hidden relative'>
+                            <img src={candidato.imageProfile} className='h-full w-full object-cover opacity-20 backprofile-opacity' />
+                            <img src={candidato.imageUrl} className="mt-12 absolute shadow-2xl rounded-full w-28 h-28 object-cover border-4 border-blue-600" />
                         </div>
+                        <div className='h-profilecarditems w-full flex flex-col items-center overflow-hidden'>
 
-                        <button onClick={() => handleButtonClick(candidato.id)} type="submit"
-                            className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-1 rounded-full transition-all'>
-                            Visualizar Docs
-                        </button>
+                            <div className='h-2/6 w-full flex flex-col justify-center items-center  py-1'>
+                                <h1 className='text-xl font-bold text-center'>{candidato.name}</h1>
+                                <h2 className='opacity-75 text-sm truncate'>{candidato.trabalho}</h2>
+                            </div>
 
+                            <div className='w-full h-2/6 flex justify-center'>
 
-
+                                <button onClick={() => AceitarCandidato(candidato.id)} type="submit"
+                                    className='bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-full transition-all'>
+                                    <FaCheck className='text-xl text-white text-center' />
+                                </button>
+                                <button onClick={() => RecusarCandidato(candidato.id)} type="submit"
+                                    className='bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full transition-all'>
+                                    <FaTimes className='text-xl text-white text-center' />
+                                </button>
+                            </div>
+                            <div className='h-2/6 w-full flex overflow-hidden justify-center items-center '>
+                                <button onClick={() => handleButtonClick(candidato.id)} type="submit"
+                                    className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-1 rounded-full transition-all'>
+                                    Visualizar Docs
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 ))}
                 {candidatos.length === 0 && (
-                    <div className='w-90 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4 mt-4'>
+                    <div className='w-96 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4 mt-4'>
                         <div className='w-2/6 h-full flex items-center justify-center'>
                             <BsFillXSquareFill className='text-5xl text-gray-900 text-center' />
                         </div>

@@ -92,10 +92,11 @@ const VagaForm = () => {
         navigate(-1); // Navega para a página anterior
     }
 
+
     return (
         <>
             <div className='w-full h-52 flex items-center justify-center'>
-                <div className='w-90 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-5'>
+                <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-5'>
                     <h1 className='font-bold text-2xl text-white'>Criar Vaga </h1>
                 </div>
             </div>
@@ -159,10 +160,18 @@ const VagaForm = () => {
                     <label className="text-lg font-medium">Salário</label>
                     <input
                         type="text"
-                        placeholder="Salário"
+                        placeholder="Apenas Números"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         value={salario}
-                        onChange={(e) => setSalario(e.target.value)}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            // Permite apenas números
+                            if (!isNaN(value) && value.trim() !== '') {
+                                setSalario(value);
+                            } else {
+                                setSalario("Apenas Números")
+                            }
+                        }}
                     />
                 </div>
 

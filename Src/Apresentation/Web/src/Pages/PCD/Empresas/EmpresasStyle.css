@@ -1,3 +1,39 @@
+/*Profile Card*/
+.cardhover{
+    transition: transform 0.3s ease;
+}
+
+.cardhover:hover {
+    transform: scale(1.1);
+}
+
+
+.h-profilecard {
+    height: 22rem;
+    transition: transform 0.3s ease;
+}
+
+.h-profilecardbanner {
+    height: 12rem;
+}
+
+.h-profilecarditems {
+    height: 14rem;
+}
+
+.h-profilecard:hover {
+    transform: scale(1.1);
+}
+
+.backprofile-opacity {
+    transition: transform 0.3s ease;
+}
+
+.h-profilecard:hover .backprofile-opacity {
+    opacity: 30%;
+}
+
+
 .Empresascontainer {
     grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -47,18 +83,18 @@
 
 /*Empresas Banner*/
 
-.h-empresashero{
+.h-empresashero {
     height: 60vh;
 }
 
 
-@media (max-width:900px){
-    .h-empresashero{
+@media (max-width:900px) {
+    .h-empresashero {
         height: fit-content;
         flex-direction: column;
     }
 
-    .container-side{
+    .container-side {
         width: 100%;
     }
 
