@@ -14,6 +14,8 @@ const CandidatosTable = () => {
     const [hasSearched, setHasSearched] = useState(false);
     const [recommendError, setRecommendError] = useState("")
 
+    const defaultbackground = "https://c4.wallpaperflare.com/wallpaper/251/165/174/building-lights-usa-night-wallpaper-preview.jpg";
+
     useEffect(() => {
         const storedUserId = localStorage.getItem('userId');
         if (storedUserId) {
@@ -69,12 +71,12 @@ const CandidatosTable = () => {
             </section>
 
             <div
-                className={`w-full h-fit overflow-x-hidden  Pcdscontainer gap-4 justify-items-center justify-center items-center ${hasSearched ? 'pb-6 grid' : ''}`}
+                className={`w-full h-fit overflow-x-hidden  Pcdscontainer gap-4 justify-items-center justify-center items-center ${hasSearched ? 'py-6 grid ' : ''}`}
             >
                 {loading ? (
                     // Exibe skeleton loaders enquanto está carregando
                     Array.from({ length: 4 }).map((_, index) => (
-                        <div key={index} className='h-80 w-72 bg-gray-300 rounded-xl flex flex-col items-center justify-center gap-2 border-blue-300 border-4 animate-pulse'>
+                        <div key={index} className='h-profilecard w-72 rounded-3xl flex flex-col items-center justify-center border-gray-400 border-2 shadow-2xl overflow-hiddenanimate-pulse'>
                             <div className="rounded-full bg-gray-400 w-28 h-28"></div>
                             <div className="h-6 bg-gray-400 w-40 rounded"></div>
                             <div className="h-4 bg-gray-400 w-32 rounded"></div>
@@ -87,29 +89,28 @@ const CandidatosTable = () => {
                     recommendations.map((rec) => {
                         return (
                             <>
-                                {recommendError && <p className="text-red-500">{recommendError}</p>}
-                                <div key={rec.id} className='h-profilecard w-72  rounded-3xl flex flex-col 
-                            items-center justify-center border-gray-400 border-2 shadow-2xl overflow-hidden '>
-                                    <div className='h-profilecardbanner w-full flex items-center justify-center overflow-hidden relative'>
-                                        <img src={rec.imageProfile} className='h-full w-full object-cover opacity-20 backprofile-opacity' />
-                                        <img src={rec.imageUrl} className="mt-12 absolute shadow-2xl rounded-full w-28 h-28 object-cover border-4 border-blue-600" />
+                                <React.Fragment key={rec.id}> {/* Use React.Fragment para o JSX não gerar elementos extras */}
+                                    {recommendError && <p className="text-red-500">{recommendError}</p>}
+                                    <div className='h-profilecard w-72 rounded-3xl flex flex-col items-center justify-center border-gray-400 border-2 shadow-2xl overflow-hidden'>
+                                        <div className='h-profilecardbanner w-full flex items-center justify-center overflow-hidden relative'>
+                                            <img src={rec.backgroundImage || rec.imageProfile || defaultbackground} className='h-full w-full object-cover opacity-20 backprofile-opacity' />
+                                            <img src={rec.profileImage || rec.imageUrl} className="mt-12 absolute shadow-2xl rounded-full w-28 h-28 object-cover border-4 border-blue-600" />
+                                        </div>
+                                        <div className='h-profilecarditems w-full flex flex-col items-center overflow-hidden'>
+                                            <div className='h-2/6 w-full flex flex-col justify-center items-center  py-1'>
+                                                <h1 className='text-xl font-bold text-center'>{rec.name}</h1>
+                                                <h2 className='opacity-75 text-sm truncate'>{rec.trabalho}</h2>
+                                            </div>
+                                            <div className='h-2/6 w-full flex overflow-hidden justify-center items-center '>
+                                                <p className='text-sm px-2 truncate-multiline text-center '>{rec.descrição}</p>
+                                            </div>
+                                            <div className='h-2/6 w-full flex overflow-hidden justify-center items-center '>
+                                                <button onClick={() => handleButtonClick(rec.id)} type="submit"
+                                                    className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className='h-profilecarditems w-full flex flex-col items-center overflow-hidden'>
-
-                                        <div className='h-2/6 w-full flex flex-col justify-center items-center  py-1'>
-                                            <h1 className='text-xl font-bold text-center'>{rec.name}</h1>
-                                            <h2 className='opacity-75 text-sm truncate'>{rec.trabalho}</h2>
-                                        </div>
-
-                                        <div className='h-2/6 w-full flex overflow-hidden justify-center items-center '>
-                                            <p className='text-sm px-2 truncate-multiline text-center '>{rec.descrição}</p>
-                                        </div>
-                                        <div className='h-2/6 w-full flex overflow-hidden justify-center items-center '>
-                                            <button onClick={() => handleButtonClick(rec.id)} type="submit"
-                                                className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'>Visitar</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                </React.Fragment>
                             </>
                         );
                     })

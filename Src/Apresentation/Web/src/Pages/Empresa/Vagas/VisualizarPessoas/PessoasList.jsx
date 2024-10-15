@@ -5,6 +5,7 @@ import { auth, db } from '../../../../Database/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { BsFillXSquareFill } from "react-icons/bs";
 import { FaCheck, FaTimes } from "react-icons/fa";
+import { IoDocumentsSharp } from "react-icons/io5";
 
 function PessoasList() {
     const navigate = useNavigate();
@@ -16,6 +17,7 @@ function PessoasList() {
     const [userPCD, setUserPCD] = useState('');
 
     const fotodefault = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5JltdoarPr9bRcq-0QN5k6F_v8kYxj5oj8A&s"
+    const defaultbackground = "https://c4.wallpaperflare.com/wallpaper/251/165/174/building-lights-usa-night-wallpaper-preview.jpg";
 
     useEffect(() => {
         const AuthProfile = onAuthStateChanged(auth, (currentUser) => {
@@ -41,21 +43,29 @@ function PessoasList() {
                         ...doc.data()
                     }));
 
-
-                    await Promise.all(candidatosList.map(async (candidato) => {
-                        if (candidato.id) {
-                            const PCDDoc = await getDoc(doc(db, "PCD", candidato.id));
+                    // Usar o Promise.all para garantir que todas as operações assíncronas terminem
+                    const updatedCandidatosList = await Promise.all(candidatosList.map(async (candidato) => {
+                        if (candidato.userId) {
+                            const PCDDoc = await getDoc(doc(db, "PCD", candidato.userId));
                             if (PCDDoc.exists()) {
                                 const PCDData = PCDDoc.data();
-                                // Verifica se há uma imagem de perfil e atribui uma imagem padrão, se necessário
-                                candidato.imageProfile = PCDData.imageProfile || '/default-image.png';
+                                return {
+                                    ...candidato,
+                                    profileImage: PCDData.profileImage || fotodefault, // Atribui imagem padrão se não existir
+                                    backgroundImage: PCDData.backgroundImage || defaultbackground, // Atribui imagem padrão se não existir
+                                    name: PCDData.name || "Nome não disponível", // Certifique-se de que há um nome
+                                    trabalho: PCDData.trabalho || "Trabalho não disponível"
+                                };
                             } else {
-                                console.log(`PCD não encontrado para o candidato ${candidato.id}`);
+                                console.log(`PCD não encontrado para o candidato ${candidato.userId}`);
+                                return { ...candidato }; // Retorna candidato sem mudanças se não encontrar PCD
                             }
+                        } else {
+                            return { ...candidato }; // Retorna candidato sem mudanças se não houver userId
                         }
                     }));
 
-                    setCandidatos(candidatosList);
+                    setCandidatos(updatedCandidatosList);
                 } else {
                     setError('ID da vaga não fornecido');
                 }
@@ -67,6 +77,7 @@ function PessoasList() {
 
         GetCandidatos();
     }, [vagaId]);
+
 
     const handleButtonClick = (id) => {
         navigate(`/visualizardocumentos/${id}/${vagaId}`);
@@ -128,50 +139,48 @@ function PessoasList() {
 
     return (
         <>
-
-
-
-            {candidatos.length > 0 && (
-                <div className='w-full h-44 flex items-center justify-center'>
-                    <div className='w-96 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-2'>
-                        <h1 className='font-bold text-2xl text-white'>Candidatos Disponiveis </h1>
-                    </div>
+            <div className='w-full h-44 flex items-center justify-center'>
+                <div className='w-96 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-2'>
+                    <h1 className='font-bold text-2xl text-white'>Candidatos Disponiveis </h1>
                 </div>
-            )}
+            </div>
 
-            <div className={`w-full h-fit flex overflow-x-hidden justify-center items-center ${candidatos.length > 0 ? 'grid Pcdscontainer gap-4 justify-items-center' : ''}`}>
+
+            <div className={`w-full h-fit overflow-x-hidden  Pcdscontainer gap-4 justify-items-center justify-center items-center ${candidatos.length > 0 ? 'py-6 grid ' : ''}`}>
 
                 {candidatos.map(candidato => (
                     <div key={candidato.id} className='h-profilecard w-72  rounded-3xl flex flex-col 
                      items-center justify-center border-gray-400 border-2 shadow-2xl overflow-hidden '>
                         <div className='h-profilecardbanner w-full flex items-center justify-center overflow-hidden relative'>
-                            <img src={candidato.imageProfile} className='h-full w-full object-cover opacity-20 backprofile-opacity' />
-                            <img src={candidato.imageUrl} className="mt-12 absolute shadow-2xl rounded-full w-28 h-28 object-cover border-4 border-blue-600" />
+                            <img src={candidato.backgroundImage} className='h-full w-full object-cover opacity-20 backprofile-opacity' />
+                            <img src={candidato.profileImage} className="mt-12 absolute shadow-2xl rounded-full w-28 h-28 object-cover border-4 border-blue-600" />
                         </div>
                         <div className='h-profilecarditems w-full flex flex-col items-center overflow-hidden'>
 
                             <div className='h-2/6 w-full flex flex-col justify-center items-center  py-1'>
                                 <h1 className='text-xl font-bold text-center'>{candidato.name}</h1>
-                                <h2 className='opacity-75 text-sm truncate'>{candidato.trabalho}</h2>
+                                <h2 className='opacity-75 text-sm truncate'>{candidato.email}</h2>
                             </div>
 
-                            <div className='w-full h-2/6 flex justify-center'>
+                            <div className='w-full h-4/6 flex flex-col justify-center items-center gap-2 '>
+                                <p className='font-medium text-center text-xl'>Ações</p>
+                                <div className='w-full flex justify-center gap-2'>
+                                    <button onClick={() => AceitarCandidato(candidato.id)} type="submit"
+                                        className='bg-green-400 rounded-2xl p-2 h-fit'>
+                                        <FaCheck className='text-3xl text-white text-center cardhover' />
+                                    </button>
+                                    <button onClick={() => RecusarCandidato(candidato.id)} type="submit"
+                                        className='bg-red-400 rounded-2xl p-2 h-fit'>
+                                        <FaTimes className='text-3xl text-white text-center cardhover' />
+                                    </button>
 
-                                <button onClick={() => AceitarCandidato(candidato.id)} type="submit"
-                                    className='bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-full transition-all'>
-                                    <FaCheck className='text-xl text-white text-center' />
-                                </button>
-                                <button onClick={() => RecusarCandidato(candidato.id)} type="submit"
-                                    className='bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full transition-all'>
-                                    <FaTimes className='text-xl text-white text-center' />
-                                </button>
+                                    <button onClick={() => handleButtonClick(candidato.id)} type="submit"
+                                        className='bg-gray-700 rounded-2xl p-2 h-fit'>
+                                        <IoDocumentsSharp className='text-3xl text-white text-center cardhover' />
+                                    </button>
+                                </div>
                             </div>
-                            <div className='h-2/6 w-full flex overflow-hidden justify-center items-center '>
-                                <button onClick={() => handleButtonClick(candidato.id)} type="submit"
-                                    className='w-36 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-1 rounded-full transition-all'>
-                                    Visualizar Docs
-                                </button>
-                            </div>
+
                         </div>
                     </div>
                 ))}

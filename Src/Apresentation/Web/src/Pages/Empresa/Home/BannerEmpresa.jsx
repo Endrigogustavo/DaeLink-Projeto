@@ -11,7 +11,7 @@ const BannerEmpresa = () => {
     const [userProfile, setUserProfile] = useState(null);
     const [userId, setUserId] = useState("");
     const navigate = useNavigate();
-    
+
 
     useEffect(() => {
         const getUserProfile = async () => {
@@ -20,7 +20,7 @@ const BannerEmpresa = () => {
                 const userId = storedUserId;
                 setUserId(userId)
             }
-        
+
             const userDoc = doc(db, "Empresa", userId);
             const userSnap = await getDoc(userDoc);
 
@@ -61,7 +61,7 @@ const BannerEmpresa = () => {
                         {/* Exibindo o nome da empresa com verificação de existência */}
                         <h1 className="text-5xl font-bold block">{userProfile?.name}</h1>
                         <h1 className="text-subtitle pb-8 text-2xl font-bold block">{userProfile?.area}</h1>
-                        <p className="text-justify  line-clamp-4">
+                        <p className="text-justify  line-clamp-4 sobretext">
                             {userProfile?.sobre}
                         </p>
 
@@ -74,9 +74,8 @@ const BannerEmpresa = () => {
                         </div>
                     </div>
                     <div className="w-1/2 h-full justify-center items-center flex overflow-hidden">
-                        {/* Exibindo a imagem da empresa com verificação de existência */}
                         {userProfile?.imageUrl && (
-                            <img src={userProfile.imageUrl} className='h-3/4 rounded-xl border-2 border-blue-500' alt="Imagem da Empresa" />
+                            <img src={userProfile.imageUrl} className='w-4/6 rounded-xl border-2 border-blue-500 profilepic' alt="Imagem da Empresa" />
                         )}
                     </div>
                 </div>

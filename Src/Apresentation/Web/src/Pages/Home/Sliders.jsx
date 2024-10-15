@@ -35,8 +35,8 @@ const Sliders = () => {
       <h1 className="text-1xl font-bold text-center pb-8 uppercase">Disponível em todas as plataformas</h1>
       <Swiper
         slidesPerView={1}
-        spaceBetween={1} 
-        centeredSlides={true} 
+        spaceBetween={1}
+        centeredSlides={true}
         pagination={{
           clickable: true,
         }}

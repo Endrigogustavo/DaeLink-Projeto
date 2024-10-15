@@ -7,16 +7,16 @@ import PessoasList from './PessoasList';
 import Navbar from '../../Navbar/Navbar';
 
 function VisualizarPessoas() {
-  //Função de navegação do site
-  const navigate = useNavigate()
-  //Pegar o id do usuario na tela anterior
+  // Função de navegação do site
+  const navigate = useNavigate();
+  // Pegar o id do usuario na tela anterior
   const { vagaId } = useParams();
-  //Variaveis para setar dados do banco
+  // Variáveis para setar dados do banco
   const [candidatos, setCandidatos] = useState([]);
-
+  const [user, setUser] = useState(null); // Definindo o estado para o usuário autenticado
 
   useEffect(() => {
-    //Pega os dados com base no perfil de empresa logado utilizando o auth do Firebase
+    // Pega os dados com base no perfil de empresa logado utilizando o auth do Firebase
     const AuthProfile = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
