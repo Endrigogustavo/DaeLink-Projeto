@@ -90,15 +90,14 @@ function App() {
           <Route path="/homeuser/vagas/" element={<Vagas />} />
           <Route path="/homeuser/empresas/" element={<Empresas />} />
           <Route path="/vagainfo/" element={<VagasInfo />} />
-          <Route path="/enviardocumento/:vagaId" element={<EnviarDocumentos />} />
-          <Route path="/atualizardocumento/:vagaId/:idDoc" element={<AtualizarDoc />} />
+          <Route path="/enviardocumento" element={<EnviarDocumentos />} />
+          <Route path="/atualizardocumento" element={<AtualizarDoc />} />
           <Route path="/homeuser/processos/" element={<VisualizarProcessosUser />} />
           <Route path="/userprofile/" element={<Profile />} />
           <Route path="/edituser/" element={<EditarUser />} />
-          <Route path="/visualizperfilempresa/:id" element={<VisualizarPerfilEmpresa />} />
-          <Route path="/chatpcd/:empresaId" element={<ChatPCD />} />
+          <Route path="/visualizperfilempresa/" element={<VisualizarPerfilEmpresa />} />
+          <Route path="/chatpcd/" element={<ChatPCD />} />
           <Route path="/vagas" element={<Vagas />} />
-          <Route path="/ApuraçãoPCD/:encryptedId/:vagaId" element={<Apuração />} />
         </Route>
 
         {/* Rotas livres do usuario */}

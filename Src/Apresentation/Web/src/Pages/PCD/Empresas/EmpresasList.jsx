@@ -29,8 +29,8 @@ function EmpresasList() {
     }, []);
 
     const ViewCompanyProfile = (id) => {
-        const encryptedId = encodeURIComponent(encrypt(id));
-        navigate(`/visualizperfilempresa/${encryptedId}`);
+        localStorage.setItem('IdEmpresa', id);
+        navigate(`/visualizperfilempresa`);
     };
 
     useEffect(() => {

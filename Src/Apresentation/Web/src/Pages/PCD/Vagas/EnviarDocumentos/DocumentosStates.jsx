@@ -4,11 +4,10 @@ import { decrypt } from "../../../../Security/Cryptography_Rotes";
 
 const DocumentosStates = () => {
     const navigate = useNavigate();
-    const { vagaId } = useParams();
-
+    
     
     const [userId, setUserId] = useState("");
-    const [vagaUid, setVagaUid] = useState(vagaId);
+    const [vagaUid, setVagaUid] = useState("");
 
     const [nome, setNome] = useState("");
     const [endereco, setEndereco] = useState("");
@@ -36,10 +35,13 @@ const DocumentosStates = () => {
         const userId = storedUserId;
         setUserId(userId)
     }
-        if (userId && vagaId) {
-            setVagaUid(vagaId);
-        }
-    }, [userId, vagaId]);
+    const storedVagaId = localStorage.getItem('vagaId');
+    if (storedVagaId) {
+    const userId = storedVagaId;
+    setVagaUid(userId)
+}
+
+    }, [userId]);
 
     return {
         userId, setUserId,

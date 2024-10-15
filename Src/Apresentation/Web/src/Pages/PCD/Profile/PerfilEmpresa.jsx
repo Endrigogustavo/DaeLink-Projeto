@@ -11,17 +11,20 @@ import CarregamentoTela from "../../../Components/TelaCarregamento/Carregamento"
 function Profile() {
     const navigate = useNavigate();
     //Utilizado para pegar o id do usuario e da vaga na tela anterior
-    const { id } = useParams();
-
-    const decryptedId = decrypt(decodeURIComponent(id))
+    const [id, setId] = useState("")
     //Variaveis onde as informações serão setadas
     const [userProfile, setUserProfile] = useState(null);
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
         const getCompanyProfile = async () => {
+            const storedUserId = localStorage.getItem('IdEmpresa');
+            if (storedUserId) {
+              const userId = storedUserId;
+              setId(userId)
+            }      
             //Caminho das informações do banco com base no ID
-            const CompanyDoc = doc(db, "Empresa", decryptedId);
+            const CompanyDoc = doc(db, "Empresa", id);
             //Pegando os dados
             const GetCompany = await getDoc(CompanyDoc);
             //Tratamento e setando dados recebidos em uma variavel
@@ -34,7 +37,7 @@ function Profile() {
         };
         //Iniciando a função
         getCompanyProfile();
-    }, [decryptedId]);
+    }, [id]);
 
     if (!userProfile) {
         return <CarregamentoTela/>;
