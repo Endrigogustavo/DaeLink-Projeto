@@ -6,6 +6,15 @@ exports.logout = (req, res) => {
     res.send("cookie deletado")
 }
 
+exports.getCookie = (req, res) => {
+  const token = req.cookies.tokenId
+  try {
+    if(!token.empty) return res.status(200).json(cookies)
+  } catch (error) {
+    res.send(error)
+  }
+}
+
 exports.cookies = (req, res) => {
     const uid = req.body.uid
     res.cookie('tokenId', uid, {

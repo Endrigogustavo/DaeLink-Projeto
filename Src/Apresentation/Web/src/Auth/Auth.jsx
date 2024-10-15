@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, on
 import { doc, setDoc, getDoc, getFirestore, addDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import axios from 'axios'
 
 export const registerUser = async (name, email, password, idade, deficiencia, descrição, trabalho, image, background, sobre, experiencias, tipo, laudomedico, CPF, additionalData) => {
   try {

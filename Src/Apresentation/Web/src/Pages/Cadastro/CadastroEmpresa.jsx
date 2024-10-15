@@ -7,6 +7,7 @@ import './CadastroCss.css';
 import CadastroE from '../../Img/CadastroE.png'
 import { getAuth, sendEmailVerification } from 'firebase/auth';
 import InputMask from 'react-input-mask';
+import axios from 'axios';
 
 
 const Register = () => {
@@ -79,6 +80,9 @@ const Register = () => {
       const user = auth.currentUser; // Certifique-se de obter o 'user' da autenticação
       const id = user.uid; // Pegue o UID do usuário autenticado
       localStorage.setItem('userId', id);
+      await axios.post('http://localhost:3000/cookie', {id},{
+        withCredentials: true 
+    });
       await sendEmailVerification(auth.currentUser)
         .then(() => {
           alert("Email de verificação enviado com sucesso!!!")
