@@ -261,7 +261,7 @@ const EmpresaFormRegister = () => {
                         <div className='w-full h-fit flex flex-col items-center justify-center'>
                             <div className='w-full justify-end flex items-center px-14'>
                                 <button onClick={voltarincon} className='flex h-fit items-center gap-1 '>
-                                    <p className='font-medium'>Sair</p>
+                                    <p className='font-medium'>Voltar</p>
                                     <MdExitToApp className='text-4xl text-gray-800 iconhover ' />
                                 </button>
                             </div>

@@ -29,7 +29,7 @@ const SelecionarCadastro = () => {
           <div className='px-6 py-10 flex flex-col gap-2 rounded-3xl border-4 border-blue-600  items-center justify-center w-full max-w-lg mx-auto overflow-hidden'>
             <div className='w-full justify-end flex items-center'>
               <button onClick={voltarincon} className='flex h-fit items-center gap-1'>
-                <p className='font-medium'>Sair</p>
+                <p className='font-medium'>Voltar</p>
                 <MdExitToApp className='text-4xl text-gray-800 iconhover ' />
               </button>
             </div>
