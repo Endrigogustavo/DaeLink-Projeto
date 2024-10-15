@@ -400,11 +400,13 @@ const EmpresaFormRegister = () => {
                                         >
                                             <option value="" disabled>Selecione a área de atuação</option>
                                             <option value="Entretenimento">Entretenimento</option>
+                                            <option value="Automotivo">Automotivo</option>
                                             <option value="Tecnologia">Tecnologia</option>
                                             <option value="Saúde">Saúde</option>
                                             <option value="Educação">Educação</option>
                                             <option value="Finanças">Finanças</option>
                                             <option value="Comércio">Comércio</option>
+                                            <option value="Segurança">Segurança</option>
                                         </select>
                                     </div>
 
