@@ -8,9 +8,9 @@ const AddPessoa = () => {
   //Função de navegação do site
   const navigate = useNavigate()
   //Pegar o id do usuario na tela anterior
-  const { id } = useParams();
 
   //Variaveis para setar dados do banco
+  const [id, setId] = useState("")
   const [userInfo, setUserInfo] = useState(null);
   const [user, setUser] = useState(null);
   const [vagas, setVagas] = useState([]);
@@ -36,6 +36,7 @@ const AddPessoa = () => {
     //Informações do usuario
     const getPCDProfile = async () => {
       try {
+        const id = localStorage.getItem("Candidato")
           const PCDdoc = doc(db, "PCD", id);
           const GetPCDresult = await getDoc(PCDdoc);
 
@@ -53,7 +54,7 @@ const AddPessoa = () => {
       }
   };
   getPCDProfile();
-}, [id]);
+}, []);
 
   //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
   useEffect(() => {
@@ -88,6 +89,7 @@ const AddPessoa = () => {
     if (userInfo  && userInfo.name && userInfo.email) {
       
       try {
+          const id = localStorage.getItem("Candidato")
           const VagaDoc = doc(db, "Vagas", VagaId);
           const CandidatosCollection = collection(VagaDoc, 'candidatos');
           await addDoc(CandidatosCollection, {

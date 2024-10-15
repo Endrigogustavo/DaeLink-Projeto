@@ -10,23 +10,6 @@ const EditarVaga = () => {
   // Função de navegação do site
   const navigate = useNavigate();
   // Utilizado para pegar o id do usuario e da vaga na tela anterior
-  const { vagaId } = useParams();
-  const [vagaInfoId, setvagaInfoId] = useState(vagaId);
-
-  // Carregar as informações do usuário do banco de dados
-  useEffect(() => {
-    const getCompanyProfile = async () => {
-      const CompanyDoc = doc(db, "Vagas", vagaId);
-      const GetCompany = await getDoc(CompanyDoc);
-      if (GetCompany.exists()) {
-        setUserProfile(GetCompany.data());
-      } else {
-        setUserProfile(null);
-        alert("Sem documentos!");
-      }
-    };
-    getCompanyProfile();
-  }, [vagaId]);
 
   return (
     <>

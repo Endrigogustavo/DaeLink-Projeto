@@ -53,3 +53,19 @@ try {
   if(err) return res.json(err);
 }
 }
+
+exports.enviarDoc = (req, res) =>{
+
+}
+
+exports.addUserVaga = (req, res) =>{
+  
+}
+
+exports.enviarDoc = (req, res) =>{
+  
+}
+
+exports.enviarDoc = (req, res) =>{
+  
+}

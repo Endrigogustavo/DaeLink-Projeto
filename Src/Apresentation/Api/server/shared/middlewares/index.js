@@ -27,3 +27,9 @@ exports.cookies = (req, res) => {
   
     res.send('Cookie definido com sucesso!');
 }
+
+{/*
+      const token = jwt.sign({ id: user.id }, SECRET_KEY, {
+        expiresIn: '1h', // Expira em 1 hora
+    });
+  */}
