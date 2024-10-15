@@ -162,7 +162,7 @@ const FormEditarVaga = () => {
                         name="area"
                         placeholder="area"
                         value={userData.area}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         onChange={(e) => {
                             handleInputChange(e);
                             adjustTextareaHeight(textareaRefs.area);
@@ -216,7 +216,7 @@ const FormEditarVaga = () => {
                         name="detalhes"
                         placeholder="detalhes"
                         value={userData.detalhes}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         onChange={(e) => {
                             handleInputChange(e);
                             adjustTextareaHeight(textareaRefs.detalhes);
@@ -231,7 +231,7 @@ const FormEditarVaga = () => {
                         name="exigencias"
                         placeholder="exigencias"
                         value={userData.exigencias}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         onChange={(e) => {
                             handleInputChange(e);
                             adjustTextareaHeight(textareaRefs.exigencias);
