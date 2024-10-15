@@ -294,7 +294,7 @@ const DocumentosForm = () => {
                     <label className="text-lg font-medium">Endereço</label>
                     <textarea
                         ref={enderecoRef}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent "
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         placeholder="Insira seu Endereço"
                         value={endereco}
                         onChange={(e) => {
@@ -318,7 +318,7 @@ const DocumentosForm = () => {
                     <label className="text-lg font-medium">Experiências</label>
                     <textarea
                         ref={experienciaRef}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         placeholder="Fale brevemente de suas experiências profissionais"
                         value={experiencia1}
                         onChange={(e) => {

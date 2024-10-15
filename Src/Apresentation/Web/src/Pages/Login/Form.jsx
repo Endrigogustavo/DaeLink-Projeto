@@ -63,7 +63,7 @@ const Form = () => {
     };
 
     return (
-        <div className="px-6 py-10 rounded-3xl border-2 border-blue-800 w-full max-w-lg mx-auto">
+        <div className="px-6 py-10 rounded-3xl border-4 border-blue-600 w-full max-w-lg mx-auto">
             <h1 className="font-extrabold text-3xl">Bem Vindo!</h1>
             <p className="font-semibold text-wrap mt-2 text-black opacity-80">
                 Preencha os campos de acordo com as informações:

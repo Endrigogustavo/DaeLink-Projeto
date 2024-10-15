@@ -107,7 +107,7 @@ const VagaForm = () => {
                     <input
                         type="text"
                         name="vaga"
-                        placeholder="vaga"
+                        placeholder="Digite o nome da Vaga"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         value={vaga}
                         onChange={(e) => {
@@ -121,9 +121,9 @@ const VagaForm = () => {
                     <textarea
                         ref={textareaRefs.detalhes}
                         name="detalhes"
-                        placeholder="Fale sobre a descrição da vaga"
+                        placeholder="Descreva a vaga"
                         value={detalhes}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         onChange={(e) => {
                             setDetalhes(e.target.value);
                             adjustTextareaHeight(textareaRefs.detalhes);
@@ -136,9 +136,9 @@ const VagaForm = () => {
                     <textarea
                         ref={textareaRefs.area}
                         name="area"
-                        placeholder="area"
+                        placeholder="Selecione a área dessa vaga"
                         value={area}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         onChange={(e) => {
                             setArea(e.target.value);
                             adjustTextareaHeight(textareaRefs.area);
@@ -194,8 +194,8 @@ const VagaForm = () => {
                     <label className="text-lg font-medium">Endereço</label>
                     <input
                         type="text"
-                        placeholder="Local da empresa"
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                        placeholder="Insira o endereço da empresa"
+                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent overflow-y-hidden"
                         value={local}
                         onChange={(e) => setLocal(e.target.value)}
                     />
@@ -206,9 +206,9 @@ const VagaForm = () => {
                     <textarea
                         ref={textareaRefs.exigencias}
                         name="exigencias"
-                        placeholder="exigencias"
+                        placeholder="Fale as suas necessidades"
                         value={exigencias}
-                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         onChange={(e) => {
                             setExigencias(e.target.value);
                             adjustTextareaHeight(textareaRefs.exigencias);

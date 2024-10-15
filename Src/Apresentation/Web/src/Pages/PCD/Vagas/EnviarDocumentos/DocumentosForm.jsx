@@ -192,7 +192,7 @@ const DocumentosForm = () => {
                                     input.setter(e.target.value);
                                     adjustTextareaHeight(input.ref);
                                 }}
-                                className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent"
+                                className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                                 placeholder={input.placeholder}
                                 required
                             />

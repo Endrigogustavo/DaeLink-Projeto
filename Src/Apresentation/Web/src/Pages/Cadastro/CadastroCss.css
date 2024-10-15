@@ -7,27 +7,9 @@
     background: #343270;
 }
 
-.Img-Cadastro{
-    margin-top: 2rem;
+.registerinputsgrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-
-@media (max-width:1024px){
-    .containerresponsiveform{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .grid-responsiveform{
-       width: fit-content;
-    }
-}
-
-@media (max-width:1340px){
-    .grid-responsiveform{
-        grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-}
-
 
 @media (max-width:430px) {
     .respon-w-input {
@@ -43,4 +25,23 @@
 
 }
 
+@media (min-width:730px){
+    .h-formside{
+        height: 100vh;
+    }
+
+}
+@media (max-width:730px) {
+    .registerinputsgrid{
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}
+
+@media (min-width:1300px){
+    .formside{
+        width: 50%;
+        display: flex;
+    }
+
+}
 
