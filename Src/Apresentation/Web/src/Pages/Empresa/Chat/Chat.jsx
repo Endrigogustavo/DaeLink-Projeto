@@ -11,10 +11,11 @@ import { IoSend } from "react-icons/io5";
 
 const ChatRoomEmpresa = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
+    
     const [loading, setLoading] = useState(true);
 
     // States for storing user and empresa profile
+    const [id, setId] = useState("")
     const [userProfile, setUserProfile] = useState(null);
     const [empresaProfile, setEmpresaProfile] = useState(null);
     const dummy = useRef();
@@ -35,7 +36,8 @@ const ChatRoomEmpresa = () => {
                 setUserId(userId)
             }
         
-               
+               const id = localStorage.getItem("chatId")
+               setId(id)
                 // Chat collection and query
                 const ChatCollection = collection(db, "Chat");
                 const GetQueryCompanyId = query(ChatCollection, where("empresaId", "==", idempresa));

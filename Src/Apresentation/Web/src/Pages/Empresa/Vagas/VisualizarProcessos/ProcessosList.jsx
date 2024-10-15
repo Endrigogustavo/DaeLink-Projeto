@@ -48,11 +48,13 @@ function ProcessosList() {
 
 
     const handleButtonClick = (vagaId) => {
-        navigate(`/visualizarpessoas/${vagaId}`);
+        localStorage.setItem('vagaId', vagaId);
+        navigate(`/visualizarpessoas/`);
     };
 
     const atualizarVaga = (vagaId) => {
-        navigate(`/atualizarvaga/${vagaId}`);
+        localStorage.setItem('vagaId', vagaId);
+        navigate(`/atualizarvaga`);
     };
 
 

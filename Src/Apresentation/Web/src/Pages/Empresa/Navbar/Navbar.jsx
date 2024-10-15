@@ -50,7 +50,7 @@ export default function Navbar() {
     };
 
     const handleButtonClickProfile = (IdEmpresa) => {
-        navigate(`/candidatos/`);
+        navigate(`/candidatos`);
     };
 
     const handleButtonClickVaga = (IdEmpresa) => {

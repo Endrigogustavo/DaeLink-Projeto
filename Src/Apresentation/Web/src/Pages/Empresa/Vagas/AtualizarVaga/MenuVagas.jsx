@@ -16,7 +16,8 @@ const MenuVagas = ({ AbrirVaga, VagaPreenchida, FecharVaga }) => {
             {menuAberto && <div className="overlay fixed inset-0 bg-black bg-opacity-50 z-10"></div>}
 
             {/* Menu principal */}
-            <div className="fixed flex justify-center py-10 gap-2 inset-x-0 bottom-0 start-0 EditMenu z-20">
+            
+            <div className="mt-1 fixed flex justify-center py-10 gap-2  inset-x-0 bottom-0 start-0 EditMenu z-20">
                 <button onClick={toggleMenu} type="button" className="w-24 bg-gray-700 flex flex-col items-center rounded-2xl p-2 h-fit menuitenhover">
                     {menuAberto ? (
                         <>
