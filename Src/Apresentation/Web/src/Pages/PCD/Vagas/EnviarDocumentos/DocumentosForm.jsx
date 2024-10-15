@@ -142,7 +142,7 @@ const DocumentosForm = () => {
             }
         } catch (e) {
             console.error("Erro ao adicionar documento: ", e);
-            alert("Erro ao adicionar documento.");
+            alert("Erro ao adicionar documento.", e);
         } finally {
             setIsLoading(false);
         }
