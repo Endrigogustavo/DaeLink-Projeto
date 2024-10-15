@@ -137,7 +137,6 @@ const UserFormRegister = () => {
 
 
                 setModalMessage("Cadastro Realizado com Sucesso, e Email de Verificação Enviado");
-
                 await sendEmailVerification(auth.currentUser)
                     .then(() => {
                         setModalOpen(true);
@@ -443,7 +442,7 @@ const UserFormRegister = () => {
                                             value={sobre}
                                             onChange={(e) => {
                                                 setSobre(e.target.value);
-                                                adjustTextareaHeight(textareaRefs.experiencias);
+                                                adjustTextareaHeight(textareaRefs.sobre);
                                             }} />
                                     </div>
 
