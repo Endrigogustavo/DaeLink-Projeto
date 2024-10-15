@@ -5,9 +5,7 @@ import { registerUser } from '../../Auth/Auth';
 import { getAuth, sendEmailVerification } from 'firebase/auth';
 import { FaCloudUploadAlt, FaUser, FaIdCard, FaClipboardList } from 'react-icons/fa';
 import InputMask from 'react-input-mask';
-
-import CadastroU from '../../Img/CadastroU.png';
-
+import axios from 'axios'
 const Register = () => {
   const [step, setStep] = useState(1);
   const [laudomedico, setLaudoMedico] = useState(null);
@@ -63,13 +61,15 @@ const Register = () => {
         const id = user.uid; // Pegue o UID do usuário autenticado
         localStorage.setItem('userId', id);
 
+
+        
         await sendEmailVerification(auth.currentUser)
           .then(() => {
             alert("Email de verificação enviado com sucesso!!!");
           });
 
         alert("Cadastrado com sucesso");
-        navigate(`/homeuser/`);
+        navigate(`/loginu`);
       }
     } catch (error) {
       alert(error.message)

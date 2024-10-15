@@ -1,4 +1,5 @@
-const { db } = require('../../database/firebase')
+const { db } = require('../../database/firebase');
+const { cookies } = require('../middlewares');
 
 exports.getPCD = async (req, res) => {
   const tokenId = req.cookies.tokenId;

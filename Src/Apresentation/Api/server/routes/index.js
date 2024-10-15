@@ -11,6 +11,7 @@ const router = express.Router();
 
 router.post('/logout', Middlewares.logout)
 router.post('/cookie', Middlewares.cookies);
+router.get('/getcookie', Middlewares.getCookie);
 
 router.get('/get-PCD', Services.getPCD)
 router.get('/get-all-PCD', Services.getPCDAll)
