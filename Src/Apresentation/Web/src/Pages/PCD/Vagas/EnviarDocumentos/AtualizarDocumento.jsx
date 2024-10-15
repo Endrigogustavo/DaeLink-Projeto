@@ -9,14 +9,13 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const DocumentosForm = () => {
-    const { idDoc } = useParams();
-   
 
+    const [idDoc, setDoc] = useState("")
     const [selectedFile1, setSelectedFile1] = useState(null);
     const [selectedFile2, setSelectedFile2] = useState(null);
     const [selectedFile3, setSelectedFile3] = useState(null);
     const [userUid, setUserUid] = useState(null)
-    const [docProfile, setDocProfile] =  useState([])
+    const [docProfile, setDocProfile] = useState([])
 
     const {
         userId, setUserId,
@@ -52,6 +51,11 @@ const DocumentosForm = () => {
 
     useEffect(() => {
         const getInfoPCD = async () => {
+            const doc = localStorage.getItem('IdDoc');
+            if (doc) {
+                const userId = doc;
+                setDoc(userId)
+            }
             const storedUserId = localStorage.getItem('userId');
             if (storedUserId) {
                 const userId = storedUserId;
@@ -59,7 +63,7 @@ const DocumentosForm = () => {
 
                 const PCDDoc = await getDoc(doc(db, "PCD", userId));
                 if (PCDDoc.exists()) {
-                   const PCDData = { id: PCDDoc.id, ...PCDDoc.data() }; 
+                    const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
                     setPessoaId(PCDData);
                 } else {
                     console.log("Pessoa não encontrada!");
@@ -82,47 +86,47 @@ const DocumentosForm = () => {
     }, []);
 
     useEffect(() => {
-    const getDocPCD = async () => {
-        try {
-            const DocRef = collection(db, "Vagas", vagaUid, "candidatos");
-            const QueryDoc = query(DocRef, where("userId", "==", userId));
-            const ResultDoc = await getDocs(QueryDoc);
+        const getDocPCD = async () => {
+            try {
+                const DocRef = collection(db, "Vagas", vagaUid, "candidatos");
+                const QueryDoc = query(DocRef, where("userId", "==", userId));
+                const ResultDoc = await getDocs(QueryDoc);
 
-            if (!ResultDoc.empty) {
-                // Apenas um candidato é esperado com base na consulta
-                const candidatoDoc = ResultDoc.docs[0];
+                if (!ResultDoc.empty) {
+                    // Apenas um candidato é esperado com base na consulta
+                    const candidatoDoc = ResultDoc.docs[0];
 
-                // Referência para a coleção de documentos do candidato
-                const documentosRef = collection(candidatoDoc.ref, "documentos");
-                const ResultDocumentos = await getDocs(documentosRef);
+                    // Referência para a coleção de documentos do candidato
+                    const documentosRef = collection(candidatoDoc.ref, "documentos");
+                    const ResultDocumentos = await getDocs(documentosRef);
 
-                if (!ResultDocumentos.empty) {
-                    // Aqui você pode iterar sobre os documentos ou pegar o primeiro
-                    const documentosData = ResultDocumentos.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
+                    if (!ResultDocumentos.empty) {
+                        // Aqui você pode iterar sobre os documentos ou pegar o primeiro
+                        const documentosData = ResultDocumentos.docs.map(doc => ({
+                            id: doc.id,
+                            ...doc.data()
+                        }));
 
-                    // Se você quiser apenas o primeiro documento
-                    const PCDData = documentosData[0]; // ou ajuste conforme necessário
-                    setDocProfile(PCDData);
+                        // Se você quiser apenas o primeiro documento
+                        const PCDData = documentosData[0]; // ou ajuste conforme necessário
+                        setDocProfile(PCDData);
+                    } else {
+                        setDocProfile(null);
+                    }
                 } else {
-                    setDocProfile(null);
+                    alert("Não achou candidatos");
                 }
-            } else {
-                alert("Não achou candidatos");
+            } catch (error) {
+                console.error("Erro ao buscar documentos:", error);
+                alert("Ocorreu um erro ao buscar documentos.");
             }
-        } catch (error) {
-            console.error("Erro ao buscar documentos:", error);
-            alert("Ocorreu um erro ao buscar documentos.");
-        }
-    };
+        };
 
-    getDocPCD();
-}, [vagaUid, userId]);
+        getDocPCD();
+    }, [vagaUid, userId]);
 
-    
-    
+
+
 
 
     const handleFileChange1 = (e) => {
@@ -219,27 +223,27 @@ const DocumentosForm = () => {
             }
         } catch (e) {
             console.error("Erro ao adicionar documento: ", e);
-            alert("Erro ao adicionar documento.");
+            alert("Erro ao adicionar documento.", e);
         }
     };
 
-    const DeletarDoc = async() =>{
-        
-       try {
-        const candidatosRef = collection(db, "Vagas", vagaUid, "candidatos");
+    const DeletarDoc = async () => {
+
+        try {
+            const candidatosRef = collection(db, "Vagas", vagaUid, "candidatos");
             const QueryCandidatos = query(candidatosRef, where("userId", "==", userId));
             const ResultCandidatos = await getDocs(QueryCandidatos);
-                const candidatoDoc = ResultCandidatos.docs[0];
-                const candidatoId = candidatoDoc.id;
-                const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", candidatoId);
-                const documentoDocRef = doc(candidatoDocRef, "documentos", idDoc);
-        await deleteDoc(documentoDocRef)
-        alert("Documento deletado com sucesso")
-        navigate(`/homeuser`);
-       } catch (error) {
-        console.log(error)
-        alert("Erro ao deletar documento", error.message)
-       }
+            const candidatoDoc = ResultCandidatos.docs[0];
+            const candidatoId = candidatoDoc.id;
+            const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", candidatoId);
+            const documentoDocRef = doc(candidatoDocRef, "documentos", idDoc);
+            await deleteDoc(documentoDocRef)
+            alert("Documento deletado com sucesso")
+            navigate(`/homeuser`);
+        } catch (error) {
+            console.log(error)
+            alert("Erro ao deletar documento", error.message)
+        }
     }
 
     return (
@@ -435,15 +439,15 @@ const DocumentosForm = () => {
                     Enviar Documentos
                 </button>
 
-                
+
             </form>
             <button
                 onClick={() => DeletarDoc()}
-                    type="submit"
-                    className="w-56 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-3 px-4 rounded-full transition-all"
-                >
-                    Deletar Documento
-                </button>
+                type="submit"
+                className="w-56 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-3 px-4 rounded-full transition-all"
+            >
+                Deletar Documento
+            </button>
         </>
     );
 };

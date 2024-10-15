@@ -82,11 +82,14 @@ const ProcessosList = () => {
 
             if (!GetDoc.empty) {
                 const idDoc = GetDoc.docs[0].id;
+                localStorage.setItem('vagaId', vagaId);
+                localStorage.setItem('IdDoc', idDoc);
                 alert("Documentos já existem");
-                navigate(`/atualizardocumento/${vagaId}/${idDoc}`);
+                navigate(`/atualizardocumento/`);
             } else {
                 alert("Sem documentos");
-                navigate(`/enviardocumento/${vagaId}`);
+                localStorage.setItem('vagaId', vagaId);
+                navigate(`/enviardocumento`);
             }
         } else {
             alert("Usuário não encontrado");
@@ -94,7 +97,8 @@ const ProcessosList = () => {
     };
 
     const ChatEmpresa = (empresaId) => {
-        navigate(`/chatpcd/${empresaId}`);
+        localStorage.setItem('IdEmpresa', empresaId);
+        navigate(`/chatpcd`);
     };
 
     const getSituacaoClass = (situacao) => {
