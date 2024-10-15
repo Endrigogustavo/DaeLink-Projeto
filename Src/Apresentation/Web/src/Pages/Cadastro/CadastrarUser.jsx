@@ -69,7 +69,7 @@ const Register = () => {
           });
 
         alert("Cadastrado com sucesso");
-        navigate(`/loginu`);
+        navigate(`/homeuser`);
       }
     } catch (error) {
       alert(error.message)
