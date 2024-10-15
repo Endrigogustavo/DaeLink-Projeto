@@ -8,8 +8,7 @@ import MenuVagas from "./MenuVagas";
 
 const FormEditarVaga = () => {
     const navigate = useNavigate();
-    const { vagaId } = useParams();
-
+    const [vagaId, setVaga] = useState("")
     // Informações do usuário
     const [userData, setUserProfile] = useState({
         vaga: '',
@@ -33,6 +32,8 @@ const FormEditarVaga = () => {
     // Carregar as informações do usuário do banco de dados
     useEffect(() => {
         const getCompanyProfile = async () => {
+            const vagaId = localStorage.getItem("vagaId");
+            setVaga(vagaId)
             const CompanyDoc = doc(db, "Vagas", vagaId);
             const GetCompany = await getDoc(CompanyDoc);
             if (GetCompany.exists()) {
@@ -134,13 +135,14 @@ const FormEditarVaga = () => {
     return (
         <>
             <MenuVagas AbrirVaga={AbrirVaga} VagaPreenchida={VagaPreenchida} FecharVaga={FecharVaga} />
+         
             <div className='w-full h-36 flex items-center justify-center'>
                 <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-5'>
                     <h1 className='font-bold text-2xl text-white'>Editar Vaga </h1>
                 </div>
             </div>
             <h1 className='font-bold text-2xl text-center'>Situação: {userData.status}</h1>
-            <form onSubmit={handleSubmit} className="w-full h-fit p-4 editvaga-div gap-2">
+            <form onSubmit={handleSubmit} className="w-full z-40 h-fit p-4 editvaga-div gap-2">
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Cargo</label>
                     <input

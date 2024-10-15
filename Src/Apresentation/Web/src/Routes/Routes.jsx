@@ -65,18 +65,17 @@ function App() {
         {/* Rotas privadas da empresa */}
         <Route path="/" element={<PrivateRoute allowedRoles={['Empresa']} />}>
           <Route path="/homeempresa/cadastrovaga/" element={<CadastrarVaga />} />
-          <Route path="/candidatos/:idempresa" element={<Candidatos />} />
+          <Route path="/candidatos" element={<Candidatos />} />
           <Route path="/homeempresa/" element={<Homeempresa />} />
-          <Route path='/addpessoa/:id' element={<AddPessoa />} />
-          <Route path="/profileadd/:id/" element={<ProfileAdd />} />
+          <Route path='/addpessoa/' element={<AddPessoa />} />
+          <Route path="/profileadd/" element={<ProfileAdd />} />
           <Route path="/processos/" element={<VisualizarProcessosEmpresa />} />
-          <Route path="/visualizarpessoas/:vagaId" element={<VisualizarPessoasVaga />} />
-          <Route path="/visualizardocumentos/:id/:vagaId" element={<VisualizarDocumentos />} />
+          <Route path="/visualizarpessoas/" element={<VisualizarPessoasVaga />} />
+          <Route path="/visualizardocumentos/" element={<VisualizarDocumentos />} />
           <Route path="/editempresa/" element={<EditEmpresa />} />
           <Route path="/perfilempresa/" element={<PerfilEmpresa />} />
-          <Route path="/chat/:id" element={<ChatEmpresa />} />
-          <Route path="/atualizarvaga/:vagaId" element={<EditVaga />} />
-          <Route path="/candidatos" element={<Candidatos />} />
+          <Route path="/chat/" element={<ChatEmpresa />} />
+          <Route path="/atualizarvaga" element={<EditVaga />} />
         </Route>
 
         {/* Rotas livres da empresa */}

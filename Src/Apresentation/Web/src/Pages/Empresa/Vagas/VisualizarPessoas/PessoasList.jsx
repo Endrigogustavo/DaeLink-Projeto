@@ -9,8 +9,7 @@ import { IoDocumentsSharp } from "react-icons/io5";
 
 function PessoasList() {
     const navigate = useNavigate();
-    const { vagaId } = useParams();
-
+    const [vagaId, setVaga] = useState("")
     const [candidatos, setCandidatos] = useState([]);
     const [user, setUser] = useState(null);
     const [error, setError] = useState('');
@@ -34,7 +33,8 @@ function PessoasList() {
     useEffect(() => {
         const GetCandidatos = async () => {
             try {
-                if (vagaId) {
+                    const vagaId = localStorage.getItem("vagaId")
+                    setVaga(vagaId)
                     const CandidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos');
                     const GetCandidatos = await getDocs(CandidatosCollection);
 
@@ -66,9 +66,7 @@ function PessoasList() {
                     }));
 
                     setCandidatos(updatedCandidatosList);
-                } else {
-                    setError('ID da vaga não fornecido');
-                }
+                
             } catch (error) {
                 console.error('Erro ao buscar candidatos:', error);
                 setError('Erro ao buscar candidatos');
@@ -76,11 +74,12 @@ function PessoasList() {
         };
 
         GetCandidatos();
-    }, [vagaId]);
+    }, []);
 
 
     const handleButtonClick = (id) => {
-        navigate(`/visualizardocumentos/${id}/${vagaId}`);
+        localStorage.setItem("IdUserDoc", id)
+        navigate(`/visualizardocumentos/`);
     };
 
     const AceitarCandidato = async (id) => {

@@ -18,6 +18,7 @@ function Home() {
   useEffect(() =>{
     localStorage.removeItem('IdEmpresa');
     localStorage.removeItem('vagaId');
+    localStorage.removeItem('IdDoc');
   })
 
   return (

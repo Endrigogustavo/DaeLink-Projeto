@@ -48,7 +48,8 @@ const CandidatosTable = () => {
     };
 
     const handleButtonClick = (id) => {
-        navigate(`/profileadd/${id}/`);
+        localStorage.setItem("Candidato", id)
+        navigate(`/profileadd/`);
     };
 
     return (
