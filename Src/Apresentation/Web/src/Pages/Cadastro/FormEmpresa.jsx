@@ -10,6 +10,7 @@ import { getAuth, sendEmailVerification } from 'firebase/auth';
 import InputMask from 'react-input-mask';
 import axios from 'axios';
 import Modal from './Modal';
+import { FaClipboardList, FaIdCard, FaUser } from 'react-icons/fa';
 
 
 const EmpresaFormRegister = () => {
@@ -266,23 +267,26 @@ const EmpresaFormRegister = () => {
                                 </button>
                             </div>
                             <h1 className="font-extrabold text-3xl my-4">Cadastro Empresa</h1>
-                            <div className='w-full h-fit flex justify-center items-center gap-8'>
-                                <div className="flex flex-col items-center">
-                                    <TbCircleNumber1Filled size={30} className={` ${step === 1 ? 'text-blue-600' : 'text-gray-900'}`} />
-                                </div>
-                                <div className="flex flex-col items-center">
-                                    <TbCircleNumber2Filled size={30} className={`${step === 2 ? 'text-blue-600' : 'text-gray-900'}`} />
-                                </div>
-                                <div className="flex flex-col items-center">
-                                    <TbCircleNumber3Filled size={30} className={`${step === 3 ? 'text-blue-600' : 'text-gray-900'}`} />
-                                </div>
+                            <div className='w-full h-fit flex justify-center items-center gap-10'>
+                            <div className="flex flex-col items-center">
+                    <FaUser size={30} className={`${step === 1 ? 'text-blue-500' : 'text-gray-400'}`} />
+                    <span className={`${step === 1 ? 'text-blue-500' : 'text-gray-400'}`}>Informações </span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <FaIdCard size={30} className={`${step === 2 ? 'text-blue-500' : 'text-gray-400'}`} />
+                    <span className={`${step === 2 ? 'text-blue-500' : 'text-gray-400'}`}>Documento</span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <FaClipboardList size={30} className={`${step === 3 ? 'text-blue-500' : 'text-gray-400'}`} />
+                    <span className={`${step === 3 ? 'text-blue-500' : 'text-gray-400'}`}>Sobre</span>
+                  </div>
                             </div>
                             <div className="w-2/5 bg-gray-200 rounded-full h-2 ">
                                 <div className="bg-blue-500 h-full rounded-full" style={{ width: `${progressPercentage}%` }}></div>
                             </div>
                         </div>
 
-                        <div className='w-full h-fit grid  registerinputsgrid justify-items-center mt-2 gap-y-4'>
+                        <div className='w-10/12 h-fit grid  registerinputsgrid justify-items-center mt-2 gap-y-4'>
                             {step === 1 && (
                                 <>
                                     <label htmlFor="profile-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
@@ -304,7 +308,7 @@ const EmpresaFormRegister = () => {
                                     <div className="flex flex-col">
                                         <label className="text-lg font-medium">Nome</label>
                                         <input required type="text" className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                                            placeholder="Insira seu Nome Completo" value={name}
+                                            placeholder="Insira o nome da empresa" value={name}
                                             onChange={(e) => setName(e.target.value)} />
                                     </div>
 
