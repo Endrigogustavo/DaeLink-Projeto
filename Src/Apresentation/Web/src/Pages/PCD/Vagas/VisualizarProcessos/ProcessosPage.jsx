@@ -27,21 +27,23 @@ function Processos_Page() {
 
     return (
         <>
+            <div className='w-full h-36 flex items-center justify-center'>
+                <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-5'>
+                    <h1 className='font-bold text-2xl text-white'>Processos </h1>
+                </div>
+            </div>
+
+            <ProcessosList />
+
             <div className='h-processoshero w-full flex overflow-hidden bg-gray-300 '>
                 <div className='w-1/2 h-full container-side flex justify-center items-center '>
-                  <img src="https://i.postimg.cc/8ktnc47C/Girl-About.png" className='h-full imgcontainer' alt="side-image" />
+                    <img src="https://i.postimg.cc/8ktnc47C/Girl-About.png" className='h-full imgcontainer' alt="side-image" />
                 </div>
                 <div className='w-1/2 h-full container-side text-side flex flex-col justify-center items-center bg-gray-800 gap-2 '>
                     <h1 className='text-2xl font-bold text-white text-center'>Processos Ativos</h1>
                     <p className='text-white line-clamp-3 w-3/4 text-justify text-base c'>{sidetext}</p>
                 </div>
             </div>
-
-            <div className='w-full h-fit py-6 justify-center items-center'>
-                <h1 className='text-3xl font-bold text-center '>Processos Ativos:</h1>
-            </div>
-
-            <ProcessosList />
 
             <div className="w-full bg-gray-900 h-16 ">
                 <div className="flex w-full h-full items-center justify-center gap-4">

@@ -10,9 +10,9 @@
     }
 
     .EditMenu {
-        justify-content: left;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+        left: 2%;
+        bottom: 2%;
+        transform: none;
     }
 
 }

@@ -25,20 +25,16 @@ function Footer() {
 
   const FooterLinks2 = [
     {
-      title: "Regras",
-      link: "/#"
-    },
-    {
       title: "Termos Legais",
-      link: "/Empresas"
+      link: "/termos"
     },
     {
       title: "IBM",
-      link: "/Vagas"
+      link: "https://www.ibm.com/br-pt"
     },
     {
       title: "Etec da Zona Leste",
-      link: "/Documentos"
+      link: "https://eteczonaleste.cps.sp.gov.br/"
     },
   ]
 

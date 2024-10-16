@@ -18,6 +18,13 @@ const EmpresasPage = () => {
 
     return (
         <>
+            <div className='w-full h-36 flex items-center justify-center'>
+                <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-5'>
+                    <h1 className='font-bold text-2xl text-white'>Empresas</h1>
+                </div>
+            </div>
+
+            <EmpresasList />
             <div className="w-full h-empresashero flex overflow-hidden bg-gray-300">
                 <div className="w-1/2 h-full flex items-center justify-center container-side">
                     <img src="https://i.postimg.cc/Kzd0sb42/Login.pngg" className='h-full imgcontainer' alt="side-image" />
@@ -27,10 +34,6 @@ const EmpresasPage = () => {
                     <p className='text-white line-clamp-3 w-3/4 text-justify text-base c'>{sidetext}</p>
                 </div>
             </div>
-            <div className='w-full h-fit py-6 justify-center items-center'>
-                <h1 className='text-3xl font-bold text-center '>Empresas Disponíveis</h1>
-            </div>
-            <EmpresasList />
 
 
             <div className="w-full bg-gray-900 h-16 ">

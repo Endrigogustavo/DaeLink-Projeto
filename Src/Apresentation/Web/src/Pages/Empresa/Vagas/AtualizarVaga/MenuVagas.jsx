@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { MdWork, MdWorkHistory, MdWorkOff } from "react-icons/md";
-import { IoMenu } from "react-icons/io5";
+import { FiSettings } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
 
 const MenuVagas = ({ AbrirVaga, VagaPreenchida, FecharVaga }) => {
     const [menuAberto, setMenuAberto] = useState(false);
-
+    
     const toggleMenu = () => {
         setMenuAberto(!menuAberto);
     };
@@ -17,7 +17,7 @@ const MenuVagas = ({ AbrirVaga, VagaPreenchida, FecharVaga }) => {
 
             {/* Menu principal */}
             
-            <div className="mt-1 fixed flex justify-center py-10 gap-2  inset-x-0 bottom-0 start-0 EditMenu z-20">
+            <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 flex gap-2 EditMenu z-20 py-4">
                 <button onClick={toggleMenu} type="button" className="w-24 bg-gray-700 flex flex-col items-center rounded-2xl p-2 h-fit menuitenhover">
                     {menuAberto ? (
                         <>
@@ -26,7 +26,7 @@ const MenuVagas = ({ AbrirVaga, VagaPreenchida, FecharVaga }) => {
                         </>
                     ) : (
                         <>
-                            <IoMenu className='text-3xl text-white text-center' />
+                            <FiSettings className='text-3xl text-white text-center' />
                             <p className="text-white">Situação</p>
                         </>
                     )}
