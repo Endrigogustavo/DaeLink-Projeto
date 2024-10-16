@@ -1,3 +1,64 @@
-.transitiontabs{
+.transitiontabs {
     transition: transform 0.3s ease;
+}
+
+@media (max-width:1340px) {
+    .responsive-tabsprofile {
+        justify-content: center;
+    }
+
+    .responsivecontentprofile {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+@media (max-width:880px) {
+    .profilepicelement {
+        width: 100%;
+    }
+
+    .responsiveprofilepage {
+        flex-direction: column;
+    }
+
+    .tabs-container {
+        width: 100%;
+        padding-left: 0;
+    }
+
+    .buttonoptions {
+        flex-direction: column;
+    }
+}
+
+/*Enpresa-Profile User*/
+
+.vagasprofilelist {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    justify-items: center;
+}
+
+@media (max-width:1150px) {
+    .vagasprofilelist {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width:880px) {
+    .vagasprofilelist {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width:750px) {
+    .vagasprofilelist {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        padding-left: 0;
+    }
+
 }

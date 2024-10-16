@@ -17,7 +17,7 @@ const UserFormRegister = () => {
     const [laudomedico, setLaudoMedico] = useState(null);
     const [profileImage, setProfileImage] = useState(null);
     const [profileImagePreview, setProfileImagePreview] = useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
-    const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('');
+    const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
     const [backgroundImage, setBackgroundImage] = useState(null);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -142,7 +142,7 @@ const UserFormRegister = () => {
                     .then(() => {
                         setModalOpen(true);
                     });
-                    
+
                 setTimeout(() => {
                     navigate('/loginu');
                 }, 3000);
@@ -299,26 +299,23 @@ const UserFormRegister = () => {
                                 </button>
                             </div>
                             <h1 className="font-extrabold text-3xl my-4">Cadastro PCD</h1>
-                            <div className="w-full h-fit flex justify-center items-center gap-10">
-                      <div className="flex flex-col items-center">
-                        <FaUser size={30} className={`${step === 1 ? 'text-blue-500' : 'text-gray-400'}`} />
-                        <span className={`${step === 1 ? 'text-blue-500' : 'text-gray-400'}`}>Informações </span>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <FaIdCard size={30} className={`${step === 2 ? 'text-blue-500' : 'text-gray-400'}`} />
-                        <span className={`${step === 2 ? 'text-blue-500' : 'text-gray-400'}`}>Detalhes</span>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <FaClipboardList size={30} className={`${step === 3 ? 'text-blue-500' : 'text-gray-400'}`} />
-                        <span className={`${step === 3 ? 'text-blue-500' : 'text-gray-400'}`}>Laudo Médico</span>
-                      </div>
-                    </div>
+                            <div className='w-full h-fit flex justify-center items-center gap-8'>
+                                <div className="flex flex-col items-center">
+                                    <TbCircleNumber1Filled size={30} className={` ${step === 1 ? 'text-blue-600' : 'text-gray-900'}`} />
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <TbCircleNumber2Filled size={30} className={`${step === 2 ? 'text-blue-600' : 'text-gray-900'}`} />
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <TbCircleNumber3Filled size={30} className={`${step === 3 ? 'text-blue-600' : 'text-gray-900'}`} />
+                                </div>
+                            </div>
                             <div className="w-2/5 bg-gray-200 rounded-full h-2 ">
                                 <div className="bg-blue-500 h-full rounded-full" style={{ width: `${progressPercentage}%` }}></div>
                             </div>
                         </div>
 
-                        <div className='w-10/12 h-fit grid  registerinputsgrid justify-items-center mt-2 gap-y-4'>
+                        <div className='w-full h-fit grid  registerinputsgrid justify-items-center mt-2 gap-y-4'>
                             {step === 1 && (
                                 <>
                                     <label htmlFor="profile-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
@@ -330,9 +327,9 @@ const UserFormRegister = () => {
                                     <div>
 
                                         <label htmlFor="background-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
-                                        <label htmlFor="background-image-input" className='w-max lg:h-40 border-2 border-blue-500 font-bold py-2 px-4 rounded-xl transition-all hover:bg-blue-500 cursor-pointer hover:text-white flex gap-2 items-center justify-center'>
-                          <FaCloudUploadAlt size={18} /> Upload Wallpaper
-                        </label>
+                                            <img src={profilebackgroundpreview}
+                                                className="w-60 h-32 rounded-3xl border-2 border-blue-600" alt="Preview Background" />
+                                            <p className='text-center font-medium'>Background Perfil</p>
                                         </label>
                                         <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
                                     </div>

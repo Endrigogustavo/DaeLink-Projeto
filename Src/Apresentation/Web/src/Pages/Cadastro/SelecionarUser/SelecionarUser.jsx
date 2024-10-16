@@ -26,7 +26,7 @@ const SelecionarCadastro = () => {
       <div className='flex w-full h-screen'>
         <div className='w-full lg:w-1/2 flex items-center justify-center '>
 
-          <div className='px-6 py-10 flex flex-col gap-2 rounded-3xl border-2 border-blue-600  items-center justify-center w-full max-w-lg mx-auto overflow-hidden'>
+          <div className='px-6 py-10 flex flex-col gap-2 rounded-3xl border-4 border-blue-600  items-center justify-center w-full max-w-lg mx-auto overflow-hidden'>
             <div className='w-full justify-end flex items-center'>
               <button onClick={voltarincon} className='flex h-fit items-center gap-1'>
                 <p className='font-medium'>Voltar</p>
