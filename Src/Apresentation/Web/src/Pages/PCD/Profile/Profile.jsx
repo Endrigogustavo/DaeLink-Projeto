@@ -82,7 +82,7 @@ function Profile() {
             </div>
             <div className='h-fit w-full flex px-8 responsiveprofilepage'>
                 <div className='w-2/6 h-fit flex flex-col items-center relative transform -translate-y-24 gap-2 profilepicelement'>
-                    <img class="w-64 h-64 rounded-full border-4 border-white "
+                    <img class="w-64 h-64 rounded-full border-4 border-white  object-cover"
                         src={userProfile.imageUrl}
                         alt="" />
                     <div className='w-full h-fit flex flex-col items-center'>
@@ -116,7 +116,7 @@ function Profile() {
                     <div className={`w-full h-fit flex  py-2 gap-1 responsivecontentprofile ${tab === 1 ? 'gap-4' : ''}`}>
                         {tab === 1 && (
                             <>
-                                <div className='w-80 h-fit rounded-3xl shadow-2xl border-2 border-gray-900 p-4 gap-2'>
+                                <div className='w-80 h-fit flex flex-col rounded-3xl shadow-2xl border-2 border-gray-900 p-4 gap-2'>
                                     <div className='flex w-full justify-center gap-1'>
                                         <FaUser className='text-2xl' />
                                         <h2 className='font-medium text-lg'>Informações</h2>

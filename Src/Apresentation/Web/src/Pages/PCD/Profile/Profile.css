@@ -69,7 +69,39 @@
 @media (max-width:750px) {
     .vagasprofilelist {
         grid-template-columns: repeat(1, minmax(0, 1fr));
-        padding-left: 0;
+        
     }
 
+}
+
+/**Editar Perfil**/
+
+@media (max-width:850px) {
+    .editprofile-container{
+        flex-direction: column;
+        height: fit-content;
+    }
+
+
+    .editprofile-menu{
+        width: 100%;
+        flex-direction: row;
+        gap: 2rem;
+        justify-content: center;
+    }
+
+    .editprofile-tabs{
+        flex-direction: row;
+    }
+
+    .editprofile-form{
+        width: 100%;
+        height: 40rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .editprofile-hello{
+        display: none;
+    }
 }

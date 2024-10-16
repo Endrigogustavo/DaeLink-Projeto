@@ -288,7 +288,7 @@ const EmpresaFormRegister = () => {
                                 <>
                                     <label htmlFor="profile-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
                                         <img src={profileImagePreview}
-                                            className="w-32 h-32 rounded-full border-4 border-blue-600" alt="Preview Perfil" />
+                                            className="w-32 h-32 rounded-full border-4 border-blue-600 object-cover" alt="Preview Perfil" />
                                         <p className='text-center font-medium'>Foto Perfil</p></label>
                                     <input required id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
 
@@ -296,7 +296,7 @@ const EmpresaFormRegister = () => {
 
                                         <label htmlFor="background-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
                                             <img src={profilebackgroundpreview}
-                                                className="w-60 h-32 rounded-3xl border-2 border-blue-600" alt="Preview Background" />
+                                                className="w-60 h-32 rounded-3xl border-2 border-blue-600 object-cover" alt="Preview Background" />
                                             <p className='text-center font-medium'>Background Perfil</p>
                                         </label>
                                         <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />

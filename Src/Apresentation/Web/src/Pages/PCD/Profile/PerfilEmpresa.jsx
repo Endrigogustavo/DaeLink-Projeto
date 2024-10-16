@@ -93,7 +93,7 @@ function Profile() {
             </div>
             <div className='h-fit w-full flex px-8 responsiveprofilepage'>
                 <div className='w-2/6 h-fit flex flex-col items-center relative transform -translate-y-24 gap-2 profilepicelement'>
-                    <img class="w-64 h-64 rounded-full border-4 border-white "
+                    <img class="w-64 h-64 rounded-full border-4 border-white object-cover"
                         src={userProfile.imageUrl}
                         alt="" />
                     <div className='w-full h-fit flex flex-col items-center'>
@@ -157,7 +157,7 @@ function Profile() {
                             <>
                                 <div className='flex flex-col gap-2 w-full'>
                                     <h1 className='font-bold text-2xl '>Vagas</h1>
-                                    <div className='w-full grid  gap-4 overflow-x-hidden p-4 vagasprofilelist'>
+                                    <div className='w-full grid  gap-4  p-4 vagasprofilelist'>
                                         {vagas.map((vaga) => (
                                             <div key={vaga.id} className='h-36 w-80 rounded-3xl shadow-2xl flex 
                                             items-center justify-center gap-4 bg-white border-gray-400 

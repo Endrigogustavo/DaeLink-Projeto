@@ -79,7 +79,7 @@ function EmpresasList() {
                         items-center justify-center border-gray-400 border-2 shadow-2xl overflow-hidden'>
                             <div className='h-profilecardbanner w-full flex items-center justify-center overflow-hidden relative'>
                                 <img src={empresa.imageProfile} className='h-full w-full object-cover opacity-20 backprofile-opacity' />
-                                <img src={empresa.imageUrl || fotodefault} className="mt-12 absolute shadow-2xl rounded-full w-28 h-28 object-cover border-4 border-blue-600" />
+                                <img src={empresa.imageUrl || fotodefault} className="mt-12 absolute shadow-2xl rounded-full w-28 h-28 object-cover border-4 border-blue-600 object-cover" />
                             </div>
                             <div className='h-profilecarditems w-full flex flex-col items-center overflow-hidden'>
                                 <div className='h-2/6 w-full flex flex-col justify-center items-center  py-1'>

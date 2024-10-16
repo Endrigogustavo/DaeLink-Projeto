@@ -194,11 +194,11 @@ const handleSubmit = async (e) => {
   return (
     <>
       <div className="h-screen w-full flex items-center justify-center">
-        <div className="bg-gray-200 w-editprofile h-editprofile rounded-3xl flex">
+        <div className="bg-gray-200 w-editprofile h-editprofile rounded-3xl flex editprofile-container">
           {/*Lado Esquerdo*/}
-          <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-32">
+          <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-32 editprofile-menu">
 
-            <div className="w-full h-fit flex items-center justify-center  gap-2">
+            <div className="w-full h-fit flex items-center justify-center  gap-2 editprofile-hello">
               <img src={userData.imageUrl} className="w-20 h-20 rounded-full border-4 border-blue-600" alt="" />
               <div className="flex flex-col gap-2">
                 <h1 className="font-bold text-white ">
@@ -207,7 +207,7 @@ const handleSubmit = async (e) => {
               </div>
             </div>
 
-            <div className="flex flex-col w-full h-fit">
+            <div className="flex flex-col w-full h-fit editprofile-tabs">
               <div
                 className={`w-full h-fit py-4 flex items-center justify-center  cursor-pointer transitiontabs
                   ${tab === 1 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
@@ -248,8 +248,8 @@ const handleSubmit = async (e) => {
 
           </div>
           {/*Lado Direito*/}
-          <div className="w-4/6 h-full flex flex-col items-center justify-center">
-            <form onSubmit={handleSubmit} className="h-full w-full">
+          <div className="w-4/6 h-full flex flex-col items-center justify-center editprofile-form">
+            <form onSubmit={handleSubmit} className="h-full w-full flex flex-col items-center justify-center gap-2">
               {tab === 1 && (
                 <>
                   <div className="flex flex-col">
@@ -268,6 +268,69 @@ const handleSubmit = async (e) => {
                       placeholder="Insira seu Nome Completo"
                       value={userData.email}
                       onChange={handleInputChange} />
+                  </div>
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Data de Nascimento</label>
+                    <input required type="date" className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                      placeholder="Insira sua Idade"
+                      value={userData.idade}
+                      onChange={handleInputChange} />
+                  </div>
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Sobre</label>
+                    <textarea required
+                      ref={textareaRefs.sobre}
+                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
+                      placeholder="Fale sobre você"
+                      value={userData.sobre}
+                      onChange={(e) => {
+                        handleInputChange;
+                        adjustTextareaHeight(textareaRefs.sobre);
+                      }}
+                    />
+                  </div>
+
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Deficência</label>
+                    <select
+                      name="deficiencia"
+                      value={userData.deficiencia}
+                      onChange={handleInputChange}
+                      className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                    >
+                      <option value="" disabled>Selecione sua Deficiência</option>
+                      <option value="Auditiva">Auditiva</option>
+                      <option value="Visual">Visual</option>
+                      <option value="Física">Física</option>
+                      <option value="Intelectual">Intelectual</option>
+                      <option value="Múltipla">Múltipla</option>
+                      <option value="Psíquica">Psíquica</option>
+                    </select>
+                  </div>
+
+
+                </>
+
+              )}
+
+              {tab === 2 && (
+                <>
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Experiências</label>
+                    <textarea required
+                      ref={textareaRefs.experiencias}
+                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
+                      placeholder="Fale sobre suas experiências"
+                      value={userData.experiencias}
+                      onChange={(e) => {
+                        handleInputChange;
+                        adjustTextareaHeight(textareaRefs.experiencias);
+                      }}
+                    />
                   </div>
 
                   <div className="flex flex-col ">
@@ -308,70 +371,16 @@ const handleSubmit = async (e) => {
                     />
                   </div>
 
-                  <div className="flex flex-col ">
-                    <label className="text-lg font-medium">Data de Nascimento</label>
-                    <input required type="date" className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                      placeholder="Insira sua Idade"
-                      value={userData.idade}
-                      onChange={handleInputChange} />
-                  </div>
-
-                  <div className="flex flex-col ">
-                    <label className="text-lg font-medium">Sobre</label>
-                    <textarea required
-                      ref={textareaRefs.sobre}
-                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
-                      placeholder="Importante!!! você será recomendado atarvez dessa informação"
-                      value={userData.sobre}
-                      onChange={(e) => {
-                        handleInputChange;
-                        adjustTextareaHeight(textareaRefs.sobre);
-                      }}
-                    />
-                  </div>
-
-
-                  <div className="flex flex-col ">
-                    <label className="text-lg font-medium">Descrição</label>
-                    <textarea required
-                      ref={textareaRefs.experiencias}
-                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
-                      placeholder="Importante!!! você será recomendado atarvez dessa informação"
-                      value={userData.experiencias}
-                      onChange={(e) => {
-                        handleInputChange;
-                        adjustTextareaHeight(textareaRefs.experiencias);
-                      }}
-                    />
-                  </div>
-
-
-                  <div className="flex flex-col ">
-                    <label className="text-lg font-medium">Deficência</label>
-                    <select
-                      name="deficiencia"
-                      value={userData.deficiencia}
-                      onChange={handleInputChange}
-                      className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                    >
-                      <option value="" disabled>Selecione sua Deficiência</option>
-                      <option value="Auditiva">Auditiva</option>
-                      <option value="Visual">Visual</option>
-                      <option value="Física">Física</option>
-                      <option value="Intelectual">Intelectual</option>
-                      <option value="Múltipla">Múltipla</option>
-                      <option value="Psíquica">Psíquica</option>
-                    </select>
-                  </div>
-
-
                 </>
+              )
 
-              )}
+              }
 
               {tab === 3 && (
                 <>
-                  <button onClick={PassReset}>Trocar senha</button>
+                  <h1 className="font-medium test-center px-12">Parar trocar de senha prossiga no botão, pois irá enviar o email de verificação</h1>
+                  <button onClick={PassReset} className="w-52 bg-green-500 hover:bg-green-400 text-white font-bold 
+                  py-2 px-4 rounded-full transition-all mt-2">Trocar Senha</button>
 
                 </>
 
@@ -379,13 +388,17 @@ const handleSubmit = async (e) => {
 
               {tab === 4 && (
                 <>
-                  <button onClick={() => DeleteProfile(userId)}>Deletar conta</button>
+                  <h1 className="font-medium test-center px-12">Irá desativar sua conta, entretanto você pode criar uma nova posteriormente</h1>
+                  <button onClick={() => DeleteProfile(userId)} className="w-52 bg-red-500 hover:bg-red-400 text-white font-bold 
+                  py-2 px-4 rounded-full transition-all mt-2">Deletar conta</button>
 
                 </>
 
               )}
+              {tab <= 2 && (
+                <button type="submit" className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2">Confirmar Mudanças</button>
+              )}
 
-              <button type="submit">Adicionar Documento</button>
             </form>
           </div>
         </div>

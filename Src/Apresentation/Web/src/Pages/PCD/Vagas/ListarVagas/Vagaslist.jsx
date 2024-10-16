@@ -109,7 +109,7 @@ const Vagaslist = () => {
                                         <div className='h-4/6 w-full flex items-end justify-center'>
                                             <img
                                                 src={empresa.imageUrl || defaultempresaicon}
-                                                className="w-16 h-16 object-cover rounded-full border-2 border-blue-600 "
+                                                className="w-16 h-16 object-cover rounded-full border-2 border-blue-600 object-cover"
                                                 alt="logo empresa"
                                             />
                                         </div>
