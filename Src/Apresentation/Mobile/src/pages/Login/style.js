@@ -1,50 +1,67 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#f0f0f0',
-      },
-      logo: {
-        width: 250,
-        height:250,
-        
-      },
-      title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-      },
-      input: {
-        width: '80%',
-        padding: 10,
-        marginVertical: 10,
-        backgroundColor: '#fff',
-        borderRadius: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-      },
-      button: {
-        width: '80%',
-        padding: 15,
-        backgroundColor: '#007bff',
-        borderRadius: 5,
-        alignItems: 'center',
-        marginTop: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-      },
-      buttonText: {
-        color: '#fff',
-        fontSize: 16,
-      },
-    });
-
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#111827',
+  },
+  logo: {
+    width:350,
+    height: 200,
+    marginTop: 50,
+  },
+  containerForm: {
+    backgroundColor: '#EFEFEF',
+    flex: 1,
+    width: '100%',
+    borderTopLeftRadius: 55,
+    borderTopRightRadius: 55,
+    paddingHorizontal: '5%',
+    paddingVertical: '5%',
+    justifyContent: 'center',
+    borderWidth: 4, 
+    borderColor: '#4369F1', 
+  },
+  title: {
+    fontSize: 28, 
+    fontWeight: 'bold',
+    color: '#111827',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    borderBottomWidth: 2, 
+    borderBottomColor: '#111827', 
+    height: 50,
+    marginBottom: 12,
+    fontSize: 16,
+    paddingLeft: 10,
+    color: '#000',
+  },
+  button: {
+    width: '100%',
+    padding: 15,
+    backgroundColor: '#111827',
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    top:'15%',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  labelError: {
+    alignSelf: 'flex-start',
+    color: '#ff375b',
+    marginBottom: 8,
+    marginLeft: 20,
+  },
+});

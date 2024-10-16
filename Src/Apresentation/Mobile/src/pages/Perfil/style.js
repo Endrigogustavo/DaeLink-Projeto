@@ -96,7 +96,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   compTrab: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#666',
   },
   LocalTrab: {

@@ -1,0 +1,50 @@
+ useEffect(() => {
+  const fetchVagas = async () => {
+    try {
+      const vagaCollection = collection(db, "Vagas");
+      const vagaSnapshot = await getDocs(vagaCollection);
+      const vagaList = vagaSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+
+      const empresaCollection = collection(db, 'Empresa');
+      const empresaSnapshot = await getDocs(empresaCollection);
+      const empresaList = empresaSnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
+
+      setEmpresa(empresaList);
+      setVagas(vagaList);
+    } catch (error) {
+      console.error("Erro ao buscar vagas: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchVagas();
+  fetchEmpresa();
+}, []);
+
+
+
+Alert com logout
+ const handleSignOut = () => {
+    Alert.alert(
+      "Confirmação de sair",
+      "Você tem certeza que deseja sair",
+      [{
+        text:"Cancelar",
+        onPress: () => console.log("logout cancelado"),
+          style:"cancel"
+      },{
+        text:"Sair",
+        onPress: async () =>{
+          try{
+            await auth.signOut();
+            navigation.replace("Login");
+           } catch (error) {
+              Alert.alert('Erro', 'Não foi possível sair. Tente novamente.');
+              console.error('Erro ao deslogar: ', error);
+          }
+      },
+      style: "destructive" // Destacar o botão de sair
+  }
+]
+);
+};
