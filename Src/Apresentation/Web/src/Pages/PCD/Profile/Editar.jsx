@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { doc, collection, updateDoc, getDoc, getDocs, deleteDoc } from "firebase/firestore";
 import { db, storage, auth } from "../../../Database/Firebase";
 import { useParams, useNavigate } from 'react-router-dom';
@@ -6,25 +6,17 @@ import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { decrypt } from "../../../Security/Cryptography_Rotes";
 import { getAuth, updateEmail, sendPasswordResetEmail, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
-import axios from 'axios'
-
-
+import { MdExitToApp } from "react-icons/md";
 
 const EditarPerfil = () => {
-
   const auth = getAuth();
   const user = auth.currentUser;
 
-
-
-  // Função de navegação do site
   const navigate = useNavigate();
-  // Utilizado para pegar o id do usuario e da vaga na tela anterior
 
   const [userId, setUserId] = useState('');
-
   const [senha, setSenha] = useState("");
-  // Informações do usuario
+  const [tab, setTab] = useState(1);
   const [userData, setUserProfile] = useState({
     name: '',
     email: '',
@@ -36,15 +28,24 @@ const EditarPerfil = () => {
     deficiencia: ''
   });
 
+  const textareaRefs = {
+    sobre: useRef(null),
+    experiencias: useRef(null),
+    descricao: useRef(null),
+  };
 
+  const adjustTextareaHeight = (ref) => {
+    if (ref.current) {
+      ref.current.style.height = 'auto';
+      ref.current.style.height = `${ref.current.scrollHeight}px`;
+    }
+  };
 
-  // Carregar as informações do usuário do banco de dados
   useEffect(() => {
-
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
       const userId = storedUserId;
-      setUserId(userId)
+      setUserId(userId);
     }
 
     const getUserProfile = async () => {
@@ -70,27 +71,27 @@ const EditarPerfil = () => {
   };
 
   {/*
-  // Botão para guardar as informações no banco
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+// Botão para guardar as informações no banco
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
+  try {
 
-      axios.post('https://localhost:3000/updateprofile/'+id, {userData})
-     .then(res =>{
-      alert("Perfil atualizado com sucesso")
-     })
-     .catch(err =>{
-      console.log(err)
-      alert("Falha ao atualizar, tente novamente.");
-    })
-    } catch (e) {
-      console.error("Erro ao adicionar documento: ", e);
-      alert("Erro ao adicionar documento.");
-    }
-  };
+    axios.post('https://localhost:3000/updateprofile/'+id, {userData})
+   .then(res =>{
+    alert("Perfil atualizado com sucesso")
+   })
+   .catch(err =>{
+    console.log(err)
+    alert("Falha ao atualizar, tente novamente.");
+  })
+  } catch (e) {
+    console.error("Erro ao adicionar documento: ", e);
+    alert("Erro ao adicionar documento.");
+  }
+};
 
-  */}
+*/}
 
   const PassReset = () => {
 
@@ -106,10 +107,10 @@ const EditarPerfil = () => {
       });
   }
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
       const credential = EmailAuthProvider.credential(
         user.email,
         senha
@@ -128,9 +129,7 @@ const EditarPerfil = () => {
           });
 
         const userDoc = doc(db, "PCD", userId);
-
         await updateDoc(userDoc, {
-
           name: userData.name,
           email: userData.email,
           trabalho: userData.trabalho,
@@ -141,7 +140,6 @@ const EditarPerfil = () => {
           userId: userId,
           deficiencia: userData.deficiencia,
         });
-
       }
       alert("Conta atualizada com sucesso!");
       navigate(-2);
@@ -150,6 +148,22 @@ const EditarPerfil = () => {
       alert("Erro ao adicionar documento.");
     }
   };
+
+  // Função para pegar o primeiro nome e sobrenome
+  const getFirstAndLastName = (name) => {
+    const nameParts = name.split(" ");
+    const firstName = nameParts[0];
+    const lastName = nameParts[1] ? nameParts[1] : ""; // Verifica se há sobrenome
+    return `${firstName} ${lastName}`;
+  };
+
+  const handleTabChange = (tabIndex) => {
+    setTab(tabIndex);
+  };
+
+  function voltarincon() {
+    navigate(-1);
+  }
 
   const DeleteProfile = async (id) => {
     var response = confirm("Deseja Deletar a conta?");
@@ -179,93 +193,203 @@ const EditarPerfil = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="text"
-            name="name"
-            placeholder="name"
-            value={userData.name}
-            onChange={handleInputChange}
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="text"
-            name="email"
-            placeholder="Email"
-            value={userData.email}
-            onChange={handleInputChange}
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="text"
-            name="trabalho"
-            placeholder="Trabalho"
-            value={userData.trabalho}
-            onChange={handleInputChange}
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="text"
-            name="descrição"
-            placeholder="Descrição"
-            value={userData.descrição}
-            onChange={handleInputChange}
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="date"
-            name="idade"
-            placeholder="Idade"
-            value={userData.idade}
-            onChange={handleInputChange}
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="text"
-            name="sobre"
-            placeholder="Sobre"
-            value={userData.sobre}
-            onChange={handleInputChange}
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="text"
-            name="experiencias"
-            placeholder="Experiencias"
-            value={userData.experiencias}
-            onChange={handleInputChange}
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="text"
-            name="deficiencia"
-            placeholder="Deficiencia"
-            value={userData.deficiencia}
-            onChange={handleInputChange}
-          />
-        </div>
-        <br />
+      <div className="h-screen w-full flex items-center justify-center">
+        <div className="bg-gray-200 w-editprofile h-editprofile rounded-3xl flex">
+          {/*Lado Esquerdo*/}
+          <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-32">
 
-        <button type="submit">Adicionar Documento</button>
-      </form>
-      <br />
-      <button onClick={() => DeleteProfile(userId)}>Deletar conta</button>
-      <button onClick={PassReset}>Trocar senha</button>
+            <div className="w-full h-fit flex items-center justify-center  gap-2">
+              <img src={userData.imageUrl} className="w-20 h-20 rounded-full border-4 border-blue-600" alt="" />
+              <div className="flex flex-col gap-2">
+                <h1 className="font-bold text-white ">
+                  Olá {getFirstAndLastName(userData.name)}
+                </h1>
+              </div>
+            </div>
+
+            <div className="flex flex-col w-full h-fit">
+              <div
+                className={`w-full h-fit py-4 flex items-center justify-center  cursor-pointer transitiontabs
+                  ${tab === 1 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(1)}
+              >
+                <p className='font-medium'>Informações Pessoais</p>
+              </div>
+              <div
+                className={`w-full h-fit py-4 flex items-center justify-center  cursor-pointer transitiontabs
+                  ${tab === 2 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(2)}
+              >
+                <p className='font-medium'>Informações Profissionais</p>
+              </div>
+              <div
+                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs
+                                ${tab === 3 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(3)}
+              >
+                <p className='font-medium'>Senha e Segurança</p>
+              </div>
+              <div
+                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs
+                                ${tab === 4 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(4)}
+              >
+                <p className='font-medium'>Deletar Conta</p>
+              </div>
+            </div>
+
+            <div className="h-fit w-full flex items-center justify-center">
+              <button onClick={voltarincon} className='flex h-fit items-center gap-1'>
+                <p className='font-medium text-white'>Voltar</p>
+                <MdExitToApp className='text-4xl text-white iconhover ' />
+              </button>
+            </div>
+
+
+          </div>
+          {/*Lado Direito*/}
+          <div className="w-4/6 h-full flex flex-col items-center justify-center">
+            <form onSubmit={handleSubmit} className="h-full w-full">
+              {tab === 1 && (
+                <>
+                  <div className="flex flex-col">
+                    <label className="text-lg font-medium">Nome</label>
+                    <input required type="text"
+                      className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                      placeholder="Insira seu Nome Completo"
+                      value={userData.name}
+                      onChange={handleInputChange} />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label className="text-lg font-medium">Email</label>
+                    <input required type="text"
+                      className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                      placeholder="Insira seu Nome Completo"
+                      value={userData.email}
+                      onChange={handleInputChange} />
+                  </div>
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Área</label>
+                    <select
+                      name="area"
+                      value={userData.trabalho}
+                      onChange={handleInputChange}
+                      className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                    >
+                      <option value="" disabled>Selecione sua Área</option>
+                      <option value="Desenvolvedor de Sistemas">Desenvolvedor de Sistemas</option>
+                      <option value="Administrador">Administrador</option>
+                      <option value="Marketeiro">Marketeiro</option>
+                      <option value="Designer">Designer</option>
+                      <option value="Engenheiro">Engenheiro</option>
+                      <option value="Recursos Humanos">Recursos Humanos</option>
+                      <option value="Vendedor">Vendedor</option>
+                      <option value="Economista">Economista</option>
+                      <option value="Médico">Médico</option>
+
+                    </select>
+
+                  </div>
+
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Descrição</label>
+                    <textarea required
+                      ref={textareaRefs.descricao}
+                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
+                      placeholder="Importante!!! você será recomendado atarvez dessa informação"
+                      value={userData.descrição}
+                      onChange={(e) => {
+                        handleInputChange;
+                        adjustTextareaHeight(textareaRefs.descricao);
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Data de Nascimento</label>
+                    <input required type="date" className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                      placeholder="Insira sua Idade"
+                      value={userData.idade}
+                      onChange={handleInputChange} />
+                  </div>
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Sobre</label>
+                    <textarea required
+                      ref={textareaRefs.sobre}
+                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
+                      placeholder="Importante!!! você será recomendado atarvez dessa informação"
+                      value={userData.sobre}
+                      onChange={(e) => {
+                        handleInputChange;
+                        adjustTextareaHeight(textareaRefs.sobre);
+                      }}
+                    />
+                  </div>
+
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Descrição</label>
+                    <textarea required
+                      ref={textareaRefs.experiencias}
+                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
+                      placeholder="Importante!!! você será recomendado atarvez dessa informação"
+                      value={userData.experiencias}
+                      onChange={(e) => {
+                        handleInputChange;
+                        adjustTextareaHeight(textareaRefs.experiencias);
+                      }}
+                    />
+                  </div>
+
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Deficência</label>
+                    <select
+                      name="deficiencia"
+                      value={userData.deficiencia}
+                      onChange={handleInputChange}
+                      className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                    >
+                      <option value="" disabled>Selecione sua Deficiência</option>
+                      <option value="Auditiva">Auditiva</option>
+                      <option value="Visual">Visual</option>
+                      <option value="Física">Física</option>
+                      <option value="Intelectual">Intelectual</option>
+                      <option value="Múltipla">Múltipla</option>
+                      <option value="Psíquica">Psíquica</option>
+                    </select>
+                  </div>
+
+
+                </>
+
+              )}
+
+              {tab === 3 && (
+                <>
+                  <button onClick={PassReset}>Trocar senha</button>
+
+                </>
+
+              )}
+
+              {tab === 4 && (
+                <>
+                  <button onClick={() => DeleteProfile(userId)}>Deletar conta</button>
+
+                </>
+
+              )}
+
+              <button type="submit">Adicionar Documento</button>
+            </form>
+          </div>
+        </div>
+      </div >
     </>
   );
 };

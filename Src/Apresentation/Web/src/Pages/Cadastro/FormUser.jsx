@@ -52,6 +52,14 @@ const UserFormRegister = () => {
         descricao: useRef(null),
     };
 
+    const adjustTextareaHeight = (ref) => {
+        if (ref.current) {
+            ref.current.style.height = 'auto';
+            ref.current.style.height = `${ref.current.scrollHeight}px`;
+        }
+    };
+
+
     const handleProfileImageChange = (e) => {
         const file = e.target.files[0];
         setProfileImage(file);
@@ -267,13 +275,7 @@ const UserFormRegister = () => {
         }
     };
 
-    const adjustTextareaHeight = (ref) => {
-        if (ref.current) {
-            ref.current.style.height = 'auto';
-            ref.current.style.height = `${ref.current.scrollHeight}px`;
-        }
-    };
-
+    
     const progressPercentage = (step / 3) * 100; // Calcular a porcentagem de progresso
 
     return (

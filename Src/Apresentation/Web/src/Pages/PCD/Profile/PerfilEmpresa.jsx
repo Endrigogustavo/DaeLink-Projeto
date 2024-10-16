@@ -137,8 +137,6 @@ function Profile() {
                                         {userProfile.email}
                                     </div>
 
-
-
                                     <div className='flex gap-1 h-fit items-center'>
                                         <h2 className='font-medium text-lg'>Endereço:</h2>
                                         {userProfile.endereco}
