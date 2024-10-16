@@ -3,7 +3,7 @@ import { FaBuilding, FaUserTie } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { MdExitToApp } from "react-icons/md";
 import './Selecionar.css'
-
+import img from '../../../assets/Select.png'
 const SelecionarCadastro = () => {
 
   const navigate = useNavigate()
@@ -26,7 +26,7 @@ const SelecionarCadastro = () => {
       <div className='flex w-full h-screen'>
         <div className='w-full lg:w-1/2 flex items-center justify-center '>
 
-          <div className='px-6 py-10 flex flex-col gap-2 rounded-3xl border-4 border-blue-600  items-center justify-center w-full max-w-lg mx-auto overflow-hidden'>
+          <div className='px-6 py-10 flex flex-col gap-2 rounded-3xl border-2 border-blue-600  items-center justify-center w-full max-w-lg mx-auto overflow-hidden'>
             <div className='w-full justify-end flex items-center'>
               <button onClick={voltarincon} className='flex h-fit items-center gap-1'>
                 <p className='font-medium'>Voltar</p>
@@ -59,7 +59,7 @@ const SelecionarCadastro = () => {
         </div>
         <div className='hidden lg:flex lg:w-1/2 items-center justify-center overflow-hidden h-full bg-gray-200'>
           {/*<img src="" className="object-cover" alt="Side Image" />*/}
-          <img src="https://i.postimg.cc/Jzsv83S9/Sem-T-tulo-1.png" className="object-cover h-full" alt="Side Image" />
+          <img src={img} className="object-cover h-5/6" alt="Side Image" />
         </div>
       </div >
     </>

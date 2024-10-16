@@ -2,6 +2,7 @@ import './CadastroCss.css';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import EmpresaFormRegister from './FormEmpresa';
+import img from '../../assets/Empresa.png'
 
 const RegisterEmpresa = () => {
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,7 @@ const RegisterEmpresa = () => {
             <EmpresaFormRegister />
           </div>
           <div className='hidden formside items-center justify-center overflow-hidden h-full bg-gray-200'>
-            <img src="https://i1.sndcdn.com/artworks-000148899176-tji0ug-t500x500.jpg" className="object-cover h-full" alt="Side Image" />
+            <img src={img} className="object-cover h-5/6" alt="Side Image" />
           </div>
         </div>
       )}
