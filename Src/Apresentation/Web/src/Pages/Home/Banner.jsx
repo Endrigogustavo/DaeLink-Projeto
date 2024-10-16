@@ -16,7 +16,9 @@ const Banner = () => {
                         <p className="text-justify pb-10 line-clamp-3 daelinktext">Somos uma empresa que visamos a integração social dos PCD ao mercado de trabalho por meio de nossa plataforma, fazendo uso de um sistema próximo ao de redes sociais profissionais com uma execução ágil diminuindo os processos de recrutamento.</p>
 
                         <div className="flex w-full items-center max-sm-jusify">
-                            <Link to={"cadastro"}><button className=" w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all Home-Button">Cadastrar-se</button></Link>
+                            <Link to={"cadastro"}>
+                                <button className=" w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 
+                                    rounded-full transition-all Home-Button">Cadastrar-se</button></Link>
                             <Link to={"loginu"} className="ml-5  flex items-center iconhover Home-Login">Entrar <CiLogin className="flex text-2xl  " /> </Link>
                         </div>
                     </div>

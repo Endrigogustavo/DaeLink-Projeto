@@ -407,11 +407,18 @@ const EmpresaFormRegister = () => {
                                             <option value="Finanças">Finanças</option>
                                             <option value="Comércio">Comércio</option>
                                             <option value="Segurança">Segurança</option>
+                                            <option value="Varejo">Varejo</option>
+                                            <option value="E-commerce">E-commerce</option>
+                                            <option value="Alimentação">Alimentação</option>
+                                            <option value="Esportes">Esportes</option>
+                                            <option value="Moda">Moda</option>
+                                            <option value="Logística">Logística</option>
+                                            <option value="Tecnologia da Informação">Tecnologia da Informação</option>
+                                            <option value="Marketing Digital">Marketing Digital</option>
+                                            <option value="Entretenimento Digital">Entretenimento Digital</option>
+                                            <option value="Saúde e Bem-Estar">Saúde e Bem-Estar</option>
                                         </select>
                                     </div>
-
-
-
                                 </>
                             )}
 

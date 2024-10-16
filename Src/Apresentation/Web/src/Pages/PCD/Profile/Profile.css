@@ -1,24 +1,3 @@
-.profile{
-    margin: 2rem;
-    margin-top: -8rem;
-}
-
-.ImgProfile{
-    width: 17rem;
-    height: 17rem;
-    border-radius: 50%
-}
-
-.profile-user{
-    margin-top: 9rem;
-}
-
-.background{
-    height: 22rem;
-}
-
-.button-profile{
-    position: relative;
-    display: flex;
-    right: 0px;
+.transitiontabs{
+    transition: transform 0.3s ease;
 }

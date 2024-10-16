@@ -54,7 +54,7 @@ const CandidatosTable = () => {
 
     return (
         <>
-            <section className='w-full h-96 flex flex-col justify-center items-center gap-y-3 overflow-hidden'>
+            <section className='w-full h-80 flex flex-col justify-center items-center gap-y-3 overflow-hidden'>
                 <img src={DaeLogo} alt="" className='h-24' />
                 <h1 className='text-xl font-bold text-center'>Procure candidatos conforme a vaga necessária:</h1>
                 <form onSubmit={handleSubmit} className="flex">

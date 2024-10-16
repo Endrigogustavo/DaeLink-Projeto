@@ -1,4 +1,4 @@
-import { Link, useParams,useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CandidatosTable from './CandidatosTable';
