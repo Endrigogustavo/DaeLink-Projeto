@@ -241,6 +241,7 @@ const EmpresaFormRegister = () => {
     };
 
     function voltarincon() {
+        e.preventDefault();
         navigate(-1);
     }
 

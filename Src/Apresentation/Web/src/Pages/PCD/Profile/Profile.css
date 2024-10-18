@@ -13,6 +13,28 @@
 
 }
 
+@media (max-height:650px) {
+    .h-editprofile {
+        height: 38rem;
+    }
+
+    .editprofile-menu {
+        gap: 7rem;
+    }
+
+}
+
+@media (max-height:620px) {
+    .h-editprofile {
+        height: 36rem;
+    }
+
+    .editprofile-menu {
+        gap: 6rem;
+    }
+
+}
+
 @media (max-width:1340px) {
     .responsive-tabsprofile {
         justify-content: center;
@@ -22,6 +44,8 @@
         flex-direction: column;
         align-items: center;
     }
+
+
 }
 
 
@@ -41,6 +65,31 @@
 
     .buttonoptions {
         flex-direction: column;
+    }
+
+    .form-voltar {
+        display: flex;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .tabs-voltar {
+        display: none;
+    }
+
+    .responsivetabs {
+        text-align: center;
+        height: 100%;
+    }
+
+    .editprofile-menu {
+        height: 6rem;
+        padding: 0;
+        background-color: transparent;
+    }
+
+    .bordertabs{
+        border-radius: 1.5rem;
     }
 }
 
@@ -69,7 +118,7 @@
 @media (max-width:750px) {
     .vagasprofilelist {
         grid-template-columns: repeat(1, minmax(0, 1fr));
-        
+
     }
 
 }
@@ -77,31 +126,31 @@
 /**Editar Perfil**/
 
 @media (max-width:850px) {
-    .editprofile-container{
+    .editprofile-container {
         flex-direction: column;
         height: fit-content;
     }
 
 
-    .editprofile-menu{
+    .editprofile-menu {
         width: 100%;
         flex-direction: row;
         gap: 2rem;
         justify-content: center;
     }
 
-    .editprofile-tabs{
+    .editprofile-tabs {
         flex-direction: row;
     }
 
-    .editprofile-form{
+    .editprofile-form {
         width: 100%;
         height: 40rem;
         padding-top: 1rem;
         padding-bottom: 1rem;
     }
 
-    .editprofile-hello{
+    .editprofile-hello {
         display: none;
     }
 }

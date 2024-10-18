@@ -5,7 +5,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { decrypt } from "../../../Security/Cryptography_Rotes";
 import { getAuth, updateEmail, sendPasswordResetEmail, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
-
 import { MdExitToApp } from "react-icons/md";
 
 const EditarPerfil = () => {
@@ -17,6 +16,9 @@ const EditarPerfil = () => {
   const [userId, setUserId] = useState('');
   const [senha, setSenha] = useState("");
   const [tab, setTab] = useState(1);
+  const [userName, setUserName] = useState("")
+  const [isUserNameSet, setIsUserNameSet] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
   const [userData, setUserProfile] = useState({
     name: '',
     email: '',
@@ -53,13 +55,22 @@ const EditarPerfil = () => {
       const GetUser = await getDoc(userDoc);
       if (GetUser.exists()) {
         setUserProfile(GetUser.data());
+
       } else {
         setUserProfile(null);
         alert("Sem documentos!");
       }
     };
     getUserProfile();
+
   }, [userId]);
+
+  useEffect(() => {
+    if (userData.name && !isUserNameSet) {
+      setUserName(userData.name); // Define o userName apenas uma vez
+      setIsUserNameSet(true); // Marca como definido para evitar alterações futuras
+    }
+  }, [userData, isUserNameSet]);
 
   // Função para lidar com as mudanças nos inputs
   const handleInputChange = (e) => {
@@ -162,6 +173,7 @@ const handleSubmit = async (e) => {
   };
 
   function voltarincon() {
+    e.preventDefault();
     navigate(-1);
   }
 
@@ -191,10 +203,29 @@ const handleSubmit = async (e) => {
 
   }
 
+  // Função para verificar o tamanho da tela e trocar os textos
+  const checkScreenSize = () => {
+    const mediaQuery = window.matchMedia("(max-width: 580px)");
+    setIsMobileView(mediaQuery.matches);
+  };
+
+  useEffect(() => {
+    // Chama a função ao montar o componente
+    checkScreenSize();
+
+    // Adiciona um listener para verificar mudanças no tamanho da tela
+    window.addEventListener('resize', checkScreenSize);
+
+    // Remove o listener quando o componente é desmontado
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+    };
+  }, []);
+
   return (
     <>
-      <div className="h-screen w-full flex items-center justify-center">
-        <div className="bg-gray-200 w-editprofile h-editprofile rounded-3xl flex editprofile-container">
+      <div className="h-screen w-full flex items-center justify-center bg-gray-300">
+        <div className="w-editprofile h-editprofile rounded-3xl flex editprofile-container">
           {/*Lado Esquerdo*/}
           <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-32 editprofile-menu">
 
@@ -202,43 +233,49 @@ const handleSubmit = async (e) => {
               <img src={userData.imageUrl} className="w-20 h-20 rounded-full border-4 border-blue-600" alt="" />
               <div className="flex flex-col gap-2">
                 <h1 className="font-bold text-white ">
-                  Olá {getFirstAndLastName(userData.name)}
+                  Olá {getFirstAndLastName(userName)}
                 </h1>
               </div>
             </div>
 
             <div className="flex flex-col w-full h-fit editprofile-tabs">
+
               <div
-                className={`w-full h-fit py-4 flex items-center justify-center  cursor-pointer transitiontabs
-                  ${tab === 1 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
-                onClick={() => handleTabChange(1)}
-              >
-                <p className='font-medium'>Informações Pessoais</p>
+                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                ${tab === 1 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(1)}>
+                <p className='font-medium'>
+                  {isMobileView ? 'Pessoal' : 'Informações Pessoais'}
+                </p>
               </div>
               <div
-                className={`w-full h-fit py-4 flex items-center justify-center  cursor-pointer transitiontabs
-                  ${tab === 2 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
-                onClick={() => handleTabChange(2)}
-              >
-                <p className='font-medium'>Informações Profissionais</p>
+
+                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                ${tab === 2 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(2)} >
+                <p className='font-medium'>
+                  {isMobileView ? 'Carreira' : 'Informações Profissionais'}
+                </p>
               </div>
+
               <div
-                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs
-                                ${tab === 3 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
-                onClick={() => handleTabChange(3)}
-              >
-                <p className='font-medium'>Senha e Segurança</p>
+                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                ${tab === 3 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(3)} >
+                <p className='font-medium'>
+                  {isMobileView ? 'Senha' : 'Senha e Segurança'}
+                </p>
               </div>
+
               <div
-                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs
-                                ${tab === 4 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
-                onClick={() => handleTabChange(4)}
-              >
+                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                ${tab === 4 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(4)}>
                 <p className='font-medium'>Deletar Conta</p>
               </div>
             </div>
 
-            <div className="h-fit w-full flex items-center justify-center">
+            <div className="h-fit w-full flex items-center justify-center tabs-voltar">
               <button onClick={voltarincon} className='flex h-fit items-center gap-1'>
                 <p className='font-medium text-white'>Voltar</p>
                 <MdExitToApp className='text-4xl text-white iconhover ' />
@@ -248,13 +285,22 @@ const handleSubmit = async (e) => {
 
           </div>
           {/*Lado Direito*/}
-          <div className="w-4/6 h-full flex flex-col items-center justify-center editprofile-form">
+          <div className="w-4/6 h-full flex flex-col items-center justify-center editprofile-form bg-white rounded-3xl">
             <form onSubmit={handleSubmit} className="h-full w-full flex flex-col items-center justify-center gap-2">
+
+              <div className="h-fit w-full flex items-center justify-end form-voltar hidden">
+                <button onClick={voltarincon} className='flex h-fit items-center gap-1'>
+                  <p className='font-medium text-gray-900'>Voltar</p>
+                  <MdExitToApp className='text-4xl text-gray-900 iconhover ' />
+                </button>
+              </div>
+
               {tab === 1 && (
                 <>
                   <div className="flex flex-col">
                     <label className="text-lg font-medium">Nome</label>
                     <input required type="text"
+                      name="name"
                       className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                       placeholder="Insira seu Nome Completo"
                       value={userData.name}
@@ -264,6 +310,7 @@ const handleSubmit = async (e) => {
                   <div className="flex flex-col">
                     <label className="text-lg font-medium">Email</label>
                     <input required type="text"
+                      name="email"
                       className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                       placeholder="Insira seu Nome Completo"
                       value={userData.email}
@@ -273,25 +320,11 @@ const handleSubmit = async (e) => {
                   <div className="flex flex-col ">
                     <label className="text-lg font-medium">Data de Nascimento</label>
                     <input required type="date" className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                      name="idade"
                       placeholder="Insira sua Idade"
                       value={userData.idade}
                       onChange={handleInputChange} />
                   </div>
-
-                  <div className="flex flex-col ">
-                    <label className="text-lg font-medium">Sobre</label>
-                    <textarea required
-                      ref={textareaRefs.sobre}
-                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
-                      placeholder="Fale sobre você"
-                      value={userData.sobre}
-                      onChange={(e) => {
-                        handleInputChange;
-                        adjustTextareaHeight(textareaRefs.sobre);
-                      }}
-                    />
-                  </div>
-
 
                   <div className="flex flex-col ">
                     <label className="text-lg font-medium">Deficência</label>
@@ -311,32 +344,16 @@ const handleSubmit = async (e) => {
                     </select>
                   </div>
 
-
                 </>
 
               )}
 
               {tab === 2 && (
                 <>
-
-                  <div className="flex flex-col ">
-                    <label className="text-lg font-medium">Experiências</label>
-                    <textarea required
-                      ref={textareaRefs.experiencias}
-                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
-                      placeholder="Fale sobre suas experiências"
-                      value={userData.experiencias}
-                      onChange={(e) => {
-                        handleInputChange;
-                        adjustTextareaHeight(textareaRefs.experiencias);
-                      }}
-                    />
-                  </div>
-
                   <div className="flex flex-col ">
                     <label className="text-lg font-medium">Área</label>
                     <select
-                      name="area"
+                      name="trabalho"
                       value={userData.trabalho}
                       onChange={handleInputChange}
                       className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
@@ -358,14 +375,45 @@ const handleSubmit = async (e) => {
 
 
                   <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Sobre</label>
+                    <textarea required
+                      name="sobre"
+                      ref={textareaRefs.sobre}
+                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent max-h-24 "
+                      placeholder="Fale sobre você"
+                      value={userData.sobre}
+                      onChange={(e) => {
+                        handleInputChange(e);
+                        adjustTextareaHeight(textareaRefs.sobre);
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex flex-col ">
+                    <label className="text-lg font-medium">Experiências</label>
+                    <textarea required
+                      name="experiencias"
+                      ref={textareaRefs.experiencias}
+                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent max-h-24"
+                      placeholder="Fale sobre suas experiências"
+                      value={userData.experiencias}
+                      onChange={(e) => {
+                        handleInputChange(e);
+                        adjustTextareaHeight(textareaRefs.experiencias);
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex flex-col ">
                     <label className="text-lg font-medium">Descrição</label>
                     <textarea required
+                      name="descrição"
                       ref={textareaRefs.descricao}
-                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
+                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent max-h-24 "
                       placeholder="Importante!!! você será recomendado atarvez dessa informação"
                       value={userData.descrição}
                       onChange={(e) => {
-                        handleInputChange;
+                        handleInputChange(e);
                         adjustTextareaHeight(textareaRefs.descricao);
                       }}
                     />

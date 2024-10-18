@@ -262,6 +262,7 @@ const UserFormRegister = () => {
     };
 
     function voltarincon() {
+        e.preventDefault();
         navigate(-1);
     }
 
@@ -275,7 +276,7 @@ const UserFormRegister = () => {
         }
     };
 
-    
+
     const progressPercentage = (step / 3) * 100; // Calcular a porcentagem de progresso
 
     return (
