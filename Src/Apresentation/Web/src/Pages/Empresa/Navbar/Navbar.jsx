@@ -57,8 +57,8 @@ export default function Navbar() {
         navigate(`/processos/`);
     };
 
-    const handleButtonProfileCompany = (id) => {
-        navigate(`/editempresa/`);
+    const handleButtonProfileCompany = (IdEmpresa) => {
+        navigate(`/perfilempresa/`);
     };
 
     const Navlinks = () => (

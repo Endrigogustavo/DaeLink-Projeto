@@ -2,71 +2,99 @@ import './Profile.css'
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import { logout } from '../../../Auth/Auth';
-import { decrypt, encrypt } from '../../../Security/Cryptography_Rotes';
-import CarregamentoTela from "../../../Components/TelaCarregamento/Carregamento"
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import Navbar from "../Navbar/Navbar"
+import { doc, getDoc, collection, addDoc } from 'firebase/firestore';
+import CarregamentoTela from '../../../Components/TelaCarregamento/Carregamento';
 
 import { IoDocumentText } from "react-icons/io5";
 import { FaNoteSticky } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 
+import Navbar from '../Navbar/Navbar';
+
 function Profile() {
+    //Pegar o id do usuario na tela anterior
+
+    //Função de navegação do site
+    const [id, setId] = useState("")
     const navigate = useNavigate();
-    //Utilizado para pegar o id do usuario e da vaga na tela anterior
-    const [id, setUserId] = useState("")
-    //Variaveis onde as informações serão setadas
+    //Variaveis para setar dados do banco
     const [userProfile, setUserProfile] = useState(null);
+    const [recommendations, setRecommendations] = useState([]);
+    const [idempresa, setUserId] = useState('');
+
     const [tab, setTab] = useState(1);
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        const storedUserId = localStorage.getItem('userId');
+        const storedUserId = localStorage.getItem('IdUser');
         if (storedUserId) {
             const userId = storedUserId;
             setUserId(userId)
         }
+        const id = localStorage.getItem("Candidato")
+        setId(id)
+        //Pegando o sistema de recomendação do App.py para listar usuarios semelhantes
+        const Recommendations = async () => {
+            try {
+                const id = localStorage.getItem("userId")
+                //Rota do sistema de recomendação utilizando o axios no react e do flask do python
+                //Utilizando o Id como base pesquisa
+                const response = await axios.post('http://localhost:5000/profile', { id: id });
+                //Setando informações aa variavel 
+                setRecommendations(response.data);
+            } catch (error) {
+                console.error('Error fetching recommendations:', error);
+            }
+        };
 
-        const getPCDprofile = async () => {
-            //Caminho das informações do banco com base no ID
+        //Informações do usuario
+        const getPCDProfile = async () => {
+            //Caminho do documento por base do ID na tabela PCD
             const PCDdoc = doc(db, "PCD", id);
-            //Pegando os dados
-            const GetPCDInfo = await getDoc(PCDdoc);
-            //Tratamento e setando dados recebidos em uma variavel
-            if (GetPCDInfo.exists()) {
-                setUserProfile(GetPCDInfo.data());
+            //Pegando dados
+            const GetPCD = await getDoc(PCDdoc);
+            //Tratamento para setar os dados
+            if (GetPCD.exists()) {
+                //Sucesso
+                setUserProfile(GetPCD.data());
             } else {
+                //Erro
                 setUserProfile(null);
                 alert("Sem documentos!");
             }
         };
-        //Iniciando a função
-        getPCDprofile();
+        //Iniciando as funções
+        Recommendations();
+        getPCDProfile();
     }, [id]);
 
+    //Tela de carregamento
     if (!userProfile) {
         return <CarregamentoTela />;
     }
 
-    async function LogoutProfile() {
-        var response = confirm("Deseja fazer Logout?");
-        if (response == true) {
-            //Função do Auth.jsx para deslogar
-            logout();
-            localStorage.removeItem('userId');
-            await axios.post('http://localhost:3000/logout', {}, { withCredentials: true })
-            Cookies.remove('userType')
-            // Redireciona para a página de login após o logout
-            navigate('/');
-        }
-
+    //Botão para adicionar uma pessoa a vaga
+    const ButtonClickAdd = () => {
+        const id = localStorage.getItem("Candidato")
+        navigate(`/addpessoa/`)
     }
 
-    const EditProfile = (id) => {
-        navigate(`/edituser/`)
+    const ChatUser = async () => {
+        try {
+            const ChatCollection = collection(db, "Chat");
+            await addDoc(ChatCollection, {
+                userId: id,
+                empresaId: idempresa
+            });
+            alert("Pessoa adicionada com sucesso!");
+            localStorage.setItem("chatId", id)
+            navigate(`/chat/`)
+        } catch (error) {
+            console.error('Erro ao adicionar pessoa:', error);
+            alert(`Erro ao adicionar pessoa: ${error.message}`);
+        }
     }
 
     const handleTabChange = (tabIndex) => {
@@ -82,13 +110,13 @@ function Profile() {
             </div>
             <div className='h-fit w-full flex px-8 responsiveprofilepage'>
                 <div className='w-2/6 h-fit flex flex-col items-center relative transform -translate-y-24 gap-2 profilepicelement'>
-                    <img class="w-64 h-64 rounded-full border-4 border-white  object-cover"
+                    <img class="w-64 h-64 rounded-full border-4 border-white object-cover"
                         src={userProfile.imageUrl}
                         alt="" />
                     <div className='w-full h-fit flex flex-col items-center'>
                         <div className='w-4/5'>
                             <h1 class="text-gray-900 font-bold text-xl leading-8">{userProfile.name}</h1>
-                            <h3 class="text-gray-900 font-lg text-semibold leading-6">{userProfile.trabalho}</h3>
+                            <h3 class="text-gray-900 font-lg text-semibold leading-6">{userProfile.area}</h3>
                             <p class="text-sm text-gray-500 hover:text-gray-600 leading-6 ">
                                 {userProfile.sobre}
                             </p>
@@ -99,23 +127,24 @@ function Profile() {
                     <div className='w-full flex justify-start items-center gap-2 responsive-tabsprofile'>
                         <div
                             className={`w-28 h-fit py-4 flex items-center justify-center rounded-b-lg cursor-pointer transitiontabs
-                                ${tab === 1 ? 'bg-gray-900 text-white' : 'bg-gray-300'}`}
+                    ${tab === 1 ? 'bg-gray-900 text-white' : 'bg-gray-300'}`}
                             onClick={() => handleTabChange(1)}
                         >
                             <p className='font-medium'>Sobre</p>
                         </div>
                         <div
                             className={`w-28 h-fit py-4 flex items-center justify-center rounded-b-lg cursor-pointer transitiontabs
-                                ${tab === 2 ? 'bg-gray-900 text-white' : 'bg-gray-300'}`}
+                    ${tab === 2 ? 'bg-gray-900 text-white' : 'bg-gray-300'}`}
                             onClick={() => handleTabChange(2)}
                         >
-                            <p className='font-medium'>Config</p>
+                            <p className='font-medium'>Ações</p>
                         </div>
 
                     </div>
                     <div className={`w-full h-fit flex  py-2 gap-1 responsivecontentprofile ${tab === 1 ? 'gap-4' : ''}`}>
                         {tab === 1 && (
                             <>
+
                                 <div className='w-80 h-fit flex flex-col rounded-3xl shadow-2xl border-2 border-gray-900 p-4 gap-2'>
                                     <div className='flex w-full justify-center gap-1'>
                                         <FaUser className='text-2xl' />
@@ -133,13 +162,12 @@ function Profile() {
                                         {userProfile.deficiencia}
 
                                     </div>
-                                    
+
                                     <div className='flex gap-1 h-fit items-center'>
                                         <h2 className='font-medium text-lg'>Idade:</h2>
                                         {userProfile.idade}
 
                                     </div>
-
 
 
                                 </div>
@@ -163,6 +191,7 @@ function Profile() {
                                 </div>
 
                             </>
+
                         )}
                         {tab === 2 && (
                             <>
@@ -171,22 +200,20 @@ function Profile() {
                                     <div className='flex gap-2 buttonoptions'>
                                         <button className=" w-40 bg-transparent hover:bg-green-400 font-bold 
                                              py-2 px-4 rounded-full transition-all border-2 border-gray-300"
-                                            onClick={() => EditProfile(id)}
-                                        >Editar Perfil</button>
-                                        <button className=" w-40 bg-transparent hover:bg-red-400 font-bold 
+                                            onClick={ChatUser}
+                                        >Chat</button>
+                                        <button className=" w-44 bg-transparent hover:bg-blue-400 font-bold 
                                              py-2 px-4 rounded-full transition-all border-2 border-gray-300"
-                                            onClick={LogoutProfile}
-                                        >Logout</button>
+                                            onClick={ButtonClickAdd}
+                                        >Adicionar Vaga</button>
                                     </div>
                                 </div>
-
                             </>
                         )}
                     </div>
                 </div>
 
             </div >
-
         </>
     )
 }

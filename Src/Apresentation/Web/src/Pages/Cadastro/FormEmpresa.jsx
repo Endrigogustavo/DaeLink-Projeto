@@ -183,6 +183,8 @@ const EmpresaFormRegister = () => {
     };
 
     const progressPercentage = (step / 3) * 100; // Calcular a porcentagem de progresso
+
+    
     const validateCNPJ = (cnpj) => {
         // Remove caracteres especiais
         cnpj = cnpj.replace(/[^\d]+/g, '');
@@ -396,7 +398,7 @@ const EmpresaFormRegister = () => {
                                     <div className="flex flex-col ">
                                         <label className="text-lg font-medium">Ramo da Empresa</label>
                                         <select
-                                            name="deficiencia"
+                                            name="area"
                                             value={area} onChange={(e) => setArea(e.target.value)}
                                             className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                                         >

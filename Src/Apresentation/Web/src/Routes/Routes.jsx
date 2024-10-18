@@ -15,7 +15,7 @@ import CadastroEmpresa from '../Pages/Cadastro/CadastroEmpresa';
 import CadastrarVaga from '../Pages/Empresa/Vagas/CriarVaga/CriarVagas';
 import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
 import Vagas from '../Pages/PCD/Vagas/ListarVagas/Vagas';
-import ProfileAdd from '../Pages/Empresa/Profile/Profile';
+import ProfileAdd from '../Pages/Empresa/Profile/ProfilePCD';
 import AddPessoa from '../Pages/Empresa/Vagas/AdicionarPessoa';
 import VisualizarProcessosEmpresa from '../Pages/Empresa/Vagas/VisualizarProcessos/Visualizar_Processos';
 import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas/VisualizarPessoas';
