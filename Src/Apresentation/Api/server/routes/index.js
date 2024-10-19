@@ -20,7 +20,7 @@ router.get('/get-all-company', Services.getEmpresaAll)
 router.get('/get-vaga', Services.getVaga)
 router.get('/get-all-vagas', Services.getAllVagas)
 
-router.post('/criarvaga/:id', Controller.criarVaga)
+router.post('/criarvaga/', Controller.criarVaga)
 router.post('/updateprofile/:id' , Controller.updateProfile)
 
   

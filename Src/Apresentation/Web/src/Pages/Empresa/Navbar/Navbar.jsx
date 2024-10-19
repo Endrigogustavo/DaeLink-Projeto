@@ -3,43 +3,30 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { IoCloseOutline, IoSearch } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-import { db } from '../../../Database/Firebase';
-import { doc, getDoc } from 'firebase/firestore';
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(true); // Estado de carregamento
     const [userProfile, setUserProfile] = useState(null);
-    const [userId, setUserId] = useState("");
-
     const navigate = useNavigate();
+    const defaultempresaicon = "https://th.bing.com/th/id/OIP.9C1wSMkDpVtwSZbuxNwEZAAAAA?w=474&h=474&rs=1&pid=ImgDetMain";
+
   
 
     useEffect(() => {
-        const storedUserId = localStorage.getItem('userId');
-        if (storedUserId) {
-            const userId = storedUserId;
-            setUserId(userId)
-        }
-
-        
-        const getUserProfile = async () => {
-            const userDoc = doc(db, "Empresa", userId);
-            const userSnap = await getDoc(userDoc);
-
-            if (userSnap.exists()) {
-                setUserProfile(userSnap.data());
-                setUserId(userSnap.id);
-            } else {
-                setUserProfile(null);
-                alert("Sem documentos!");
+        const getPCDprofile = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/get-company', { withCredentials: true });
+                setUserProfile(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar os usuários:', error.response ? error.response.data : error.message);
             }
-            setLoading(false); // Carregamento concluído
         };
+        getPCDprofile();
 
-        getUserProfile();
-    }, [userId]);
+    }, []);
 
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
@@ -49,15 +36,15 @@ export default function Navbar() {
         navigate(`/homeempresa/cadastrovaga/`);
     };
 
-    const handleButtonClickProfile = (IdEmpresa) => {
+    const handleButtonClickProfile = () => {
         navigate(`/candidatos`);
     };
 
-    const handleButtonClickVaga = (IdEmpresa) => {
+    const handleButtonClickVaga = () => {
         navigate(`/processos/`);
     };
 
-    const handleButtonProfileCompany = (IdEmpresa) => {
+    const handleButtonProfileCompany = () => {
         navigate(`/perfilempresa/`);
     };
 
@@ -81,10 +68,18 @@ export default function Navbar() {
                     </div>
                   
                     <button onClick={() => handleButtonProfileCompany()} className='border-2 border-blue-500 rounded-full'>
-                        {loading ? (
-                            <div className="w-8 h-8 rounded-full bg-gray-300"></div> // Placeholder enquanto carrega
+                    {loading ? (
+                            <img
+                                src={userProfile?.imageUrl || defaultempresaicon}
+                                alt="Profile"
+                                className="w-8 h-8 rounded-full"
+                            />
                         ) : userProfile?.imageUrl ? (
-                            <img src={userProfile.imageUrl} alt="Profile" className="w-8 h-8 rounded-full" />
+                            <img
+                                src={userProfile.imageUrl}
+                                alt=""
+                                className="w-8 h-8 rounded-full"
+                            />
                         ) : (
                             <div className="w-8 h-8 rounded-full bg-gray-300"></div> // Placeholder se não houver imagem
                         )}
