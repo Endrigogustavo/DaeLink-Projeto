@@ -8,7 +8,7 @@ import { FaSearch } from 'react-icons/fa';
 import Fuse from 'fuse.js';
 import axios from 'axios'
 
-
+import Modal from '../../Modal/Modal';
 
 const Vagaslist = () => {
     const [id, SetUserId] = useState("");
@@ -22,6 +22,10 @@ const Vagaslist = () => {
     const navigate = useNavigate();
     const defaultempresaicon = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy7OOS70yj8sex-Sw9mgQOnJKzNsUN3uWZCw&s";
     const defaultempresawallpaper = "https://c4.wallpaperflare.com/wallpaper/251/165/174/building-lights-usa-night-wallpaper-preview.jpg";
+
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('Processando...');
+    const [isWorksModal, setWorksModal] = useState(false);
 
     useEffect(() => {
         const getVagas = async () => {
@@ -65,8 +69,13 @@ const Vagaslist = () => {
 
     const handleSearch = () => {
         if (searchTerm.trim() === '') {
-            alert('Digite um nome de vaga para pesquisar');
-            return;
+            setWorksModal(false)
+            setModalMessage("Digite alguma coisa para procurar")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+                return;
+            }, 2200);
         }
 
         // Configurações do Fuse.js para busca fuzzy
@@ -85,7 +94,11 @@ const Vagaslist = () => {
 
     return (
         <>
-            <section className='w-full flex flex-col justify-center items-center gap-y-3 overflow-hidden'>
+            <div>
+                <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+            </div>
+
+            <section className='w-full flex flex-col justify-center items-center gap-y-3 overflow-hidden mb-4'>
                 <div className='flex w-80 h-16 border-2 border-gray-900 rounded-full p-4 mt-1 bg-transparent items-center justify-center'>
                     <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="text" className='h-full w-full bg-transparent border-0 focus:outline-none' placeholder="Procurar vagas" required />
                     <button onClick={handleSearch} type='submit' className='flex bg-blue-500 rounded-full'>
@@ -93,7 +106,6 @@ const Vagaslist = () => {
                     </button>
                 </div>
             </section>
-            <br /><br />
             <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : 'grid Vagascontainer gap-4 justify-items-center items-center pb-4'}`}>
                 {loading ? (
                     <div className="flex justify-center items-center h-64">

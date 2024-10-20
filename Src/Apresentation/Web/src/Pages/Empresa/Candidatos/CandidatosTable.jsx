@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FaSearch } from "react-icons/fa";
 import DaeLogo from '../../../Img/Recommendation.png'
 import { BsFillXSquareFill } from 'react-icons/bs';
+import Modal from '../Modal/Modal';
 
 const CandidatosTable = () => {
     const navigate = useNavigate();
@@ -13,6 +14,9 @@ const CandidatosTable = () => {
     const [loading, setLoading] = useState(false); // Estado de carregamento
     const [hasSearched, setHasSearched] = useState(false);
     const [recommendError, setRecommendError] = useState("")
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('Processando...');
+    const [isWorksModal, setWorksModal] = useState(false);
 
     const defaultbackground = "https://c4.wallpaperflare.com/wallpaper/251/165/174/building-lights-usa-night-wallpaper-preview.jpg";
 
@@ -36,7 +40,12 @@ const CandidatosTable = () => {
             setRecommendations(response.data);
 
             if (!recommendations == null) {
-                alert("Erro ao achar a vaga")
+                setWorksModal(false)
+                setModalMessage("Erro ao buscar de vagas.")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 setRecommendations(null)
                 setRecommendError("Nenhuma vaga encontrada, tente novamente")
             }
@@ -54,6 +63,10 @@ const CandidatosTable = () => {
 
     return (
         <>
+            <div>
+                <Modal isOpen={isModalOpen} message={modalMessage} />
+            </div>
+
             <section className='w-full h-80 flex flex-col justify-center items-center gap-y-3 overflow-hidden'>
                 <img src={DaeLogo} alt="" className='h-24' />
                 <h1 className='text-xl font-bold text-center'>Procure candidatos conforme a vaga necessária:</h1>

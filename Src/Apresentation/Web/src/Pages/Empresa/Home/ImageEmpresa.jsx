@@ -30,7 +30,6 @@ const ImageEmpresa = () => {
                 setUserId(userSnap.id);
             } else {
                 setUserProfile(null);
-                alert("Sem documentos!");
             }
             setLoading(false); // Carregamento concluído
         };

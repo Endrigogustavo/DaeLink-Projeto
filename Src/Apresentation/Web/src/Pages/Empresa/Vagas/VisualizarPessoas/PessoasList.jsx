@@ -6,6 +6,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { BsFillXSquareFill } from "react-icons/bs";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
+import Modal from '../../Modal/Modal';
 
 function PessoasList() {
     const navigate = useNavigate();
@@ -17,6 +18,9 @@ function PessoasList() {
 
     const fotodefault = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5JltdoarPr9bRcq-0QN5k6F_v8kYxj5oj8A&s"
     const defaultbackground = "https://c4.wallpaperflare.com/wallpaper/251/165/174/building-lights-usa-night-wallpaper-preview.jpg";
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('Processando...');
+    const [isWorksModal, setWorksModal] = useState(false);
 
     useEffect(() => {
         const AuthProfile = onAuthStateChanged(auth, (currentUser) => {
@@ -33,40 +37,40 @@ function PessoasList() {
     useEffect(() => {
         const GetCandidatos = async () => {
             try {
-                    const vagaId = localStorage.getItem("vagaId")
-                    setVaga(vagaId)
-                    const CandidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos');
-                    const GetCandidatos = await getDocs(CandidatosCollection);
+                const vagaId = localStorage.getItem("vagaId")
+                setVaga(vagaId)
+                const CandidatosCollection = collection(db, 'Vagas', vagaId, 'candidatos');
+                const GetCandidatos = await getDocs(CandidatosCollection);
 
-                    const candidatosList = GetCandidatos.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
+                const candidatosList = GetCandidatos.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
 
-                    // Usar o Promise.all para garantir que todas as operações assíncronas terminem
-                    const updatedCandidatosList = await Promise.all(candidatosList.map(async (candidato) => {
-                        if (candidato.userId) {
-                            const PCDDoc = await getDoc(doc(db, "PCD", candidato.userId));
-                            if (PCDDoc.exists()) {
-                                const PCDData = PCDDoc.data();
-                                return {
-                                    ...candidato,
-                                    profileImage: PCDData.profileImage || fotodefault, // Atribui imagem padrão se não existir
-                                    backgroundImage: PCDData.backgroundImage || defaultbackground, // Atribui imagem padrão se não existir
-                                    name: PCDData.name || "Nome não disponível", // Certifique-se de que há um nome
-                                    trabalho: PCDData.trabalho || "Trabalho não disponível"
-                                };
-                            } else {
-                                console.log(`PCD não encontrado para o candidato ${candidato.userId}`);
-                                return { ...candidato }; // Retorna candidato sem mudanças se não encontrar PCD
-                            }
+                // Usar o Promise.all para garantir que todas as operações assíncronas terminem
+                const updatedCandidatosList = await Promise.all(candidatosList.map(async (candidato) => {
+                    if (candidato.userId) {
+                        const PCDDoc = await getDoc(doc(db, "PCD", candidato.userId));
+                        if (PCDDoc.exists()) {
+                            const PCDData = PCDDoc.data();
+                            return {
+                                ...candidato,
+                                profileImage: PCDData.profileImage || fotodefault, // Atribui imagem padrão se não existir
+                                backgroundImage: PCDData.backgroundImage || defaultbackground, // Atribui imagem padrão se não existir
+                                name: PCDData.name || "Nome não disponível", // Certifique-se de que há um nome
+                                trabalho: PCDData.trabalho || "Trabalho não disponível"
+                            };
                         } else {
-                            return { ...candidato }; // Retorna candidato sem mudanças se não houver userId
+                            console.log(`PCD não encontrado para o candidato ${candidato.userId}`);
+                            return { ...candidato }; // Retorna candidato sem mudanças se não encontrar PCD
                         }
-                    }));
+                    } else {
+                        return { ...candidato }; // Retorna candidato sem mudanças se não houver userId
+                    }
+                }));
 
-                    setCandidatos(updatedCandidatosList);
-                
+                setCandidatos(updatedCandidatosList);
+
             } catch (error) {
                 console.error('Erro ao buscar candidatos:', error);
                 setError('Erro ao buscar candidatos');
@@ -94,18 +98,39 @@ function PessoasList() {
                     await updateDoc(vagaRef, {
                         situação: situação
                     });
-                    alert("Candidato aprovado com sucesso!");
-                    navigate(0); // Recarregar a página
+
+                    setWorksModal(true)
+                    setModalMessage("Candidato aprovado com sucesso!")
+                    setModalOpen(true)
+                    setTimeout(() => {
+                        navigate(0);
+                    }, 4000);
+
                 } catch (e) {
                     console.error("Erro ao aprovar candidato: ", e);
-                    alert("Erro ao aprovar candidato.");
+                    setWorksModal(false)
+                    setModalMessage("Erro ao aprovar candidato")
+                    setModalOpen(true)
+                    setTimeout(() => {
+                        setModalOpen(false)
+                    }, 2200);
                 }
             } else {
-                alert("Sem documentos para aprovação.");
+                setWorksModal(false)
+                setModalMessage("Sem documentos para aprovação")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false)
+                }, 2200);
             }
         } catch (e) {
             console.error("Erro ao aprovar candidato: ", e);
-            alert("Erro ao aprovar candidato.");
+            setWorksModal(false)
+            setModalMessage("Erro ao Recusar candidato")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+            }, 2200);
         }
     };
 
@@ -121,26 +146,50 @@ function PessoasList() {
                     await updateDoc(vagaRef, {
                         situação: situação
                     });
-                    alert("Candidato recusado com sucesso!");
-                    navigate(0); // Recarregar a página
+                    setWorksModal(true)
+                    setModalMessage("Candidato Recusado com Sucesso")
+                    setModalOpen(true)
+                    setTimeout(() => {
+                        navigate(0);
+                    }, 4000);
                 } catch (e) {
                     console.error("Erro ao recusar candidato: ", e);
-                    alert("Erro ao recusar candidato.");
+                    setWorksModal(false)
+                    setModalMessage("Erro ao Recusar candidato")
+                    setModalOpen(true)
+                    setTimeout(() => {
+                        setModalOpen(false)
+                    }, 2200);
                 }
             } else {
-                alert("Sem documentos para recusa.");
+                setWorksModal(false)
+                setModalMessage("Sem documentos para recusa.")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false)
+                }, 2200);
             }
         } catch (e) {
             console.error("Erro ao recusar candidato: ", e);
-            alert("Erro ao recusar candidato.");
+            setWorksModal(false)
+            setModalMessage("Erro ao Recusar candidato")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+            }, 2200);
+
         }
     };
 
     return (
         <>
+            <div>
+                <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+            </div>
+
             <div className='w-full h-44 flex items-center justify-center'>
                 <div className='w-96 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-2'>
-                    <h1 className='font-bold text-2xl text-white'>Candidatos Disponiveis </h1>
+                    <h1 className='font-bold text-2xl text-white text-center'>Candidatos Disponiveis </h1>
                 </div>
             </div>
 

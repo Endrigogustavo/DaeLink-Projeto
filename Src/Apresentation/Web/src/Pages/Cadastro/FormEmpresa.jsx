@@ -31,10 +31,9 @@ const EmpresaFormRegister = () => {
     const [area, setArea] = useState("");
     const [loading, setLoading] = useState(false);
     const [CNPJError, setCNPJErro] = useState('')
-
-
     const [isModalOpen, setModalOpen] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
+    const [modalMessage, setModalMessage] = useState('Processando...');
+    const [isWorksModal, setWorksModal] = useState(false);
 
     //Variavel para fazer gerenciamento de nivel de acesso
     const [tipo] = useState("Empresa");
@@ -67,7 +66,12 @@ const EmpresaFormRegister = () => {
         // Validação para a etapa 1
         if (step === 1) {
             if (!name || !email || !password) {
-                alert("Por favor, preencha todos os campos da Etapa 1.");
+                setWorksModal(false)
+                setModalMessage("Por favor, preencha todos os campos da Etapa 1.")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 isValid = false;
             }
         }
@@ -75,7 +79,12 @@ const EmpresaFormRegister = () => {
         // Validação para a etapa 2
         if (step === 2) {
             if (!cep || !cnpj || !endereco) {
-                alert("Por favor, preencha todos os campos da Etapa 2.");
+                setWorksModal(false)
+                setModalMessage("Por favor, preencha todos os campos da Etapa 2.")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 isValid = false;
             }
 
@@ -106,17 +115,35 @@ const EmpresaFormRegister = () => {
     const handleRegister = async () => {
         // Verificar se o formato do e-mail é válido
         if (!/\S+@\S+\.\S+/.test(email)) {
-            alert("O formato de email é invalido, tente novamente.");
-            return;
+            setWorksModal(false)
+            setModalMessage("Email Inválido")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false);
+                return;
+            }, 2200);
+            
         }
 
         if (password !== confirmPassword) {
-            alert("As senhas não coincidem.");
-            return;
+            setWorksModal(false)
+            setModalMessage("As senhas não coincidem.")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false);
+                return;
+            }, 2200);
+            
         }
         if (!/\S+@\S+\.\S+/.test(email)) {
-            alert("O formato de email é inválido, tente novamente.");
-            return;
+            setWorksModal(false)
+            setModalMessage("Email Inválido")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false);
+                return;
+            }, 2200);
+            
         }
 
         setLoading(true);
@@ -132,7 +159,9 @@ const EmpresaFormRegister = () => {
                 withCredentials: true
             });
 
+            setModalWorks(true)
             setModalMessage("Cadastro Realizado com Sucesso, e Email de Verificação Enviado");
+            setModalOpen(true);
             await sendEmailVerification(auth.currentUser)
                 .then(() => {
                     setModalOpen(true);
@@ -144,8 +173,14 @@ const EmpresaFormRegister = () => {
             }, 3000);
 
         } else {
-            alert("Falha ao criar um registro, tente novamente.");
+            setWorksModal(false)
+            setModalMessage("Falha ao Criar Registro")
+            setModalOpen(true)
             setLoading(false);
+            setTimeout(() => {
+                navigate(0)
+            }, 2200);
+
         }
     };
 
@@ -184,7 +219,7 @@ const EmpresaFormRegister = () => {
 
     const progressPercentage = (step / 3) * 100; // Calcular a porcentagem de progresso
 
-    
+
     const validateCNPJ = (cnpj) => {
         // Remove caracteres especiais
         cnpj = cnpj.replace(/[^\d]+/g, '');
@@ -242,9 +277,9 @@ const EmpresaFormRegister = () => {
         }
     };
 
-    function voltarincon() {
+    function voltarincon(e) {
         e.preventDefault();
-        navigate(-1);
+        navigate('/cadastro');
     }
 
     return (
@@ -257,14 +292,14 @@ const EmpresaFormRegister = () => {
             ) : (
                 <>
                     <div>
-                        <Modal isOpen={isModalOpen} message={modalMessage} />
+                        <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
                     </div>
 
                     <div className='h-full w-full flex flex-col items-center justify-center gap-4'>
 
                         <div className='w-full h-fit flex flex-col items-center justify-center'>
                             <div className='w-full justify-end flex items-center px-14'>
-                                <button onClick={voltarincon} className='flex h-fit items-center gap-1 '>
+                                <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1 '>
                                     <p className='font-medium'>Voltar</p>
                                     <MdExitToApp className='text-4xl text-gray-800 iconhover ' />
                                 </button>

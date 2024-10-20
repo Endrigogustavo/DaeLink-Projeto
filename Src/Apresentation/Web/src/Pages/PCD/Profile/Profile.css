@@ -50,6 +50,10 @@
 
 
 @media (max-width:880px) {
+    .profilecontent-responsive{
+        width: 100%;
+    }
+
     .profilepicelement {
         width: 100%;
     }
@@ -126,6 +130,11 @@
 /**Editar Perfil**/
 
 @media (max-width:850px) {
+    .editprofile-screen{
+        height: fit-content;
+        background: #1f2937;
+    }
+
     .editprofile-container {
         flex-direction: column;
         height: fit-content;

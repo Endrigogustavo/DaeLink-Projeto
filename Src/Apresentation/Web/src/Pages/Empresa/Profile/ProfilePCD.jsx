@@ -26,6 +26,10 @@ function Profile() {
 
     const [tab, setTab] = useState(1);
 
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('Processando...');
+    const [isWorksModal, setWorksModal] = useState(false);
+
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
         const storedUserId = localStorage.getItem('IdUser');
@@ -62,7 +66,7 @@ function Profile() {
             } else {
                 //Erro
                 setUserProfile(null);
-                alert("Sem documentos!");
+
             }
         };
         //Iniciando as funções
@@ -88,12 +92,23 @@ function Profile() {
                 userId: id,
                 empresaId: idempresa
             });
-            alert("Pessoa adicionada com sucesso!");
-            localStorage.setItem("chatId", id)
-            navigate(`/chat/`)
+
+            setWorksModal(true)
+            setModalMessage("Chat Iniciado com Sucesso")
+            setModalOpen(true)
+            setTimeout(() => {
+                localStorage.setItem("chatId", id)
+                navigate(`/chat/`)
+            }, 2200);
+
         } catch (error) {
-            console.error('Erro ao adicionar pessoa:', error);
-            alert(`Erro ao adicionar pessoa: ${error.message}`);
+            console.error('Erro ao iniciar chat:', error);
+            setWorksModal(false)
+            setModalMessage("Erro ao iniciar Chat")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+            }, 2200);
         }
     }
 
@@ -104,7 +119,9 @@ function Profile() {
     return (
         <>
             <Navbar />
-
+            <div>
+                <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+            </div>
             <div className='h-80 w-full profilebackground border-b-4 border-gray-300'>
                 <img src={userProfile.imageProfile} className="w-full h-full rounded-tl-lg rounded-tr-lg object-cover" />
             </div>
@@ -114,7 +131,7 @@ function Profile() {
                         src={userProfile.imageUrl}
                         alt="" />
                     <div className='w-full h-fit flex flex-col items-center'>
-                        <div className='w-4/5'>
+                        <div className='w-4/5 profilecontent-responsive'>
                             <h1 class="text-gray-900 font-bold text-xl leading-8">{userProfile.name}</h1>
                             <h3 class="text-gray-900 font-lg text-semibold leading-6">{userProfile.area}</h3>
                             <p class="text-sm text-gray-500 hover:text-gray-600 leading-6 ">

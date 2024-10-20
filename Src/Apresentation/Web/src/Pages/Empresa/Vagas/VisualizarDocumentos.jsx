@@ -5,6 +5,7 @@ import { db, auth } from '../../../Database/Firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Navbar from '../Navbar/Navbar';
 import { PaperClipIcon } from '@heroicons/react/24/outline';
+import Modal from '../Modal/Modal';
 
 function VisualizarDocumentos() {
   const navigate = useNavigate();
@@ -21,6 +22,10 @@ function VisualizarDocumentos() {
   const [error, setError] = useState('');
   const [empresa, setEmpresa] = useState('');
 
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('Processando...');
+  const [isWorksModal, setWorksModal] = useState(false);
+
 
   useEffect(() => {
     const storedId = localStorage.getItem("IdUserDoc");
@@ -31,7 +36,12 @@ function VisualizarDocumentos() {
       setId(storedId);
       setVagaId(storedVagaId);
     } else {
-      alert('ID da vaga ou do candidato não encontrados no localStorage');
+      setWorksModal(false)
+      setModalMessage("ID da vaga ou do candidato não encontrados no localStorage")
+      setModalOpen(true)
+      setTimeout(() => {
+        setModalOpen(false)
+      }, 2200);
     }
   }, []);
   // useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
@@ -40,7 +50,7 @@ function VisualizarDocumentos() {
       try {
         const storedId = localStorage.getItem("IdUserDoc");
         const storedVagaId = localStorage.getItem("vagaId");
-    
+
         if (!storedVagaId || !storedId) {
           throw new Error("ID da vaga ou ID do candidato não fornecido");
         }
@@ -73,7 +83,7 @@ function VisualizarDocumentos() {
       try {
         const storedId = localStorage.getItem("IdUserDoc");
         const storedVagaId = localStorage.getItem("vagaId");
-    
+
         // Tratamento de erro com base no ID da vaga
         if (storedVagaId) {
           // Caminho das informações
@@ -125,12 +135,25 @@ function VisualizarDocumentos() {
         userId: userId,
         empresaId: empresa
       });
-      alert("Pessoa adicionada com sucesso!");
-      localStorage.setItem("chatId", userId)
-      navigate(`/chat/`);
+
+      setWorksModal(true)
+      setModalMessage("Pessoa adicionada com sucesso!")
+      setModalOpen(true)
+      setTimeout(() => {
+        localStorage.setItem("chatId", userId)
+        navigate(`/chat/`);
+      }, 4000);
+
+
+
     } catch (error) {
       console.error('Erro ao adicionar pessoa:', error);
-      alert(`Erro ao adicionar pessoa: ${error.message}`);
+      setWorksModal(false)
+      setModalMessage("Erro ao adicionar pessoa.")
+      setModalOpen(true)
+      setTimeout(() => {
+        setModalOpen(false)
+      }, 2200);
     }
   };
 
@@ -138,7 +161,9 @@ function VisualizarDocumentos() {
   return (
     <>
       <Navbar />
-      <br />
+      <div>
+        <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+      </div>
       <div className='flex justify-center items-center min-h-screen'>
         <div className='px-6 w-3/4'>
           <div className="px-6 sm:px-0 text-center">

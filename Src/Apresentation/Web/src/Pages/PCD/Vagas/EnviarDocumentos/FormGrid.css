@@ -1,0 +1,7 @@
+
+@media (max-width:680px){
+    .form-gridadjust{
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+}

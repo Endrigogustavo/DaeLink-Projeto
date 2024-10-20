@@ -5,6 +5,7 @@ import { doc, getDoc, collection, addDoc, getDocs } from 'firebase/firestore'; /
 import { useNavigate, useParams } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import Navbar from '../../Navbar/Navbar';
+import Modal from '../../Modal/Modal';
 
 export default function Example() {
   const navigate = useNavigate();
@@ -18,33 +19,37 @@ export default function Example() {
   const [vagaId, setVagaId] = useState("")
   const [situação, setSituação] = useState("Pendente");
 
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('Processando...');
+  const [isWorksModal, setWorksModal] = useState(false);
+
   useEffect(() => {
     const getInfo = async () => {
       const VagaIdStorage = localStorage.getItem('vagaId');
       if (VagaIdStorage) {
         const VagaId = VagaIdStorage;
         setVagaId(VagaId)
-        
-      
-      const vagaDoc = doc(db, "Vagas", VagaId);
-      const vagaSnapshot = await getDoc(vagaDoc);
 
-      if (vagaSnapshot.exists()) {
-        const vagaData = { id: vagaSnapshot.id, ...vagaSnapshot.data() };
-        setVaga(vagaData); // Armazena os dados da vaga
 
-        // Busca a empresa, garantindo que vagaData está definido
-        const empresaDoc = await getDoc(doc(db, "Empresa", vagaData.empresaId));
-        if (empresaDoc.exists()) {
-          const empresaData = { id: empresaDoc.id, ...empresaDoc.data() };
-          setEmpresas(empresaData);
+        const vagaDoc = doc(db, "Vagas", VagaId);
+        const vagaSnapshot = await getDoc(vagaDoc);
+
+        if (vagaSnapshot.exists()) {
+          const vagaData = { id: vagaSnapshot.id, ...vagaSnapshot.data() };
+          setVaga(vagaData); // Armazena os dados da vaga
+
+          // Busca a empresa, garantindo que vagaData está definido
+          const empresaDoc = await getDoc(doc(db, "Empresa", vagaData.empresaId));
+          if (empresaDoc.exists()) {
+            const empresaData = { id: empresaDoc.id, ...empresaDoc.data() };
+            setEmpresas(empresaData);
+          } else {
+            console.log("Empresa não encontrada!");
+          }
         } else {
-          console.log("Empresa não encontrada!");
+          console.log("Vaga não encontrada!");
         }
-      } else {
-        console.log("Vaga não encontrada!");
       }
-    }
 
     };
 
@@ -55,22 +60,22 @@ export default function Example() {
     const getInfoPCD = async () => {
       const storedUserId = localStorage.getItem('userId');
       if (storedUserId) {
-        const userId = storedUserId;
-        setUserId(userId)
+        setUserId(storedUserId);
 
-        const PCDDoc = await getDoc(doc(db, "PCD", id));
+        const PCDDoc = await getDoc(doc(db, "PCD", storedUserId));
         if (PCDDoc.exists()) {
           const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
           setPessoaId(PCDData);
         } else {
           console.log("Pessoa não encontrada!");
         }
+      } else {
+        console.log("ID do usuário não encontrado no localStorage.");
       }
-
     };
 
     getInfoPCD();
-  }, [id]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,8 +88,12 @@ export default function Example() {
 
         // Verifica se pessoaId está definido
         if (!pessoaId || !pessoaId.id) {
-          alert("Informações do candidato não carregadas corretamente.");
-          return;
+          setWorksModal(false)
+          setModalMessage("Informações do candidato não carregadas corretamente.")
+          setModalOpen(true)
+          setTimeout(() => {
+            return;
+          }, 4000);
         }
 
         // Buscar todos os candidatos da vaga
@@ -93,26 +102,45 @@ export default function Example() {
         const userExists = candidatosSnapshot.docs.some(doc => doc.data().userId === pessoaId.id);
 
         if (userExists) {
-          alert("Você já se candidatou a esta vaga.");
-          navigate(-1);
-          return;
+          setWorksModal(true)
+          setModalMessage("Você já se candidatou a esta vaga.")
+          setModalOpen(true)
+
+          setTimeout(() => {
+
+            navigate("/processos");
+            return;
+          }, 4000);
+
+        } else {
+
+          // Se o userId não existir, adicione o novo candidato
+          await addDoc(candidatosRef, {
+            userId: pessoaId.id,
+            name: pessoaId.name,
+            email: pessoaId.email,
+            situação: situação
+          });
+
+
+
+          setWorksModal(true)
+          setModalMessage("Candidatado com Sucesso")
+          setModalOpen(true)
+          localStorage.removeItem('VagaId');
+
+          setTimeout(() => {
+
+            navigate(`/processos`);
+          }, 4000);
         }
 
-        // Se o userId não existir, adicione o novo candidato
-        await addDoc(candidatosRef, {
-          userId: pessoaId.id,
-          name: pessoaId.name,
-          email: pessoaId.email,
-          situação: situação
-        });
-
-        alert("Pessoa adicionada com sucesso!");
-        localStorage.removeItem('VagaId');
-    
-        navigate(`/homeuser`);
       } catch (e) {
         console.error("Erro ao adicionar pessoa: ", e);
-        alert("Erro ao adicionar pessoa.");
+
+        setWorksModal(false)
+        setModalMessage("Erro ao se Candidatar")
+        setModalOpen(true)
       }
     }
   };
@@ -121,6 +149,10 @@ export default function Example() {
   return (
     <>
       <Navbar />
+      <div>
+        <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+      </div>
+
       <br />
       <div className='flex justify-center items-center min-h-screen'>
         <div className='px-6 w-3/4'>
@@ -212,7 +244,7 @@ export default function Example() {
           <div>
             <p>Status: {vaga ? vaga.status : 'Carregando...'}</p>
             {vaga && vaga.status === 'Aberta' && (
-              <button  className='bg-blue-500 text-white px-4 py-2 rounded-md' onClick={handleSubmit}>Candidatar</button>
+              <button className='bg-blue-500 text-white px-4 py-2 rounded-md' onClick={handleSubmit}>Candidatar</button>
             )}
             {vaga && vaga.status === 'Fechada' && <p>A vaga está fechada.</p>}
             {vaga && vaga.status === 'Preenchida' && <p>A vaga ja foi preenchida.</p>}

@@ -40,7 +40,6 @@ function Profile() {
                 setUserProfile(GetPCDInfo.data());
             } else {
                 setUserProfile(null);
-                alert("Sem documentos!");
             }
         };
         //Iniciando a função
@@ -86,7 +85,7 @@ function Profile() {
                         src={userProfile.imageUrl}
                         alt="" />
                     <div className='w-full h-fit flex flex-col items-center'>
-                        <div className='w-4/5'>
+                        <div className='w-4/5 profilecontent-responsive'>
                             <h1 class="text-gray-900 font-bold text-xl leading-8">{userProfile.name}</h1>
                             <h3 class="text-gray-900 font-lg text-semibold leading-6">{userProfile.trabalho}</h3>
                             <p class="text-sm text-gray-500 hover:text-gray-600 leading-6 ">

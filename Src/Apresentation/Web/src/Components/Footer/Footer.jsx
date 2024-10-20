@@ -56,26 +56,26 @@ function Footer() {
               <div className="py-8 px-4">
                 <h1 className="text-xl font-bold uppercase sm:text-left mb-3">Conteúdos</h1>
                 <ul className="space-y-3">
-                  <li>
-                    {FooterLinks.map((data, index) => (
-                      <li key={index}>
-                        <Link to={data.link} className="text-gray-600 iconhover duration-300">{data.title} </Link>
-                      </li>
-                    ))}
-                  </li>
+
+                  {FooterLinks.map((data, index) => (
+                    <li key={index}>
+                      <Link to={data.link} className="text-gray-600 iconhover duration-300">{data.title} </Link>
+                    </li>
+                  ))}
+
                 </ul>
               </div>
               {/**Link 2 */}
               <div className="py-8 px-4">
                 <h1 className="text-xl font-bold uppercase sm:text-left mb-3">Sobre</h1>
                 <ul className="space-y-3">
-                  <li>
-                    {FooterLinks2.map((data, index) => (
-                      <li key={index}>
-                        <Link to={data.link} className="text-gray-600 iconhover duration-300">{data.title} </Link>
-                      </li>
-                    ))}
-                  </li>
+
+                  {FooterLinks2.map((data, index) => (
+                    <li key={index}>
+                      <Link to={data.link} className="text-gray-600 iconhover duration-300">{data.title} </Link>
+                    </li>
+                  ))}
+
                 </ul>
               </div>
               {/**Rede Social*/}

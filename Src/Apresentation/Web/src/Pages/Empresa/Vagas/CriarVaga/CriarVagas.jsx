@@ -37,7 +37,6 @@ const RegisterVaga = () => {
         setUserProfile(CompanyData);
       } else {
         setUserProfile(null);
-        alert("Tente novamente!");
       }
     };
     //Iniciando a função

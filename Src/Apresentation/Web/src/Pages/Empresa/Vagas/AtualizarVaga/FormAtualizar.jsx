@@ -5,6 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { MdWork } from "react-icons/md";
 import './AtualizarVaga.css'
 import MenuVagas from "./MenuVagas";
+import Modal from "../../Modal/Modal";
 
 const FormEditarVaga = () => {
     const navigate = useNavigate();
@@ -29,6 +30,10 @@ const FormEditarVaga = () => {
         detalhes: useRef(null),
     };
 
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('Processando...');
+    const [isWorksModal, setWorksModal] = useState(false);
+
     // Carregar as informações do usuário do banco de dados
     useEffect(() => {
         const getCompanyProfile = async () => {
@@ -39,7 +44,7 @@ const FormEditarVaga = () => {
             if (GetCompany.exists()) {
                 setUserProfile(GetCompany.data());
             } else {
-                alert("Sem documentos!");
+
             }
         };
         getCompanyProfile();
@@ -81,11 +86,20 @@ const FormEditarVaga = () => {
                 ...userData,
             });
 
-            alert("Vaga atualizada com sucesso!");
-            navigate(-1);
+            setWorksModal(true)
+            setModalMessage("Vaga Atualizada com sucesso.")
+            setModalOpen(true)
+            setTimeout(() => {
+                navigate(-1);
+            }, 4000);
         } catch (e) {
-            console.error("Erro ao adicionar documento: ", e);
-            alert("Erro ao adicionar documento.");
+            console.error("Erro ao atualizar vaga: ", e);
+            setWorksModal(false)
+            setModalMessage("Erro ao atualizar vaga")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+            }, 4000);
         }
     };
 
@@ -96,11 +110,20 @@ const FormEditarVaga = () => {
             await updateDoc(vagaRef, {
                 status: "Preenchida"
             });
-            alert("Situação enviada com sucesso!");
-            navigate(0); // Recarrega a página
+            setWorksModal(true)
+            setModalMessage("Situação Atualizada com Sucesso")
+            setModalOpen(true)
+            setTimeout(() => {
+                navigate(0);
+            }, 4000);
         } catch (e) {
             console.error("Erro ao atualizar a situação: ", e);
-            alert("Erro ao atualizar a situação.");
+            setWorksModal(false)
+            setModalMessage("Erro ao atualizar situação")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+            }, 4000);
         }
     };
 
@@ -110,11 +133,20 @@ const FormEditarVaga = () => {
             await updateDoc(vagaRef, {
                 status: "Fechada"
             });
-            alert("Situação enviada com sucesso!");
-            navigate(0);
+            setWorksModal(true)
+            setModalMessage("Situação Atualizada com Sucesso")
+            setModalOpen(true)
+            setTimeout(() => {
+                navigate(0);
+            }, 4000);
         } catch (e) {
             console.error("Erro ao atualizar a situação: ", e);
-            alert("Erro ao atualizar a situação.");
+            setWorksModal(false)
+            setModalMessage("Erro ao atualizar situação")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+            }, 4000);
         }
     };
 
@@ -124,18 +156,32 @@ const FormEditarVaga = () => {
             await updateDoc(vagaRef, {
                 status: "Aberta"
             });
-            alert("Situação enviada com sucesso!");
-            navigate(0);
+            setWorksModal(true)
+            setModalMessage("Situação Atualizada com Sucesso")
+            setModalOpen(true)
+            setTimeout(() => {
+                navigate(0);
+            }, 4000);
+
         } catch (e) {
             console.error("Erro ao atualizar a situação: ", e);
-            alert("Erro ao atualizar a situação.");
+            setWorksModal(false)
+            setModalMessage("Erro ao atualizar situação")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+            }, 4000);
         }
     };
 
     return (
         <>
+            <div>
+                <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+            </div>
+
             <MenuVagas AbrirVaga={AbrirVaga} VagaPreenchida={VagaPreenchida} FecharVaga={FecharVaga} />
-         
+
             <div className='w-full h-36 flex items-center justify-center'>
                 <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-5'>
                     <h1 className='font-bold text-2xl text-white'>Editar Vaga </h1>

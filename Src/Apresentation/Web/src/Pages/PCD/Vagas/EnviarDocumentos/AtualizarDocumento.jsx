@@ -8,6 +8,8 @@ import { FaFile } from "react-icons/fa6";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
+import Modal from "../../Modal/Modal";
+
 const DocumentosForm = () => {
 
     const [idDoc, setDoc] = useState("")
@@ -16,6 +18,10 @@ const DocumentosForm = () => {
     const [selectedFile3, setSelectedFile3] = useState(null);
     const [userUid, setUserUid] = useState(null)
     const [docProfile, setDocProfile] = useState([])
+
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('Processando...');
+    const [isWorksModal, setWorksModal] = useState(false);
 
     const {
         userId, setUserId,
@@ -114,11 +120,21 @@ const DocumentosForm = () => {
                         setDocProfile(null);
                     }
                 } else {
-                    alert("Não achou candidatos");
+                    setWorksModal(false)
+                    setModalMessage("Não achou candidatos.")
+                    setModalOpen(true)
+                    setTimeout(() => {
+                        setModalOpen(false)
+                    }, 2200);
                 }
             } catch (error) {
                 console.error("Erro ao buscar documentos:", error);
-                alert("Ocorreu um erro ao buscar documentos.");
+                setWorksModal(false)
+                setModalMessage("Ocorreu um erro ao buscar documentos.")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false)
+                }, 2200);
             }
         };
 
@@ -165,8 +181,14 @@ const DocumentosForm = () => {
         try {
             // Verifica se um arquivo foi selecionado
             if (!selectedFile1 && !selectedFile2 && !selectedFile3) {
-                alert("Por favor, selecione pelo menos um documento para enviar.");
-                return;
+                setWorksModal(false)
+                setModalMessage("Selecione pelo menos um documento para enviar.")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false)
+                    return;
+                }, 2200);
+                
             }
 
             // Função para fazer o upload de um arquivo e obter sua URL
@@ -211,19 +233,35 @@ const DocumentosForm = () => {
                     userId
                 });
 
-                alert("Documento adicionado com sucesso!");
-                setSelectedFile1(null);
-                setSelectedFile2(null);
-                setSelectedFile3(null);
-                setDocumento(null);
-                navigate(`/homeuser`);
+                setWorksModal(true)
+                setModalMessage("Documento atualizado com sucesso!")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setSelectedFile1(null);
+                    setSelectedFile2(null);
+                    setSelectedFile3(null);
+                    setDocumento(null);
+                    navigate(`/homeuser`);
+                }, 4000);
+
             } else {
                 console.error("Candidato não encontrado.");
-                alert("Erro ao adicionar documento: candidato não encontrado.");
+                setWorksModal(false)
+                setModalMessage("Candidato não encontrado")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false)
+                }, 2200);
+
             }
         } catch (e) {
             console.error("Erro ao adicionar documento: ", e);
-            alert("Erro ao adicionar documento.", e);
+            setWorksModal(false)
+            setModalMessage("Erro ao adicionar documento")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+            }, 2200);
         }
     };
 
@@ -238,16 +276,31 @@ const DocumentosForm = () => {
             const candidatoDocRef = doc(db, "Vagas", vagaUid, "candidatos", candidatoId);
             const documentoDocRef = doc(candidatoDocRef, "documentos", idDoc);
             await deleteDoc(documentoDocRef)
-            alert("Documento deletado com sucesso")
-            navigate(`/homeuser`);
+
+            setWorksModal(true)
+            setModalMessage("Documento deletado com sucesso")
+            setModalOpen(true)
+            setTimeout(() => {
+                navigate(`/homeuser`);
+            }, 4000);
+
         } catch (error) {
             console.log(error)
-            alert("Erro ao deletar documento", error.message)
+            setWorksModal(false)
+            setModalMessage("Erro ao deletar documento")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+            }, 2200);
         }
     }
 
     return (
         <>
+            <div>
+                <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+            </div>
+
             <div className="h-64 w-full flex items-center justify-center">
                 <div className='w-96 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
                     <div className='w-2/6 h-full flex items-center justify-center'>

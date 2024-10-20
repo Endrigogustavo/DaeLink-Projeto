@@ -9,6 +9,7 @@
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -18,17 +19,17 @@
 
 
 
-.h-vagashero{
+.h-vagashero {
     height: 60vh;
 }
 
-@media (max-width:900px){
-    .h-vagashero{
+@media (max-width:900px) {
+    .h-vagashero {
         height: fit-content;
         flex-direction: column;
     }
 
-    .container-side{
+    .container-side {
         width: 100%;
     }
 
@@ -46,32 +47,41 @@
 /*Vagas Card*/
 
 
-.h-vagacard{
+.h-vagacard {
     height: 12.8rem;
 }
 
-.w-vagacard{
+.w-vagacard {
     width: 25rem;
 }
 
+@media (max-width:420px) {
+    .w-vagacard {
+        width: 23rem;
+    }
+}
+
+@media (max-width:370px) {
+    .w-vagacard {
+        width: 19rem;
+    }
+}
+
+
 
 /*Vagas Container*/
-.Vagascontainer{
+.Vagascontainer {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-@media (max-width:1200px){
-    .Vagascontainer{
+@media (max-width:1200px) {
+    .Vagascontainer {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
-@media (max-width:800px){
-    .Vagascontainer{
+@media (max-width:800px) {
+    .Vagascontainer {
         grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 }
-
-
-
-

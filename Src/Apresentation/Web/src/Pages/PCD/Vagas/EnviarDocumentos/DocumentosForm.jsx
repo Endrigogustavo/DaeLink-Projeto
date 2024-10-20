@@ -7,6 +7,9 @@ import DocumentosStates from "./DocumentosStates";
 import { FaFile } from "react-icons/fa6";
 import { IoAddCircleSharp } from "react-icons/io5";
 import InputMask from 'react-input-mask';
+import './FormGrid.css'
+
+import Modal from "../../Modal/Modal";
 
 const DocumentosForm = () => {
     const [selectedFiles, setSelectedFiles] = useState([null, null, null]);
@@ -96,8 +99,13 @@ const DocumentosForm = () => {
 
         try {
             if (selectedFiles.every(file => !file)) {
-                alert("Por favor, selecione pelo menos um documento para enviar.");
-                return;
+                setWorksModal(false)
+                setModalMessage("Selecione pelo menos um documento para enviar.")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false)
+                    return;
+                }, 2200);
             }
 
             const uploadFile = async (file) => {
@@ -132,17 +140,32 @@ const DocumentosForm = () => {
                     userId
                 });
 
-                alert("Documento adicionado com sucesso!");
-                setSelectedFiles([null, null, null]);
-                setDocumento(null);
-                navigate(`/homeuser`);
+                setWorksModal(true)
+                setModalMessage("Documento adicionado com sucesso!")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setSelectedFiles([null, null, null]);
+                    setDocumento(null);
+                    navigate(`/homeuser`);
+                }, 4000);
+
             } else {
                 console.error("Candidato não encontrado.");
-                alert("Erro ao adicionar documento: candidato não encontrado.");
+                setWorksModal(false)
+                setModalMessage("Candidato não encontrado.")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false)
+                }, 2200);
             }
         } catch (e) {
             console.error("Erro ao adicionar documento: ", e);
-            alert("Erro ao adicionar documento.", e);
+            setWorksModal(false)
+            setModalMessage("Erro ao adicionar documento.")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false)
+            }, 2200);
         } finally {
             setIsLoading(false);
         }
@@ -150,20 +173,24 @@ const DocumentosForm = () => {
 
     return (
         <>
+            <div>
+                <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+            </div>
+
             <div className="h-64 w-full flex items-center justify-center">
                 <div className='w-96 h-32 shadow-2xl bg-white border-gray-700 border-4 rounded-full flex overflow-hidden px-4'>
                     <div className='w-2/6 h-full flex items-center justify-center'>
                         <FaFile className='text-5xl text-gray-900 text-center' />
                     </div>
                     <div className='w-5/6 h-full flex items-center justify-center flex-col'>
-                        <p className='font-medium text-lg text-center'>Envio de Documentos</p>
-                        <p className='font-normal text-base text-left w-full'>
-                            Coloque aqueles que comprovem sua Deficiência, Currículo, Diplomas...
+                        <p className='font-medium text-lg text-center'>Documentos</p>
+                        <p className='font-normal text-base text-center w-full'>
+                            Envie seus certificados, conforme a vaga.
                         </p>
                     </div>
                 </div>
             </div>
-            <form onSubmit={handleSubmit} className="h-fit w-full grid grid-cols-2 gap-y-2 items-center justify-items-center py-8">
+            <form onSubmit={handleSubmit} className="h-fit w-full grid grid-cols-2 gap-y-2 items-center justify-items-center py-8 form-gridadjust">
                 {[
                     { label: "Nome", type: "text", value: nome, setter: setNome, placeholder: "Insira seu Nome Completo", readOnly: true },
                     { label: "Email", type: "email", value: email, setter: setEmail, placeholder: "Insira seu Email", readOnly: true },

@@ -16,7 +16,7 @@ import CadastrarVaga from '../Pages/Empresa/Vagas/CriarVaga/CriarVagas';
 import Candidatos from '../Pages/Empresa/Candidatos/Candidatos';
 import Vagas from '../Pages/PCD/Vagas/ListarVagas/Vagas';
 import ProfileAdd from '../Pages/Empresa/Profile/ProfilePCD';
-import AddPessoa from '../Pages/Empresa/Vagas/AdicionarPessoa';
+import AddPessoa from '../Pages/Empresa/Vagas/AdicionarPessoa/AdicionarPessoa';
 import VisualizarProcessosEmpresa from '../Pages/Empresa/Vagas/VisualizarProcessos/Visualizar_Processos';
 import VisualizarPessoasVaga from '../Pages/Empresa/Vagas/VisualizarPessoas/VisualizarPessoas';
 import VisualizarDocumentos from '../Pages/Empresa/Vagas/VisualizarDocumentos';
@@ -27,7 +27,6 @@ import EditVaga from '../Pages/Empresa/Vagas/AtualizarVaga/AtualizarVaga'
 
 import LoginU from '../Pages/Login/LoginUser';
 import CadastroUser from '../Pages/Cadastro/CadastrarUser';
-import EntrarVaga from '../Pages/PCD/Vagas/EntrarVaga/Entrar_Vaga';
 import VisualizarProcessosUser from '../Pages/PCD/Vagas/VisualizarProcessos/Visualizar_Processos';
 import EnviarDocumentos from '../Pages/PCD/Vagas/EnviarDocumentos/Enviar_documentos';
 import Profile from '../Pages/PCD/Profile/Profile';
@@ -36,7 +35,6 @@ import List from '../Components/Listar/Listar';
 import EditarUser from '../Pages/PCD/Profile/Editar';
 import VisualizarPerfilEmpresa from '../Pages/PCD/Profile/PerfilEmpresa';
 import ChatPCD from '../Pages/PCD/Chat/Chat';
-import Apuração from '../Pages/PCD/Vagas/VisualizarProcessos/VisualizarApuração'
 import AtualizarDoc from '../Pages/PCD/Vagas/EnviarDocumentos/AtualizarDocumento'
 import VagasInfo from '../Pages/PCD/Vagas/EntrarVaga/VagaInfo'
 

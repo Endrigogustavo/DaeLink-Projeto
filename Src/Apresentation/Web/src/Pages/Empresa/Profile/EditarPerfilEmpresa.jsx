@@ -17,6 +17,9 @@ const EditarPerfil = () => {
   const [userName, setUserName] = useState("")
   const [isUserNameSet, setIsUserNameSet] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('Processando...');
+  const [isWorksModal, setWorksModal] = useState(false);
 
   const [CNPJError, setCNPJErro] = useState('')
   // Informações do usuario
@@ -56,7 +59,6 @@ const EditarPerfil = () => {
         setUserProfile(GetCompany.data());
       } else {
         setUserProfile(null);
-        alert("Sem documentos!");
       }
     };
     getCompanyProfile();
@@ -106,11 +108,22 @@ const EditarPerfil = () => {
         userId: userId,
       });
 
-      alert("Conta atualizada com sucesso!");
-      navigate(-1);
+      setWorksModal(true)
+      setModalMessage("Conta Atualizada com sucesso.")
+      setModalOpen(true)
+      setTimeout(() => {
+        navigate(-1);
+      }, 2200);
+
     } catch (e) {
-      console.error("Erro ao adicionar documento: ", e);
-      alert("Erro ao adicionar documento.");
+      console.error("Erro ao Atualizar ", e);
+
+      setWorksModal(false)
+      setModalMessage("Erro ao Atualizar a Conta.")
+      setModalOpen(true)
+      setTimeout(() => {
+        setModalOpen(false)
+      }, 2200);
     }
   };
 
@@ -121,9 +134,9 @@ const EditarPerfil = () => {
     return `${firstName} ${lastName}`;
   };
 
-  function voltarincon() {
+  function voltarincon(e) {
     e.preventDefault();
-    navigate(-1);
+    navigate('/perfilempresa');
   }
 
   const handleTabChange = (tabIndex) => {
@@ -152,7 +165,11 @@ const EditarPerfil = () => {
 
   return (
     <>
-      <div className="h-screen w-full flex items-center justify-center bg-gray-300">
+      <div>
+        <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+      </div>
+
+      <div className="h-screen w-full flex items-center justify-center bg-gray-300 editprofile-screen">
         <div className="w-editprofile h-editprofile rounded-3xl flex editprofile-container">
           {/*Lado Esquerdo*/}
           <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-32 editprofile-menu">
@@ -190,7 +207,7 @@ const EditarPerfil = () => {
             </div>
 
             <div className="h-fit w-full flex items-center justify-center tabs-voltar">
-              <button onClick={voltarincon} className='flex h-fit items-center gap-1'>
+              <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1'>
                 <p className='font-medium text-white'>Voltar</p>
                 <MdExitToApp className='text-4xl text-white iconhover ' />
               </button>
@@ -203,7 +220,7 @@ const EditarPerfil = () => {
             <form onSubmit={handleSubmit} className="h-full w-full flex flex-col items-center justify-center gap-2">
 
               <div className="h-fit w-full flex items-center justify-end form-voltar hidden">
-                <button onClick={voltarincon} className='flex h-fit items-center gap-1'>
+                <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1'>
                   <p className='font-medium text-gray-900'>Voltar</p>
                   <MdExitToApp className='text-4xl text-gray-900 iconhover ' />
                 </button>

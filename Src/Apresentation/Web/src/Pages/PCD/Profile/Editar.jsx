@@ -7,6 +7,8 @@ import { decrypt } from "../../../Security/Cryptography_Rotes";
 import { getAuth, updateEmail, sendPasswordResetEmail, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { MdExitToApp } from "react-icons/md";
 
+import Modal from "../Modal/Modal";
+
 const EditarPerfil = () => {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -19,6 +21,9 @@ const EditarPerfil = () => {
   const [userName, setUserName] = useState("")
   const [isUserNameSet, setIsUserNameSet] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('Processando...');
+  const [isWorksModal, setWorksModal] = useState(false);
   const [userData, setUserProfile] = useState({
     name: '',
     email: '',
@@ -58,7 +63,6 @@ const EditarPerfil = () => {
 
       } else {
         setUserProfile(null);
-        alert("Sem documentos!");
       }
     };
     getUserProfile();
@@ -81,35 +85,19 @@ const EditarPerfil = () => {
     }));
   };
 
-  {/*
-// Botão para guardar as informações no banco
-const handleSubmit = async (e) => {
-  e.preventDefault();
 
-  try {
-
-    axios.post('https://localhost:3000/updateprofile/'+id, {userData})
-   .then(res =>{
-    alert("Perfil atualizado com sucesso")
-   })
-   .catch(err =>{
-    console.log(err)
-    alert("Falha ao atualizar, tente novamente.");
-  })
-  } catch (e) {
-    console.error("Erro ao adicionar documento: ", e);
-    alert("Erro ao adicionar documento.");
-  }
-};
-
-*/}
 
   const PassReset = () => {
 
     const auth = getAuth();
     sendPasswordResetEmail(auth, userData.email)
       .then(() => {
-        alert("Email para a alteração de senha foi enviado")
+        setWorksModal(true)
+        setModalMessage("Email para a alteração de senha foi enviado")
+        setModalOpen(true)
+        setTimeout(() => {
+          setModalOpen(false)
+        }, 2200);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -133,10 +121,20 @@ const handleSubmit = async (e) => {
       if (user) {
         updateEmail(user, userData.email)
           .then(() => {
-            alert('Email atualizado com sucesso');
+            setWorksModal(true)
+            setModalMessage("Email atualizado com sucesso")
+            setModalOpen(true)
+            setTimeout(() => {
+              setModalOpen(true)
+            }, 2200);
           })
           .catch((error) => {
-            alert(error.message);
+            setWorksModal(false)
+            setModalMessage("Não foi possível atualizar o Email")
+            setModalOpen(true)
+            setTimeout(() => {
+              setModalOpen(false)
+            }, 2200);
           });
 
         const userDoc = doc(db, "PCD", userId);
@@ -152,11 +150,23 @@ const handleSubmit = async (e) => {
           deficiencia: userData.deficiencia,
         });
       }
-      alert("Conta atualizada com sucesso!");
-      navigate(-2);
+      setWorksModal(true)
+      setModalMessage("Conta atualizada com sucesso!")
+      setModalOpen(true)
+      setTimeout(() => {
+        navigate(-2);
+      }, 4000);
+
+
+
     } catch (e) {
-      console.error("Erro ao adicionar documento: ", e);
-      alert("Erro ao adicionar documento.");
+      console.error("Erro ao atualizar conta: ", e);
+      setWorksModal(false)
+      setModalMessage("Erro ao atulizar conta.")
+      setModalOpen(true)
+      setTimeout(() => {
+        setModalOpen(false)
+      }, 2200);
     }
   };
 
@@ -172,9 +182,9 @@ const handleSubmit = async (e) => {
     setTab(tabIndex);
   };
 
-  function voltarincon() {
+  function voltarincon(e) {
     e.preventDefault();
-    navigate(-1);
+    navigate('/userprofile');
   }
 
   const DeleteProfile = async (id) => {
@@ -193,11 +203,23 @@ const handleSubmit = async (e) => {
         });
         const UserInfo = doc(db, "PCD", id)
         await deleteDoc(UserInfo)
-        localStorage.removeItem('userId');
-        alert("Conta deletada com sucesso")
-        navigate('/');
+
+        setWorksModal(true)
+        setModalMessage("Conta deletada com sucesso")
+        setModalOpen(true)
+        setTimeout(() => {
+          localStorage.removeItem('userId');
+          navigate('/');
+        }, 4000);
+
+
       } catch (error) {
-        alert("Erro", error)
+        setWorksModal(false)
+        setModalMessage("Erro ao deletar a conta.")
+        setModalOpen(true)
+        setTimeout(() => {
+          setModalOpen(false)
+        }, 2200);
       }
     }
 
@@ -224,7 +246,10 @@ const handleSubmit = async (e) => {
 
   return (
     <>
-      <div className="h-screen w-full flex items-center justify-center bg-gray-300">
+      <div>
+        <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+      </div>
+      <div className="h-screen w-full flex items-center justify-center bg-gray-300 editprofile-screen">
         <div className="w-editprofile h-editprofile rounded-3xl flex editprofile-container">
           {/*Lado Esquerdo*/}
           <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-32 editprofile-menu">
@@ -276,7 +301,7 @@ const handleSubmit = async (e) => {
             </div>
 
             <div className="h-fit w-full flex items-center justify-center tabs-voltar">
-              <button onClick={voltarincon} className='flex h-fit items-center gap-1'>
+              <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1'>
                 <p className='font-medium text-white'>Voltar</p>
                 <MdExitToApp className='text-4xl text-white iconhover ' />
               </button>
@@ -289,7 +314,7 @@ const handleSubmit = async (e) => {
             <form onSubmit={handleSubmit} className="h-full w-full flex flex-col items-center justify-center gap-2">
 
               <div className="h-fit w-full flex items-center justify-end form-voltar hidden">
-                <button onClick={voltarincon} className='flex h-fit items-center gap-1'>
+                <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1'>
                   <p className='font-medium text-gray-900'>Voltar</p>
                   <MdExitToApp className='text-4xl text-gray-900 iconhover ' />
                 </button>

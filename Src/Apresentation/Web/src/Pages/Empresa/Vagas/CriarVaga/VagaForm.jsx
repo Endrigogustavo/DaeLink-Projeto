@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { db, auth } from '../../../../Database/Firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
+import Modal from '../../Modal/Modal';
+
 import axios from 'axios'
 const VagaForm = () => {
     //Pegar o id do usuario na tela anterior
@@ -19,6 +21,12 @@ const VagaForm = () => {
     const [userProfile, setUserProfile] = useState(null);
     const [userId, setUserId] = useState("");
     const [empresaId] = useState(userId);
+
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('Processando...');
+    const [isWorksModal, setWorksModal] = useState(false);
+
+
 
     const textareaRefs = {
         exigencias: useRef(null),
@@ -56,7 +64,6 @@ const VagaForm = () => {
                 setUserProfile(CompanyData);
             } else {
                 setUserProfile(null);
-                alert("Tente novamente!");
             }
         };
         //Iniciando a função
@@ -78,12 +85,21 @@ const VagaForm = () => {
 
         axios.post('http://localhost:3000/criarvaga/' + userId, { tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId })
             .then(res => {
-                alert("Vaga criada com sucesso")
-                navigate(`/homeempresa/`);
+                setWorksModal(true)
+                setModalMessage("Vaga criada com Sucesso")
+                setModalOpen(true)
+                setTimeout(() => {
+                    navigate(`/homeempresa/`);
+                }, 4000);
             })
             .catch(err => {
                 console.log(err)
-                alert("Falha ao criar uma vaga, tente novamente.");
+                setWorksModal(true)
+                setModalMessage("Erro ao criar Vaga")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setWorksModal(false)
+                }, 4000);
             })
     };
 
@@ -95,12 +111,16 @@ const VagaForm = () => {
 
     return (
         <>
+            <div>
+                <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+            </div>
+
             <div className='w-full h-36 flex items-center justify-center'>
                 <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-5'>
                     <h1 className='font-bold text-2xl text-white'>Criar Vaga </h1>
                 </div>
             </div>
-            <div className="h-fit w-full grid grid-cols-2 gap-y-2 items-center justify-items-center py-8">
+            <div className="h-fit w-full grid grid-cols-2 gap-y-2 items-center justify-items-center py-8 form-gridadjust">
 
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Cargo</label>
