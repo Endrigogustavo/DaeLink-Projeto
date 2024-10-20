@@ -47,28 +47,18 @@ const VagaForm = () => {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        const getCompanyProfile = async () => {
-            const storedUserId = localStorage.getItem('userId');
-            if (storedUserId) {
-                const userId = storedUserId;
-                setUserId(userId)
+        const getPCDprofile = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/get-company', { withCredentials: true });
+                setUserProfile(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar os usuários:', error.response ? error.response.data : error.message);
             }
-
-            //Caminho dos dados da tabela Empresa do banco com base no ID
-            const CompanyDoc = doc(db, "Empresa", userId);
-            //Pegando dados tratados
-            const GetCompanyDoc = await getDoc(CompanyDoc);
-            //Tratamento e setando as variaveis
-            if (GetCompanyDoc.exists()) {
-                const CompanyData = { id: GetCompanyDoc.id, ...GetCompanyDoc.data() };
-                setUserProfile(CompanyData);
-            } else {
-                setUserProfile(null);
-            }
+            
         };
-        //Iniciando a função
-        getCompanyProfile();
-    }, [userId]);
+        getPCDprofile();
+
+    }, []);
 
     useEffect(() => {
         if (userProfile) {
@@ -77,13 +67,14 @@ const VagaForm = () => {
         }
     }, [userProfile]);
 
+
     //Botão de registrar vaga
     const handleRegister = async (event) => {
         event.preventDefault();
         const user = auth.currentUser;
         //Função registrar vaga que esta no Auth.jsx enviando parametros do form
 
-        axios.post('http://localhost:3000/criarvaga/' + userId, { tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId })
+        axios.post('http://localhost:3000/criarvaga/', { tipo, empresa, detalhes, salario, exigencias, area, local, vaga, empresaId }, { withCredentials: true })
             .then(res => {
                 setWorksModal(true)
                 setModalMessage("Vaga criada com Sucesso")
@@ -125,6 +116,7 @@ const VagaForm = () => {
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Cargo</label>
                     <input
+                    required
                         type="text"
                         name="vaga"
                         placeholder="Digite o nome da Vaga"
@@ -167,6 +159,7 @@ const VagaForm = () => {
                 </div>
 
                 <input
+                required
                     type="text"
                     placeholder="Nome da empresa"
                     value={empresa}
@@ -179,7 +172,8 @@ const VagaForm = () => {
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Salário</label>
                     <input
-                        type="text"
+                    required
+                        type="number"
                         placeholder="Apenas Números"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         value={salario}
@@ -213,6 +207,7 @@ const VagaForm = () => {
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Endereço</label>
                     <input
+                    required
                         type="text"
                         placeholder="Insira o endereço da empresa"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent overflow-y-hidden"

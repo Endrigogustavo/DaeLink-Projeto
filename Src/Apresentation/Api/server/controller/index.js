@@ -7,28 +7,29 @@ const { db } = require('../database/firebase')
 
 
 exports.updateProfile = (req, res) => {
-    const ID = req.params.decryptedId
+    const tokenId = req.cookies.tokenId;
+    const ID = tokenId
     try {
       db.collection("PCD", ID).update({
-        name: req.body.userData.name,
-        email: req.body.userData.email,
-        trabalho: req.body.userData.trabalho,
-        descrição: req.body.userData.descrição,
-        sobre: req.body.userData.sobre,
-        experiencias: req.body.userData.experiencias,
-        idade: req.body.userData.idade,
+        name: req.body.name,
+        email: req.body.email,
+        trabalho: req.body.trabalho,
+        descrição: req.body.descrição,
+        sobre: req.body.sobre,
+        experiencias: req.body.experiencias,
+        idade: req.body.idade,
         userId: ID,
-        deficiencia: req.body.userData.deficiencia,
+        deficiencia: req.body.deficiencia,
       })
       return res.json("Created")
     
     } catch (error) {
       console.log("Erro ao add:", error)
-      if(err) return res.json(err);
+      if(error) return res.json(error);
     }
 }
 exports.criarVaga = async (req, res) => {
-  const ID = req.params.id
+  const ID = req.cookies.tokenId;
   const Status = "Aberta"
 
 try {

@@ -8,10 +8,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 const EditarVaga = () => {
   // Função de navegação do site
   const navigate = useNavigate();
-  // Utilizado para pegar o id do usuario e da vaga na tela anterior
-  const { vagaId } = useParams();
-  const [vagaInfoId, setvagaInfoId] = useState(vagaId);
-
   // Informações do usuario
   const [userData, setUserProfile] = useState({
     cep: '',
@@ -25,6 +21,7 @@ const EditarVaga = () => {
 
   // Carregar as informações do usuário do banco de dados
   useEffect(() => {
+    const vagaId = localStorage.getItem("Vaga");
     const getCompanyProfile = async () => {
       const CompanyDoc = doc(db, "Vagas", vagaId);
       const GetCompany = await getDoc(CompanyDoc);
@@ -36,7 +33,7 @@ const EditarVaga = () => {
       }
     };
     getCompanyProfile();
-  }, [vagaId]);
+  }, []);
 
 
   // Função para lidar com as mudanças nos inputs
@@ -53,6 +50,7 @@ const EditarVaga = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const vagaId = localStorage.getItem("Vaga");
       const userDoc = doc(db, "Vagas", vagaId);
 
       await updateDoc(userDoc, {

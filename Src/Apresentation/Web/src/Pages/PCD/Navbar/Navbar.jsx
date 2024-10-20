@@ -75,7 +75,7 @@ export default function Navbar() {
                         {loading ? (
                             <img
                                 src={userProfile?.imageUrl || defaultempresaicon}
-                                alt=""
+                                alt="Profile"
                                 className="w-8 h-8 rounded-full"
                             />
                         ) : userProfile?.imageUrl ? (

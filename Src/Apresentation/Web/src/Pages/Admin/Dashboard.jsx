@@ -13,6 +13,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     const ListPCD = async () => {
+      localStorage.removeItem('PCD');
+      localStorage.removeItem('Empresa');
+      localStorage.removeItem('Vaga');
       const PCDref = collection(db, "PCD")
       const data = await getDocs(PCDref)
       setListPCD(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
@@ -49,15 +52,18 @@ const Dashboard = () => {
 
   const UpdateInfo = (id, tipo) => {
     if(tipo == "PCD"){
-      navigate(`/pcdadm/${id}`)
+      localStorage.setItem('PCD', id);
+      navigate(`/pcdadm/`)
     }
     if(tipo == "Empresa"){
-      navigate(`/empresaadm/${id}`)
+      localStorage.setItem('Empresa', id);
+      navigate(`/empresaadm/`)
     }
   }
 
   const UpdateVaga = (id) => {
-    navigate(`/vagaadm/${id}`)
+    localStorage.setItem('Vaga', id);
+    navigate(`/vagaadm/`)
   }
   return (
     <>

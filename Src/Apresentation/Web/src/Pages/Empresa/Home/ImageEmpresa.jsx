@@ -1,41 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
-
-import { db } from '../../../Database/Firebase';
-import { doc, getDoc } from 'firebase/firestore';
-
+import axios from 'axios';
 import './Empresa.css'
 
 const ImageEmpresa = () => {
     const [loading, setLoading] = useState(true); // Estado de carregamento
     const [userProfile, setUserProfile] = useState(null);
-    const [userId, setUserId] = useState("");
-    const navigate = useNavigate();
 
 
     useEffect(() => {
-        const storedUserId = localStorage.getItem('userId');
-        if (storedUserId) {
-            const userId = storedUserId;
-            setUserId(userId)
-        }
-
-        
-        const getUserProfile = async () => {
-            const userDoc = doc(db, "Empresa", userId);
-            const userSnap = await getDoc(userDoc);
-
-            if (userSnap.exists()) {
-                setUserProfile(userSnap.data());
-                setUserId(userSnap.id);
-            } else {
-                setUserProfile(null);
+        const getPCDprofile = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/get-company', { withCredentials: true });
+                setUserProfile(response.data);
+                setLoading(false)
+            } catch (error) {
+                console.error('Erro ao buscar os usuários:', error.response ? error.response.data : error.message);
             }
-            setLoading(false); // Carregamento concluído
+            
         };
+        getPCDprofile();
 
-        getUserProfile();
-    }, [userId]);
+    }, []);
 
 
     if (loading) {
