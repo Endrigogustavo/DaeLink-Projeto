@@ -12,8 +12,7 @@ const EditarPerfil = () => {
   // Função de navegação do site
   const navigate = useNavigate();
   // Utilizado para pegar o id do usuario e da vaga na tela anterior
-  const { id } = useParams();
-  const [userId, setUserId] = useState(id);
+  const [userId, setUserId] = useState("");
 
   const [senha, setSenha] = useState("");
   // Informações do usuario
@@ -33,6 +32,8 @@ const EditarPerfil = () => {
   // Carregar as informações do usuário do banco de dados
   useEffect(() => {
     const getUserProfile = async () => {
+      const id = localStorage.getItem("PCD");
+      setUserId(id)
       const userDoc = doc(db, "PCD", id);
       const GetUser = await getDoc(userDoc);
       if (GetUser.exists()) {
@@ -43,7 +44,7 @@ const EditarPerfil = () => {
       }
     };
     getUserProfile();
-  }, [id]);
+  }, []);
 
   // Função para lidar com as mudanças nos inputs
   const handleInputChange = (e) => {
@@ -80,6 +81,7 @@ const EditarPerfil = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const id = localStorage.getItem("PCD");
       const userDoc = doc(db, "PCD", id);
 
       await updateDoc(userDoc, {
@@ -104,14 +106,16 @@ const EditarPerfil = () => {
     }
   };
 
-  const DeleteProfile = async (id) => {
+  const DeleteProfile = async () => {
+    const id = localStorage.getItem("PCD");
     var response = confirm("Deseja Deletar a conta?");
 
     if (response == true) {
       try {
+        
         const UserInfo = doc(db, "PCD", id)
         await deleteDoc(UserInfo)
-        navigate('/');
+        navigate(-1);
       } catch (error) {
         alert("Erro", error)
       }
@@ -207,7 +211,7 @@ const EditarPerfil = () => {
         <button type="submit">Adicionar Documento</button>
       </form>
       <br />
-      <button onClick={() => DeleteProfile(id)}>Deletar conta</button>
+      <button onClick={DeleteProfile()}>Deletar conta</button>
     </>
   );
 };

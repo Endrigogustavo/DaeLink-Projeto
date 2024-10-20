@@ -105,10 +105,10 @@ function App() {
 
 
 
-        <Route path="/adm/:uid" element={<Adm />} />
-        <Route path="/pcdadm/:id" element={<PCDadm />} />
-        <Route path="/empresaadm/:id" element={<EmpresaAdm />} />
-        <Route path="/vagaadm/:vagaId" element={<VagasAdm />} />
+        <Route path="/adm/" element={<Adm />} />
+        <Route path="/pcdadm/" element={<PCDadm />} />
+        <Route path="/empresaadm/" element={<EmpresaAdm />} />
+        <Route path="/vagaadm/" element={<VagasAdm />} />
         <Route path="/loginadm" element={<LoginAdm />} />
 
 

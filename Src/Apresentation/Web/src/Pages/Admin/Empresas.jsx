@@ -6,10 +6,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 const EditarPerfil = () => {
   // Função de navegação do site
   const navigate = useNavigate();
-  // Utilizado para pegar o id do usuario e da vaga na tela anterior
-  const { id } = useParams();
-  const [userId, setUserId] = useState(id);
-
   // Informações do usuario
   const [userData, setUserProfile] = useState({
     cep: '',
@@ -24,6 +20,7 @@ const EditarPerfil = () => {
   // Carregar as informações do usuário do banco de dados
   useEffect(() => {
     const getCompanyProfile = async () => {
+      const id = localStorage.getItem("Empresa");
       const CompanyDoc = doc(db, "Empresa", id);
       const GetCompany = await getDoc(CompanyDoc);
       if (GetCompany.exists()) {
@@ -34,7 +31,7 @@ const EditarPerfil = () => {
       }
     };
     getCompanyProfile();
-  }, [id]);
+  }, []);
 
   // Função para lidar com as mudanças nos inputs
   const handleInputChange = (e) => {
@@ -51,7 +48,8 @@ const EditarPerfil = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userDoc = doc(db, "Empresa", userId);
+      const id = localStorage.getItem("Empresa");
+      const userDoc = doc(db, "Empresa", id);
 
       await updateDoc(userDoc, {
         cep: userData.cep,
@@ -61,7 +59,7 @@ const EditarPerfil = () => {
         endereco: userData.endereco,
         sobre: userData.sobre,
         area: userData.area,
-        userId: userId,
+        userId: id,
       });
 
       alert("Conta atualizada com sucesso!");

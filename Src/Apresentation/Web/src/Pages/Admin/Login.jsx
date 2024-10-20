@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { db, auth } from '../../Database/Firebase'
+import axios from 'axios';
 
 import ImgEmpresa from '../../Img/LoginE.png'
 import { doc, getDoc } from 'firebase/firestore';
@@ -23,8 +24,13 @@ const LoginEmpresa = () => {
       const GetPCDDoc = await getDoc(PCDDocRef);
 
       if (GetPCDDoc.exists()) {
+        await axios.post('http://localhost:3000/cookie', {uid},{
+          withCredentials: true 
+      });
+      const id = uid;
+      localStorage.setItem('userId', id);
         alert("Logado com sucesso")
-        navigate(`/adm/${uid}`);
+        navigate(`/adm`);
       } else {
         alert("Erro ao fazer Login, tente novamente!");
         return null;
