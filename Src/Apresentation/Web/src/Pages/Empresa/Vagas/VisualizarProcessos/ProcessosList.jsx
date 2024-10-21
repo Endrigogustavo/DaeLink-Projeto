@@ -9,6 +9,7 @@ import { MdWork, MdDelete, MdEdit } from "react-icons/md";
 import './ProcessoEmpresas.css'
 
 import Modal from '../../Modal/Modal';
+import ConfirmModal from '../../Modal/ConfirmModal';
 
 function ProcessosList() {
     const [vagas, setVagas] = useState([]);
@@ -19,6 +20,21 @@ function ProcessosList() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('Processando...');
     const [isWorksModal, setWorksModal] = useState(false);
+
+    const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [ConfirmModalMessage, setConfirmModalMessage] = useState('');
+    const [vagaToDelete, setVagaToDelete] = useState(null);
+
+
+    const handleOpenModal = (vagaId) => {
+        setVagaToDelete(vagaId);
+        setConfirmModalMessage('Deseja deletar esta vaga?');
+        setConfirmModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setConfirmModalOpen(false);
+    };
 
     useEffect(() => {
         const getVagas = async () => {
@@ -65,37 +81,40 @@ function ProcessosList() {
 
 
 
-    const deleteVaga = async (vagaId) => {
-        const response = window.confirm("Deseja deletar a vaga?");
-        if (response) {
-            try {
-                const vagaDoc = doc(db, "Vagas", vagaId);
-                await deleteDoc(vagaDoc);
-                setWorksModal(true)
-                setModalMessage("Vaga Deletada com Sucesso")
-                setModalOpen(true)
-                setTimeout(() => {
-                    setVagas(vagas.filter(vaga => vaga.id !== vagaId)); // Update state to reflect deletion
-                }, 4000);
-
-
-            } catch (error) {
-                setWorksModal(false)
-                setModalMessage("Erro ao deletar a vaga")
-                setModalOpen(true)
-                setTimeout(() => {
-                    setModalOpen(false)
-                }, 2200);
-
-            }
+    const deleteVaga = async () => {
+        try {
+            const vagaDoc = doc(db, "Vagas", vagaToDelete);
+            await deleteDoc(vagaDoc);
+            setWorksModal(true);
+            setModalMessage("Vaga Deletada com Sucesso");
+            setModalOpen(true);
+            setTimeout(() => {
+                setVagas(vagas.filter(vaga => vaga.id !== vagaToDelete));
+                setModalOpen(false);
+            }, 4000);
+        } catch (error) {
+            setWorksModal(false);
+            setModalMessage("Erro ao deletar a vaga");
+            setModalOpen(true);
+            setTimeout(() => {
+                setModalOpen(false);
+            }, 2200);
+        } finally {
+            handleCloseModal();
         }
     };
 
     return (
         <>
-            <div>
+            
                 <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
-            </div >
+                <ConfirmModal
+                    isWorksModal={isConfirmModalOpen}
+                    onConfirm={deleteVaga}
+                    onClose={handleCloseModal}
+                    message={ConfirmModalMessage}
+                />
+            
 
             <div className={`w-full h-fit flex justify-center items-center flex-col py-4 ${vagas.length > 0 ? 'grid ProcessosEmpresas gap-y-6 justify-items-center items-center' : ''}`}>
                 {vagas.map((vaga) => (
@@ -121,7 +140,7 @@ function ProcessosList() {
                                     <MdEdit className='text-3xl text-white text-center cardhover' />
                                 </button>
 
-                                <button onClick={() => deleteVaga(vaga.id)} type="submit" class="bg-red-400 rounded-2xl p-2 h-fit">
+                                <button onClick={() => handleOpenModal(vaga.id)} type="submit" class="bg-red-400 rounded-2xl p-2 h-fit">
                                     <MdDelete className='text-3xl text-white text-center cardhover' />
                                 </button>
                             </div>

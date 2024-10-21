@@ -161,9 +161,8 @@ function VisualizarDocumentos() {
   return (
     <>
       <Navbar />
-      <div>
-        <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
-      </div>
+      <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+
       <div className='flex justify-center items-center min-h-screen'>
         <div className='px-6 w-3/4'>
           <div className="px-6 sm:px-0 text-center">

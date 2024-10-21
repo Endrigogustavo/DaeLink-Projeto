@@ -8,6 +8,7 @@ import { getAuth, updateEmail, sendPasswordResetEmail, deleteUser, EmailAuthProv
 import { MdExitToApp } from "react-icons/md";
 
 import Modal from "../Modal/Modal";
+import ConfirmModal from "../Modal/ConfirmModal"
 
 const EditarPerfil = () => {
   const auth = getAuth();
@@ -34,6 +35,19 @@ const EditarPerfil = () => {
     experiencias: '',
     deficiencia: ''
   });
+
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [ConfirmModalMessage, setConfirmModalMessage] = useState('');
+
+  const handleOpenModal = () => {
+    setConfirmModalMessage('Deseja deletar a Conta?');
+    setConfirmModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setConfirmModalOpen(false);
+  };
+
 
   const textareaRefs = {
     sobre: useRef(null),
@@ -110,33 +124,11 @@ const EditarPerfil = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const credential = EmailAuthProvider.credential(
-        user.email,
-        senha
-      );
-
-      reauthenticateWithCredential(user, credential).then(() => {
-      })
+      const credential = EmailAuthProvider.credential(user.email, senha);
+      await reauthenticateWithCredential(user, credential);
 
       if (user) {
-        updateEmail(user, userData.email)
-          .then(() => {
-            setWorksModal(true)
-            setModalMessage("Email atualizado com sucesso")
-            setModalOpen(true)
-            setTimeout(() => {
-              setModalOpen(true)
-            }, 2200);
-          })
-          .catch((error) => {
-            setWorksModal(false)
-            setModalMessage("Não foi possível atualizar o Email")
-            setModalOpen(true)
-            setTimeout(() => {
-              setModalOpen(false)
-            }, 2200);
-          });
-
+        await updateEmail(user, userData.email);
         const userDoc = doc(db, "PCD", userId);
         await updateDoc(userDoc, {
           name: userData.name,
@@ -149,32 +141,31 @@ const EditarPerfil = () => {
           userId: userId,
           deficiencia: userData.deficiencia,
         });
+
+        setWorksModal(true);
+        setModalMessage("Conta atualizada com sucesso!");
+        setModalOpen(true);
+        setTimeout(() => navigate(-2), 4000);
       }
-      setWorksModal(true)
-      setModalMessage("Conta atualizada com sucesso!")
-      setModalOpen(true)
-      setTimeout(() => {
-        navigate(-2);
-      }, 4000);
-
-
-
-    } catch (e) {
-      console.error("Erro ao atualizar conta: ", e);
-      setWorksModal(false)
-      setModalMessage("Erro ao atulizar conta.")
-      setModalOpen(true)
-      setTimeout(() => {
-        setModalOpen(false)
-      }, 2200);
+    } catch (error) {
+      console.error("Erro ao atualizar conta: ", error);
+      let errorMessage = "Erro ao atualizar conta.";
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = "Este e-mail já está em uso.";
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = "O e-mail informado é inválido.";
+      }
+      setWorksModal(false);
+      setModalMessage(errorMessage);
+      setModalOpen(true);
+      setTimeout(() => setModalOpen(false), 2200);
     }
   };
-
   // Função para pegar o primeiro nome e sobrenome
   const getFirstAndLastName = (name) => {
     const nameParts = name.split(" ");
     const firstName = nameParts[0];
-    const lastName = nameParts[1] ? nameParts[1] : ""; // Verifica se há sobrenome
+    const lastName = nameParts[1] ? nameParts[1] : "";
     return `${firstName} ${lastName}`;
   };
 
@@ -188,42 +179,45 @@ const EditarPerfil = () => {
   }
 
   const DeleteProfile = async (id) => {
-    var response = confirm("Deseja Deletar a conta?");
+    console.log("Tentando deletar o usuário com ID:", id);
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
 
-    if (response == true) {
-      try {
-        const auth = getAuth();
-        const user = auth.currentUser;
+      // Exibe mensagem de sucesso e abre modal
+      setWorksModal(true);
+      setModalMessage("Conta deletada com sucesso");
+      setModalOpen(true);
 
-        deleteUser(user).then(() => {
-          // User deleted.
-        }).catch((error) => {
-          // An error ocurred
-          // ...
-        });
-        const UserInfo = doc(db, "PCD", id)
-        await deleteDoc(UserInfo)
+      // Exclui o documento no Firestore primeiro
+      const UserInfo = doc(db, "PCD", id);
+      await deleteDoc(UserInfo);
 
-        setWorksModal(true)
-        setModalMessage("Conta deletada com sucesso")
-        setModalOpen(true)
-        setTimeout(() => {
-          localStorage.removeItem('userId');
-          navigate('/');
-        }, 4000);
+      // Exclui o usuário do Firebase Authentication
+      await deleteUser(user);
 
+      // Remove o ID do localStorage
+      localStorage.removeItem('userId');
 
-      } catch (error) {
-        setWorksModal(false)
-        setModalMessage("Erro ao deletar a conta.")
-        setModalOpen(true)
-        setTimeout(() => {
-          setModalOpen(false)
-        }, 2200);
-      }
+      // Aguarda 4 segundos para dar feedback visual antes de redirecionar
+      setTimeout(() => {
+        navigate('/');
+      }, 4000);
+
+    } catch (error) {
+      console.error("Erro ao deletar a conta:", error);
+
+      // Exibe mensagem de erro e abre modal
+      setWorksModal(false);
+      setModalMessage("Erro ao deletar a conta.");
+      setModalOpen(true);
+
+      // Fecha o modal após 2.2 segundos
+      setTimeout(() => {
+        setModalOpen(false);
+      }, 2200);
     }
-
-  }
+  };
 
   // Função para verificar o tamanho da tela e trocar os textos
   const checkScreenSize = () => {
@@ -246,9 +240,15 @@ const EditarPerfil = () => {
 
   return (
     <>
-      <div>
-        <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
-      </div>
+
+      <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+      <ConfirmModal
+        isWorksModal={isConfirmModalOpen}
+        onConfirm={() => DeleteProfile(userId)} // Função só será chamada ao confirmar
+        onClose={handleCloseModal}
+        message={ConfirmModalMessage}
+      />
+
       <div className="h-screen w-full flex items-center justify-center bg-gray-300 editprofile-screen">
         <div className="w-editprofile h-editprofile rounded-3xl flex editprofile-container">
           {/*Lado Esquerdo*/}
@@ -311,7 +311,7 @@ const EditarPerfil = () => {
           </div>
           {/*Lado Direito*/}
           <div className="w-4/6 h-full flex flex-col items-center justify-center editprofile-form bg-white rounded-3xl">
-            <form onSubmit={handleSubmit} className="h-full w-full flex flex-col items-center justify-center gap-2">
+            <form className="h-full w-full flex flex-col items-center justify-center gap-2">
 
               <div className="h-fit w-full flex items-center justify-end form-voltar hidden">
                 <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1'>
@@ -452,7 +452,7 @@ const EditarPerfil = () => {
               {tab === 3 && (
                 <>
                   <h1 className="font-medium test-center px-12">Parar trocar de senha prossiga no botão, pois irá enviar o email de verificação</h1>
-                  <button onClick={PassReset} className="w-52 bg-green-500 hover:bg-green-400 text-white font-bold 
+                  <button onClick={PassReset} type="button" className="w-52 bg-green-500 hover:bg-green-400 text-white font-bold 
                   py-2 px-4 rounded-full transition-all mt-2">Trocar Senha</button>
 
                 </>
@@ -462,14 +462,14 @@ const EditarPerfil = () => {
               {tab === 4 && (
                 <>
                   <h1 className="font-medium test-center px-12">Irá desativar sua conta, entretanto você pode criar uma nova posteriormente</h1>
-                  <button onClick={() => DeleteProfile(userId)} className="w-52 bg-red-500 hover:bg-red-400 text-white font-bold 
+                  <button onClick={handleOpenModal} type="button" className="w-52 bg-red-500 hover:bg-red-400 text-white font-bold 
                   py-2 px-4 rounded-full transition-all mt-2">Deletar conta</button>
 
                 </>
 
               )}
               {tab <= 2 && (
-                <button type="submit" className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2">Confirmar Mudanças</button>
+                <button type="submit" onClick={handleSubmit} className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2">Confirmar Mudanças</button>
               )}
 
             </form>

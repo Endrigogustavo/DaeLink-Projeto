@@ -6,6 +6,7 @@ import { logout } from '../../../Auth/Auth';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { MdExitToApp } from "react-icons/md";
 import InputMask from 'react-input-mask';
+import Modal from "../Modal/Modal";
 
 const EditarPerfil = () => {
   // Função de navegação do site
@@ -79,17 +80,6 @@ const EditarPerfil = () => {
       [name]: value,
     }));
   };
-
-  function LogoutProfile() {
-    var response = confirm("Deseja fazer Logout?");
-    if (response == true) {
-      //Função do Auth.jsx para deslogar
-      logout();
-      // Redireciona para a página de login após o logout
-      navigate('/');
-    }
-
-  }
 
   // Botão para guardar as informações no banco
   const handleSubmit = async (e) => {

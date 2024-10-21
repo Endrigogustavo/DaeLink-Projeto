@@ -6,6 +6,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import Navbar from '../../Navbar/Navbar';
 import Modal from '../../Modal/Modal';
+import ConfirmModal from '../../Modal/ConfirmModal';
+import { MdWork } from "react-icons/md";
 
 export default function Example() {
   const navigate = useNavigate();
@@ -22,6 +24,17 @@ export default function Example() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('Processando...');
   const [isWorksModal, setWorksModal] = useState(false);
+
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [ConfirmModalMessage, setConfirmMessage] = useState('Deseja se Candidatar?');
+
+  const handleOpenModal = () => {
+    setConfirmModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setConfirmModalOpen(false);
+  };
 
   useEffect(() => {
     const getInfo = async () => {
@@ -79,69 +92,64 @@ export default function Example() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = confirm("Deseja entrar na vaga?");
+    try {
+      setConfirmModalOpen(false)
+      const vagaRef = doc(db, "Vagas", vagaId);
+      const candidatosRef = collection(vagaRef, 'candidatos');
 
-    if (response === true) {
-      try {
-        const vagaRef = doc(db, "Vagas", vagaId);
-        const candidatosRef = collection(vagaRef, 'candidatos');
-
-        // Verifica se pessoaId está definido
-        if (!pessoaId || !pessoaId.id) {
-          setWorksModal(false)
-          setModalMessage("Informações do candidato não carregadas corretamente.")
-          setModalOpen(true)
-          setTimeout(() => {
-            return;
-          }, 4000);
-        }
-
-        // Buscar todos os candidatos da vaga
-        const candidatosSnapshot = await getDocs(candidatosRef);
-
-        const userExists = candidatosSnapshot.docs.some(doc => doc.data().userId === pessoaId.id);
-
-        if (userExists) {
-          setWorksModal(true)
-          setModalMessage("Você já se candidatou a esta vaga.")
-          setModalOpen(true)
-
-          setTimeout(() => {
-
-            navigate("/processos");
-            return;
-          }, 4000);
-
-        } else {
-
-          // Se o userId não existir, adicione o novo candidato
-          await addDoc(candidatosRef, {
-            userId: pessoaId.id,
-            name: pessoaId.name,
-            email: pessoaId.email,
-            situação: situação
-          });
-
-
-
-          setWorksModal(true)
-          setModalMessage("Candidatado com Sucesso")
-          setModalOpen(true)
-          localStorage.removeItem('VagaId');
-
-          setTimeout(() => {
-
-            navigate(`/processos`);
-          }, 4000);
-        }
-
-      } catch (e) {
-        console.error("Erro ao adicionar pessoa: ", e);
-
+      // Verifica se pessoaId está definido
+      if (!pessoaId || !pessoaId.id) {
         setWorksModal(false)
-        setModalMessage("Erro ao se Candidatar")
+        setModalMessage("Informações do candidato não carregadas corretamente.")
         setModalOpen(true)
+        setTimeout(() => {
+          return;
+        }, 4000);
       }
+
+      // Buscar todos os candidatos da vaga
+      const candidatosSnapshot = await getDocs(candidatosRef);
+
+      const userExists = candidatosSnapshot.docs.some(doc => doc.data().userId === pessoaId.id);
+
+      if (userExists) {
+        setWorksModal(true)
+        setModalMessage("Você já se candidatou a esta vaga.")
+        setModalOpen(true)
+
+        setTimeout(() => {
+
+          navigate("/processos");
+          return;
+        }, 4000);
+
+      } else {
+
+        // Se o userId não existir, adicione o novo candidato
+        await addDoc(candidatosRef, {
+          userId: pessoaId.id,
+          name: pessoaId.name,
+          email: pessoaId.email,
+          situação: situação
+        });
+
+        setWorksModal(true)
+        setModalMessage("Candidatado com Sucesso")
+        setModalOpen(true)
+        localStorage.removeItem('VagaId');
+
+        setTimeout(() => {
+
+          navigate(`/processos`);
+        }, 4000);
+      }
+
+    } catch (e) {
+      console.error("Erro ao adicionar pessoa: ", e);
+
+      setWorksModal(false)
+      setModalMessage("Erro ao se Candidatar")
+      setModalOpen(true)
     }
   };
 
@@ -149,108 +157,69 @@ export default function Example() {
   return (
     <>
       <Navbar />
-      <div>
-        <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
-      </div>
 
-      <br />
-      <div className='flex justify-center items-center min-h-screen'>
-        <div className='px-6 w-3/4'>
-          <div className="px-6 sm:px-0 text-center">
-            <h3 className="text-base font-semibold leading-7 text-gray-950">Informações da vaga</h3>
-          </div>
-          <div className="mt-6 border-t border-gray-300">
-            <dl className="divide-y divide-gray-100">
-              {/** Nome da Empresa */}
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Nome da empresa</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{empresa ? empresa.name : 'Carregando...'}</dd>
-              </div>
-              {/** Vaga */}
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Vaga</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{vaga ? vaga.vaga : 'Carregando...'}</dd>
-              </div>
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Área da vaga</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{vaga ? vaga.area : 'Carregando...'}</dd>
-              </div>
-              {/** Email Address */}
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Email address</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{empresa ? empresa.email : 'Carregando...'}</dd>
-              </div>
-              {/** Salário */}
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Salário</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">${vaga ? vaga.salario : 'Carregando...'}</dd>
-              </div>
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Tipo de vaga</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{vaga ? vaga.tipo : 'Carregando...'}</dd>
-              </div>
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Endereço da empresa</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{vaga ? vaga.local : 'Carregando...'}</dd>
-              </div>
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Situação da vaga</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><h1>{vaga ? vaga.status : 'Carregando...'}</h1></dd>
-              </div>
-              {/** Descrição da vaga */}
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Descrição da vaga</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {vaga ? vaga.detalhes : 'Carregando...'}
-                </dd>
-              </div>
-              {/** Attachments */}
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">Attachments</dt>
-                <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                  <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
-                    {/** Attachment Item 1 */}
-                    <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                      <div className="flex w-0 flex-1 items-center">
-                        <PaperClipIcon aria-hidden="true" className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                        <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                          <span className="truncate font-medium">resume_back_end_developer.pdf</span>
-                          <span className="flex-shrink-0 text-gray-400">2.4mb</span>
-                        </div>
-                      </div>
-                      <div className="ml-4 flex-shrink-0">
-                        <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">Download</a>
-                      </div>
-                    </li>
-                    {/** Attachment Item 2 */}
-                    <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                      <div className="flex w-0 flex-1 items-center">
-                        <PaperClipIcon aria-hidden="true" className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                        <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                          <span className="truncate font-medium">resume_front_end_developer.pdf</span>
-                          <span className="flex-shrink-0 text-gray-400">3.2mb</span>
-                        </div>
-                      </div>
-                      <div className="ml-4 flex-shrink-0">
-                        <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">Download</a>
-                      </div>
-                    </li>
-                  </ul>
-                </dd>
-              </div>
-            </dl>
-          </div>
+      <ConfirmModal
+        isWorksModal={isConfirmModalOpen}
+        onConfirm={handleSubmit}
+        onClose={handleCloseModal}
+        message={ConfirmModalMessage}
+      />
 
-          <div>
-            <p>Status: {vaga ? vaga.status : 'Carregando...'}</p>
-            {vaga && vaga.status === 'Aberta' && (
-              <button className='bg-blue-500 text-white px-4 py-2 rounded-md' onClick={handleSubmit}>Candidatar</button>
-            )}
-            {vaga && vaga.status === 'Fechada' && <p>A vaga está fechada.</p>}
-            {vaga && vaga.status === 'Preenchida' && <p>A vaga ja foi preenchida.</p>}
+      <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+
+      <div className='min-h-screen h-fit w-full flex flex-col py-16 items-center gap-2'>
+
+        <div className='h-fit w-full flex items-center justify-center gap-4'>
+          <img src={empresa.imageUrl} alt="" className='w-32 h-32 rounded-3xl shadow-2xl border-4 border-blue-600' />
+          <div className='h-fit w-fit flex flex-col justify-center items-center gap-2'>
+            <MdWork className='text-8xl text-gray-900 text-center bg-white p-4 rounded-full shadow-2xl' />
+            <p className='font-semibold text-base'>{vaga.vaga}</p>
           </div>
         </div>
+
+        <div className='w-3/4 h-fit flex flex-col items-center gap-2'>
+          <div className='w-32 h-12 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-5'>
+            <p className='text-white text-base font-medium'>{vaga ? vaga.status : 'Carregando...'}</p>
+          </div>
+
+          <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+            <h2 className='font-medium text-gray-900'>Área:</h2>
+            <p className='text-base font-normal'>{vaga.area}</p>
+          </div>
+
+          <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+            <h2 className='font-medium text-gray-900'>Email:</h2>
+            <p className='text-base font-normal'>{empresa.email}</p>
+          </div>
+
+          <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+            <h2 className='font-medium text-gray-900'>Salário:</h2>
+            <p className='text-base font-normal'>R${vaga.salario}</p>
+          </div>
+
+          <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+            <h2 className='font-medium text-gray-900'>Endereço:</h2>
+            <p className='text-base font-normal'>{vaga.local}</p>
+          </div>
+
+          <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+            <h2 className='font-medium text-gray-900'>Descrição:</h2>
+            <p className='text-base font-normal px-16 capitalize'>{vaga.detalhes}</p>
+          </div>
+
+
+
+          <div>{vaga && vaga.status === 'Aberta' && (
+            <button className='w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'
+              onClick={handleOpenModal}>Candidatar-se</button>
+          )}
+          </div>
+
+
+        </div>
+
       </div>
+
     </>
   );
 }

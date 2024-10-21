@@ -8,6 +8,8 @@ import CarregamentoTela from '../../../Components/TelaCarregamento/Carregamento'
 import Navbar from "../Navbar/Navbar"
 
 import { FaUser } from "react-icons/fa";
+import ConfirmModal from "../Modal/ConfirmModal"
+
 
 function Profile() {
     const navigate = useNavigate();
@@ -16,6 +18,17 @@ function Profile() {
     //Variaveis onde as informações serão setadas
     const [userProfile, setUserProfile] = useState(null);
     const [tab, setTab] = useState(1);
+    const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [ModalMessage, setModalMessage] = useState('Realmente deseja Sair?');
+
+    const handleOpenModal = () => {
+        setConfirmModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setConfirmModalOpen(false);
+    };
+
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
@@ -46,17 +59,13 @@ function Profile() {
     }
 
     async function LogoutProfile() {
-        var response = confirm("Deseja fazer Logout?");
-        if (response == true) {
-            //Função do Auth.jsx para deslogar
-            logout();
-            localStorage.removeItem('userId');
-            await axios.post('http://localhost:3000/logout', {}, { withCredentials: true })
-            Cookies.remove('userType')
-            // Redireciona para a página de login após o logout
-            navigate('/');
-        }
-
+        //Função do Auth.jsx para deslogar
+        logout();
+        localStorage.removeItem('userId');
+        await axios.post('http://localhost:3000/logout', {}, { withCredentials: true })
+        Cookies.remove('userType')
+        // Redireciona para a página de login após o logout
+        navigate('/');
     }
 
     const handleTabChange = (tabIndex) => {
@@ -67,6 +76,13 @@ function Profile() {
     return (
         <>
             <Navbar />
+
+            <ConfirmModal
+                isWorksModal={isConfirmModalOpen}
+                onConfirm={LogoutProfile}
+                onClose={handleCloseModal}
+                message={ModalMessage}
+            />
 
             <div className='h-80 w-full profilebackground border-b-4 border-gray-300'>
                 <img src={userProfile.imageProfile} className="w-full h-full rounded-tl-lg rounded-tr-lg object-cover" />
@@ -107,7 +123,7 @@ function Profile() {
                     <div className={`w-full h-fit flex  py-2 gap-1 responsivecontentprofile ${tab === 1 ? 'gap-4' : ''}`}>
                         {tab === 1 && (
                             <>
-                                <div className='w-80 h-fit rounded-3xl shadow-2xl border-2 border-gray-900 p-4 gap-2'>
+                                <div className='w-96 h-fit rounded-3xl shadow-2xl border-2 border-gray-900 p-4 gap-2'>
                                     <div className='flex w-full justify-center gap-1'>
                                         <FaUser className='text-2xl' />
                                         <h2 className='font-medium text-lg'>Informações</h2>
@@ -118,7 +134,7 @@ function Profile() {
                                     </div>
 
                                     <div className='flex gap-1 h-fit items-center'>
-                                        <h2 className='font-medium text-lg'>Endereço:</h2>
+                                        <h2 className='font-medium text-lg truncate'>Endereço:</h2>
                                         {userProfile.endereco}
 
                                     </div>
@@ -144,7 +160,7 @@ function Profile() {
                                         >Editar Perfil</button>
                                         <button className=" w-40 bg-transparent hover:bg-red-400 font-bold 
                                              py-2 px-4 rounded-full transition-all border-2 border-gray-300"
-                                            onClick={LogoutProfile}
+                                            onClick={handleOpenModal}
                                         >Logout</button>
                                     </div>
                                 </div>

@@ -1,4 +1,3 @@
-import './Profile.css'
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Database/Firebase';
@@ -12,6 +11,7 @@ import { FaNoteSticky } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 
 import Navbar from '../Navbar/Navbar';
+import Modal from '../Modal/Modal';
 
 function Profile() {
     //Pegar o id do usuario na tela anterior

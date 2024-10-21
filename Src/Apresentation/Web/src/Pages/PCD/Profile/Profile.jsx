@@ -14,6 +14,8 @@ import { IoDocumentText } from "react-icons/io5";
 import { FaNoteSticky } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 
+import ConfirmModal from "../Modal/ConfirmModal"
+
 function Profile() {
     const navigate = useNavigate();
     //Utilizado para pegar o id do usuario e da vaga na tela anterior
@@ -21,6 +23,17 @@ function Profile() {
     //Variaveis onde as informações serão setadas
     const [userProfile, setUserProfile] = useState(null);
     const [tab, setTab] = useState(1);
+
+    const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [ModalMessage, setModalMessage] = useState('Realmente deseja Sair?');
+
+    const handleOpenModal = () => {
+        setConfirmModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setConfirmModalOpen(false);
+    };
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
@@ -51,16 +64,14 @@ function Profile() {
     }
 
     async function LogoutProfile() {
-        var response = confirm("Deseja fazer Logout?");
-        if (response == true) {
-            //Função do Auth.jsx para deslogar
-            logout();
-            localStorage.removeItem('userId');
-            await axios.post('http://localhost:3000/logout', {}, { withCredentials: true })
-            Cookies.remove('userType')
-            // Redireciona para a página de login após o logout
-            navigate('/');
-        }
+        //Função do Auth.jsx para deslogar
+        logout();
+        localStorage.removeItem('userId');
+        await axios.post('http://localhost:3000/logout', {}, { withCredentials: true })
+        Cookies.remove('userType')
+        // Redireciona para a página de login após o logout
+        navigate('/');
+
 
     }
 
@@ -75,6 +86,14 @@ function Profile() {
     return (
         <>
             <Navbar />
+
+            <ConfirmModal
+                isWorksModal={isConfirmModalOpen}
+                onConfirm={LogoutProfile}
+                onClose={handleCloseModal}
+                message={ModalMessage}
+            />
+
 
             <div className='h-80 w-full profilebackground border-b-4 border-gray-300'>
                 <img src={userProfile.imageProfile} className="w-full h-full rounded-tl-lg rounded-tr-lg object-cover" />
@@ -132,7 +151,7 @@ function Profile() {
                                         {userProfile.deficiencia}
 
                                     </div>
-                                    
+
                                     <div className='flex gap-1 h-fit items-center'>
                                         <h2 className='font-medium text-lg'>Idade:</h2>
                                         {userProfile.idade}
@@ -174,7 +193,7 @@ function Profile() {
                                         >Editar Perfil</button>
                                         <button className=" w-40 bg-transparent hover:bg-red-400 font-bold 
                                              py-2 px-4 rounded-full transition-all border-2 border-gray-300"
-                                            onClick={LogoutProfile}
+                                             onClick={handleOpenModal}
                                         >Logout</button>
                                     </div>
                                 </div>

@@ -126,7 +126,7 @@ function Profile() {
                     <div className={`w-full h-fit flex  py-2 gap-1 responsivecontentprofile ${tab === 1 ? 'gap-4' : ''}`}>
                         {tab === 1 && (
                             <>
-                                <div className='w-80 h-fit rounded-3xl shadow-2xl border-2 border-gray-900 p-4 gap-2'>
+                                <div className='w-96 h-fit rounded-3xl shadow-2xl border-2 border-gray-900 p-4 gap-2'>
                                     <div className='flex w-full justify-center gap-1'>
                                         <FaUser className='text-2xl' />
                                         <h2 className='font-medium text-lg'>Informações</h2>
@@ -137,7 +137,7 @@ function Profile() {
                                     </div>
 
                                     <div className='flex gap-1 h-fit items-center'>
-                                        <h2 className='font-medium text-lg'>Endereço:</h2>
+                                        <h2 className='font-medium text-lg truncate'>Endereço:</h2>
                                         {userProfile.endereco}
 
                                     </div>
