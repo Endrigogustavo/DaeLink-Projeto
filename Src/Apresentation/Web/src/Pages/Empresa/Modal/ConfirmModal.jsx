@@ -4,7 +4,7 @@ const ConfirmModal = ({ isWorksModal, onConfirm, onClose, message }) => {
   if (!isWorksModal) return null; // Evita renderizar o modal se `isWorksModal` for falso
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-40">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
       <div className="h-36 w-80 rounded-3xl shadow-2xl flex flex-col items-center justify-center bg-white border-gray-400 border-2">
         <div className="w-full h-3/6 flex flex-col items-center justify-center text-center gap-2 pt-1">
 

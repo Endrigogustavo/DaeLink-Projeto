@@ -170,10 +170,16 @@ export default function Example() {
       <div className='min-h-screen h-fit w-full flex flex-col py-16 items-center gap-2'>
 
         <div className='h-fit w-full flex items-center justify-center gap-4'>
-          <img src={empresa.imageUrl} alt="" className='w-32 h-32 rounded-3xl shadow-2xl border-4 border-blue-600' />
+          {empresa && (
+            <img
+              src={empresa.imageUrl}
+              alt=""
+              className='w-32 h-32 rounded-3xl shadow-2xl border-4 border-blue-600'
+            />
+          )}
           <div className='h-fit w-fit flex flex-col justify-center items-center gap-2'>
             <MdWork className='text-8xl text-gray-900 text-center bg-white p-4 rounded-full shadow-2xl' />
-            <p className='font-semibold text-base'>{vaga.vaga}</p>
+            <p className='font-semibold text-base text-center'>{vaga?.vaga || 'Carregando...'}</p>
           </div>
         </div>
 
@@ -184,41 +190,37 @@ export default function Example() {
 
           <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
             <h2 className='font-medium text-gray-900'>Área:</h2>
-            <p className='text-base font-normal'>{vaga.area}</p>
-          </div>
-
-          <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
-            <h2 className='font-medium text-gray-900'>Email:</h2>
-            <p className='text-base font-normal'>{empresa.email}</p>
+            <p className='text-base font-normal'>{vaga?.area || 'Carregando...'}</p> {/* Verificação para vaga.area */}
           </div>
 
           <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
             <h2 className='font-medium text-gray-900'>Salário:</h2>
-            <p className='text-base font-normal'>R${vaga.salario}</p>
+            <p className='text-base font-normal'>R${vaga?.salario || 'Carregando...'}</p> {/* Verificação para vaga.salario */}
           </div>
 
           <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
             <h2 className='font-medium text-gray-900'>Endereço:</h2>
-            <p className='text-base font-normal'>{vaga.local}</p>
+            <p className='text-base font-normal'>{vaga?.local || 'Carregando...'}</p> {/* Verificação para vaga.local */}
           </div>
 
           <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
             <h2 className='font-medium text-gray-900'>Descrição:</h2>
-            <p className='text-base font-normal px-16 capitalize'>{vaga.detalhes}</p>
+            <p className='text-base font-normal px-16 capitalize'>{vaga?.detalhes || 'Carregando...'}</p> {/* Verificação para vaga.detalhes */}
           </div>
+       
 
 
 
-          <div>{vaga && vaga.status === 'Aberta' && (
-            <button className='w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'
-              onClick={handleOpenModal}>Candidatar-se</button>
-          )}
-          </div>
-
-
+        <div>{vaga && vaga.status === 'Aberta' && (
+          <button className='w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'
+            onClick={handleOpenModal}>Candidatar-se</button>
+        )}
         </div>
 
+
       </div>
+
+    </div >
 
     </>
   );
