@@ -173,7 +173,7 @@ const UserFormRegister = () => {
                     });
 
                 setTimeout(() => {
-                    navigate('/loginu');
+                    navigate('/homeuser');
                 }, 3000);
             }
         } catch (error) {

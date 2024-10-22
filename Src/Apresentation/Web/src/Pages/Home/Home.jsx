@@ -12,13 +12,13 @@ import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../Database/Firebase'
 import Cookies from 'js-cookie';
-
+import axios from 'axios';
 
 
 const Home = () => {
   useEffect(() => {
 
-
+   
     localStorage.removeItem('userId');
     
     const auth = getAuth();
@@ -37,6 +37,9 @@ const Home = () => {
     const logout = async () => {
       try {
         await signOut(auth);
+        await axios.post('http://localhost:3000/logout', {
+          withCredentials: true
+      });
       } catch (error) {
         console.error("Logout error: ", error);
       }

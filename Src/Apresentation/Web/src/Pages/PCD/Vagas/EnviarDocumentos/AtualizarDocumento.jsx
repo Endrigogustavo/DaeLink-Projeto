@@ -7,7 +7,7 @@ import DocumentosStates from "./DocumentosStates";
 import { FaFile } from "react-icons/fa6";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
+import axios from "axios";
 import Modal from "../../Modal/Modal";
 
 const DocumentosForm = () => {
@@ -68,12 +68,9 @@ const DocumentosForm = () => {
                 setUserId(userId)
 
                 const PCDDoc = await getDoc(doc(db, "PCD", userId));
-                if (PCDDoc.exists()) {
-                    const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
-                    setPessoaId(PCDData);
-                } else {
-                    console.log("Pessoa não encontrada!");
-                }
+
+                const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
+                setPessoaId(PCDData);
             }
 
         };
@@ -94,39 +91,8 @@ const DocumentosForm = () => {
     useEffect(() => {
         const getDocPCD = async () => {
             try {
-                const DocRef = collection(db, "Vagas", vagaUid, "candidatos");
-                const QueryDoc = query(DocRef, where("userId", "==", userId));
-                const ResultDoc = await getDocs(QueryDoc);
-
-                if (!ResultDoc.empty) {
-                    // Apenas um candidato é esperado com base na consulta
-                    const candidatoDoc = ResultDoc.docs[0];
-
-                    // Referência para a coleção de documentos do candidato
-                    const documentosRef = collection(candidatoDoc.ref, "documentos");
-                    const ResultDocumentos = await getDocs(documentosRef);
-
-                    if (!ResultDocumentos.empty) {
-                        // Aqui você pode iterar sobre os documentos ou pegar o primeiro
-                        const documentosData = ResultDocumentos.docs.map(doc => ({
-                            id: doc.id,
-                            ...doc.data()
-                        }));
-
-                        // Se você quiser apenas o primeiro documento
-                        const PCDData = documentosData[0]; // ou ajuste conforme necessário
-                        setDocProfile(PCDData);
-                    } else {
-                        setDocProfile(null);
-                    }
-                } else {
-                    setWorksModal(false)
-                    setModalMessage("Não achou candidatos.")
-                    setModalOpen(true)
-                    setTimeout(() => {
-                        setModalOpen(false)
-                    }, 2200);
-                }
+                const response = await axios.post(`http://localhost:3000/get-doc/`,{vagaUid, userId},  { withCredentials: true });
+                setDocProfile(response.data);
             } catch (error) {
                 console.error("Erro ao buscar documentos:", error);
                 setWorksModal(false)
@@ -188,7 +154,7 @@ const DocumentosForm = () => {
                     setModalOpen(false)
                     return;
                 }, 2200);
-                
+
             }
 
             // Função para fazer o upload de um arquivo e obter sua URL

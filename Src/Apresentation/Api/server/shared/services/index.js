@@ -100,17 +100,39 @@ exports.getEmpresa = async (req, res) => {
   }
 
   exports.getDocument = async (req, res) => {
-    const idDoc = req.body.id;
-    const idVaga = req.body.id;
-    const idPCD = req.body.id;
-    try {
-      const docRef = await db.collection("PCD").doc(ID).get();
-      if (!docRef.exists) {
-        return res.status(404).send('PCD not found.');
+    const vagaUid = req.body.vagaUid
+    const userId = req.body.userId
+
+  try {
+    const docRef = db.collection('Vagas').doc(vagaUid).collection('candidatos');
+    const queryDoc = docRef.where('userId', '==', userId);
+    const resultDoc = await queryDoc.get();
+
+    if (!resultDoc.empty) {
+      // Apenas um candidato é esperado com base na consulta
+      const candidatoDoc = resultDoc.docs[0];
+
+      // Referência para a coleção de documentos do candidato
+      const documentosRef = candidatoDoc.ref.collection('documentos');
+      const resultDocumentos = await documentosRef.get();
+
+      if (!resultDocumentos.empty) {
+        const documentosData = resultDocumentos.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Se você quiser apenas o primeiro documento
+        const PCDData = documentosData[0]; // ou ajuste conforme necessário
+        return res.status(200).json(PCDData);
+      } else {
+        return res.status(404).json({ message: 'Nenhum documento encontrado.' });
       }
-      return res.status(200).json(docRef.data());
-    } catch (error) {
-      console.error('Error fetching PCD data:', error);
-      return res.status(500).send('Internal server error.');
+    } else {
+      return res.status(404).json({ message: 'Nenhum candidato encontrado.' });
     }
+  } catch (error) {
+    console.error('Erro ao buscar documentos:', error);
+    return res.status(500).json({ message: 'Ocorreu um erro ao buscar documentos.' });
+  }
   };

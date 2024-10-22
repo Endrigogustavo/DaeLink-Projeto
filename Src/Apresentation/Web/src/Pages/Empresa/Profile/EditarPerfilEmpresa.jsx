@@ -7,12 +7,17 @@ import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { MdExitToApp } from "react-icons/md";
 import InputMask from 'react-input-mask';
 import Modal from "../Modal/Modal";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 const EditarPerfil = () => {
   // Função de navegação do site
   const navigate = useNavigate();
   // Utilizado para pegar o id do usuario e da vaga na tela anterior
 
+  const [profileImage, setProfileImage] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
+  const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
+  const [backgroundImage, setBackgroundImage] = useState(null);
   const [userId, setUserId] = useState('');
   const [tab, setTab] = useState(1);
   const [userName, setUserName] = useState("")
@@ -81,10 +86,18 @@ const EditarPerfil = () => {
     }));
   };
 
+  const uploadAndGetDownloadUrl = async (path, file) => {
+    const fileRef = ref(storage, path);
+    await uploadBytes(fileRef, file);
+    return getDownloadURL(fileRef);
+  };
+
+
   // Botão para guardar as informações no banco
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+     
       const userDoc = doc(db, "Empresa", userId);
 
       await updateDoc(userDoc, {
@@ -96,6 +109,39 @@ const EditarPerfil = () => {
         sobre: userData.sobre,
         area: userData.area,
         userId: userId,
+      });
+
+      setWorksModal(true)
+      setModalMessage("Conta Atualizada com sucesso.")
+      setModalOpen(true)
+      setTimeout(() => {
+        navigate(-1);
+      }, 2200);
+
+    } catch (e) {
+      console.error("Erro ao Atualizar ", e);
+
+      setWorksModal(false)
+      setModalMessage("Erro ao Atualizar a Conta.")
+      setModalOpen(true)
+      setTimeout(() => {
+        setModalOpen(false)
+      }, 2200);
+    }
+  };
+
+  const handleSubmitImg = async (e) => {
+    e.preventDefault();
+    try {
+     
+      const userDoc = doc(db, "Empresa", userId);
+      const [profileImageURL, backgroundImageURL] = await Promise.all([
+        uploadAndGetDownloadUrl(`images_company/${profileImage.name}`, profileImage),
+        uploadAndGetDownloadUrl(`background_profile_company/${backgroundImage.name}`, backgroundImage),
+      ]);
+      await updateDoc(userDoc, {
+        imageProfile: backgroundImageURL,
+        imageUrl: profileImageURL
       });
 
       setWorksModal(true)
@@ -151,8 +197,55 @@ const EditarPerfil = () => {
     };
   }, []);
 
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    setProfileImage(file);
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
+    }
+  };
+
+  const handleProfileBackgroundChange = (e) => {
+    const file = e.target.files[0]
+    setBackgroundImage(file)
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileBackgroundpreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
+    }
+
+  }
 
 
+  const PassReset = () => {
+
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, userData.email)
+      .then(() => {
+        setWorksModal(true)
+        setModalMessage("Email para a alteração de senha foi enviado")
+        setModalOpen(true)
+        setTimeout(() => {
+          setModalOpen(false)
+        }, 2200);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+  }
   return (
     <>
       <div>
@@ -193,6 +286,26 @@ const EditarPerfil = () => {
                 </p>
               </div>
 
+              <div
+
+                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                ${tab === 3 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(3)} >
+                <p className='font-medium'>
+                  {isMobileView ? 'Perfil' : 'Imagem Perfil'}
+                </p>
+              </div>
+
+              <div
+
+                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                ${tab === 4 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(4)} >
+                <p className='font-medium'>
+                  {isMobileView ? 'Perfil' : 'Trocar Senha'}
+                </p>
+              </div>
+
 
             </div>
 
@@ -218,9 +331,6 @@ const EditarPerfil = () => {
 
               {tab === 1 && (
                 <>
-
-
-
                   <div className="flex flex-col">
                     <label className="text-lg font-medium">Nome</label>
                     <input required type="text"
@@ -331,9 +441,7 @@ const EditarPerfil = () => {
                         adjustTextareaHeight(textareaRefs.sobre);
                       }}
                     />
-                  </div>
-
-
+                  </div>       
                 </>
               )
 
@@ -341,23 +449,40 @@ const EditarPerfil = () => {
 
               {tab === 3 && (
                 <>
-                  <h1 className="font-medium test-center px-12">Parar trocar de senha prossiga no botão, pois irá enviar o email de verificação</h1>
-                  <button onClick={PassReset} className="w-52 bg-green-500 hover:bg-green-400 text-white font-bold 
-                  py-2 px-4 rounded-full transition-all mt-2">Trocar Senha</button>
+                  <div>
+                    <label htmlFor="profile-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
+                      <img src={profileImagePreview}
+                        className="w-32 h-32 rounded-full border-4 border-blue-600 object-cover" alt="Preview Perfil" />
+                      <p className='text-center font-medium'>Foto Perfil</p></label>
+                    <input required id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
+                  </div>
+                  <br />
+                  <div>
 
+                    <label htmlFor="background-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
+                      <img src={profilebackgroundpreview}
+                        className="w-60 h-32 rounded-3xl border-2 border-blue-600 object-cover" alt="Preview Background" />
+                      <p className='text-center font-medium'>Background Perfil</p>
+                    </label>
+                    <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
+                  </div> <br />
+                  <br />
+<button type="submit" className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2" onClick={handleSubmitImg}>Confirmar Mudanças</button>
+     
                 </>
 
               )}
 
               {tab === 4 && (
                 <>
-                  <h1 className="font-medium test-center px-12">Irá desativar sua conta, entretanto você pode criar uma nova posteriormente</h1>
-                  <button onClick={() => DeleteProfile(userId)} className="w-52 bg-red-500 hover:bg-red-400 text-white font-bold 
-                  py-2 px-4 rounded-full transition-all mt-2">Deletar conta</button>
-
+                  <h1 className="font-medium test-center px-12">Parar trocar de senha prossiga no botão, pois irá enviar o email de verificação</h1>
+                  <button onClick={PassReset} className="w-52 bg-green-500 hover:bg-green-400 text-white font-bold 
+                  py-2 px-4 rounded-full transition-all mt-2">Trocar Senha</button>
                 </>
-
               )}
+
+
+
               {tab <= 2 && (
                 <button type="submit" className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2">Confirmar Mudanças</button>
               )}

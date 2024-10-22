@@ -34,6 +34,7 @@ const EmpresaFormRegister = () => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('Processando...');
     const [isWorksModal, setWorksModal] = useState(false);
+  
 
     //Variavel para fazer gerenciamento de nivel de acesso
     const [tipo] = useState("Empresa");
@@ -159,7 +160,7 @@ const EmpresaFormRegister = () => {
                 withCredentials: true
             });
 
-            setModalWorks(true)
+            setWorksModal(true)
             setModalMessage("Cadastro Realizado com Sucesso");
             setModalOpen(true);
             await sendEmailVerification(auth.currentUser)

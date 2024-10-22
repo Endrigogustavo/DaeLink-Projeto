@@ -134,11 +134,7 @@ const EditarPerfil = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const [profileImageURL, backgroundImageURL] = await Promise.all([
-        uploadAndGetDownloadUrl(`pcd_profile/${profileImage.name}`, profileImage),
-        uploadAndGetDownloadUrl(`background_profile/${backgroundImage.name}`, backgroundImage),
-      ]);
-  
+
       if (user) {
         await updateEmail(user, userData.email);
         const userDoc = doc(db, "PCD", userId);
@@ -152,6 +148,39 @@ const EditarPerfil = () => {
           idade: userData.idade,
           userId: userId,
           deficiencia: userData.deficiencia,
+        });
+
+        setWorksModal(true);
+        setModalMessage("Conta atualizada com sucesso!");
+        setModalOpen(true);
+        setTimeout(() => navigate(-2), 4000);
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar conta: ", error);
+      let errorMessage = "Erro ao atualizar conta.";
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = "Este e-mail já está em uso.";
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = "O e-mail informado é inválido.";
+      }
+      setWorksModal(false);
+      setModalMessage(errorMessage);
+      setModalOpen(true);
+      setTimeout(() => setModalOpen(false), 2200);
+    }
+  };
+
+  const handleSubmitIMG = async (e) => {
+    e.preventDefault();
+    try {
+      const [profileImageURL, backgroundImageURL] = await Promise.all([
+        uploadAndGetDownloadUrl(`pcd_profile/${profileImage.name}`, profileImage),
+        uploadAndGetDownloadUrl(`background_profile/${backgroundImage.name}`, backgroundImage),
+      ]);
+
+      if (user) {
+        const userDoc = doc(db, "PCD", userId);
+        await updateDoc(userDoc, {
           imageUrl: profileImageURL,
           imageProfile: backgroundImageURL
         });
@@ -318,22 +347,23 @@ const EditarPerfil = () => {
                   {isMobileView ? 'Pessoal' : 'Informações Pessoais'}
                 </p>
               </div>
-              <div
 
+              <div
                 className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
                 ${tab === 2 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
                 onClick={() => handleTabChange(2)} >
                 <p className='font-medium'>
-                  {isMobileView ? 'Carreira' : 'Imagem de Perfil'}
+                  {isMobileView ? 'Carreira' : 'Informações Profissionais'}
                 </p>
               </div>
 
               <div
+
                 className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
                 ${tab === 3 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
                 onClick={() => handleTabChange(3)} >
                 <p className='font-medium'>
-                  {isMobileView ? 'Carreira' : 'Informações Profissionais'}
+                  {isMobileView ? 'Carreira' : 'Imagem Perfil'}
                 </p>
               </div>
 
@@ -429,29 +459,6 @@ const EditarPerfil = () => {
 
               {tab === 2 && (
                 <>
-                  <div>
-                    <label htmlFor="profile-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
-                      <img src={profileImagePreview}
-                        className="w-32 h-32 rounded-full border-4 border-blue-600 object-cover" alt="Preview Perfil" />
-                      <p className='text-center font-medium'>Foto Perfil</p></label>
-                    <input required id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
-                  </div>
-                  <br />
-                  <div>
-
-                    <label htmlFor="background-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
-                      <img src={profilebackgroundpreview}
-                        className="w-60 h-32 rounded-3xl border-2 border-blue-600 object-cover" alt="Preview Background" />
-                      <p className='text-center font-medium'>Background Perfil</p>
-                    </label>
-                    <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
-                  </div> <br />
-                </>
-
-              )}
-
-              {tab === 3 && (
-                <>
                   <div className="flex flex-col ">
                     <label className="text-lg font-medium">Área</label>
                     <select
@@ -522,6 +529,31 @@ const EditarPerfil = () => {
                   </div>
 
                 </>
+              )}
+
+              {tab === 3 && (
+                <>
+                  <div>
+                    <label htmlFor="profile-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
+                      <img src={profileImagePreview}
+                        className="w-32 h-32 rounded-full border-4 border-blue-600 object-cover" alt="Preview Perfil" />
+                      <p className='text-center font-medium'>Foto Perfil</p></label>
+                    <input required id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
+                  </div>
+                  <br />
+                  <div>
+
+                    <label htmlFor="background-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
+                      <img src={profilebackgroundpreview}
+                        className="w-60 h-32 rounded-3xl border-2 border-blue-600 object-cover" alt="Preview Background" />
+                      <p className='text-center font-medium'>Background Perfil</p>
+                    </label>
+                    <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
+                  </div> <br />
+                  <button type="submit" onClick={handleSubmitIMG} className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2">Confirmar Mudanças</button>
+            
+                </>
+
               )}
 
               {tab === 4 && (
