@@ -120,7 +120,6 @@ export default function Example() {
         setTimeout(() => {
 
           navigate("/processos");
-          return;
         }, 4000);
 
       } else {
@@ -136,10 +135,8 @@ export default function Example() {
         setWorksModal(true)
         setModalMessage("Candidatado com Sucesso")
         setModalOpen(true)
-        localStorage.removeItem('VagaId');
-
         setTimeout(() => {
-
+          localStorage.removeItem('VagaId');
           navigate(`/processos`);
         }, 4000);
       }
@@ -199,6 +196,11 @@ export default function Example() {
           </div>
 
           <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+            <h2 className='font-medium text-gray-900'>Tipo:</h2>
+            <p className='text-base font-normal'>{vaga?.tipo || 'Carregando...'}</p> {/* Verificação para vaga.salario */}
+          </div>
+
+          <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
             <h2 className='font-medium text-gray-900'>Endereço:</h2>
             <p className='text-base font-normal'>{vaga?.local || 'Carregando...'}</p> {/* Verificação para vaga.local */}
           </div>
@@ -207,20 +209,20 @@ export default function Example() {
             <h2 className='font-medium text-gray-900'>Descrição:</h2>
             <p className='text-base font-normal px-16 capitalize'>{vaga?.detalhes || 'Carregando...'}</p> {/* Verificação para vaga.detalhes */}
           </div>
-       
 
 
 
-        <div>{vaga && vaga.status === 'Aberta' && (
-          <button className='w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'
-            onClick={handleOpenModal}>Candidatar-se</button>
-        )}
+
+          <div>{vaga && vaga.status === 'Aberta' && (
+            <button className='w-40 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'
+              onClick={handleOpenModal}>Candidatar-se</button>
+          )}
+          </div>
+
+
         </div>
 
-
-      </div>
-
-    </div >
+      </div >
 
     </>
   );

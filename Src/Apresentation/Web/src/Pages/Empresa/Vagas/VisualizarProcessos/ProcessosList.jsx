@@ -93,6 +93,7 @@ function ProcessosList() {
                 setModalOpen(false);
             }, 4000);
         } catch (error) {
+            setConfirmModalOpen(false)
             setWorksModal(false);
             setModalMessage("Erro ao deletar a vaga");
             setModalOpen(true);

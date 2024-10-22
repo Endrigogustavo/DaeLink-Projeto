@@ -36,6 +36,10 @@ const DocumentosForm = () => {
     const enderecoRef = useRef(null);
     const experienciaRef = useRef(null);
 
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('Processando...');
+    const [isWorksModal, setWorksModal] = useState(false);
+
     useEffect(() => {
         const getInfoPCD = async () => {
             const storedUserId = localStorage.getItem('userId');

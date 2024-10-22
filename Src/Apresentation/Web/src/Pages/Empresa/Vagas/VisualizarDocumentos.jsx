@@ -6,115 +6,94 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Navbar from '../Navbar/Navbar';
 import { PaperClipIcon } from '@heroicons/react/24/outline';
 import Modal from '../Modal/Modal';
+import { FaUser } from "react-icons/fa";
 
 function VisualizarDocumentos() {
   const navigate = useNavigate();
 
-  // Pegar o id do usuario na tela anterior
-
   const [vagaId, setVagaId] = useState(null);
   const [id, setId] = useState(null);
-  // Variaveis para setar dados do banco
   const [candidatos, setCandidatos] = useState([]);
   const [vaga, setVaga] = useState(null);
-
-  // Variavel para setar os erros
   const [error, setError] = useState('');
   const [empresa, setEmpresa] = useState('');
+  const [currentCandidate, setCurrentCandidate] = useState(null); // Nova constante para armazenar candidato atual
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('Processando...');
   const [isWorksModal, setWorksModal] = useState(false);
 
-
   useEffect(() => {
     const storedId = localStorage.getItem("IdUserDoc");
     const storedVagaId = localStorage.getItem("vagaId");
 
-    // Verifique se os valores são válidos
     if (storedId && storedVagaId) {
       setId(storedId);
       setVagaId(storedVagaId);
     } else {
-      setWorksModal(false)
-      setModalMessage("ID da vaga ou do candidato não encontrados no localStorage")
-      setModalOpen(true)
+      setWorksModal(false);
+      setModalMessage("ID da vaga ou do candidato não encontrados no localStorage");
+      setModalOpen(true);
       setTimeout(() => {
-        setModalOpen(false)
+        setModalOpen(false);
       }, 2200);
     }
   }, []);
-  // useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
+
   useEffect(() => {
-    const GetCandidatos = async () => {
+    const GetCandidatoESeusDocumentos = async () => {
       try {
         const storedId = localStorage.getItem("IdUserDoc");
         const storedVagaId = localStorage.getItem("vagaId");
 
-        if (!storedVagaId || !storedId) {
+        if (!storedId || !storedVagaId) {
           throw new Error("ID da vaga ou ID do candidato não fornecido");
         }
 
-        // Tratamento de erros com base no ID da vaga
-
-        // Caminho dos dados da tabela PCD do banco
+        // Primeira busca: obter dados do candidato na coleção 'Vagas'
         const candidatoDoc = doc(db, 'Vagas', storedVagaId, 'candidatos', storedId);
-        const CandidatosCollection = collection(candidatoDoc, 'documentos');
+        const candidatoSnapshot = await getDoc(candidatoDoc);
 
-        // Pegando dados
-        const GetCandidatos = await getDocs(CandidatosCollection);
-        // Utilizando a função map para guardar as informações
-        const candidatosList = GetCandidatos.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+        if (candidatoSnapshot.exists()) {
+          const candidatoData = candidatoSnapshot.data();
+          const userId = candidatoData.userId; // Obtém o userId do candidato
+          console.log('UserID do candidato:', userId);
 
-        // Setando informações
-        setCandidatos(candidatosList);
+          // Segunda busca: buscar os dados na coleção 'PCD' utilizando o userId
+          const candidatoPCDRef = doc(db, 'PCD', userId); // Usando o userId para buscar na coleção PCD
+          const candidatoPCDSnapshot = await getDoc(candidatoPCDRef);
 
-      } catch (error) {
-        console.error('Erro ao buscar candidatos:', error);
-        setError('Erro ao buscar candidatos');
-      }
-    };
-
-    // Função para procurar vagas
-    const GetVaga = async () => {
-      try {
-        const storedId = localStorage.getItem("IdUserDoc");
-        const storedVagaId = localStorage.getItem("vagaId");
-
-        // Tratamento de erro com base no ID da vaga
-        if (storedVagaId) {
-          // Caminho das informações
-          const VagasDoc = doc(db, 'Vagas', storedVagaId);
-          // Pegando as informações
-          const GetVagas = await getDoc(VagasDoc);
-
-          // Tratamento e setando dados em variáveis
-          if (GetVagas.exists()) {
-            // Sucesso
-            const vagaData = { id: GetVagas.id, ...GetVagas.data() };
-            setVaga(vagaData);
+          if (candidatoPCDSnapshot.exists()) {
+            const candidatoPCDData = candidatoPCDSnapshot.data();
+            setCurrentCandidate({ id: candidatoPCDSnapshot.id, ...candidatoPCDData }); // Armazena o candidato da coleção PCD
           } else {
-            console.log('Nenhum documento encontrado!');
-            setError('Nenhuma vaga encontrada');
+            setError('Candidato não encontrado na coleção PCD.');
           }
+
+          // Busca de documentos: documentos do candidato na subcoleção 'documentos' dentro da vaga
+          const CandidatosCollection = collection(db, 'Vagas', storedVagaId, 'candidatos', storedId, 'documentos');
+          const documentosSnapshot = await getDocs(CandidatosCollection);
+
+          const documentosList = documentosSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+
+          setCandidatos(documentosList); // Armazena os documentos encontrados
+
         } else {
-          setError('ID da vaga não fornecido');
+          setError('Candidato não encontrado na vaga.');
         }
+
       } catch (error) {
-        console.error('Erro ao buscar vaga:', error);
-        setError('Erro ao buscar vaga');
+        console.error('Erro ao buscar informações do candidato e seus documentos:', error);
+        setError('Erro ao buscar informações do candidato e seus documentos');
       }
     };
 
-    // Chamando as funções
-    GetCandidatos();
-    GetVaga();
+    GetCandidatoESeusDocumentos();
   }, [id, vagaId]);
 
-  // Controle de autenticação
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -127,7 +106,6 @@ function VisualizarDocumentos() {
     return () => unsubscribe();
   }, []);
 
-  // Função para iniciar o chat com um usuário
   const ChatUser = async (userId) => {
     try {
       const ChatCollection = collection(db, "Chat");
@@ -136,102 +114,103 @@ function VisualizarDocumentos() {
         empresaId: empresa
       });
 
-      setWorksModal(true)
-      setModalMessage("Pessoa adicionada com sucesso!")
-      setModalOpen(true)
+      setWorksModal(true);
+      setModalMessage("Pessoa adicionada com sucesso!");
+      setModalOpen(true);
       setTimeout(() => {
-        localStorage.setItem("chatId", userId)
+        localStorage.setItem("chatId", userId);
         navigate(`/chat/`);
       }, 4000);
 
-
-
     } catch (error) {
       console.error('Erro ao adicionar pessoa:', error);
-      setWorksModal(false)
-      setModalMessage("Erro ao adicionar pessoa.")
-      setModalOpen(true)
+      setWorksModal(false);
+      setModalMessage("Erro ao adicionar pessoa.");
+      setModalOpen(true);
       setTimeout(() => {
-        setModalOpen(false)
+        setModalOpen(false);
       }, 2200);
     }
   };
 
+  const handleback = async () => {
+    navigate(-1);
+  };
 
   return (
     <>
       <Navbar />
       <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+      <div className='min-h-screen h-fit w-full flex flex-col py-16 items-center gap-2'>
 
-      <div className='flex justify-center items-center min-h-screen'>
-        <div className='px-6 w-3/4'>
-          <div className="px-6 sm:px-0 text-center">
-            <h3 className="text-base font-semibold leading-7 text-gray-950">Informações do candidato</h3>
-          </div>
-          <div className="mt-6 border-t border-gray-300">
-            <dl className="divide-y divide-gray-100">
-              {candidatos.length > 0 ? (
-                candidatos.map(candidato => (
+        {currentCandidate ? (
+          <>
+            <div className='h-fit w-full flex items-center justify-center gap-4'>
+              <img
+                src={currentCandidate.imageUrl}
+                alt=""
+                className='w-32 h-32 rounded-3xl shadow-2xl border-4 border-blue-600'
+              />
 
-                  <>
-                    <li key={candidato.id}>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">Nome</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.nome}</dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">Email</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.email}</dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">Experiencia</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.experiencia1}</dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">Data de nascimento</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.idade}</dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">Idiomas</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.idiomas}</dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">Objetivo</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.objetivo}</dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">Telefone</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{candidato.telefone}</dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">Formação academica 1</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><a href={candidato.formacao_academica1} target="_blank" rel="noopener noreferrer">PDF, DOC ou DOCX</a></dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">Formação academica 2</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><a href={candidato.formacao_academica2} target="_blank" rel="noopener noreferrer">PDF, DOC ou DOCX</a></dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">Formação academica 3</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><a href={candidato.formacao_academica3} target="_blank" rel="noopener noreferrer">PDF, DOC ou DOCX</a></dd>
-                      </div>
-                    </li>
+              <div className='h-fit w-fit flex flex-col justify-center items-center gap-2'>
+                <FaUser className='text-8xl text-gray-900 text-center bg-white p-4 rounded-full shadow-2xl' />
+                <p className='font-semibold text-base text-center'>{currentCandidate.name || 'Carregando...'}</p>
+              </div>
+            </div>
+          </>
+        ) : (
+          <p>Carregando informações do candidato...</p>
+        )}
 
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <button onClick={() => ChatUser(candidato.userId)} type="submit" class="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-purple-700 border border-purple-700 rounded-lg hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-res-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
-                        <svg aria-hidden="true" class="mr-2 -ml-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Contatar
-                      </button>
-                    </td>
-                  </>
-                ))
-              ) : (
-                <li>Nenhum candidato encontrado.</li>
-              )}
+        {candidatos.length > 0 ? (
+          candidatos.map((candidato, index) => (
+            <div key={index} className='w-3/4 h-fit flex flex-col items-center gap-2'>
+
+              <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+                <h2 className='font-medium text-gray-900'>Email:</h2>
+                <p className='text-base font-normal'>{candidato?.email || 'Carregando...'}</p>
+              </div>
+
+              <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+                <h2 className='font-medium text-gray-900'>Telefone:</h2>
+                <p className='text-base font-normal'>{candidato?.telefone || 'Carregando...'}</p>
+              </div>
+
+              <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+                <h2 className='font-medium text-gray-900'>Data de Nascimento:</h2>
+                <p className='text-base font-normal'>{candidato?.idade || 'Carregando...'}</p>
+              </div>
+
+              <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+                <h2 className='font-medium text-gray-900'>Segundo Idioma:</h2>
+                <p className='text-base font-normal'>{candidato?.idiomas || 'Carregando...'}</p>
+              </div>
+
+              <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+                <h2 className='font-medium text-gray-900'>Experiências:</h2>
+                <p className='text-base font-normal px-16 capitalize'>{candidato?.experiencia1 || 'Carregando...'}</p>
+              </div>
+
+              <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
+                <h2 className='font-medium text-gray-900'>Objetivo:</h2>
+                <p className='text-base font-normal px-16 capitalize'>{candidato?.objetivo || 'Carregando...'}</p>
+              </div>
+              <div>
+                <button className='w-32 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'
+                  onClick={() => ChatUser(candidato.userId)}>
+                  Contatar
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <button className='w-32 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'
+            onClick={handleback}>
+            Voltar
+          </button>
+        )}
 
 
-            </dl>
-          </div>
-        </div>
       </div>
     </>
   );
