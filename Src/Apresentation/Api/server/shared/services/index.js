@@ -99,3 +99,18 @@ exports.getEmpresa = async (req, res) => {
     }
   }
 
+  exports.getDocument = async (req, res) => {
+    const idDoc = req.body.id;
+    const idVaga = req.body.id;
+    const idPCD = req.body.id;
+    try {
+      const docRef = await db.collection("PCD").doc(ID).get();
+      if (!docRef.exists) {
+        return res.status(404).send('PCD not found.');
+      }
+      return res.status(200).json(docRef.data());
+    } catch (error) {
+      console.error('Error fetching PCD data:', error);
+      return res.status(500).send('Internal server error.');
+    }
+  };

@@ -360,6 +360,7 @@ const UserFormRegister = () => {
                         </div>
 
                         <div className='w-full h-fit grid  registerinputsgrid justify-items-center mt-2 gap-y-4'>
+                            
                             {step === 1 && (
                                 <>
                                     <label htmlFor="profile-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>

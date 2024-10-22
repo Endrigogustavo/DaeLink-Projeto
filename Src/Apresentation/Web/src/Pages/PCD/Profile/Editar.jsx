@@ -16,6 +16,10 @@ const EditarPerfil = () => {
 
   const navigate = useNavigate();
 
+  const [profileImage, setProfileImage] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
+  const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
+  const [backgroundImage, setBackgroundImage] = useState(null);
   const [userId, setUserId] = useState('');
   const [senha, setSenha] = useState("");
   const [tab, setTab] = useState(1);
@@ -121,12 +125,20 @@ const EditarPerfil = () => {
   }
 
 
+  const uploadAndGetDownloadUrl = async (path, file) => {
+    const fileRef = ref(storage, path);
+    await uploadBytes(fileRef, file);
+    return getDownloadURL(fileRef);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const credential = EmailAuthProvider.credential(user.email, senha);
-      await reauthenticateWithCredential(user, credential);
-
+      const [profileImageURL, backgroundImageURL] = await Promise.all([
+        uploadAndGetDownloadUrl(`pcd_profile/${profileImage.name}`, profileImage),
+        uploadAndGetDownloadUrl(`background_profile/${backgroundImage.name}`, backgroundImage),
+      ]);
+  
       if (user) {
         await updateEmail(user, userData.email);
         const userDoc = doc(db, "PCD", userId);
@@ -140,6 +152,8 @@ const EditarPerfil = () => {
           idade: userData.idade,
           userId: userId,
           deficiencia: userData.deficiencia,
+          imageUrl: profileImageURL,
+          imageProfile: backgroundImageURL
         });
 
         setWorksModal(true);
@@ -238,6 +252,37 @@ const EditarPerfil = () => {
     };
   }, []);
 
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    setProfileImage(file);
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
+    }
+  };
+
+  const handleProfileBackgroundChange = (e) => {
+    const file = e.target.files[0]
+    setBackgroundImage(file)
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileBackgroundpreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
+    }
+
+  }
+
+
   return (
     <>
 
@@ -252,7 +297,7 @@ const EditarPerfil = () => {
       <div className="h-screen w-full flex items-center justify-center bg-gray-300 editprofile-screen">
         <div className="w-editprofile h-editprofile rounded-3xl flex editprofile-container">
           {/*Lado Esquerdo*/}
-          <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-32 editprofile-menu">
+          <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-30 editprofile-menu">
 
             <div className="w-full h-fit flex items-center justify-center  gap-2 editprofile-hello">
               <img src={userData.imageUrl} className="w-20 h-20 rounded-full border-4 border-blue-600" alt="" />
@@ -266,7 +311,7 @@ const EditarPerfil = () => {
             <div className="flex flex-col w-full h-fit editprofile-tabs">
 
               <div
-                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
                 ${tab === 1 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
                 onClick={() => handleTabChange(1)}>
                 <p className='font-medium'>
@@ -275,27 +320,36 @@ const EditarPerfil = () => {
               </div>
               <div
 
-                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
                 ${tab === 2 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
                 onClick={() => handleTabChange(2)} >
+                <p className='font-medium'>
+                  {isMobileView ? 'Carreira' : 'Imagem de Perfil'}
+                </p>
+              </div>
+
+              <div
+                className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                ${tab === 3 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(3)} >
                 <p className='font-medium'>
                   {isMobileView ? 'Carreira' : 'Informações Profissionais'}
                 </p>
               </div>
 
               <div
-                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
-                ${tab === 3 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
-                onClick={() => handleTabChange(3)} >
+                className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                ${tab === 4 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(4)} >
                 <p className='font-medium'>
                   {isMobileView ? 'Senha' : 'Senha e Segurança'}
                 </p>
               </div>
 
               <div
-                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
-                ${tab === 4 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
-                onClick={() => handleTabChange(4)}>
+                className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                ${tab === 5 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
+                onClick={() => handleTabChange(5)}>
                 <p className='font-medium'>Deletar Conta</p>
               </div>
             </div>
@@ -375,6 +429,29 @@ const EditarPerfil = () => {
 
               {tab === 2 && (
                 <>
+                  <div>
+                    <label htmlFor="profile-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
+                      <img src={profileImagePreview}
+                        className="w-32 h-32 rounded-full border-4 border-blue-600 object-cover" alt="Preview Perfil" />
+                      <p className='text-center font-medium'>Foto Perfil</p></label>
+                    <input required id="profile-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileImageChange} />
+                  </div>
+                  <br />
+                  <div>
+
+                    <label htmlFor="background-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
+                      <img src={profilebackgroundpreview}
+                        className="w-60 h-32 rounded-3xl border-2 border-blue-600 object-cover" alt="Preview Background" />
+                      <p className='text-center font-medium'>Background Perfil</p>
+                    </label>
+                    <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
+                  </div> <br />
+                </>
+
+              )}
+
+              {tab === 3 && (
+                <>
                   <div className="flex flex-col ">
                     <label className="text-lg font-medium">Área</label>
                     <select
@@ -445,11 +522,9 @@ const EditarPerfil = () => {
                   </div>
 
                 </>
-              )
+              )}
 
-              }
-
-              {tab === 3 && (
+              {tab === 4 && (
                 <>
                   <h1 className="font-medium test-center px-12">Parar trocar de senha prossiga no botão, pois irá enviar o email de verificação</h1>
                   <button onClick={PassReset} type="button" className="w-52 bg-green-500 hover:bg-green-400 text-white font-bold 
@@ -459,7 +534,7 @@ const EditarPerfil = () => {
 
               )}
 
-              {tab === 4 && (
+              {tab === 5 && (
                 <>
                   <h1 className="font-medium test-center px-12">Irá desativar sua conta, entretanto você pode criar uma nova posteriormente</h1>
                   <button onClick={handleOpenModal} type="button" className="w-52 bg-red-500 hover:bg-red-400 text-white font-bold 
@@ -468,6 +543,7 @@ const EditarPerfil = () => {
                 </>
 
               )}
+
               {tab <= 2 && (
                 <button type="submit" onClick={handleSubmit} className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2">Confirmar Mudanças</button>
               )}

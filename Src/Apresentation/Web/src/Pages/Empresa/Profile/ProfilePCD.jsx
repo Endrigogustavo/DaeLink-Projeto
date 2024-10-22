@@ -42,7 +42,7 @@ function Profile() {
         //Pegando o sistema de recomendação do App.py para listar usuarios semelhantes
         const Recommendations = async () => {
             try {
-                const id = localStorage.getItem("userId")
+                const id = localStorage.getItem("Candidato")
                 //Rota do sistema de recomendação utilizando o axios no react e do flask do python
                 //Utilizando o Id como base pesquisa
                 const response = await axios.post('http://localhost:5000/profile', { id: id });
@@ -84,6 +84,11 @@ function Profile() {
         const id = localStorage.getItem("Candidato")
         navigate(`/addpessoa/`)
     }
+
+    const handleButtonClick = (id) => {
+        localStorage.setItem("Candidato", id)
+        navigate(0);
+    };
 
     const ChatUser = async () => {
         try {
@@ -139,7 +144,18 @@ function Profile() {
                             </p>
                         </div>
                     </div>
+                    {recommendations.map((rec) => (
+                                <button class="grid grid-cols-3" onClick={() => handleButtonClick(rec.id)}>
+                                    <div class="text-center my-2">
+                                        <img class="h-16 w-16 rounded-full mx-auto"
+                                            src={rec.imageUrl}
+                                            alt="" />
+                                        <a href="#" class="text-main-color">{rec.name}</a>
+                                    </div>
+                                </button>
+                            ))}
                 </div>
+               
                 <div className='w-4/6 h-fit flex flex-col items-center pl-8  tabs-container'>
                     <div className='w-full flex justify-start items-center gap-2 responsive-tabsprofile'>
                         <div

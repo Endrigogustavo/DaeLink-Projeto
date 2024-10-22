@@ -125,13 +125,13 @@ def recommend_profile():
         if job_id is None:
             return jsonify({"error": "O campo 'id' é necessário."}), 400
 
-        print(f"Recebido ID da vaga: {job_id}")
+        print(f"Recebido ID da pessoa: {job_id}")
 
         # Procura o índice da vaga com o ID fornecido
         job_index = next((index for (index, job) in enumerate(jobs) if job["id"] == job_id), None)
 
         if job_index is None:
-            return jsonify({"error": "Nenhuma vaga encontrada com o ID fornecido."}), 404  # Retorna erro 404 se não encontrar
+            return jsonify({"error": "Nenhuma pessa encontrada com o ID fornecido."}), 404  # Retorna erro 404 se não encontrar
 
         job_texts = [combine_title_and_description(job) for job in jobs]
         tfidf_vectorizer = TfidfVectorizer()
