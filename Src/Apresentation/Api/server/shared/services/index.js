@@ -100,39 +100,31 @@ exports.getEmpresa = async (req, res) => {
   }
 
   exports.getDocument = async (req, res) => {
-    const vagaUid = req.body.vagaUid
-    const userId = req.body.userId
+ 
+    const vagaId = req.body.vagaId
+    const candidatoDoc = req.body.candidatoDoc
+    const IdDoc = req.body.IdDoc
+   try{
+    const DocVagas = await db.collection("Vagas")
+    .doc(vagaId)
+    .collection("candidatos")
+    .doc(candidatoDoc)
+    .collection("documentos")
+    .doc(IdDoc)
+    .get();
 
-  try {
-    const docRef = db.collection('Vagas').doc(vagaUid).collection('candidatos');
-    const queryDoc = docRef.where('userId', '==', userId);
-    const resultDoc = await queryDoc.get();
+if (!DocVagas.exists) {  // Verifique se o documento existe
+    return res.status(404).send('Document not found.');
+}
 
-    if (!resultDoc.empty) {
-      // Apenas um candidato é esperado com base na consulta
-      const candidatoDoc = resultDoc.docs[0];
+// Se você quiser retornar os dados do documento
+const documentosData = {
+    id: DocVagas.id,
+    ...DocVagas.data()
+};
 
-      // Referência para a coleção de documentos do candidato
-      const documentosRef = candidatoDoc.ref.collection('documentos');
-      const resultDocumentos = await documentosRef.get();
-
-      if (!resultDocumentos.empty) {
-        const documentosData = resultDocumentos.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        // Se você quiser apenas o primeiro documento
-        const PCDData = documentosData[0]; // ou ajuste conforme necessário
-        return res.status(200).json(PCDData);
-      } else {
-        return res.status(404).json({ message: 'Nenhum documento encontrado.' });
-      }
-    } else {
-      return res.status(404).json({ message: 'Nenhum candidato encontrado.' });
+return res.status(200).json(documentosData);
+    } catch (error) {
+      console.error("Erro ao buscar informações da vaga: ", error);
     }
-  } catch (error) {
-    console.error('Erro ao buscar documentos:', error);
-    return res.status(500).json({ message: 'Ocorreu um erro ao buscar documentos.' });
-  }
   };

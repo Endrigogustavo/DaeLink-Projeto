@@ -84,11 +84,13 @@ const ProcessosList = () => {
         if (!DocResult.empty) {
             const candidatoDoc = DocResult.docs[0];
             const DocRef = collection(db, "Vagas", vagaId, "candidatos", candidatoDoc.id, "documentos");
+            localStorage.setItem('candidatoDoc', candidatoDoc.id);
             const GetDoc = await getDocs(DocRef);
 
             if (!GetDoc.empty) {
                 const idDoc = GetDoc.docs[0].id;
                 localStorage.setItem('vagaId', vagaId);
+                
                 localStorage.setItem('IdDoc', idDoc);
                 setWorksModal(true)
                 setModalMessage("Documentos pré-existentes, redirecionando")

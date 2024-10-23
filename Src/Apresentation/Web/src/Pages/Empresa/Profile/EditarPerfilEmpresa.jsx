@@ -15,8 +15,8 @@ const EditarPerfil = () => {
   // Utilizado para pegar o id do usuario e da vaga na tela anterior
 
   const [profileImage, setProfileImage] = useState(null);
-  const [profileImagePreview, setProfileImagePreview] = useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
-  const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
+  const [profileImagePreview, setProfileImagePreview] = useState('');
+  const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('');
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [userId, setUserId] = useState('');
   const [tab, setTab] = useState(1);
@@ -63,6 +63,9 @@ const EditarPerfil = () => {
       const GetCompany = await getDoc(CompanyDoc);
       if (GetCompany.exists()) {
         setUserProfile(GetCompany.data());
+        const data = GetCompany.data()
+        setProfileImagePreview(data.imageUrl)
+        setProfileBackgroundpreview(data.imageProfile)
       } else {
         setUserProfile(null);
       }
@@ -133,16 +136,27 @@ const EditarPerfil = () => {
   const handleSubmitImg = async (e) => {
     e.preventDefault();
     try {
-     
+
+      const uploadImage = async (path, image) => {
+        if (!image) {
+          return null; // Se a imagem não existir, retorna null
+        }
+        return await uploadAndGetDownloadUrl(path, image);
+      };
       const userDoc = doc(db, "Empresa", userId);
       const [profileImageURL, backgroundImageURL] = await Promise.all([
-        uploadAndGetDownloadUrl(`images_company/${profileImage.name}`, profileImage),
-        uploadAndGetDownloadUrl(`background_profile_company/${backgroundImage.name}`, backgroundImage),
+        uploadImage(`images_company/${profileImage?.name}`, profileImage),
+        uploadImage(`background_profile_company/${backgroundImage?.name}`, 
+          backgroundImage
+        ),
       ]);
-      await updateDoc(userDoc, {
-        imageProfile: backgroundImageURL,
-        imageUrl: profileImageURL
-      });
+      const updateData = {};
+      
+   
+        if (profileImageURL) updateData.imageUrl = profileImageURL;
+        if (backgroundImageURL) updateData.imageProfile = backgroundImageURL;
+
+        await updateDoc(userDoc, updateData);
 
       setWorksModal(true)
       setModalMessage("Conta Atualizada com sucesso.")

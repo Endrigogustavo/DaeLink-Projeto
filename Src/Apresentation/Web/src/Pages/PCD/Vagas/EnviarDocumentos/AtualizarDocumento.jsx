@@ -67,7 +67,7 @@ const DocumentosForm = () => {
                 const userId = storedUserId;
                 setUserId(userId)
 
-                const PCDDoc = await getDoc(doc(db, "PCD", userId));
+                const PCDDoc = await getDoc(collection(db, "PCD", userId));
 
                 const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
                 setPessoaId(PCDData);
@@ -91,7 +91,11 @@ const DocumentosForm = () => {
     useEffect(() => {
         const getDocPCD = async () => {
             try {
-                const response = await axios.post(`http://localhost:3000/get-doc/`,{vagaUid, userId},  { withCredentials: true });
+                const vagaId = localStorage.getItem('vagaId');
+                const candidatoDoc = localStorage.getItem('candidatoDoc');
+                const IdDoc = localStorage.getItem('IdDoc');
+                const response = await axios.post(`http://localhost:3000/get-doc/`,{vagaId, candidatoDoc, IdDoc},  { withCredentials: true });
+                console.log(response.data)
                 setDocProfile(response.data);
             } catch (error) {
                 console.error("Erro ao buscar documentos:", error);
@@ -102,7 +106,7 @@ const DocumentosForm = () => {
                     setModalOpen(false)
                 }, 2200);
             }
-        };
+        }
 
         getDocPCD();
     }, [vagaUid, userId]);
@@ -287,7 +291,7 @@ const DocumentosForm = () => {
                         type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         placeholder="Insira seu Nome Completo"
-                        value={nome}
+                        value={docProfile.nome}
                         onChange={(e) => setNome(e.target.value)}
                     />
                 </div>
@@ -297,7 +301,7 @@ const DocumentosForm = () => {
                         type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent "
                         placeholder="Insira seu Email"
-                        value={email}
+                        value={docProfile.email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
@@ -308,7 +312,8 @@ const DocumentosForm = () => {
                         type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         placeholder="Insira seu Telefone"
-                        value={telefone}
+                        value={docProfile.telefone
+                        }
                         onChange={(e) => setTelefone(e.target.value)}
                     />
                 </div>
@@ -319,7 +324,7 @@ const DocumentosForm = () => {
                         ref={enderecoRef}
                         className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         placeholder="Insira seu Endereço"
-                        value={endereco}
+                        value={docProfile.endereco}
                         onChange={(e) => {
                             setEndereco(e.target.value);
                             adjustTextareaHeight(enderecoRef);
@@ -330,9 +335,9 @@ const DocumentosForm = () => {
                 <div className="flex flex-col">
                     <label className="text-lg font-medium">Idade</label>
                     <input
-                        type="number"
+                        type="date"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        value={idade}
+                        value={docProfile.idade}
                         onChange={(e) => setIdade(e.target.value)}
                     />
                 </div>
@@ -343,7 +348,7 @@ const DocumentosForm = () => {
                         ref={experienciaRef}
                         className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         placeholder="Fale brevemente de suas experiências profissionais"
-                        value={experiencia1}
+                        value={docProfile.experiencia1}
                         onChange={(e) => {
                             setExperiencia1(e.target.value);
                             adjustTextareaHeight(experienciaRef);
@@ -355,7 +360,7 @@ const DocumentosForm = () => {
                     <label className="text-lg font-medium">Idioma Secundário</label>
                     <select
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                        value={idiomas}
+                        value={docProfile.idiomas}
                         onChange={(e) => setIdiomas(e.target.value)}
                     >
                         <option value="">Selecione um idioma</option>

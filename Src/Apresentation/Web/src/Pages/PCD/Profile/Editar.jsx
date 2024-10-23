@@ -17,8 +17,8 @@ const EditarPerfil = () => {
   const navigate = useNavigate();
 
   const [profileImage, setProfileImage] = useState(null);
-  const [profileImagePreview, setProfileImagePreview] = useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
-  const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
+  const [profileImagePreview, setProfileImagePreview] = useState('');
+  const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('');
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [userId, setUserId] = useState('');
   const [senha, setSenha] = useState("");
@@ -78,7 +78,9 @@ const EditarPerfil = () => {
       const GetUser = await getDoc(userDoc);
       if (GetUser.exists()) {
         setUserProfile(GetUser.data());
-
+        const data = GetUser.data()
+        setProfileImagePreview(data.imageUrl)
+        setProfileBackgroundpreview(data.imageProfile)
       } else {
         setUserProfile(null);
       }
