@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { collection, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, updateDoc, addDoc } from 'firebase/firestore';
 import { auth, db } from '../../../../Database/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { BsFillXSquareFill } from "react-icons/bs";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
+import { IoMdChatbubbles } from "react-icons/io";
 import Modal from '../../Modal/Modal';
 
 function PessoasList() {
@@ -181,6 +182,33 @@ function PessoasList() {
         }
     };
 
+    const ChatUser = async (userId) => {
+        try {
+            const ChatCollection = collection(db, "Chat");
+            await addDoc(ChatCollection, {
+                userId: userId,
+                empresaId: user.uid
+            });
+
+            setWorksModal(true);
+            setModalMessage("Chat Carregado com sucesso!");
+            setModalOpen(true);
+            setTimeout(() => {
+                localStorage.setItem("chatId", userId);
+                navigate(`/chat/`);
+            }, 4000);
+
+        } catch (error) {
+            console.error('Erro ao iniciar chat:', error);
+            setWorksModal(false);
+            setModalMessage("Erro ao iniciar chat.");
+            setModalOpen(true);
+            setTimeout(() => {
+                setModalOpen(false);
+            }, 2200);
+        }
+    };
+
     return (
         <>
             <div>
@@ -194,7 +222,7 @@ function PessoasList() {
             </div>
 
 
-            <div className={`w-full h-fit overflow-x-hidden  Pcdscontainer gap-4 justify-items-center justify-center items-center ${candidatos.length > 0 ? 'py-6 grid ' : ''}`}>
+            <div className={`w-full h-fit overflow-x-hidden  Pcdscontainer gap-4 justify-items-center justify-center items-center ${candidatos.length > 0 ? 'py-12 grid ' : ''}`}>
 
                 {candidatos.map(candidato => (
                     <div key={candidato.id} className='h-profilecard w-72  rounded-3xl flex flex-col 
@@ -205,27 +233,38 @@ function PessoasList() {
                         </div>
                         <div className='h-profilecarditems w-full flex flex-col items-center overflow-hidden'>
 
-                            <div className='h-2/6 w-full flex flex-col justify-center items-center  py-1'>
+                            <div className='h-2/6 w-full flex flex-col justify-center items-center  pt-1'>
                                 <h1 className='text-xl font-bold text-center'>{candidato.name}</h1>
-                                <h2 className='opacity-75 text-sm truncate'>{candidato.email}</h2>
+                                <h2 className='opacity-75 text-sm truncate'>{candidato.trabalho}</h2>
                             </div>
 
-                            <div className='w-full h-4/6 flex flex-col justify-center items-center gap-2 '>
-                                <p className='font-medium text-center text-xl'>Ações</p>
-                                <div className='w-full flex justify-center gap-2'>
-                                    <button onClick={() => AceitarCandidato(candidato.id)} type="submit"
-                                        className='bg-green-400 rounded-2xl p-2 h-fit'>
-                                        <FaCheck className='text-3xl text-white text-center cardhover' />
-                                    </button>
-                                    <button onClick={() => RecusarCandidato(candidato.id)} type="submit"
-                                        className='bg-red-400 rounded-2xl p-2 h-fit'>
-                                        <FaTimes className='text-3xl text-white text-center cardhover' />
-                                    </button>
+                            <div className='w-full h-4/6 flex flex-col justify-center items-center py-2 '>
+                                <div className='w-full h-2/5 flex flex-col justify-center px-4'>
+                                    <h1 className='opacity-75 text-sm truncate'>{candidato.email}</h1>
+                                    <h2 className='opacity-75 text-sm truncate font-bold'>{candidato.situação}</h2>
+                                </div>
+                                <div className='w-full h-3/5 flex flex-col justify-center items-center '>
+                                    <p className='font-medium text-center text-xl'>Ações</p>
+                                    <div className='w-full flex justify-center gap-2'>
+                                        <button onClick={() => AceitarCandidato(candidato.id)} type="submit"
+                                            className='bg-green-400 rounded-2xl px-2 py-1 h-12'>
+                                            <FaCheck className='text-2xl text-white text-center cardhover' />
+                                        </button>
+                                        <button onClick={() => RecusarCandidato(candidato.id)} type="submit"
+                                            className='bg-red-400 rounded-2xl px-2 py-1 h-12'>
+                                            <FaTimes className='text-2xl text-white text-center cardhover' />
+                                        </button>
 
-                                    <button onClick={() => handleButtonClick(candidato.id)} type="submit"
-                                        className='bg-gray-700 rounded-2xl p-2 h-fit'>
-                                        <IoDocumentsSharp className='text-3xl text-white text-center cardhover' />
-                                    </button>
+                                        <button onClick={() => handleButtonClick(candidato.id)} type="submit"
+                                            className='bg-gray-700 rounded-2xl px-2 py-1 h-12'>
+                                            <IoDocumentsSharp className='text-2xl text-white text-center cardhover' />
+                                        </button>
+
+                                        <button onClick={() => ChatUser(candidato.userId)} type="submit"
+                                            className='bg-indigo-700 rounded-2xl px-2 py-1 h-12'>
+                                            <IoMdChatbubbles className='text-2xl text-white text-center cardhover' />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
