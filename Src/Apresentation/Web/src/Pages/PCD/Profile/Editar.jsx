@@ -173,23 +173,34 @@ const EditarPerfil = () => {
   const handleSubmitIMG = async (e) => {
     e.preventDefault();
     try {
+      const uploadImage = async (path, image) => {
+        if (!image) {
+          return null; // Se a imagem não existir, retorna null
+        }
+        return await uploadAndGetDownloadUrl(path, image);
+      };
+      
       const [profileImageURL, backgroundImageURL] = await Promise.all([
-        uploadAndGetDownloadUrl(`pcd_profile/${profileImage.name}`, profileImage),
-        uploadAndGetDownloadUrl(`background_profile/${backgroundImage.name}`, backgroundImage),
+        uploadImage(`pcd_profile/${profileImage?.name}`, profileImage),
+        uploadImage(`background_profile/${backgroundImage?.name}`, backgroundImage),
       ]);
-
+      
       if (user) {
         const userDoc = doc(db, "PCD", userId);
-        await updateDoc(userDoc, {
-          imageUrl: profileImageURL,
-          imageProfile: backgroundImageURL
-        });
-
+        const updateData = {};
+      
+        // Somente atualiza o campo se a URL da imagem não for nula
+        if (profileImageURL) updateData.imageUrl = profileImageURL;
+        if (backgroundImageURL) updateData.imageProfile = backgroundImageURL;
+      
+        await updateDoc(userDoc, updateData);
+      
         setWorksModal(true);
         setModalMessage("Conta atualizada com sucesso!");
         setModalOpen(true);
         setTimeout(() => navigate(-2), 4000);
       }
+      
     } catch (error) {
       console.error("Erro ao atualizar conta: ", error);
       let errorMessage = "Erro ao atualizar conta.";
