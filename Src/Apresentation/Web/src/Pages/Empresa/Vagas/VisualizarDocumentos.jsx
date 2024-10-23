@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore';
 import { db, auth } from '../../../Database/Firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Navbar from '../Navbar/Navbar';
-import { PaperClipIcon } from '@heroicons/react/24/outline';
+import { IoDocumentAttachSharp } from "react-icons/io5";
 import Modal from '../Modal/Modal';
 import { FaUser } from "react-icons/fa";
+
+//Existem dois atributos CSS, que são puxados do ProcessosEmpresas.css
 
 function VisualizarDocumentos() {
   const navigate = useNavigate();
@@ -65,6 +67,7 @@ function VisualizarDocumentos() {
 
           if (candidatoPCDSnapshot.exists()) {
             const candidatoPCDData = candidatoPCDSnapshot.data();
+            console.log(candidatoPCDData)
             setCurrentCandidate({ id: candidatoPCDSnapshot.id, ...candidatoPCDData }); // Armazena o candidato da coleção PCD
           } else {
             setError('Candidato não encontrado na coleção PCD.');
@@ -141,7 +144,7 @@ function VisualizarDocumentos() {
     <>
       <Navbar />
       <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
-      <div className='min-h-screen h-fit w-full flex flex-col py-16 items-center gap-2'>
+      <div className='min-h-screen h-fit w-full flex flex-col py-16 items-center gap-4'>
 
         {currentCandidate ? (
           <>
@@ -164,7 +167,7 @@ function VisualizarDocumentos() {
 
         {candidatos.length > 0 ? (
           candidatos.map((candidato, index) => (
-            <div key={index} className='w-3/4 h-fit flex flex-col items-center gap-2'>
+            <div key={index} className='w-3/4 h-fit flex flex-col items-center gap-2 contentdoccandidate'>
 
               <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 flex gap-4'>
                 <h2 className='font-medium text-gray-900'>Email:</h2>
@@ -195,16 +198,62 @@ function VisualizarDocumentos() {
                 <h2 className='font-medium text-gray-900'>Objetivo:</h2>
                 <p className='text-base font-normal px-16 capitalize'>{candidato?.objetivo || 'Carregando...'}</p>
               </div>
+
+              <div className='w-3/4 h-fit py-2 flex gap-4 flex'>
+                <h2 className='font-medium text-gray-900'>Documentos:</h2>
+              </div>
+
+              <div className='w-3/4 h-fit border-b-2 py-2 border-gray-300 gap-4 grid grid-cols-2 justify-items-center doclist'>
+                {currentCandidate?.laudo || currentCandidate?.laudomedico ? (
+                  <Link to={currentCandidate.laudo || currentCandidate.laudomedico} target="_blank" rel="noopener noreferrer">
+                    <label className='h-16 w-64 rounded-3xl flex items-center justify-center gap-4 
+                      bg-transparent border-gray-400 border-2 cursor-pointer'>
+                      <IoDocumentAttachSharp className='text-3xl text-gray-900 text-center ' />
+                      <h1 className='font-medium text-lg truncate'>Laudo Médico</h1>
+                    </label>
+                  </Link>
+                ) : (
+                  <p>Laudo médico não encontrado.</p>
+                )}
+
+                <Link to={candidato.formacao_academica1} target="_blank" rel="noopener noreferrer">
+                  <label className='h-16 w-64 rounded-3xl flex items-center justify-center gap-4 
+                bg-transparent border-gray-400 border-2 cursor-pointer'>
+                    <IoDocumentAttachSharp className='text-3xl text-gray-900 text-center ' />
+                    <h1 className='font-medium text-lg truncate'>Formação 1</h1>
+                  </label>
+                </Link>
+
+                <Link to={candidato.formacao_academica2} target="_blank" rel="noopener noreferrer">
+                  <label className='h-16 w-64 rounded-3xl flex items-center justify-center gap-4 
+                bg-transparent border-gray-400 border-2 cursor-pointer'>
+                    <IoDocumentAttachSharp className='text-3xl text-gray-900 text-center ' />
+                    <h1 className='font-medium text-lg truncate'>Formação 2</h1>
+                  </label>
+                </Link>
+
+                <Link to={candidato.formacao_academica3} target="_blank" rel="noopener noreferrer" >
+                  <label className='h-16 w-64 rounded-3xl flex items-center justify-center gap-4 
+                bg-transparent border-gray-400 border-2 cursor-pointer'>
+                    <IoDocumentAttachSharp className='text-3xl text-gray-900 text-center ' />
+                    <h1 className='font-medium text-lg truncate'>Formação 3</h1>
+                  </label>
+                </Link>
+
+              </div>
+
               <div>
-                <button className='w-32 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'
+                <button className='w-32 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2'
                   onClick={() => ChatUser(candidato.userId)}>
                   Contatar
                 </button>
               </div>
+
+
             </div>
           ))
         ) : (
-          <button className='w-32 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all'
+          <button className='w-32 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2'
             onClick={handleback}>
             Voltar
           </button>

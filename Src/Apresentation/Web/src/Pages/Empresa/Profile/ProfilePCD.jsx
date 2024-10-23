@@ -9,6 +9,7 @@ import CarregamentoTela from '../../../Components/TelaCarregamento/Carregamento'
 import { IoDocumentText } from "react-icons/io5";
 import { FaNoteSticky } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa";
 
 import Navbar from '../Navbar/Navbar';
 import Modal from '../Modal/Modal';
@@ -42,12 +43,17 @@ function Profile() {
         //Pegando o sistema de recomendação do App.py para listar usuarios semelhantes
         const Recommendations = async () => {
             try {
-                const id = localStorage.getItem("Candidato")
+                const id = localStorage.getItem("Candidato");
                 //Rota do sistema de recomendação utilizando o axios no react e do flask do python
-                //Utilizando o Id como base pesquisa
                 const response = await axios.post('http://localhost:5000/profile', { id: id });
-                //Setando informações aa variavel 
-                setRecommendations(response.data);
+
+                // Filtra as recomendações para remover a que tem o mesmo ID do candidato e limita a 3
+                const filteredRecommendations = response.data
+                    .filter(rec => rec.id !== id) // Remove recomendações com o mesmo ID
+                    .slice(0, 3); // Limita a 3 recomendações
+
+                //Setando informações à variável 
+                setRecommendations(filteredRecommendations);
             } catch (error) {
                 console.error('Error fetching recommendations:', error);
             }
@@ -144,18 +150,31 @@ function Profile() {
                             </p>
                         </div>
                     </div>
-                    {recommendations.map((rec) => (
-                                <button class="grid grid-cols-3" onClick={() => handleButtonClick(rec.id)}>
-                                    <div class="text-center my-2">
-                                        <img class="h-16 w-16 rounded-full mx-auto"
-                                            src={rec.imageUrl}
+                    <div className='w-full h-fit flex flex-col items-center justify-center gap-4'>
+                        <div className='w-4/5 profilecontent-responsive flex gap-2'>
+                            <FaUsers className='text-2xl text-gray-900' /> <h1 className='font-bold text-lg'>Pessoas similares:</h1>
+                        </div>
+                        {recommendations.map((rec) => (
+                            <>
+                                <div className='h-24 w-64 rounded-3xl border-gray-400 border-2 shadow-2xl overflow-hidden flex cardhover'>
+                                    <div className='w-2/5 h-full flex items-center justify-center'>
+                                        <img class="h-16 w-16 rounded-full object-cover border-2 border-blue-600"
+                                            src={rec.imageUrl || rec.profileImage}
                                             alt="" />
-                                        <a href="#" class="text-main-color">{rec.name}</a>
                                     </div>
-                                </button>
-                            ))}
+
+                                    <div className='w-3/5 h-full flex flex-col items-center justify-center gap-2'>
+                                        <h3 className='font-medium'>{rec.name}</h3>
+                                        <button class="w-20 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2  rounded-full transition-all text-sm"
+                                            onClick={() => handleButtonClick(rec.id)}>Visitar</button>
+                                    </div>
+
+                                </div>
+                            </>
+                        ))}
+                    </div>
                 </div>
-               
+
                 <div className='w-4/6 h-fit flex flex-col items-center pl-8  tabs-container'>
                     <div className='w-full flex justify-start items-center gap-2 responsive-tabsprofile'>
                         <div

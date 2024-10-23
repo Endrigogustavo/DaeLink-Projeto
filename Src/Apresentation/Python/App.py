@@ -14,7 +14,7 @@ CORS(app)
 logging.basicConfig(filename='error.log', level=logging.ERROR)
 
 # Configurar o Firebase
-cred_path = os.path.join(os.path.dirname(__file__), 'Database/daelink-producao-firebase-adminsdk-y99vm-e1d8c6c010.json')
+cred_path = os.path.join(os.path.dirname(__file__), 'Database/daelink-database.json')
 
 if not os.path.exists(cred_path):
     print("Arquivo de credenciais não encontrado. Verifique o caminho.")

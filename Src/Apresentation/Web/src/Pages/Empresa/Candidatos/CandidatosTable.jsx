@@ -69,7 +69,7 @@ const CandidatosTable = () => {
 
             <section className='w-full h-80 flex flex-col justify-center items-center gap-y-3 overflow-hidden'>
                 <img src={DaeLogo} alt="" className='h-24' />
-                <h1 className='text-xl font-bold text-center'>Procure candidatos conforme a vaga necessária:</h1>
+                <h1 className='text-2xl font-bold text-center'>Candidatos Search</h1>
                 <form onSubmit={handleSubmit} className="flex">
                     <div className='flex w-80 h-16 border-2 border-gray-900 rounded-full p-4 mt-1 bg-transparent items-center'>
                         <input value={trabalho} onChange={(e) => setTrabalho(e.target.value)} type="text" className='h-full w-full bg-transparent border-0 focus:outline-none' placeholder="Procurar candidato" required />

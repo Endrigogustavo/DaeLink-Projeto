@@ -75,7 +75,7 @@ const BannerPCD = () => {
                     </div>
                     <div className="w-1/2 h-full justify-center items-center flex overflow-hidden">
                         {userProfile?.imageUrl && (
-                            <img src={userProfile.imageUrl} className='w-4/6  rounded-xl border-2 border-blue-500 profilepic' alt="Imagem de Perfil" />
+                            <img src={userProfile.imageUrl} className='w-4/6  rounded-3xl border-2 border-blue-500 profilepic' alt="Imagem de Perfil" />
                         )}
                     </div>
                 </div>

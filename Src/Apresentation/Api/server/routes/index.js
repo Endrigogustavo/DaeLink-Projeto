@@ -1,6 +1,6 @@
 const express = require('express');
 const admin = require('firebase-admin');
-const serviceAccount = require('../database/daelink-producao-firebase-adminsdk-y99vm-e1d8c6c010.json');
+const serviceAccount = require('../database/daelink-database.json');
 
 const Controller = require('../controller/index');
 const Services = require('../shared/services/index');

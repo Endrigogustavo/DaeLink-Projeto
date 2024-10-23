@@ -3,6 +3,9 @@
 
 }
 
+.EmpresaImgPr {
+    height: 90%;
+}
 
 
 .line-clamp-4 {
@@ -31,7 +34,7 @@
     }
 
     .EmpresaImgPr {
-        height: 60%;
+        height:32rem;
         padding-top: 2.25rem;
         padding-bottom: 2.25rem;
     }

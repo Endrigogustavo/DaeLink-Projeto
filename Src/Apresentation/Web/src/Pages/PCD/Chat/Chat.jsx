@@ -23,6 +23,8 @@ const ChatRoom = () => {
     const [messageRef, setMessageRef] = useState(null);
     const [id, setUserId] = useState('')
 
+    // Referência do container para rolar automaticamente até a última mensagem
+    const chatContainerRef = useRef(null);
 
     // Fetch chat messages and profiles
     useEffect(() => {
@@ -36,8 +38,6 @@ const ChatRoom = () => {
                 const storedEmpresaId = localStorage.getItem('IdEmpresa');
                     const empresaId = storedEmpresaId;
                     setEmpresa(empresaId)
-               
-
 
                 // Chat collection and query
                 const ChatCollection = collection(db, "Chat");
@@ -50,7 +50,6 @@ const ChatRoom = () => {
                     const PCDdoc = doc(db, "PCD", id);
                     const GetPCDInfo = await getDoc(PCDdoc);
                     if (GetPCDInfo.exists()) {
-
                         setUserProfile(GetPCDInfo.data());
                     } else {
                         console.warn("No PCD profile found!");
@@ -114,7 +113,9 @@ const ChatRoom = () => {
 
                 });
                 setFormValue(""); // Limpa o campo de texto
-                dummy.current.scrollIntoView({ behavior: 'smooth' }); // Faz o scroll para a última mensagem
+                if (chatContainerRef.current) {
+                    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight; // Faz o scroll para a última mensagem
+                }
             } catch (error) {
                 console.error("Error sending message:", error); // Loga o erro caso aconteça
             }
@@ -130,6 +131,9 @@ const ChatRoom = () => {
     useEffect(() => {
         if (collectionData) {
             setMessages(collectionData);
+            if (chatContainerRef.current) {
+                chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight; // Rolagem automática ao carregar mensagens
+            }
         }
     }, [collectionData]);
 
@@ -152,7 +156,7 @@ const ChatRoom = () => {
                 )}
             </div>
 
-            <div className="Chatcontainer pt-4 px-12">
+            <div ref={chatContainerRef} className="Chatcontainer pt-4 px-12 overflow-y-auto">
                 {messages && messages.map((msg, index) => (
                     <ChatMessage
                         key={index}

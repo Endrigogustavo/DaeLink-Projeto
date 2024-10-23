@@ -11,7 +11,7 @@ import { IoSend } from "react-icons/io5";
 
 const ChatRoomEmpresa = () => {
     const navigate = useNavigate();
-    
+
     const [loading, setLoading] = useState(true);
 
     // States for storing user and empresa profile
@@ -25,19 +25,21 @@ const ChatRoomEmpresa = () => {
 
     const [idempresa, setUserId] = useState('');
 
+    const chatContainerRef = useRef(null);
+
 
     // Fetch chat messages and profiles
     useEffect(() => {
         const GetChatMessage = async () => {
             try {
                 const storedUserId = localStorage.getItem('userId');
-            if (storedUserId) {
-                const userId = storedUserId;
-                setUserId(userId)
-            }
-        
-               const id = localStorage.getItem("chatId")
-               setId(id)
+                if (storedUserId) {
+                    const userId = storedUserId;
+                    setUserId(userId)
+                }
+
+                const id = localStorage.getItem("chatId")
+                setId(id)
                 // Chat collection and query
                 const ChatCollection = collection(db, "Chat");
                 const GetQueryCompanyId = query(ChatCollection, where("empresaId", "==", idempresa));
@@ -81,7 +83,7 @@ const ChatRoomEmpresa = () => {
 
                         const GetMessages = await getDocs(MessagesQuery);
                         setMessages(GetMessages.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-                      
+
                     }
                 } else {
                     console.warn("No chat found for this user and company");
@@ -112,7 +114,9 @@ const ChatRoomEmpresa = () => {
                     createdAt: serverTimestamp(), // Timestamp do servidor
                 });
                 setFormValue(""); // Limpa o campo de texto
-                dummy.current.scrollIntoView({ behavior: 'smooth' }); // Faz o scroll para a última mensagem
+                if (chatContainerRef.current) {
+                    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight; // Faz o scroll para a última mensagem
+                }
             } catch (error) {
                 console.error("Error sending message:", error); // Loga o erro caso aconteça
             }
@@ -128,6 +132,9 @@ const ChatRoomEmpresa = () => {
     useEffect(() => {
         if (collectionData) {
             setMessages(collectionData);
+            if (chatContainerRef.current) {
+                chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight; // Rolagem automática ao carregar mensagens
+            }
         }
     }, [collectionData]);
 
@@ -150,7 +157,7 @@ const ChatRoomEmpresa = () => {
                 )}
             </div>
 
-            <div className="Chatcontainer pt-4 px-12">
+            <div ref={chatContainerRef} className="Chatcontainer pt-4 px-12">
                 {messages && messages.map((msg, index) => (
                     <ChatMessage
                         key={index}

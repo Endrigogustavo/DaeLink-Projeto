@@ -1,7 +1,7 @@
 const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 const admin = require('firebase-admin');
-const serviceAccount = require('../database/daelink-producao-firebase-adminsdk-y99vm-e1d8c6c010.json');
+const serviceAccount = require('../database/daelink-database.json');
 const { getAuth, signInWithEmailAndPassword } = require('firebase-admin/auth');
 const { db } = require('../database/firebase')
 

@@ -16,8 +16,8 @@ function PessoasList() {
     const [error, setError] = useState('');
     const [userPCD, setUserPCD] = useState('');
 
-    const fotodefault = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5JltdoarPr9bRcq-0QN5k6F_v8kYxj5oj8A&s"
-    const defaultbackground = "https://c4.wallpaperflare.com/wallpaper/251/165/174/building-lights-usa-night-wallpaper-preview.jpg";
+    const fotodefault = "https://th.bing.com/th/id/OIP.9C1wSMkDpVtwSZbuxNwEZAAAAA?w=474&h=474&rs=1&pid=ImgDetMain"
+    const defaultbackground = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyxP3MrFgQfwxomoeOz9ceoA1Dq7O9s2v8Iw&s";
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('Processando...');
     const [isWorksModal, setWorksModal] = useState(false);
@@ -55,8 +55,8 @@ function PessoasList() {
                             const PCDData = PCDDoc.data();
                             return {
                                 ...candidato,
-                                profileImage: PCDData.profileImage || fotodefault, // Atribui imagem padrão se não existir
-                                backgroundImage: PCDData.backgroundImage || defaultbackground, // Atribui imagem padrão se não existir
+                                profileImage: PCDData.imageUrl || fotodefault, // Atribui imagem padrão se não existir
+                                backgroundImage: PCDData.imageProfile || defaultbackground, // Atribui imagem padrão se não existir
                                 name: PCDData.name || "Nome não disponível", // Certifique-se de que há um nome
                                 trabalho: PCDData.trabalho || "Trabalho não disponível"
                             };
