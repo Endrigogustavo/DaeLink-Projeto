@@ -6,7 +6,7 @@ import { MdExitToApp } from "react-icons/md";
 import { TbCircleNumber1Filled, TbCircleNumber2Filled, TbCircleNumber3Filled } from "react-icons/tb";
 import { IoDocumentAttachSharp } from "react-icons/io5";
 import './CadastroCss.css';
-import { getAuth, sendEmailVerification } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, sendEmailVerification } from 'firebase/auth';
 import InputMask from 'react-input-mask';
 import axios from 'axios';
 import Modal from './Modal';
@@ -213,10 +213,22 @@ const EmpresaFormRegister = () => {
                         setModalOpen(true);
                     });
 
-                setTimeout(() => {
-
-                    navigate(`/homeempresa/`);
-                }, 3000);
+                    setTimeout(() => {
+                        const auth = getAuth();
+                        onAuthStateChanged(auth, async (user) => {
+                          if (user) {
+                            const uid = user.uid;
+                            try {
+                              await axios.post('http://localhost:3000/cookie', { uid }, {
+                                withCredentials: true
+                              });
+                            } catch (error) {
+                              console.error("Error posting cookie: ", error);
+                            }
+                          }
+                        })
+                        navigate(`/homeempresa/`);
+                    }, 3000);
 
             } else {
                 setWorksModal(false)
@@ -268,50 +280,52 @@ const EmpresaFormRegister = () => {
 
 
     const validateCNPJ = (cnpj) => {
-        // Remove caracteres especiais
         cnpj = cnpj.replace(/[^\d]+/g, '');
-        console.log("CNPJ sem caracteres especiais:", cnpj); // Debug
-
-        // CNPJ deve ter 14 dígitos
-        if (cnpj.length !== 14) {
-            console.log("CNPJ inválido: deve ter 14 dígitos."); // Debug
-            return false;
+    
+        if (cnpj === '') return false;
+        if (cnpj.length !== 14) return false;
+    
+        // Elimina CNPJs inválidos conhecidos
+        const invalidCNPJs = [
+            "00000000000000", "11111111111111", "22222222222222", 
+            "33333333333333", "44444444444444", "55555555555555", 
+            "66666666666666", "77777777777777", "88888888888888", 
+            "99999999999999"
+        ];
+        if (invalidCNPJs.includes(cnpj)) return false;
+    
+        // Valida DVs
+        let tamanho = cnpj.length - 2;
+        let numeros = cnpj.substring(0, tamanho);
+        let digitos = cnpj.substring(tamanho);
+    
+        let soma = 0;
+        let pos = tamanho - 7;
+    
+        for (let i = tamanho; i >= 1; i--) {
+            soma += numeros.charAt(tamanho - i) * pos--;
+            if (pos < 2) pos = 9;
         }
-
-        // Verifica se todos os dígitos são iguais (ex: 11111111111111)
-        if (/^(\d)\1+$/.test(cnpj)) {
-            console.log("CNPJ inválido: todos os dígitos são iguais."); // Debug
-            return false;
+    
+        let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+        if (resultado != digitos.charAt(0)) return false;
+    
+        tamanho++;
+        numeros = cnpj.substring(0, tamanho);
+        soma = 0;
+        pos = tamanho - 7;
+    
+        for (let i = tamanho; i >= 1; i--) {
+            soma += numeros.charAt(tamanho - i) * pos--;
+            if (pos < 2) pos = 9;
         }
-
-        // Cálculo do primeiro dígito verificador
-        let sum = 0;
-        for (let i = 0; i < 12; i++) {
-            sum += parseInt(cnpj[i]) * (5 - (i % 8));
-        }
-        let firstVerifier = (sum % 11 < 2) ? 0 : 11 - (sum % 11);
-        console.log("Primeiro dígito verificador calculado:", firstVerifier); // Debug
-
-        if (firstVerifier !== parseInt(cnpj[12])) {
-            console.log("CNPJ inválido: primeiro dígito verificador não corresponde."); // Debug
-            return false;
-        }
-
-        // Cálculo do segundo dígito verificador
-        sum = 0;
-        for (let i = 0; i < 13; i++) {
-            sum += parseInt(cnpj[i]) * (6 - (i % 8));
-        }
-        let secondVerifier = (sum % 11 < 2) ? 0 : 11 - (sum % 11);
-        console.log("Segundo dígito verificador calculado:", secondVerifier); // Debug
-
-        if (secondVerifier !== parseInt(cnpj[13])) {
-            console.log("CNPJ inválido: segundo dígito verificador não corresponde."); // Debug
-            return false;
-        }
-
+    
+        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+        if (resultado != digitos.charAt(1)) return false;
+    
         return true;
     };
+    
 
 
     const handleCNPJChange = (e) => {
