@@ -100,7 +100,7 @@ const EditarPerfil = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-     
+
       const userDoc = doc(db, "Empresa", userId);
 
       await updateDoc(userDoc, {
@@ -146,17 +146,17 @@ const EditarPerfil = () => {
       const userDoc = doc(db, "Empresa", userId);
       const [profileImageURL, backgroundImageURL] = await Promise.all([
         uploadImage(`images_company/${profileImage?.name}`, profileImage),
-        uploadImage(`background_profile_company/${backgroundImage?.name}`, 
+        uploadImage(`background_profile_company/${backgroundImage?.name}`,
           backgroundImage
         ),
       ]);
       const updateData = {};
-      
-   
-        if (profileImageURL) updateData.imageUrl = profileImageURL;
-        if (backgroundImageURL) updateData.imageProfile = backgroundImageURL;
 
-        await updateDoc(userDoc, updateData);
+
+      if (profileImageURL) updateData.imageUrl = profileImageURL;
+      if (backgroundImageURL) updateData.imageProfile = backgroundImageURL;
+
+      await updateDoc(userDoc, updateData);
 
       setWorksModal(true)
       setModalMessage("Conta Atualizada com sucesso.")
@@ -420,24 +420,24 @@ const EditarPerfil = () => {
                       className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                     >
                       <option value="" disabled>Selecione a área de atuação</option>
-                      <option value="Entretenimento">Entretenimento</option>
-                      <option value="Automotivo">Automotivo</option>
-                      <option value="Tecnologia">Tecnologia</option>
-                      <option value="Saúde">Saúde</option>
-                      <option value="Educação">Educação</option>
-                      <option value="Finanças">Finanças</option>
-                      <option value="Comércio">Comércio</option>
-                      <option value="Segurança">Segurança</option>
-                      <option value="Varejo">Varejo</option>
-                      <option value="E-commerce">E-commerce</option>
                       <option value="Alimentação">Alimentação</option>
-                      <option value="Esportes">Esportes</option>
-                      <option value="Moda">Moda</option>
-                      <option value="Logística">Logística</option>
-                      <option value="Tecnologia da Informação">Tecnologia da Informação</option>
-                      <option value="Marketing Digital">Marketing Digital</option>
+                      <option value="Automotivo">Automotivo</option>
+                      <option value="Comércio">Comércio</option>
+                      <option value="E-commerce">E-commerce</option>
+                      <option value="Educação">Educação</option>
+                      <option value="Entretenimento">Entretenimento</option>
                       <option value="Entretenimento Digital">Entretenimento Digital</option>
+                      <option value="Esportes">Esportes</option>
+                      <option value="Finanças">Finanças</option>
+                      <option value="Logística">Logística</option>
+                      <option value="Marketing Digital">Marketing Digital</option>
+                      <option value="Moda">Moda</option>
                       <option value="Saúde e Bem-Estar">Saúde e Bem-Estar</option>
+                      <option value="Segurança">Segurança</option>
+                      <option value="Tecnologia">Tecnologia</option>
+                      <option value="Tecnologia da Informação">Tecnologia da Informação</option>
+                      <option value="Varejo">Varejo</option>
+
                     </select>
                   </div>
 
@@ -455,7 +455,7 @@ const EditarPerfil = () => {
                         adjustTextareaHeight(textareaRefs.sobre);
                       }}
                     />
-                  </div>       
+                  </div>
                 </>
               )
 
@@ -481,8 +481,8 @@ const EditarPerfil = () => {
                     <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
                   </div> <br />
                   <br />
-<button type="submit" className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2" onClick={handleSubmitImg}>Confirmar Mudanças</button>
-     
+                  <button type="submit" className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2" onClick={handleSubmitImg}>Confirmar Mudanças</button>
+
                 </>
 
               )}

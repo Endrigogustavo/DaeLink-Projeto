@@ -34,7 +34,40 @@ const EmpresaFormRegister = () => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('Processando...');
     const [isWorksModal, setWorksModal] = useState(false);
-  
+
+    const [ramosearch, setRamosearch] = useState(""); // Estado para o valor digitado
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Controle de visibilidade do dropdown
+
+    const ramos = [
+        "Alimentação",
+        "Automotivo",
+        "Comércio",
+        "E-commerce",
+        "Educação",
+        "Entretenimento",
+        "Entretenimento Digital",
+        "Esportes",
+        "Finanças",
+        "Logística",
+        "Marketing Digital",
+        "Moda",
+        "Saúde e Bem-Estar",
+        "Segurança",
+        "Tecnologia",
+        "Tecnologia da Informação",
+        "Varejo",
+    ];
+
+    // Filtra as áreas com base na busca
+    const filteredAreas = ramos.filter((area) =>
+        area.toLowerCase().includes(ramosearch.toLowerCase())
+    );
+
+    const handleSelectArea = (selectedArea) => {
+        setArea(selectedArea); // Define a área selecionada
+        setRamosearch(selectedArea); // Atualiza o input com o valor selecionado
+        setIsDropdownVisible(false); // Esconde o dropdown após a seleção
+    };
 
     //Variavel para fazer gerenciamento de nivel de acesso
     const [tipo] = useState("Empresa");
@@ -123,7 +156,7 @@ const EmpresaFormRegister = () => {
                 setModalOpen(false);
                 return;
             }, 2200);
-            
+
         }
 
         if (password !== confirmPassword) {
@@ -134,7 +167,7 @@ const EmpresaFormRegister = () => {
                 setModalOpen(false);
                 return;
             }, 2200);
-            
+
         }
         if (!/\S+@\S+\.\S+/.test(email)) {
             setWorksModal(false)
@@ -144,44 +177,57 @@ const EmpresaFormRegister = () => {
                 setModalOpen(false);
                 return;
             }, 2200);
-            
+
         }
 
-        setLoading(true);
+        if (!ramos.includes(area)) {
+            setWorksModal(false)
+            setModalMessage("Ramo inválido")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false);
+                return;
+            }, 2200);
+        } else {
 
-        //Função do Auth.jsx para fazer login enviando os parametros do form
-        const response = await registerEmpresa(email, password, sobre, area, cnpj, endereco, cep, tipo, profileImage, backgroundImage, { name });
-        if (response.success) {
-            const auth = getAuth();
-            const user = auth.currentUser; // Certifique-se de obter o 'user' da autenticação
-            const id = user.uid; // Pegue o UID do usuário autenticado
-            localStorage.setItem('userId', id);
-            await axios.post('http://localhost:3000/cookie', { id }, {
-                withCredentials: true
-            });
+            setLoading(true);
 
-            setWorksModal(true)
-            setModalMessage("Cadastro Realizado com Sucesso");
-            setModalOpen(true);
-            await sendEmailVerification(auth.currentUser)
-                .then(() => {
-                    setModalOpen(true);
+
+
+            //Função do Auth.jsx para fazer login enviando os parametros do form
+            const response = await registerEmpresa(email, password, sobre, area, cnpj, endereco, cep, tipo, profileImage, backgroundImage, { name });
+            if (response.success) {
+                const auth = getAuth();
+                const user = auth.currentUser; // Certifique-se de obter o 'user' da autenticação
+                const id = user.uid; // Pegue o UID do usuário autenticado
+                localStorage.setItem('userId', id);
+                await axios.post('http://localhost:3000/cookie', { id }, {
+                    withCredentials: true
                 });
 
-            setTimeout(() => {
+                setWorksModal(true)
+                setModalMessage("Cadastro Realizado com Sucesso");
+                setModalOpen(true);
+                await sendEmailVerification(auth.currentUser)
+                    .then(() => {
+                        setModalOpen(true);
+                    });
 
-                navigate(`/homeempresa/`);
-            }, 3000);
+                setTimeout(() => {
 
-        } else {
-            setWorksModal(false)
-            setModalMessage("Falha ao Criar Registro")
-            setModalOpen(true)
-            setLoading(false);
-            setTimeout(() => {
-                navigate(0)
-            }, 2200);
+                    navigate(`/homeempresa/`);
+                }, 3000);
 
+            } else {
+                setWorksModal(false)
+                setModalMessage("Falha ao Criar Registro")
+                setModalOpen(true)
+                setLoading(false);
+                setTimeout(() => {
+                    navigate(0)
+                }, 2200);
+
+            }
         }
     };
 
@@ -431,33 +477,32 @@ const EmpresaFormRegister = () => {
                                             }} />
                                     </div>
 
-                                    <div className="flex flex-col ">
+                                    <div className="flex flex-col w-80 relative ">
                                         <label className="text-lg font-medium">Ramo da Empresa</label>
-                                        <select
-                                            name="area"
-                                            value={area} onChange={(e) => setArea(e.target.value)}
-                                            className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                                        >
-                                            <option value="" disabled>Selecione a área de atuação</option>
-                                            <option value="Entretenimento">Entretenimento</option>
-                                            <option value="Automotivo">Automotivo</option>
-                                            <option value="Tecnologia">Tecnologia</option>
-                                            <option value="Saúde">Saúde</option>
-                                            <option value="Educação">Educação</option>
-                                            <option value="Finanças">Finanças</option>
-                                            <option value="Comércio">Comércio</option>
-                                            <option value="Segurança">Segurança</option>
-                                            <option value="Varejo">Varejo</option>
-                                            <option value="E-commerce">E-commerce</option>
-                                            <option value="Alimentação">Alimentação</option>
-                                            <option value="Esportes">Esportes</option>
-                                            <option value="Moda">Moda</option>
-                                            <option value="Logística">Logística</option>
-                                            <option value="Tecnologia da Informação">Tecnologia da Informação</option>
-                                            <option value="Marketing Digital">Marketing Digital</option>
-                                            <option value="Entretenimento Digital">Entretenimento Digital</option>
-                                            <option value="Saúde e Bem-Estar">Saúde e Bem-Estar</option>
-                                        </select>
+                                        <input
+                                            type="text"
+                                            placeholder="Digite para filtrar a área"
+                                            value={ramosearch}
+                                            onChange={(e) => {
+                                                setRamosearch(e.target.value);
+                                                setIsDropdownVisible(e.target.value.length > 0 && filteredAreas.length > 0); // Mostra o dropdown apenas se houver texto e resultados
+                                            }}
+                                            onFocus={() => setIsDropdownVisible(ramosearch.length > 0 && filteredAreas.length > 0)} // Mostra o dropdown ao focar no input se houver resultados
+                                            className="w-full border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                                        />
+                                        {isDropdownVisible && filteredAreas.length > 0 && (
+                                            <ul className="border border-gray-300 rounded-lg mt-2 max-h-40 overflow-y-auto bg-white absolute top-20  w-full">
+                                                {filteredAreas.map((filteredArea) => (
+                                                    <li
+                                                        key={filteredArea}
+                                                        onClick={() => handleSelectArea(filteredArea)}
+                                                        className="p-2 cursor-pointer hover:bg-gray-200"
+                                                    >
+                                                        {filteredArea}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
                                     </div>
                                 </>
                             )}

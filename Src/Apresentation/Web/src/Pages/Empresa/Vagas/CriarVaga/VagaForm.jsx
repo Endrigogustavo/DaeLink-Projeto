@@ -198,9 +198,9 @@ const VagaForm = () => {
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                     >
                         <option value="" disabled>Selecione o tipo</option>
-                        <option value="Presencial">Presencial</option>
-                        <option value="Online">Online</option>
                         <option value="Híbrido">Híbrido</option>
+                        <option value="Online">Online</option>
+                        <option value="Presencial">Presencial</option>
                     </select>
                 </div>
 
