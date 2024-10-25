@@ -9,6 +9,7 @@ import { MdExitToApp } from "react-icons/md";
 
 import Modal from "../Modal/Modal";
 import ConfirmModal from "../Modal/ConfirmModal"
+import axios from "axios";
 
 const EditarPerfil = () => {
   const auth = getAuth();
@@ -67,13 +68,13 @@ const EditarPerfil = () => {
   };
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('userId');
-    if (storedUserId) {
-      const userId = storedUserId;
-      setUserId(userId);
-    }
 
     const getUserProfile = async () => {
+      const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+      setUserId(storedUserId.data.userId)
+      const userId = storedUserId.data.userId;
+      setUserId(userId)
+
       const userDoc = doc(db, "PCD", userId);
       const GetUser = await getDoc(userDoc);
       if (GetUser.exists()) {
@@ -155,7 +156,7 @@ const EditarPerfil = () => {
         setWorksModal(true);
         setModalMessage("Conta atualizada com sucesso!");
         setModalOpen(true);
-        setTimeout(() => navigate(-2), 4000);
+        setTimeout(() => navigate(-2), setModalOpen(false), 4000);
       }
     } catch (error) {
       console.error("Erro ao atualizar conta: ", error);
@@ -181,28 +182,28 @@ const EditarPerfil = () => {
         }
         return await uploadAndGetDownloadUrl(path, image);
       };
-      
+
       const [profileImageURL, backgroundImageURL] = await Promise.all([
         uploadImage(`pcd_profile/${profileImage?.name}`, profileImage),
         uploadImage(`background_profile/${backgroundImage?.name}`, backgroundImage),
       ]);
-      
+
       if (user) {
         const userDoc = doc(db, "PCD", userId);
         const updateData = {};
-      
+
         // Somente atualiza o campo se a URL da imagem não for nula
         if (profileImageURL) updateData.imageUrl = profileImageURL;
         if (backgroundImageURL) updateData.imageProfile = backgroundImageURL;
-      
+
         await updateDoc(userDoc, updateData);
-      
+
         setWorksModal(true);
         setModalMessage("Conta atualizada com sucesso!");
         setModalOpen(true);
         setTimeout(() => navigate(-2), 4000);
       }
-      
+
     } catch (error) {
       console.error("Erro ao atualizar conta: ", error);
       let errorMessage = "Erro ao atualizar conta.";
@@ -564,7 +565,7 @@ const EditarPerfil = () => {
                     <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
                   </div> <br />
                   <button type="submit" onClick={handleSubmitIMG} className="w-52 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all mt-2">Confirmar Mudanças</button>
-            
+
                 </>
 
               )}

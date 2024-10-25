@@ -8,7 +8,7 @@ import { FaFile } from "react-icons/fa6";
 import { IoAddCircleSharp } from "react-icons/io5";
 import InputMask from 'react-input-mask';
 import './FormGrid.css'
-
+import axios from "axios";
 import Modal from "../../Modal/Modal";
 
 const DocumentosForm = () => {
@@ -42,10 +42,11 @@ const DocumentosForm = () => {
 
     useEffect(() => {
         const getInfoPCD = async () => {
-            const storedUserId = localStorage.getItem('userId');
+            const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+            
             if (storedUserId) {
-                setUserId(storedUserId);
-                const PCDDoc = await getDoc(doc(db, "PCD", storedUserId));
+                setUserId(storedUserId.data.userId)
+                const PCDDoc = await getDoc(doc(db, "PCD", storedUserId.data.userId));
                 if (PCDDoc.exists()) {
                     setPessoaId({ id: PCDDoc.id, ...PCDDoc.data() });
                 } else {

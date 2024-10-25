@@ -8,7 +8,7 @@ import Navbar from '../../Navbar/Navbar';
 import Modal from '../../Modal/Modal';
 import ConfirmModal from '../../Modal/ConfirmModal';
 import { MdWork } from "react-icons/md";
-
+import axios from 'axios';
 export default function Example() {
   const navigate = useNavigate();
 
@@ -71,10 +71,9 @@ export default function Example() {
 
   useEffect(() => {
     const getInfoPCD = async () => {
-      const storedUserId = localStorage.getItem('userId');
+      const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+      setUserId(storedUserId.data.userId)
       if (storedUserId) {
-        setUserId(storedUserId);
-
         const PCDDoc = await getDoc(doc(db, "PCD", storedUserId));
         if (PCDDoc.exists()) {
           const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };

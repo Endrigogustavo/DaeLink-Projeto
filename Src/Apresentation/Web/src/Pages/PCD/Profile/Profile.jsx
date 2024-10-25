@@ -37,11 +37,11 @@ function Profile() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        const storedUserId = localStorage.getItem('userId');
-        if (storedUserId) {
-            const userId = storedUserId;
-            setUserId(userId)
+        const getUser = async() => {
+            const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+        setUserId(storedUserId.data.userId)
         }
+        getUser()
 
         const getPCDprofile = async () => {
             //Caminho das informações do banco com base no ID

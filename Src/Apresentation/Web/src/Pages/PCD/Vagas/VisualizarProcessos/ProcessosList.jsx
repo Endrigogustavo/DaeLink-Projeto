@@ -6,6 +6,7 @@ import { FaSquareXmark } from "react-icons/fa6";
 import { IoMdChatbubbles } from "react-icons/io";
 import { IoDocumentAttach } from "react-icons/io5";
 import Modal from '../../Modal/Modal';
+import axios from 'axios';
 
 const ProcessosList = () => {
     const [vagas, setVagas] = useState([]);
@@ -25,9 +26,11 @@ const ProcessosList = () => {
         const GetVagas = async () => {
             setLoading(true);
             try {
-                const storedUserId = localStorage.getItem('userId');
+                const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+                setUserId(storedUserId.data.userId)
                 if (storedUserId) {
-                    setUserId(storedUserId);
+                    const userId = storedUserId.data.userId;
+                    setUserId(userId)
                 }
 
                 const vagasRef = collection(db, 'Vagas');
@@ -90,7 +93,7 @@ const ProcessosList = () => {
             if (!GetDoc.empty) {
                 const idDoc = GetDoc.docs[0].id;
                 localStorage.setItem('vagaId', vagaId);
-                
+
                 localStorage.setItem('IdDoc', idDoc);
                 setWorksModal(true)
                 setModalMessage("Documentos pré-existentes, redirecionando")
