@@ -9,7 +9,7 @@ exports.logout = (req, res) => {
 exports.getCookie = (req, res) => {
   const token = req.cookies.tokenId
   try {
-    if(!token.empty) return res.status(200).json(cookies)
+    if(!token.empty) return res.status(200).json(token)
   } catch (error) {
     res.send(error)
   }

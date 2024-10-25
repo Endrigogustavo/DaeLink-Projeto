@@ -8,7 +8,7 @@ import { useState, useRef, useEffect } from "react";
 import { decrypt } from "../../../Security/Cryptography_Rotes";
 import { FaCircleArrowLeft } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
-
+import axios from "axios";
 const ChatRoom = () => {
     const navigate = useNavigate();
     const [empresaId, setEmpresa] = useState("")
@@ -30,14 +30,15 @@ const ChatRoom = () => {
     useEffect(() => {
         const GetChatMessage = async () => {
             try {
-                const storedUserId = localStorage.getItem('userId');
+                const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+                setUserId(storedUserId.data.userId)
                 if (storedUserId) {
-                    const userId = storedUserId;
+                    const userId = storedUserId.data.userId;
                     setUserId(userId)
                 }
                 const storedEmpresaId = localStorage.getItem('IdEmpresa');
-                    const empresaId = storedEmpresaId;
-                    setEmpresa(empresaId)
+                const empresaId = storedEmpresaId;
+                setEmpresa(empresaId)
 
                 // Chat collection and query
                 const ChatCollection = collection(db, "Chat");

@@ -62,9 +62,10 @@ const DocumentosForm = () => {
                 const userId = doc;
                 setDoc(userId)
             }
-            const storedUserId = localStorage.getItem('userId');
+            const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+            setUserId(storedUserId.data.userId)
             if (storedUserId) {
-                const userId = storedUserId;
+                const userId = storedUserId.data.userId;
                 setUserId(userId)
 
                 const PCDDoc = await getDoc(collection(db, "PCD", userId));
