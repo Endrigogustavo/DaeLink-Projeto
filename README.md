@@ -45,7 +45,7 @@ Candidatura: Candidate-se diretamente às vagas através da plataforma.
 
 - [@Alex Expedito](https://github.com/SonExpedito)
 - [@Danilo Soares](https://www.github.com/Endrigogustavo)
-- [@Endrigo Gustavo]([https://www.github.com/Endrigogustavo](https://github.com/DaniloSsoares))
+- [@Endrigo Gustavo](https://www.github.com/Endrigogustavo)
 
 
 ## Licença
