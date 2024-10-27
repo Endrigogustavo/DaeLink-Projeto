@@ -70,9 +70,9 @@ const EditarPerfil = () => {
   useEffect(() => {
 
     const getUserProfile = async () => {
-      const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
-      setUserId(storedUserId.data.userId)
-      const userId = storedUserId.data.userId;
+      const storedUserId = await axios.get('http://localhost:3000/getcookie', { withCredentials: true });
+      setUserId(storedUserId.data)
+      const userId = storedUserId.data;
       setUserId(userId)
 
       const userDoc = doc(db, "PCD", userId);
@@ -236,45 +236,51 @@ const EditarPerfil = () => {
   }
 
   const DeleteProfile = async (id) => {
-    console.log("Tentando deletar o usuário com ID:", id);
     try {
       const auth = getAuth();
       const user = auth.currentUser;
-
+  
+      // Solicita ao usuário que faça login novamente para reautenticação
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        prompt("Por favor, insira sua senha para confirmar a exclusão da conta:")
+      );
+      
+      // Reautentica o usuário
+      await reauthenticateWithCredential(user, credential);
+  
+      // Exclui o documento no Firestore primeiro
+      const UserInfo = doc(db, "PCD", id);
+      await deleteDoc(UserInfo);
+  
+      // Exclui o usuário do Firebase Authentication
+      await deleteUser(user);
+  
       // Exibe mensagem de sucesso e abre modal
       setWorksModal(true);
       setModalMessage("Conta deletada com sucesso");
       setModalOpen(true);
-
-      // Exclui o documento no Firestore primeiro
-      const UserInfo = doc(db, "PCD", id);
-      await deleteDoc(UserInfo);
-
-      // Exclui o usuário do Firebase Authentication
-      await deleteUser(user);
-
-      // Remove o ID do localStorage
-      localStorage.removeItem('userId');
-
+  
       // Aguarda 4 segundos para dar feedback visual antes de redirecionar
       setTimeout(() => {
         navigate('/');
       }, 4000);
-
+  
     } catch (error) {
       console.error("Erro ao deletar a conta:", error);
-
+  
       // Exibe mensagem de erro e abre modal
       setWorksModal(false);
       setModalMessage("Erro ao deletar a conta.");
       setModalOpen(true);
-
+  
       // Fecha o modal após 2.2 segundos
       setTimeout(() => {
         setModalOpen(false);
       }, 2200);
     }
   };
+  
 
   // Função para verificar o tamanho da tela e trocar os textos
   const checkScreenSize = () => {

@@ -19,6 +19,7 @@ const BannerEmpresa = () => {
                 setLoading(false)
             } catch (error) {
                 console.error('Erro ao buscar os usuários:', error.response ? error.response.data : error.message);
+                navigate(0)
             }
             
         };

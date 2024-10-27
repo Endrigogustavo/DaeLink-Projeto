@@ -42,11 +42,11 @@ const DocumentosForm = () => {
 
     useEffect(() => {
         const getInfoPCD = async () => {
-            const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+            const storedUserId = await axios.get('http://localhost:3000/getcookie', { withCredentials: true });
             
             if (storedUserId) {
-                setUserId(storedUserId.data.userId)
-                const PCDDoc = await getDoc(doc(db, "PCD", storedUserId.data.userId));
+                setUserId(storedUserId.data)
+                const PCDDoc = await getDoc(doc(db, "PCD", storedUserId.data));
                 if (PCDDoc.exists()) {
                     setPessoaId({ id: PCDDoc.id, ...PCDDoc.data() });
                 } else {

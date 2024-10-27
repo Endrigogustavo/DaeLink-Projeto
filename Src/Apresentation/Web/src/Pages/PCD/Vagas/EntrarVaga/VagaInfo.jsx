@@ -71,10 +71,10 @@ export default function Example() {
 
   useEffect(() => {
     const getInfoPCD = async () => {
-      const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
-      setUserId(storedUserId.data.userId)
+      const storedUserId = await axios.get('http://localhost:3000/getcookie', { withCredentials: true });
+      setUserId(storedUserId.data)
       if (storedUserId) {
-        const PCDDoc = await getDoc(doc(db, "PCD", storedUserId.data.userId));
+        const PCDDoc = await getDoc(doc(db, "PCD", storedUserId.data));
         if (PCDDoc.exists()) {
           const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
           setPessoaId(PCDData);
@@ -108,9 +108,8 @@ export default function Example() {
 
       // Buscar todos os candidatos da vaga
       const candidatosSnapshot = await getDocs(candidatosRef);
-      const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
-      setUserId(storedUserId.data.userId)
-      const userExists = candidatosSnapshot.docs.some(doc => doc.data().userId === storedUserId.data.userId);
+      const storedUserId = await axios.get('http://localhost:3000/getcookie', { withCredentials: true });
+      const userExists = candidatosSnapshot.docs.some(doc => doc.data().userId === storedUserId.data);
 
       if (userExists) {
         setWorksModal(true)

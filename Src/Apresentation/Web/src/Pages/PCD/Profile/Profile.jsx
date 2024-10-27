@@ -38,8 +38,8 @@ function Profile() {
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
         const getUser = async() => {
-            const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
-        setUserId(storedUserId.data.userId)
+            const storedUserId = await axios.get('http://localhost:3000/getcookie', { withCredentials: true });
+        setUserId(storedUserId.data)
         }
         getUser()
 

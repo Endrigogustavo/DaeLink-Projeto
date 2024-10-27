@@ -26,10 +26,10 @@ const ProcessosList = () => {
         const GetVagas = async () => {
             setLoading(true);
             try {
-                const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
-                setUserId(storedUserId.data.userId)
+                const storedUserId = await axios.get('http://localhost:3000/getcookie', { withCredentials: true });
+                setUserId(storedUserId.data)
                 if (storedUserId) {
-                    const userId = storedUserId.data.userId;
+                    const userId = storedUserId.data;
                     setUserId(userId)
                 }
 
