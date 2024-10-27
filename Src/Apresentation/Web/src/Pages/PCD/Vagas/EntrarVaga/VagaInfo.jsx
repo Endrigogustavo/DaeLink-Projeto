@@ -147,6 +147,9 @@ export default function Example() {
       setWorksModal(false)
       setModalMessage("Erro ao se Candidatar")
       setModalOpen(true)
+      setTimeout(() => {
+        setModalOpen(false)
+      }, 2200);
     }
   };
 
