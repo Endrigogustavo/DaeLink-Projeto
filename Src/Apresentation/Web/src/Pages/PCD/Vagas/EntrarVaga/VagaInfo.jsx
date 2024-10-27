@@ -74,7 +74,7 @@ export default function Example() {
       const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
       setUserId(storedUserId.data.userId)
       if (storedUserId) {
-        const PCDDoc = await getDoc(doc(db, "PCD", storedUserId));
+        const PCDDoc = await getDoc(doc(db, "PCD", storedUserId.data.userId));
         if (PCDDoc.exists()) {
           const PCDData = { id: PCDDoc.id, ...PCDDoc.data() };
           setPessoaId(PCDData);
@@ -82,7 +82,7 @@ export default function Example() {
           console.log("Pessoa não encontrada!");
         }
       } else {
-        console.log("ID do usuário não encontrado no localStorage.");
+       
       }
     };
 
@@ -108,8 +108,9 @@ export default function Example() {
 
       // Buscar todos os candidatos da vaga
       const candidatosSnapshot = await getDocs(candidatosRef);
-
-      const userExists = candidatosSnapshot.docs.some(doc => doc.data().userId === pessoaId.id);
+      const storedUserId = await axios.get('http://localhost:3000/get-PCD', { withCredentials: true });
+      setUserId(storedUserId.data.userId)
+      const userExists = candidatosSnapshot.docs.some(doc => doc.data().userId === storedUserId.data.userId);
 
       if (userExists) {
         setWorksModal(true)
