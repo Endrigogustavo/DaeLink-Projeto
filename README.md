@@ -43,9 +43,9 @@ Candidatura: Candidate-se diretamente às vagas através da plataforma.
 
 ## Autores
 
-- [@Alex](https://www.github.com/Endrigo)
-- [@Danilo](https://www.github.com/Endrigo)
-- [@Endrigo](https://www.github.com/Endrigo)
+- [@Alex Expedito](https://github.com/SonExpedito)
+- [@Danilo Soares](https://www.github.com/Endrigogustavo)
+- [@Endrigo Gustavo]([https://www.github.com/Endrigogustavo](https://github.com/DaniloSsoares))
 
 
 ## Licença
@@ -62,23 +62,33 @@ Candidatura: Candidate-se diretamente às vagas através da plataforma.
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://i.postimg.cc/4dYvbVmy/Captura-de-tela-2024-10-26-205410.png)
 
 ## Documentação de cores
 
 | Cor               | Hexadecimal                                                |
 | ----------------- | ---------------------------------------------------------------- |
-| Cor exemplo       | ![#0a192f](https://via.placeholder.com/10/0a192f?text=+) #0a192f |
-| Cor exemplo       | ![#f8f8f8](https://via.placeholder.com/10/f8f8f8?text=+) #f8f8f8 |
-| Cor exemplo       | ![#00b48a](https://via.placeholder.com/10/00b48a?text=+) #00b48a |
-| Cor exemplo       | ![#00d1a0](https://via.placeholder.com/10/00b48a?text=+) #00d1a0 |
+| Cor Principal       | ![#fcfafa](https://via.placeholder.com/10/0a192f?text=+) #fcfafa |
+| Cor Secundaria       | ![#1d4ed8](https://via.placeholder.com/10/f8f8f8?text=+) #1d4ed8 |
+| Cor Secundaria       | ![#469dd8](https://via.placeholder.com/10/00b48a?text=+) #469dd8 |
 
 
-## Variáveis de Ambiente
+## Inicialização
 
-Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env
+Web:
+npm install
+npm run dev
 
-`API_KEY`
+Api:
+npm install
+npm start
 
-`ANOTHER_API_KEY`
+Mobile:
+npm install
+npm expo start
+
+Python
+pip install requirements.txt
+python app.py
+
 
