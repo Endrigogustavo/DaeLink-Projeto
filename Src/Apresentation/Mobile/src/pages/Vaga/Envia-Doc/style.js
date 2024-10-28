@@ -62,7 +62,7 @@ export default StyleSheet.create({
    borderRadius:30,
    padding: 5,
    marginBottom: 10,
-   borderWidth:2,
+   borderWidth:1,
    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -154,13 +154,14 @@ Imagem: {
 submitButton: {
   backgroundColor: '#4369F1',  // Botão de envio com cor vibrante
   padding: 15,
-  borderRadius: 10,
+  borderRadius: 20,
   shadowColor: '#4369F1',
   shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.5,
   shadowRadius: 10,
   elevation: 8,
   marginTop: 20,
+  marginBottom:33
 },
 submitButtonText: {
   color: '#fff',

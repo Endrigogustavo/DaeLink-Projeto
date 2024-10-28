@@ -20,6 +20,7 @@ export default StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
+    marginTop:15
   },
    headerLeftBarText: {
   color: '#fff',
@@ -110,7 +111,7 @@ button: {
     marginBottom: 10,
   },
   video:{
-    width:100,
+    width:140,
     height:100,
     resizeMode:'cover',
    },

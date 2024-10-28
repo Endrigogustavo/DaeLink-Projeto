@@ -129,8 +129,6 @@ tabBar: {
   shadowOpacity: 0.12,
   shadowRadius: 5,
   elevation: 5, 
-  borderWidth: 3,
-  borderColor: '#1D3FAD',
   paddingBottom: Platform.OS === 'ios' ? 10 : 5,
 },
   tabBarItem: {

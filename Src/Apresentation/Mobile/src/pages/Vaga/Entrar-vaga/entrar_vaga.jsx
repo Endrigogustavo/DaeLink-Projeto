@@ -89,7 +89,7 @@ export default function EntrarVaga(){
                     type: 'error',
                     position: 'bottom',
                     text1: 'Erro',
-                    text2: 'Você já foi realizado seu cadastro!',
+                    text2: 'Você lá esta cadastrado na vaga!',
                   }); return;
                 }
 
@@ -97,6 +97,7 @@ export default function EntrarVaga(){
                     userId: userId,
                     name: pessoaId.name,
                     email: pessoaId.email,
+                    situação: "Pendente"
                   
                 });
                 Toast.show({

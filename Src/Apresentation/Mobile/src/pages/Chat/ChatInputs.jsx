@@ -3,6 +3,8 @@ import React, {useState} from 'react';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { addDoc, collection, orderBy, query, where, serverTimestamp, limit, getDoc, doc, getDocs } from 'firebase/firestore';
 import { auth, db } from '../../config/firebaseConfig';
+import { Input, Block } from 'galio-framework';
+
 
 export default function ChatInputs({messageRef, userId, userProfile}) {
 
@@ -31,36 +33,34 @@ const CreateMessagem = async ()=>{
   const [message, setMessage] = useState('')
   return (
     <View style={styles.container}>
-      <View style={styles.innerContainer}>
-        <View style={styles.inputAndMicrophone}>
-          <TouchableOpacity style={styles.emoticonButton}>
-              <Icon name="emoticon-outline" size={23} color={'#ccc'}/>
-          </TouchableOpacity>
-          
-          <TextInput 
-              multiline 
-              placeholder='Digite sua mensagem aqui...' 
-              style={styles.input} 
-              value={formValue}
-              onChangeText={(text) => setFormValue(text)}
-/>
+
+        <Input
+         style={{ borderColor: "blue", borderRadius: 22, width:'125%', marginLeft:10 }}
+            bottomHelp
+            placeholderTextColor="#4F8EC9"
+            value={formValue}
+            onChangeText={(text) => setFormValue(text)}
+        />
+
           <TouchableOpacity 
             style={styles.sendButton}
             onPress={CreateMessagem}
 >
           <Icon name={message ? "send":"send"} size={23} color={'#f9f9f9'}/>
           </TouchableOpacity>
-        </View>
-      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
     backgroundColor: '#fff',
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
   innerContainer: {
     flexDirection: 'row',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   inputAndMicrophone: {
     flexDirection: 'row',
     backgroundColor: '#f0f0f0',
-    borderRadius: 25,
+    borderRadius: 35,
     flex: 1,
     alignItems: 'center',
     paddingVertical: Platform.OS === 'ios' ? 10 : 5,

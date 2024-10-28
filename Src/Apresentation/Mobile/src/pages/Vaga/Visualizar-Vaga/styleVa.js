@@ -6,7 +6,8 @@ export default StyleSheet.create({
     backgroundColor: '#f0f0f5', 
     paddingVertical: 8,
     paddingHorizontal: 10,
-    paddingBottom: 50
+    paddingBottom: 50,
+    top: 45
   },
   headerTopbar: {
     backgroundColor: '#4369F1',
@@ -25,7 +26,7 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   video:{
-   width:120,
+   width:160,
    height:100,
    resizeMode:'cover',
   },
@@ -94,7 +95,7 @@ export default StyleSheet.create({
     backgroundColor: '#4369F1',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 20,
+    borderRadius: 15,
     alignSelf: 'center',
     marginTop: 10,
     width: '100%',

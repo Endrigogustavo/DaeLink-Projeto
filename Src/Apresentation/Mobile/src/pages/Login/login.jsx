@@ -15,6 +15,9 @@ import * as Animatable from 'react-native-animatable'
 import Toast from 'react-native-toast-message';
 import { FontAwesome, Ionicons , Feather} from '@expo/vector-icons';
 
+import { Input, Block } from 'galio-framework';
+
+
 export default function Login() {
   const navigation = useNavigation();
   const [hidePass, setHidePass] = useState(true)
@@ -79,7 +82,7 @@ const schema = yup.object({
 
   return (
     <View style={styles.container}>
-      <Animatable.Image source={require('../../img/LogoDaeBranco.png')} 
+      <Animatable.Image source={require('../../img/logo.png')} 
       resizeMode='contain'
       animation="flipInY"
       style={styles.logo} />
@@ -119,6 +122,7 @@ const schema = yup.object({
         <Animatable.View
         animation='fadeInLeft'>
         <View style={styles.inputArea}>
+          
 <TextInput
         style={[styles.input, {
           borderWidth:errors.password && 1,

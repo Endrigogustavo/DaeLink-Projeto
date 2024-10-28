@@ -20,7 +20,7 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
   },
   headerTopBarText:{
-    marginLeft: 10,
+    marginLeft: 20,
     fontSize: 25,
     fontWeight: 'bold',
   },
@@ -33,8 +33,8 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   empresaImage: {
-    width:80,
-    height: 80, 
+    width: 120,
+    height: 120, 
     borderRadius: 150,
     borderWidth: 5,
     borderColor: '#fff',
@@ -49,7 +49,7 @@ export default StyleSheet.create({
 
   },
   TextInf:{
-    paddingBottom: 15,
+    paddingBottom: 20,
     fontSize: 25,
     fontWeight: 'bold',
   },
@@ -57,7 +57,7 @@ export default StyleSheet.create({
     paddingBottom:5,
     fontSize:12,
     color: '#777',
-    width: '100%', 
+    width: '90%', 
     flexShrink: 1
     
   },
@@ -65,7 +65,7 @@ export default StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
     borderRadius: 10,
-    margin: 20,
+    margin: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -88,7 +88,7 @@ export default StyleSheet.create({
     width: '100%',
     padding: 15,
     backgroundColor: '#007bff',
-    borderRadius: 5,
+    borderRadius: 15,
     alignItems: 'center',
     marginTop: 10,
     shadowColor: '#000',

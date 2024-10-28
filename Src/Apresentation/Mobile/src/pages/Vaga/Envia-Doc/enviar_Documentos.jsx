@@ -20,6 +20,8 @@ import { ptBR } from 'date-fns/locale'
 import * as yup from 'yup';
 import { MaskedTextInput } from 'react-native-mask-text';
 
+import { Input, Block } from 'galio-framework';
+
 import style from './style';
 
 //Tratamento com yup
@@ -346,41 +348,33 @@ const openPdf = async() =>{
         
  
         <Text style={style.label}>Nome</Text>
-           <View style={style.inputContainer}>
-            <View style={style.iconContainer}>
-             <MaterialIcons name="drive-file-rename-outline" size={24} color="white" />
-            </View>
         
-           <TextInput
+           <Input
              value={name}
              onChangeText={setNome}
-             style={style.EntradaText}
+             style={{ borderColor: "blue", borderRadius: 22 }}
+             bottomHelp
+             placeholderTextColor="#4F8EC9"
             />
-           </View>
 
         <Text style={style.label}>Email</Text>
-           <View style={style.inputContainer}>
-            <View style={style.iconContainer}>
-             <MaterialIcons name="alternate-email" size={24} color="white" />
-            </View>
-            <TextInput
+      
+            <Input
              value={email}
              onChangeText={setemail}
              keyboardType="email-address"
              placeholder="DaeLink@..."
-               style={[style.EntradaText, {
-               borderWidth:errors.email && 1,
-               borderColor:errors.email &&'#ff375b'
-           }]}
+              
+               style={{ borderColor: "blue", borderRadius: 22 }}
+               bottomHelp
+               placeholderTextColor="#4F8EC9"
+           
          />
-        </View>
+
         {errors.email && <Text style={style.errorText}>{errors.email}</Text>}
 
         <Text style={style.label}>Telefone</Text>
            <View style={style.inputContainer}>
-             <View style={style.iconContainer}>
-                <AntDesign name="phone" size={24} color="white" />
-          </View>
           <MaskedTextInput
               value={telefone}
               onChangeText={setTelefone}
@@ -389,35 +383,31 @@ const openPdf = async() =>{
               placeholder="(XX) XXXXX-XXXX"
                 style={[style.EntradaText, {
                    borderWidth:errors.telefone && 1,
-                   borderColor:errors.telefone &&'#ff375b'
+                   borderColor:errors.telefone &&'#ff375b',
+                   borderColor: "blue", borderRadius: 22
                  }]}
+                 bottomHelp
            />
         </View>
         {errors.telefone && <Text style={style.errorText}>{errors.telefone}</Text>}
 
         <Text style={style.label}>Endereço</Text>
-             <View style={style.inputContainer}>
-               <View style={style.iconContainer}>
-               <Entypo name="address" size={24} color="white" />
-             </View>
-            <TextInput
+  
+            <Input
                 value={endereco}
                 placeholder='Digite seu endereço completo'
                 onChangeText={setEndereco}
-                    style={[style.EntradaText, {
-                    borderWidth:errors.endereco && 1,
-                    borderColor:errors.endereco &&'#ff375b'
-               }]}
+                    
+                style={{ borderColor: "blue", borderRadius: 22 }}
+            bottomHelp
+            
+              
         />
-        </View>
         {errors.endereco && <Text style={style.errorText}>{errors.endereco}</Text>}
 
         <Text style={style.label}>Idade</Text>
             <View style={style.inputContainer}>
-              <View style={style.iconContainer}>
-                <Fontisto name="date" size={24} color="white" />
-                
-            </View>
+  
            <MaskedTextInput
                value={idade}
                onChangeText={setIdades}
@@ -432,59 +422,36 @@ const openPdf = async() =>{
         </View>
         {errors.idade && <Text style={style.errorText}>{errors.idade}</Text>}
            <Text style={style.label}>Objetivo Profissional</Text>
-               <View style={style.inputContainer}>
-                 <View style={style.iconContainer}>
-                  <MaterialIcons name="work" size={24} color="white" />
-                 </View>
-               <TextInput
+            
+               <Input
                    value={objetivo}
                    onChangeText={setObjetivo}
-                   placeholder='Insira seu objetiv'
+                   placeholder='Insira seu objetivo'
                    multiline={true}
-                      style={[style.EntradaText, {
-                      borderWidth:errors.objetivo && 1,
-                      borderColor:errors.objetivo &&'#ff375b'
-                    }]}
+                   style={{ borderColor: "blue", borderRadius: 22 }}
             />
-        </View>
            {errors.objetivo && <Text style={style.errorText}>{errors.objetivo}</Text>}
 
           <Text style={style.label}>Experiências</Text>
-             <View style={style.inputContainer}>
-               <View style={style.iconContainer}>
-                 <Ionicons name="person-circle-outline" size={24} color="white" />
-             </View>
-               <TextInput
+     
+               <Input
                  value={experiencia1}
                  onChangeText={setExperiencia1}
                  multiline={true}
                  placeholder='conte um pouco de suas experiências...'
-                    style={[style.EntradaText, {
-                      borderWidth:errors.experiencias1 && 1,
-                      borderColor:errors.experiencias1 &&'#ff375b'
-                    }]}
+                 style={{ borderColor: "blue", borderRadius: 22 }}
           />
-             </View>
+
              {errors.experiencia1 && <Text style={style.errorText}>{errors.experiencia1}</Text>}
 
            <Text style={style.label}>Idioma secundário</Text>
-              <View style={style.inputContainer}>
-              <View style={style.iconContainer}>
-                 <Entypo name="language" size={24} color="white" />
-             </View>
-
-               <Picker
-                 selectedValue={idiomas}
-                 onValueChange={(itemValue)=> setIdiomas1([itemValue])} 
+           <Input
+                 value={idiomas}
+                 onChangeText={setIdiomas1}
                  multiline={true}
-                    style={style.EntradaText}
-                     >
-                   <Picker.Item label="Selecione um idioma" value=""/>
-                        <Picker.Item label='Inglês' value="Inglês"/>
-                        <Picker.Item label='Espanhol' value="Espanhol"/>
-                        <Picker.Item label='Frances' value="Frances"/>
-                </Picker>
-              </View>
+                 placeholder='conte sobre as linguas que você fala...'
+                 style={{ borderColor: "blue", borderRadius: 22 }}
+          />
 
 
        <Text style={style.label}>Laudo Médico em PDF</Text>

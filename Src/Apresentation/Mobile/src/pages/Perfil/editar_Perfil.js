@@ -7,18 +7,19 @@ scrollContainer: {
     
   },
   container: {
-    padding: 20,
+    padding: 10,
     width: '95%',
     backgroundColor: '#fff',
     borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    margin: 6,
+    paddingVertical: 30,
+    paddingHorizontal: 20,
+    margin: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    alignItems: 'center'
   },
 
   headerTopBar: {
@@ -33,9 +34,10 @@ scrollContainer: {
     borderRadius: 10,
     overflow: 'hidden',
     marginLeft:8,
+    top: 5
   },
   headerTopBarText: {
-    marginTop:10,
+    marginTop:20,
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
@@ -104,10 +106,10 @@ scrollContainer: {
   marginVertical: 10,
 },
 label: {
-  fontSize: 18,
+  fontSize: 17,
   fontWeight: 'bold',
   color: '#4369F1', // Cor futurista
-  marginBottom: 10,
+  marginTop: 10,
 },
 imageContainer: {
   flexDirection: 'row',
@@ -234,7 +236,9 @@ marginTop: 10,
     fontSize: 16,
   },
   expandedContainer: {
-    marginTop: 10, width:'100%',  },
+    marginTop:0, 
+  alignItems:'center',
+justifyContent: 'center' },
     
   colunmButton:{
   flexDirection:'row',

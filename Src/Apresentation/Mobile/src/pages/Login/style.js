@@ -8,9 +8,9 @@ export default StyleSheet.create({
     backgroundColor: '#1D3FAD',
   },
   logo: {
-    width:350,
-    height: 200,
-    marginTop: 50,
+    width: '70%',
+    height: '30%',
+    marginTop: 20,
   },
   containerForm: {
     backgroundColor: '#EFEFEF',
@@ -28,8 +28,9 @@ export default StyleSheet.create({
     fontSize: 30, 
     fontWeight: 'bold',
     color: '#1D3FAD',
-    marginBottom: 20,
+    marginBottom: 0,
     textAlign: 'center',
+    top: -100
   },
   inputArea:{
 flexDirection:'row',
@@ -45,10 +46,11 @@ alignItems: 'center',
     fontSize: 16,
     paddingLeft: 10,
     color: '#111827',
+    top: -60
     
   },
   icon:{
-    
+    top: -70
     
   },
   button: {
@@ -63,7 +65,7 @@ alignItems: 'center',
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    top:'15%',
+    top:'0%',
   },
   buttonText: {
     color: '#fff',

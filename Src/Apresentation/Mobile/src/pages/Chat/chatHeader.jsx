@@ -34,11 +34,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: '#1D3FAD',
-    paddingTop: 10, 
+    paddingTop: 50, 
     paddingBottom: 10,
     paddingHorizontal: 10,
     alignItems: 'center',
     elevation: 3, 
+    height:'12%'
   },
   backButton: {
     paddingHorizontal: 5,

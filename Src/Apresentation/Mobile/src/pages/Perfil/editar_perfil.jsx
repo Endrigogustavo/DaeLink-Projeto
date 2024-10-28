@@ -1,5 +1,5 @@
 import React, { useEffect, useState ,useRef} from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet ,Image, Button ,ScrollView,Animated} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet ,Image, Button ,ScrollView,Animated} from 'react-native';
 import Modal from 'react-native-modal';
 import { useNavigation } from '@react-navigation/core';
 import { auth,db,storage } from '../../config/firebaseConfig';
@@ -11,6 +11,8 @@ import {ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 import styles from './editar_Perfil'; 
 import Toast from 'react-native-toast-message';
 import Alert from '../Alert/Alert';
+
+import { Input, Block } from 'galio-framework';
 
 import { Video } from 'expo-av';
 import style from './style';
@@ -185,7 +187,7 @@ export default function Editar() {
                     type: 'error',
                     position: 'bottom',
                     text1: 'Erro',
-                    text2: 'Desculpe para realizar alterção do email deve-se sair de sua conta e entrar novamente.',
+                    text2: 'Desculpe, para realizar alterção do email deve-se sair de sua conta e entrar novamente.',
                   });
                  }
                 }
@@ -232,104 +234,110 @@ export default function Editar() {
 
         <View style={styles.container}>
         <Text style={styles.label}>Nome Completo</Text>     
-        <View style={styles.inputContainer}>
-          <View style={styles.iconContainer}>
-             <Ionicons name="person-circle-outline" size={24} color="white" />
-          </View>
-        <TextInput style={styles.EntradaText}
+        <Input
+         
             value={userData.name}
             onChangeText={(text)=> setUserData({...userData, name:text})}
+            style={{ borderColor: "blue", borderRadius: 22 }}
+            bottomHelp
+            placeholderTextColor="#4F8EC9"
         />
-       </View>
+
 
        <Text style={styles.label}>Email</Text>     
-        <View style={styles.inputContainer}>
-          <View style={styles.iconContainer}>
-          <MaterialIcons name="email" size={24} color="white" />
-          </View>
-        <TextInput style={styles.EntradaText} 
+       
+        <Input
+         style={{ borderColor: "blue", borderRadius: 22 }}
+            bottomHelp
+            placeholderTextColor="#4F8EC9"
+             
          value={userData.email}
          onChangeText={(text)=> setUserData({...userData, email: text})}
         />
-</View>
+
 
        <Text style={styles.label}>Deficiencia</Text>     
-        <View style={styles.inputContainer}>
-          <View style={styles.iconContainer}>
-          <FontAwesome name="wheelchair" size={24} color="white" />
-          </View>
-        <TextInput style={styles.EntradaText}
+      
+        <Input
+         style={{ borderColor: "blue", borderRadius: 22 }}
+            bottomHelp
+            placeholderTextColor="#4F8EC9"
+             
         value={userData.deficiencia}
         onChangeText={(text)=> setUserData({...userData, deficiencia: text})}    
         />
-        </View>
+
 
         <Text style={styles.label}>Experiências</Text>     
-        <View style={styles.inputContainer}>
-          <View style={styles.iconContainer}>
-          <Feather name="briefcase" size={24} color="white" />
-          </View>
-        <TextInput style={styles.EntradaText}
+
+        <Input
+         style={{ borderColor: "blue", borderRadius: 22 }}
+            bottomHelp
+            placeholderTextColor="#4F8EC9"
+             
         value={userData.experiencias}
         multiline={true}
         onChangeText={(text)=> setUserData({...userData, experiencias: text})}    
         />
-     </View>
+
 
          <Text style={styles.label}>Descrição</Text>     
-        <View style={styles.inputContainer}>
-          <View style={styles.iconContainer}>
-          <Ionicons name="document-text-outline" size={24} color="white" />
-          </View>
-        <TextInput style={styles.EntradaText}
+
+        <Input
+         style={{ borderColor: "blue", borderRadius: 22 }}
+            bottomHelp
+            placeholderTextColor="#4F8EC9"
+             
         value={userData.descrição}
         multiline={true}
         onChangeText={(text)=> setUserData({...userData, descrição: text})}    
         />
-    </View>
+
 
        <Text style={styles.label}>Sobre</Text>     
-        <View style={styles.inputContainer}>
-          <View style={styles.iconContainer}>
-             <Ionicons name="person-circle-outline" size={24} color="white" />
-          </View>
-        <TextInput style={styles.EntradaText}
+
+        <Input
+         style={{ borderColor: "blue", borderRadius: 22 }}
+            bottomHelp
+            placeholderTextColor="#4F8EC9"
+             
         value={userData.sobre}
         multiline={true}
         onChangeText={(text)=> setUserData({...userData, sobre: text})}    
         />
-     </View>
+
 
         <Text style={styles.label}>Idade</Text>     
-        <View style={styles.inputContainer}>
-          <View style={styles.iconContainer}>
-          <FontAwesome name="calendar" size={24} color="white" />
-          </View>
-        <TextInput style={styles.EntradaText}
+        <Input
+         style={{ borderColor: "blue", borderRadius: 22 }}
+            bottomHelp
+            placeholderTextColor="#4F8EC9"
+             
         value={userData.idade}
         onChangeText={(text)=> setUserData({...userData, idade:text})}
         />
-</View>
+
          <Text style={styles.label}>tipo</Text>     
-        <View style={styles.inputContainer}>
-          <View style={styles.iconContainer}>
-          <MaterialIcons name="category" size={24} color="white" />
-          </View>
-        <TextInput style={styles.EntradaText}
+
+        <Input
+         style={{ borderColor: "blue", borderRadius: 22 }}
+            bottomHelp
+            placeholderTextColor="#4F8EC9"
+             
         value={userData.tipo}
         onChangeText={(text)=> setUserData({...userData, tipo: text})}    
         />
-</View>
+
          <Text style={styles.label}>Trabalho</Text>     
-        <View style={styles.inputContainer}>
-          <View style={styles.iconContainer}>
-          <Ionicons name="business-outline" size={24} color="white" />
-          </View>
-        <TextInput style={styles.EntradaText}
+
+        <Input
+         style={{ borderColor: "blue", borderRadius: 22 }}
+            bottomHelp
+            placeholderTextColor="#4F8EC9"
+            
         value={userData.trabalho}
         onChangeText={(text)=> setUserData({...userData, trabalho: text})}    
         />
-</View>
 
        <Text style={styles.label}>Imagem de Perfil</Text>
         <View style={styles.imageContainer}>

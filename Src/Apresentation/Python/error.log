@@ -573,3 +573,14 @@ INFO:werkzeug:127.0.0.1 - - [24/Oct/2024 08:38:30] "OPTIONS /recommend HTTP/1.1"
 INFO:werkzeug:127.0.0.1 - - [24/Oct/2024 08:38:32] "POST /recommend HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [24/Oct/2024 08:45:32] "OPTIONS /recommend HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [24/Oct/2024 08:45:33] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [27/Oct/2024 21:06:11] "OPTIONS /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Oct/2024 21:06:12] "POST /recommend HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Oct/2024 21:06:18] "OPTIONS /profile HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Oct/2024 21:06:18] "OPTIONS /profile HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Oct/2024 21:06:18] "OPTIONS /profile HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Oct/2024 21:06:19] "POST /profile HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Oct/2024 21:06:20] "POST /profile HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Oct/2024 21:06:20] "POST /profile HTTP/1.1" 200 -

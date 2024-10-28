@@ -64,7 +64,7 @@ export default function Profile() {
            source={{ uri: userData.imageUrl || 'https://via.placeholder.com/150' }} 
           style={styles.perfilImage}
         />
-        <Text style={styles.name}>Usuário</Text>
+        <Text style={styles.name}>{userData.name}</Text>
         <Text style={styles.email}>{auth.currentUser.email}</Text>
       </View>
 

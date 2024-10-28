@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: '100%',
+        top: -100,
     },
     logo:{
         width: 200,  
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize:15,
+        margin: 25, 
         fontWeight:'bold',
         marginTop: 28,
         marginBottom:'#111827',
@@ -93,9 +95,10 @@ const styles = StyleSheet.create({
         backgroundColor:'#1D3FAD',
         borderRadius:50,
         paddingVertical:8,
-        width:'60%',
+        width:'70%',
+        height: '18%',
         alignSelf:'center',
-        bottom:'10%',
+        bottom:'20%',
         alignItems:'center',
         justifyContent: 'center',
        

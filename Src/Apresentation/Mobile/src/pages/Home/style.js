@@ -21,9 +21,7 @@ export default StyleSheet.create({
       width: '100%',
       alignItems: 'center',
       padding: 10,
-      backgroundColor: '#fff',
-      borderWidth: 2, 
-      borderColor: '#1D3FAD', 
+      backgroundColor: '#fff', 
       borderRadius: 10,
       margin: 15,
       shadowColor: '#000',
@@ -34,18 +32,18 @@ export default StyleSheet.create({
       
     },
     perfilImage: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
+      width: 150,
+      height: 150,
+      borderRadius: 100,
       marginBottom: 20,
       borderWidth: 2, // Defina a espessura da borda
       borderColor: '#1D3FAD', // Define a cor da borda
+      top:10
     },
     bemvindoText: {
-      fontSize: 20,
+      fontSize: 25,
       fontWeight: 'bold',
-      marginBottom: 10,
-      marginRight: '30%'
+      marginBottom: 5,
     },
     legenda: {
       fontSize: 20,
@@ -59,12 +57,13 @@ export default StyleSheet.create({
       fontSize: 20,
       fontWeight: 'bold',
       marginBottom: 10,
+      marginTop: 10
       
     },
     estatisticasContainer: {
       flexDirection: 'row',
       justifyContent:'space-between',
-      width: '100%',
+      width: '95%',
       marginBottom: 20,
     },
     statBox: {
@@ -173,6 +172,7 @@ export default StyleSheet.create({
       justifyContent: 'space-between',
       width: '100%',
       height: 230,
+      alignSelf: 'center'
     }, 
     caixaopcoesAzul: {
       flexDirection: 'row', 
@@ -190,26 +190,31 @@ export default StyleSheet.create({
       elevation: 10,
       borderWidth: 4, // Defina a espessura da borda
       borderColor: '#1D3FAD', // Define a cor da borda
+      
     },
 
     opcoesText: {
       alignSelf: 'center',
       color: '#fff',
       fontSize: 10,
+      justifyContent: 'center',
+    alignItems: 'center',
+    
     },
 
     opcoesText1: {
       alignSelf: 'center',
       color: '#000',
       fontSize: 10,
-      marginLeft: '15%',
-     fontSize:16,
+      marginLeft: '27%',
+      fontSize:16,
+    
       
     },
     opcoesText4: {
       alignSelf: 'center',
       color: '#fff',
-      marginLeft: '15%',
+      marginLeft: '20%',
      fontSize:16,
       
     },
