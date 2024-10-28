@@ -1,0 +1,167 @@
+<ScrollView style={styles.container}>
+      <View style={styles.section}>
+        <TouchableOpacity onPress={toggleExpandPessoais} style={styles.expandButton}>
+          <Text style={styles.buttonText}>{isExpandedPessoais ? 'Fechar' : 'Informações Pessoais'}</Text>
+        </TouchableOpacity>
+        {isExpandedPessoais && (
+          <Animated.View style={styles.expandedContainer}>
+            <Text style={styles.label}>Nome Completo</Text>
+            <View style={styles.inputContainer}>
+              <Ionicons name="person-circle-outline" size={24} color="#000" />
+              <TextInput
+                style={styles.input}
+                value={userData.name}
+                onChangeText={(text) => setUserData({ ...userData, name: text })}
+                placeholder="Digite seu nome completo"
+              />
+            </View>
+
+            <Text style={styles.label}>Email</Text>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="email" size={24} color="#000" />
+              <TextInput
+                style={styles.input}
+                value={userData.email}
+                onChangeText={(text) => setUserData({ ...userData, email: text })}
+                placeholder="Digite seu email"
+              />
+            </View>
+
+            <Text style={styles.label}>Idade</Text>
+            <View style={styles.inputContainer}>
+              <FontAwesome name="calendar" size={24} color="#000" />
+              <TextInput
+                style={styles.input}
+                value={userData.idade}
+                onChangeText={(text) => setUserData({ ...userData, idade: text })}
+                placeholder="Digite sua idade"
+              />
+            </View>
+
+            <Text style={styles.label}>Deficiência</Text>
+            <View style={styles.inputContainer}>
+              <FontAwesome name="wheelchair" size={24} color="#000" />
+              <TextInput
+                style={styles.input}
+                value={userData.deficiencia}
+                onChangeText={(text) => setUserData({ ...userData, deficiencia: text })}
+                placeholder="Digite sua deficiência"
+              />
+            </View>
+          </Animated.View>
+        )}
+      </View>
+
+      <View style={styles.section}>
+        <TouchableOpacity onPress={toggleExpandProfissional} style={styles.expandButton}>
+          <Text style={styles.buttonText}>{isExpandedProfissional ? 'Fechar' : 'Informações Profissionais'}</Text>
+        </TouchableOpacity>
+        {isExpandedProfissional && (
+          <Animated.View style={styles.expandedContainer}>
+            <Text style={styles.label}>Área</Text>
+            <View style={styles.inputContainer}>
+              <Feather name="briefcase" size={24} color="#000" />
+              <TextInput
+                style={styles.input}
+                value={userData.experiencias}
+                onChangeText={(text) => setUserData({ ...userData, experiencias: text })}
+                placeholder="Digite sua área de atuação"
+                multiline
+              />
+            </View>
+
+            <Text style={styles.label}>Descrição</Text>
+            <View style={styles.inputContainer}>
+              <Ionicons name="document-text-outline" size={24} color="#000" />
+              <TextInput
+                style={styles.input}
+                value={userData.descricao}
+                onChangeText={(text) => setUserData({ ...userData, descricao: text })}
+                placeholder="Descreva sua experiência"
+                multiline
+              />
+            </View>
+
+            <Text style={styles.label}>Sobre</Text>
+            <View style={styles.inputContainer}>
+              <Ionicons name="person-circle-outline" size={24} color="#000" />
+              <TextInput
+                style={styles.input}
+                value={userData.sobre}
+                onChangeText={(text) => setUserData({ ...userData, sobre: text })}
+                placeholder="Fale sobre você"
+                multiline
+              />
+            </View>
+
+            <Text style={styles.label}>Tipo</Text>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="category" size={24} color="#000" />
+              <TextInput
+                style={styles.input}
+                value={userData.tipo}
+                onChangeText={(text) => setUserData({ ...userData, tipo: text })}
+                placeholder="Informe o tipo de trabalho"
+              />
+            </View>
+
+            <Text style={styles.label}>Trabalho</Text>
+            <View style={styles.inputContainer}>
+              <Ionicons name="business-outline" size={24} color="#000" />
+              <TextInput
+                style={styles.input}
+                value={userData.trabalho}
+                onChangeText={(text) => setUserData({ ...userData, trabalho: text })}
+                placeholder="Informe onde trabalha"
+              />
+            </View>
+          </Animated.View>
+        )}
+      </View>
+
+      <View style={styles.section}>
+        <TouchableOpacity onPress={toggleExpandImagens} style={styles.expandButton}>
+          <Text style={styles.buttonText}>{isExpandedImagens ? 'Fechar' : 'Imagens de Perfil'}</Text>
+        </TouchableOpacity>
+        {isExpandedImagens && (
+          <Animated.View style={styles.expandedContainer}>
+            <Text style={styles.label}>Imagem de Perfil</Text>
+            <View style={styles.imageContainer}>
+              <TouchableOpacity onPress={() => handlePickImage(setNewProfileImage)} style={styles.imageButton}>
+                <Ionicons name="cloud-upload-outline" size={30} color="#000" />
+              </TouchableOpacity>
+              {newProfileImage && <Image source={{ uri: newProfileImage }} style={styles.image} />}
+            </View>
+
+            <Text style={styles.label}>Imagem de Fundo</Text>
+            <View style={styles.imageContainer}>
+              <TouchableOpacity onPress={() => handlePickImage(setNewBackgroundImage)} style={styles.imageButton}>
+                <Ionicons name="cloud-upload-outline" size={30} color="#000" />
+              </TouchableOpacity>
+              {newBackgroundImage && <Image source={{ uri: newBackgroundImage }} style={styles.image} />}
+            </View>
+          </Animated.View>
+        )}
+      </View>
+
+      <View style={styles.section}>
+        <TouchableOpacity onPress={toggleExpand} style={styles.expandButton}>
+          <AntDesign name={isExpanded ? "pluscircle" : "pluscircleo"} size={30} color="#000" />
+        </TouchableOpacity>
+        {isExpanded && (
+          <Animated.View style={styles.expandedContainer}>
+            <TouchableOpacity onPress={PassReset} style={styles.actionButton} disabled={isUploading}>
+              <Text style={styles.buttonText}>Trocar Senha</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleUpdate} style={styles.actionButton} disabled={isUploading}>
+              <Text style={styles.buttonText}>Salvar</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleConfirmDelete} style={styles.actionButton} disabled={isUploading}>
+              <Text style={styles.buttonText}>Deletar Documento</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </View>
+    </ScrollView>
