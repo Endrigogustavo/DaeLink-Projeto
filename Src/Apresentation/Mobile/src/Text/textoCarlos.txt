@@ -1,0 +1,137 @@
+{/* Botão para selecionar PDF */}
+                <Text style={styles.textocampo}>Apólice de Seguro:</Text>
+                <View style={styles.pdfContainer}>
+
+                    <TouchableOpacity style={styles.pdfButton} onPress={handlePdfPicker}>
+                        <Text>Selecionar PDF</Text>
+                    </TouchableOpacity>
+
+                    {pdfUri && (
+                        <>
+                            <Text style={styles.pdfText}>PDF selecionado: {pdfUri.split('/').pop()}</Text>
+                            {/* Exibe o botão de visualização de PDF */}
+                            <TouchableOpacity style={styles.viewPdfButton} onPress={handleViewPdf}>
+                                <Text>Visualizar PDF</Text>
+                            </TouchableOpacity>
+
+
+
+                            <TouchableOpacity onPress={handleCancelPdf} style={styles.cancelButton}>
+                                <Text style={styles.cancelarText}>Cancelar PDF</Text>
+                            </TouchableOpacity>
+
+                        </>
+                    )}
+                </View>
+
+       const handlePdfPicker = async () => {
+        try {
+            const result = await DocumentPicker.getDocumentAsync({
+                type: 'application/pdf', // Somente arquivos PDF
+                copyToCacheDirectory: true
+            });
+
+            if (!result.canceled && result.assets && result.assets.length > 0) {
+                const selectedFile = result.assets[0];
+                setPdfUri(selectedFile.uri); // Armazena o URI do PDF selecionado
+                console.log('PDF selecionado:', selectedFile.uri);
+            } else {
+                console.log('Seleção de documento cancelada.');
+            }
+        } catch (err) {
+            console.error("Erro ao selecionar PDF: ", err);
+        }
+    };
+
+
+
+    
+
+    const handleCancelPdf = () => {
+        setPdfUri(null);  // Remove o PDF selecionado
+    };
+
+    const handleViewPdf = async () => {
+        if (pdfUri) {
+            // Abre o PDF no navegador
+            try {
+                const result = await WebBrowser.openBrowserAsync(pdfUri);
+                console.log('PDF visualizado:', result);
+            } catch (error) {
+                console.error('Erro ao abrir o PDF:', error);
+            }
+        } else {
+            alert('Nenhum PDF selecionado para visualizar.');
+        }
+    };
+
+const handleSave = async () => {
+        setIsUploading(true); // Mostrar indicador de carregamento
+        try {
+            const uid = await AsyncStorage.getItem('userId');
+            if (!uid) {
+                alert('Erro ao obter ID do usuário.');
+                return;
+            }
+
+            if (!modelo || !marca || !ano || !placa || !combustivel || !quantidadePortas) {
+                alert('Preencha todos os campos obrigatórios.');
+                setIsUploading(false);
+                return;
+            }
+
+            let pdfDownloadUrl = null;
+            if (pdfUri) {
+                const pdfResponse = await fetch(pdfUri);
+                const pdfBlob = await pdfResponse.blob();
+                const pdfRef = firebase.storage().ref().child(documentos/${uid}/${Date.now()}_doc.pdf);
+                const pdfSnapshot = await pdfRef.put(pdfBlob);
+                pdfDownloadUrl = await pdfSnapshot.ref.getDownloadURL();
+            }
+
+            const downloadURLs = [];
+            for (const fotoUri of fotosCarro) {
+                const response = await fetch(fotoUri);
+                const blob = await response.blob();
+                const storageRef = firebase.storage().ref().child(carros/${uid}/${Date.now()}_${Math.random().toString(36).substr(2, 9)});
+                const snapshot = await storageRef.put(blob);
+                const downloadURL = await snapshot.ref.getDownloadURL();
+                downloadURLs.push(downloadURL);
+            }
+
+            const carrosRef = firebase.firestore()
+                .collection('Locatarios')
+                .doc(uid)
+                .collection('carros');
+
+            await carrosRef.add({
+                modelo: modelo,
+                marca: marca,
+                ano: ano,
+                placa: placa,
+                combustivel: combustivel,
+                quantidadePortas: quantidadePortas,
+                arCondicionado: selectedAr,
+                step: selectedStep,
+                cambio: selectedCambio,
+                airbags: selectedAirbags,
+                fotosCarro: downloadURLs,
+                caucao: caucao,
+                pdfDocumento: pdfDownloadUrl, // Salvar URL do documento PDF
+                modalidadesAluguel: selectedPeriods,
+                precoDia: selectedPeriods.includes(0) ? precoDia : null, // Converte para número e ajusta
+                precoSemana: selectedPeriods.includes(1) ? precoSemana : null, // Converte para número e ajusta
+                precoMes: selectedPeriods.includes(2) ? precoMes : null, // Converte para número e ajusta
+                pontoencontro: pontoencontro,
+            });
+
+
+            alert('Carro cadastrado com sucesso!');
+            router.replace('../profile/locacao');
+        } catch (error) {
+            console.error("Erro ao salvar os dados do carro: ", error);
+            alert('Erro ao salvar os dados do carro.');
+        } finally {
+            setIsUploading(false);
+        }
+    };

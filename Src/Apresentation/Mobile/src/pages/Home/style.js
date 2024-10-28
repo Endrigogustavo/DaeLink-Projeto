@@ -5,39 +5,65 @@ export default StyleSheet.create({
       flexGrow: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#f0f0f0',
+      paddingBottom: 50
+      
+    },
+    imageBackground: {
+      flex: 1,
+      justifyContent: 'center',
+      width: '100%',
+      height: '100%',
+      alignItems: 'center', 
     },
     container: {
+      flexGrow: 1,
+      height: '100%',
+      width: '100%',
       alignItems: 'center',
-      padding: 20,
+      padding: 10,
       backgroundColor: '#fff',
+      borderWidth: 2, 
+      borderColor: '#1D3FAD', 
       borderRadius: 10,
-      margin: 20,
+      margin: 15,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       elevation: 5,
+      
     },
     perfilImage: {
       width: 100,
       height: 100,
       borderRadius: 50,
       marginBottom: 20,
+      borderWidth: 2, // Defina a espessura da borda
+      borderColor: '#1D3FAD', // Define a cor da borda
     },
     bemvindoText: {
       fontSize: 20,
       fontWeight: 'bold',
       marginBottom: 10,
+      marginRight: '30%'
     },
     legenda: {
-      fontSize: 18,
+      fontSize: 20,
       color: '#666',
-      marginBottom: 20,
+      marginBottom: 10,
+
+      flexWrap: 'wrap',
+      
+    },
+    OqueText: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      
     },
     estatisticasContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      justifyContent:'space-between',
       width: '100%',
       marginBottom: 20,
     },
@@ -46,7 +72,7 @@ export default StyleSheet.create({
       padding: 10,
       backgroundColor: '#f9f9f9',
       borderRadius: 10,
-      width: '30%',
+      width: '20%',
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
@@ -62,28 +88,146 @@ export default StyleSheet.create({
       fontSize: 14,
       color: '#666',
     },
-    opçoesContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      width: '100%',
-    },
-    caixaopcoes: {
-      alignItems: 'center',
-      padding: 15,
-      backgroundColor: '#007bff',
-      borderRadius: 10,
-      width: '30%',
+   
+    caixaopcoes1: {
+      alignItems: 'flex-start',
+      padding: 10,
+      backgroundColor: '#F4F4F4',
+      borderRadius: 40,
+      height: '100%',
+      width: '48%',
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       elevation: 5,
+      borderWidth: 2, // Defina a espessura da borda
+      borderColor: '#1D3FAD', // Define a cor da borda
+      overflow: 'hidden'
     },
-    opcoesText: {
-      color: '#fff',
-      fontSize: 10,
-      marginTop: 5,
+    caixaopcoes2: {
+      alignItems: 'flex-start',
+      padding: 10,
+      backgroundColor: '#2754f4',
+      borderRadius: 40,
+      height: '100%',
+      width: '48%',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      borderWidth: 2, // Defina a espessura da borda
+      borderColor: '#1D3FAD', // Define a cor da borda
+      overflow: 'hidden'
+    },
+    tituloBotao:{
+    fontSize:18,
+    fontWeight: 'bold',
+    color:'#000',
+     marginBottom:5,
+     marginLeft:8,
+   },
+   tituloBotao2:{
+    fontSize:18,
+    fontWeight: 'bold',
+    color:'#fff',
+    marginBottom:5,
+    marginLeft:8,
+   },
+   descricaoBotao:{
+    fontSize:14,
+    color:'#666',
+    marginBottom:8,
+   },
+   descricaoBotao2:{
+    fontSize:14,
+    color:'#fff',
+    marginBottom:8,
+   },
+   imagemBotao: {
+    width: 180, 
+    height: 130, 
+    resizeMode: 'cover',  
+  },
+
+    caixaopcoesCinza: {
+      flexDirection: 'row',  
+      alignItems: 'center',  
+      padding: 18,
+      paddingBottom: 10,
+      backgroundColor: '#f4f4f4',
+      borderRadius: 40,
+      marginLeft:'15%',
+      width: '70%',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 10,
+      borderWidth: 4,
+      borderColor: '#1D3FAD', 
+    },
+    opçoesContainer: {
+      flexDirection: 'coluns',
+      justifyContent: 'space-between',
+      width: '100%',
+      height: 230,
+    }, 
+    caixaopcoesAzul: {
+      flexDirection: 'row', 
+      alignItems: 'center',  
+      padding: 18,
+      paddingBottom: 10,
+      backgroundColor: '#1D3FAD',
+      borderRadius: 40,
+      marginLeft:'15%',
+      width: '70%',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 10,
+      borderWidth: 4, // Defina a espessura da borda
+      borderColor: '#1D3FAD', // Define a cor da borda
     },
 
+    opcoesText: {
+      alignSelf: 'center',
+      color: '#fff',
+      fontSize: 10,
+    },
+
+    opcoesText1: {
+      alignSelf: 'center',
+      color: '#000',
+      fontSize: 10,
+      marginLeft: '15%',
+     fontSize:16,
+      
+    },
+    opcoesText4: {
+      alignSelf: 'center',
+      color: '#fff',
+      marginLeft: '15%',
+     fontSize:16,
+      
+    },
+    opcoesText2: {
+      alignSelf: 'center',
+      color: '#fff',
+      fontSize: 10,
+      marginLeft: '35%',
+     fontSize:16,
+      
+    },
+    opcoesText3: {
+      alignSelf: 'center',
+      color: '#000',
+      fontSize: 10,
+      marginLeft: '15%',
+     fontSize:16,
+      
+    },
   
   });

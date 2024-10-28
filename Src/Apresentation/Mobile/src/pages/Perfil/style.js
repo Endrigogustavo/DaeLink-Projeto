@@ -4,6 +4,7 @@ export default StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     backgroundColor: '#f0f0f0',
+    paddingBottom: 50
   },
   header: {
     alignItems: 'center',
@@ -73,7 +74,7 @@ export default StyleSheet.create({
     elevation: 5,
   },
   opcoesText: {
-    color: '#007bff',
+    color: '#1D3FAD',
     fontSize: 16,
     marginTop: 5,
   },
@@ -96,7 +97,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   compTrab: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#666',
   },
   LocalTrab: {
