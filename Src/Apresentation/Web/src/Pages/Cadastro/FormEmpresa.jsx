@@ -208,6 +208,7 @@ const EmpresaFormRegister = () => {
                 setWorksModal(true)
                 setModalMessage("Cadastro Realizado com Sucesso");
                 setModalOpen(true);
+                
                 await sendEmailVerification(auth.currentUser)
                     .then(() => {
                         setModalOpen(true);
