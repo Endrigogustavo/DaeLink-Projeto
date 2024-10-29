@@ -82,7 +82,7 @@ const schema = yup.object({
 
   return (
     <View style={styles.container}>
-      <Animatable.Image source={require('../../img/logo.png')} 
+      <Animatable.Image source={require('../../img/imglogin.png')} 
       resizeMode='contain'
       animation="flipInY"
       style={styles.logo} />

@@ -12,7 +12,8 @@
       "backgroundColor": "#1D3FAD"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.endrigo938.Mobile"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,6 +23,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2af5f5c9-cc30-4146-8788-17785bb21009"
+      }
     }
   }
 }
