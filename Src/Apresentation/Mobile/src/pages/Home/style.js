@@ -21,7 +21,7 @@ export default StyleSheet.create({
       width: '100%',
       alignItems: 'center',
       padding: 10,
-      backgroundColor: '#fff', 
+      backgroundColor: '#fcfafa', 
       borderRadius: 10,
       margin: 15,
       shadowColor: '#000',
@@ -69,7 +69,7 @@ export default StyleSheet.create({
     statBox: {
       alignItems: 'center',
       padding: 10,
-      backgroundColor: '#f9f9f9',
+      backgroundColor: '#233854',
       borderRadius: 10,
       width: '20%',
       shadowColor: '#000',
@@ -101,13 +101,13 @@ export default StyleSheet.create({
       shadowRadius: 3.84,
       elevation: 5,
       borderWidth: 2, // Defina a espessura da borda
-      borderColor: '#1D3FAD', // Define a cor da borda
+      borderColor: '#233854', // Define a cor da borda
       overflow: 'hidden'
     },
     caixaopcoes2: {
       alignItems: 'flex-start',
       padding: 10,
-      backgroundColor: '#2754f4',
+      backgroundColor: '#233854',
       borderRadius: 40,
       height: '100%',
       width: '48%',
@@ -116,8 +116,8 @@ export default StyleSheet.create({
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       elevation: 5,
-      borderWidth: 2, // Defina a espessura da borda
-      borderColor: '#1D3FAD', // Define a cor da borda
+      borderWidth: 1, // Defina a espessura da borda
+      borderColor: '#233854', // Define a cor da borda
       overflow: 'hidden'
     },
     tituloBotao:{
@@ -164,8 +164,8 @@ export default StyleSheet.create({
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       elevation: 10,
-      borderWidth: 4,
-      borderColor: '#1D3FAD', 
+      borderWidth: 2,
+      borderColor: '#233854', 
     },
     opçoesContainer: {
       flexDirection: 'coluns',
@@ -179,7 +179,7 @@ export default StyleSheet.create({
       alignItems: 'center',  
       padding: 18,
       paddingBottom: 10,
-      backgroundColor: '#1D3FAD',
+      backgroundColor: '#233854',
       borderRadius: 40,
       marginLeft:'15%',
       width: '70%',
@@ -188,8 +188,8 @@ export default StyleSheet.create({
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       elevation: 10,
-      borderWidth: 4, // Defina a espessura da borda
-      borderColor: '#1D3FAD', // Define a cor da borda
+      borderWidth: 2, // Defina a espessura da borda
+      borderColor: '#233854', // Define a cor da borda
       
     },
 

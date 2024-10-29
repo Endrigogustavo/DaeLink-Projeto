@@ -74,7 +74,7 @@ export default StyleSheet.create({
     elevation: 5,
   },
   opcoesText: {
-    color: '#1D3FAD',
+    color: '#233854',
     fontSize: 16,
     marginTop: 5,
   },

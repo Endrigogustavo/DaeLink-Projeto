@@ -36,7 +36,7 @@ return(
 export default function MyTabs(){
   return (
     <Tab.Navigator screenOptions={{ 
-       tabBarActiveTintColor: '#1D3FAD', 
+       tabBarActiveTintColor: '#233854', 
         tabBarInactiveTintColor: '#95a5a6', 
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle:styles.tabBarLabel,
