@@ -44,7 +44,7 @@ Candidatura: Candidate-se diretamente às vagas através da plataforma.
 ## Autores
 
 - [@Alex Expedito](https://github.com/SonExpedito)
-- [@Danilo Soares](https://www.github.com/Endrigogustavo)
+- [@Danilo Soares](https://www.github.com/DaniloSsoares)
 - [@Endrigo Gustavo](https://www.github.com/Endrigogustavo)
 
 
