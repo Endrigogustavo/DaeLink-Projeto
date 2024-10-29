@@ -74,7 +74,7 @@ export default function Profile() {
           <Text style={styles.infoText}>Nome: {userData.name}</Text>
           <Text style={styles.infoText}>Email: {auth.currentUser.email}</Text>
           <Text style={styles.infoText}>CID: {userData.tipo}</Text>
-          <Text style={styles.infoText}> Nascimento: {format(new Date(userData.idade + 'T00:00:00'), 'dd/MM/yyyy', { locale: ptBR })}</Text>
+          <Text style={styles.infoText}>Nascimento: {format(new Date(userData.idade + 'T00:00:00'), 'dd/MM/yyyy', { locale: ptBR })}</Text>
           <Text style={styles.infoText}>Idade: {differenceInYears(new Date(),new Date(userData.idade))}</Text>
           <Text style={styles.infoText}>Tipo de Deficiencia: {userData.deficiencia}</Text>
         </View>
@@ -82,12 +82,12 @@ export default function Profile() {
         <Text style={styles.TituloSecao}>Configurações</Text>
         <View style={styles.opcoesContainer}>
           <TouchableOpacity style={styles.caixaopcoes} onPress={(handleEditar) }>
-            <FontAwesome name="user" size={24} color="#1D3FAD" />
+            <FontAwesome name="user" size={24} color="#233854" />
             <Text style={styles.opcoesText}>Editar Perfil</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.caixaopcoes} onPress={(handleSignOut)}>
-            <FontAwesome name="sign-out" size={24} color="#1D3FAD" />
+            <FontAwesome name="sign-out" size={24} color="#233854" />
             <Text style={styles.opcoesText}>Sair</Text>
           </TouchableOpacity>
 
