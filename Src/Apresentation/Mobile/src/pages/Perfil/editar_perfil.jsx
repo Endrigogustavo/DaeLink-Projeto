@@ -317,17 +317,6 @@ export default function Editar() {
         onChangeText={(text)=> setUserData({...userData, idade:text})}
         />
 
-         <Text style={styles.label}>tipo</Text>     
-
-        <Input
-         style={{ borderColor: "blue", borderRadius: 22 }}
-            bottomHelp
-            placeholderTextColor="#4F8EC9"
-             
-        value={userData.tipo}
-        onChangeText={(text)=> setUserData({...userData, tipo: text})}    
-        />
-
          <Text style={styles.label}>Trabalho</Text>     
 
         <Input
