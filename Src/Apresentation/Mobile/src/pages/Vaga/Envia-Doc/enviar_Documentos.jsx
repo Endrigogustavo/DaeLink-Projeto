@@ -454,7 +454,7 @@ const openPdf = async() =>{
           />
 
 
-       <Text style={style.label}>Laudo Médico em PDF</Text>
+       <Text style={style.label}>1 Documento</Text>
         <View style={style.imageContainer}>
           <TouchableOpacity onPress={() => PickerDocument(setLaudo)} style={style.imageButton}>
             <FontAwesome5 name="briefcase" size={30} color="#000" style={style.uploadIcon} />

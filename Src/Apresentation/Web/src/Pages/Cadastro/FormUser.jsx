@@ -125,23 +125,13 @@ const UserFormRegister = () => {
         // Validações
 
         if (!isChecked) {
-            setWorksModal(false)
-            setModalMessage("Você deve aceitar os termos de uso")
-            setModalOpen(true)
-            setTimeout(() => {
-                setModalOpen(false);
-                return;
-            }, 2200);
-            
+            alert("Você deve aceitar os termos de uso.");
+            return;
         }
+            
+        
         if (password !== confirmPassword) {
-            setWorksModal(false)
-            setModalMessage("As senhas não coincidem.")
-            setModalOpen(true)
-            setTimeout(() => {
-                setModalOpen(false);
-                return;
-            }, 2200);
+            alert("As senhas não coincidem.")
             
         }
         if (!/\S+@\S+\.\S+/.test(email)) {
@@ -530,10 +520,19 @@ const UserFormRegister = () => {
                                             <IoDocumentAttachSharp className='text-3xl text-gray-900 text-center ' />
                                             <h1 className='font-medium text-lg truncate'>{LaudoName ? `${LaudoName}` : `Insira o Laudo Médico`}</h1>
                                         </label>
-                                        <input hidden type="file" id='laudoinput' accept=".pdf,.doc,.docx" onChange={handleLaudoMedicoChange} />
+                                        <input hidden type="file" id='laudoinput' accept=".pdf,.doc,.docx" onChange={handleLaudoMedicoChange} required/>
                                     </div>
 
-                                    <div className="flex flex-row w-full items-center justify-center space-x-2 col-span-2">
+ 
+
+                                </>
+                            )}
+
+
+
+                        </div>
+
+                        <div className="flex flex-row w-full items-center justify-center space-x-2 col-span-2">
                                         <input
                                             type="checkbox"
                                             checked={isChecked}
@@ -544,13 +543,6 @@ const UserFormRegister = () => {
                                             Aceito os <Link to="/termos" className="text-blue-600">Termos</Link> de Uso
                                         </span>
                                     </div>
-
-                                </>
-                            )}
-
-
-
-                        </div>
                         <div className='w-full h-fit flex items-center justify-center gap-2 mt-2'>
                             {step > 1 && (
                                 <button onClick={handlePrevious}
