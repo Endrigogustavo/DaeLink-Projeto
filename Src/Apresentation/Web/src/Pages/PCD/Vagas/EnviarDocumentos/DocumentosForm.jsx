@@ -84,16 +84,22 @@ const DocumentosForm = () => {
 
     const handleFileChange = (index) => (e) => {
         const file = e.target.files[0];
+        const filesize = e.target.files[0].size / 1024 / 1024
         if (file) {
-            const updatedFiles = [...selectedFiles];
-            updatedFiles[index] = file;
-            setSelectedFiles(updatedFiles);
-
-            const updatedFileNames = [...fileNames];
-            updatedFileNames[index] = file.name;
-            setFileNames(updatedFileNames);
-
-            inputFileRefs[index].current.style.display = 'none'; // Esconde o input
+            if(filesize > 25){
+                alert("Arquivo maior de 25MB, tente novamente.")
+            }else{
+                const updatedFiles = [...selectedFiles];
+                updatedFiles[index] = file;
+                setSelectedFiles(updatedFiles);
+    
+                const updatedFileNames = [...fileNames];
+                updatedFileNames[index] = file.name;
+                setFileNames(updatedFileNames);
+    
+                inputFileRefs[index].current.style.display = 'none'; // Esconde o input
+            }
+            
         }
     };
 
@@ -104,13 +110,7 @@ const DocumentosForm = () => {
 
         try {
             if (selectedFiles.every(file => !file)) {
-                setWorksModal(false)
-                setModalMessage("Selecione pelo menos um documento para enviar.")
-                setModalOpen(true)
-                setTimeout(() => {
-                    setModalOpen(false)
-                    return;
-                }, 2200);
+                alert("Selecione pelo menos um documento para enviar.")
             }
 
             const uploadFile = async (file) => {
@@ -285,6 +285,7 @@ const DocumentosForm = () => {
                                 <input
                                     id={`input-file-${index}`}
                                     type="file"
+                                    accept=".pdf,.doc,.docx,.png,.jpg"
                                     ref={inputFileRefs[index]}
                                     onChange={handleFileChange(index)}
                                     hidden

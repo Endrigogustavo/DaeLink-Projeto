@@ -64,14 +64,22 @@ const UserFormRegister = () => {
 
     const handleProfileImageChange = (e) => {
         const file = e.target.files[0];
+        const filesize = e.target.files[0].size / 1024 / 1024
         setProfileImage(file);
 
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setProfileImagePreview(reader.result);
-            };
-            reader.readAsDataURL(file);
+            if(filesize > 5){
+                alert("Arquivo maior que 5mb, tente novamente")
+                setProfileImage("")
+                setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
+            }else{
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setProfileImagePreview(reader.result);
+                };
+                reader.readAsDataURL(file);
+            }
+           
         } else {
             setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
         }
@@ -79,13 +87,22 @@ const UserFormRegister = () => {
 
     const handleProfileBackgroundChange = (e) => {
         const file = e.target.files[0]
+        const filesize = e.target.files[0].size / 1024 / 1024
+
         setBackgroundImage(file)
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setProfileBackgroundpreview(reader.result);
-            };
-            reader.readAsDataURL(file);
+            if(filesize > 5){
+                alert("Arquivo maior que 5mb, tente novamente")
+                setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
+                setBackgroundImage("")
+            }else{
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setProfileBackgroundpreview(reader.result);
+                };
+                reader.readAsDataURL(file);
+            }
+           
         } else {
             setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
         }
@@ -94,9 +111,16 @@ const UserFormRegister = () => {
 
     const handleLaudoMedicoChange = (e) => {
         const file = e.target.files[0]
+        const filesize = e.target.files[0].size / 1024 / 1024
+       
         setLaudoMedico(file)
         if (file) {
-            setLaudoName(file.name); // Atualiza o estado com o nome do arquivo
+            if(filesize > 1){
+                alert("Arqruivo maior de 50MB, tente novamente.")
+                setLaudoMedico("")
+            }else{
+                setLaudoName(file.name); // Atualiza o estado com o nome do arquivo
+            }  
         }
     }
 
@@ -184,7 +208,7 @@ const UserFormRegister = () => {
 
         // Validação para a etapa 1
         if (step === 1) {
-            if (!name || !email || !password) {
+            if (!name || !email || !password || !confirmPassword || !profileImage|| !backgroundImage) {
                 setWorksModal(false)
                 setModalMessage("Por favor, preencha todos os campos da Etapa 1.")
                 setModalOpen(true)
@@ -223,7 +247,7 @@ const UserFormRegister = () => {
 
         // Validação para a etapa 2
         if (step === 2) {
-            if (!idade || !trabalho || !descricao) {
+            if (!idade || !trabalho || !descricao || !CPF) {
                 setWorksModal(false)
                 setModalMessage("Por favor, preencha todos os campos da Etapa 2.")
                 setModalOpen(true)

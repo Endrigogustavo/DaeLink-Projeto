@@ -10,6 +10,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import axios from "axios";
 import Modal from "../../Modal/Modal";
 import InputMask from 'react-input-mask';
+import Navbar from "../../Navbar/Navbar";
 
 const DocumentosForm = () => {
 
@@ -103,7 +104,7 @@ const DocumentosForm = () => {
                 const vagaId = localStorage.getItem('vagaId');
                 const candidatoDoc = localStorage.getItem('candidatoDoc');
                 const IdDoc = localStorage.getItem('IdDoc');
-                const response = await axios.post(`http://localhost:3000/get-doc/`,{vagaId, candidatoDoc, IdDoc},  { withCredentials: true });
+                const response = await axios.post(`http://localhost:3000/get-doc/`, { vagaId, candidatoDoc, IdDoc }, { withCredentials: true });
 
                 setDocProfile(response.data);
             } catch (error) {
@@ -126,29 +127,53 @@ const DocumentosForm = () => {
 
     const handleFileChange1 = (e) => {
         const file = e.target.files[0];
+        const filesize = e.target.files[0].size / 1024 / 1024
         if (file) {
-            setSelectedFile1(file);
-            setFormacao1a(file);
-            inputFileRef1.current.style.display = 'none';
+            if (filesize > 25) {
+                alert("Arquivo maior que 25MB, tente novamente")
+                setSelectedFile1("");
+                setFormacao1a("");
+            } else {
+                setSelectedFile1(file);
+                setFormacao1a(file);
+                inputFileRef1.current.style.display = 'none';
+
+            }
 
         }
     };
 
     const handleFileChange2 = (e) => {
         const file = e.target.files[0];
+        const filesize = e.target.files[0].size / 1024 / 1024
         if (file) {
-            setSelectedFile2(file);
-            setFormacao2a(file);
-            inputFileRef2.current.style.display = 'none';
+            if (filesize > 25) {
+                alert("Arquivo maior que 25MB, tente novamente")
+                setSelectedFile2("");
+                setFormacao2a("");
+            } else {
+                setSelectedFile2(file);
+                setFormacao2a(file);
+                inputFileRef2.current.style.display = 'none';
+            }
+
         }
     };
 
     const handleFileChange3 = (e) => {
         const file = e.target.files[0];
+        const filesize = e.target.files[0].size / 1024 / 1024
         if (file) {
-            setSelectedFile3(file);
-            setFormacao3a(file);
-            inputFileRef3.current.style.display = 'none';
+            if (filesize > 25) {
+                alert("Arquivo maior que 25MB, tente novamente")
+                setSelectedFile3("");
+                setFormacao3a("");
+            } else {
+                setSelectedFile3(file);
+                setFormacao3a(file);
+                inputFileRef3.current.style.display = 'none';
+            }
+           
         }
     };
 
@@ -280,6 +305,7 @@ const DocumentosForm = () => {
 
     return (
         <>
+        <Navbar />
             <div>
                 <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
             </div>
@@ -412,7 +438,7 @@ const DocumentosForm = () => {
                                 id="formacao1-input"
                                 type="file"
                                 className='hidden'
-                                accept=".pdf,.doc,.docx"
+                                accept=".pdf,.doc,.docx,.png,.jpg"
                                 ref={inputFileRef1}
                                 onChange={handleFileChange1}
                             />

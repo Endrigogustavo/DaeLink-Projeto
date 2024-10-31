@@ -99,7 +99,7 @@ const EmpresaFormRegister = () => {
 
         // Validação para a etapa 1
         if (step === 1) {
-            if (!name || !email || !password) {
+            if (!name || !email || !password || !confirmPassword || !profileImage || !backgroundImage) {
                 setWorksModal(false)
                 setModalMessage("Por favor, preencha todos os campos da Etapa 1.")
                 setModalOpen(true)
@@ -250,14 +250,22 @@ const EmpresaFormRegister = () => {
 
     const handleProfileImageChange = (e) => {
         const file = e.target.files[0];
+        const filesize = e.target.files[0].size / 1024 / 1024
         setProfileImage(file);
 
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setProfileImagePreview(reader.result);
-            };
-            reader.readAsDataURL(file);
+            if(filesize > 5){
+                alert("Arquivo maior de 5MB, tente novamente")
+                setProfileImage("")
+                setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
+            }else{
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setProfileImagePreview(reader.result);
+                };
+                reader.readAsDataURL(file);
+            }
+           
         } else {
             setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
         }
@@ -265,13 +273,22 @@ const EmpresaFormRegister = () => {
 
     const handleProfileBackgroundChange = (e) => {
         const file = e.target.files[0]
+        const filesize = e.target.files[0].size / 1024 / 1024
+
         setBackgroundImage(file)
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setProfileBackgroundpreview(reader.result);
-            };
-            reader.readAsDataURL(file);
+            if(filesize > 5){
+                alert("Arquivo maior de 5MB, tente novamente")
+                setBackgroundImage("")
+                setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
+            }else{
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setProfileBackgroundpreview(reader.result);
+                };
+                reader.readAsDataURL(file);
+            }
+            
         } else {
             setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
         }
