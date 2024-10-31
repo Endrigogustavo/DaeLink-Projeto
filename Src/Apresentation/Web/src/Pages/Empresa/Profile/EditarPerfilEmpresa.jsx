@@ -7,7 +7,7 @@ import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { MdExitToApp } from "react-icons/md";
 import InputMask from 'react-input-mask';
 import Modal from "../Modal/Modal";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, updateEmail } from "firebase/auth";
 
 const EditarPerfil = () => {
   // Função de navegação do site
@@ -114,6 +114,11 @@ const EditarPerfil = () => {
         userId: userId,
       });
 
+      const auth = getAuth();
+      updateEmail(auth.currentUser, userData.email).then(() => {
+        // Email updated!
+        // ...
+      })
       setWorksModal(true)
       setModalMessage("Conta Atualizada com sucesso.")
       setModalOpen(true)

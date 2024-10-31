@@ -153,6 +153,11 @@ const EditarPerfil = () => {
           deficiencia: userData.deficiencia,
         });
 
+        const auth = getAuth();
+        updateEmailmobile(auth.currentUser, userData.email).then(() => {
+          // Email updated!
+          // ...
+        })
         setWorksModal(true);
         setModalMessage("Conta atualizada com sucesso!");
         setModalOpen(true);

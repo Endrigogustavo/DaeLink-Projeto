@@ -44,6 +44,7 @@ export default StyleSheet.create({
       fontSize: 25,
       fontWeight: 'bold',
       marginBottom: 5,
+      color: '#2D314B'
     },
     legenda: {
       fontSize: 20,
@@ -57,7 +58,8 @@ export default StyleSheet.create({
       fontSize: 20,
       fontWeight: 'bold',
       marginBottom: 10,
-      marginTop: 10
+      marginTop: 10,
+      color: '#2D314B'
       
     },
     estatisticasContainer: {
@@ -69,7 +71,7 @@ export default StyleSheet.create({
     statBox: {
       alignItems: 'center',
       padding: 10,
-      backgroundColor: '#233854',
+      backgroundColor: '#4369F1',
       borderRadius: 10,
       width: '20%',
       shadowColor: '#000',
@@ -101,13 +103,13 @@ export default StyleSheet.create({
       shadowRadius: 3.84,
       elevation: 5,
       borderWidth: 2, // Defina a espessura da borda
-      borderColor: '#233854', // Define a cor da borda
+      borderColor: '#4369F1', // Define a cor da borda
       overflow: 'hidden'
     },
     caixaopcoes2: {
       alignItems: 'flex-start',
       padding: 10,
-      backgroundColor: '#233854',
+      backgroundColor: '#4369F1',
       borderRadius: 40,
       height: '100%',
       width: '48%',
@@ -117,7 +119,7 @@ export default StyleSheet.create({
       shadowRadius: 3.84,
       elevation: 5,
       borderWidth: 1, // Defina a espessura da borda
-      borderColor: '#233854', // Define a cor da borda
+      borderColor: '#7E88D2', // Define a cor da borda
       overflow: 'hidden'
     },
     tituloBotao:{
@@ -126,6 +128,7 @@ export default StyleSheet.create({
     color:'#000',
      marginBottom:5,
      marginLeft:8,
+     color: '#2D314B'
    },
    tituloBotao2:{
     fontSize:18,
@@ -138,6 +141,7 @@ export default StyleSheet.create({
     fontSize:14,
     color:'#666',
     marginBottom:8,
+    color: '#2D314B'
    },
    descricaoBotao2:{
     fontSize:14,
@@ -165,7 +169,7 @@ export default StyleSheet.create({
       shadowRadius: 3.84,
       elevation: 10,
       borderWidth: 2,
-      borderColor: '#233854', 
+      borderColor: '#4369F1', 
     },
     opçoesContainer: {
       flexDirection: 'coluns',
@@ -179,7 +183,7 @@ export default StyleSheet.create({
       alignItems: 'center',  
       padding: 18,
       paddingBottom: 10,
-      backgroundColor: '#233854',
+      backgroundColor: '#4369F1',
       borderRadius: 40,
       marginLeft:'15%',
       width: '70%',
@@ -189,16 +193,17 @@ export default StyleSheet.create({
       shadowRadius: 3.84,
       elevation: 10,
       borderWidth: 2, // Defina a espessura da borda
-      borderColor: '#233854', // Define a cor da borda
+      borderColor: '#4369F1', // Define a cor da borda
       
     },
 
     opcoesText: {
       alignSelf: 'center',
-      color: '#fff',
+    
       fontSize: 10,
       justifyContent: 'center',
     alignItems: 'center',
+    color: '#2D314B'
     
     },
 

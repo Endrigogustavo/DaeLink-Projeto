@@ -9,6 +9,7 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import axios from "axios";
 import Modal from "../../Modal/Modal";
+import InputMask from 'react-input-mask';
 
 const DocumentosForm = () => {
 
@@ -17,8 +18,15 @@ const DocumentosForm = () => {
     const [selectedFile2, setSelectedFile2] = useState(null);
     const [selectedFile3, setSelectedFile3] = useState(null);
     const [userUid, setUserUid] = useState(null)
-    const [docProfile, setDocProfile] = useState([])
-
+    const [docProfile, setDocProfile] = useState({
+        nome: '',
+        email: '',
+        telefone: '',
+        endereco: '',
+        idade: '',
+        experiencia1: '',
+        idiomas: '',
+    });
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('Processando...');
     const [isWorksModal, setWorksModal] = useState(false);
@@ -96,7 +104,7 @@ const DocumentosForm = () => {
                 const candidatoDoc = localStorage.getItem('candidatoDoc');
                 const IdDoc = localStorage.getItem('IdDoc');
                 const response = await axios.post(`http://localhost:3000/get-doc/`,{vagaId, candidatoDoc, IdDoc},  { withCredentials: true });
-                console.log(response.data)
+
                 setDocProfile(response.data);
             } catch (error) {
                 console.error("Erro ao buscar documentos:", error);
@@ -145,6 +153,10 @@ const DocumentosForm = () => {
     };
 
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setDocProfile(prevState => ({ ...prevState, [name]: value }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -190,17 +202,17 @@ const DocumentosForm = () => {
 
                 // Adiciona o documento à coleção de documentos do candidato
                 await updateDoc(documentoDocRef, {
-                    nome,
-                    endereco,
-                    telefone,
-                    email,
-                    idade,
-                    objetivo,
-                    experiencia1,
+                    nome: docProfile.nome,
+                    endereco: docProfile.endereco,
+                    telefone: docProfile.telefone,
+                    email: docProfile.email,
+                    idade: docProfile.idade,
+                    objetivo: docProfile.objetivo,
+                    experiencia1: docProfile.experiencia1,
                     formacao_academica1: selectedFile1 ? downloadURLs[0] : null,
                     formacao_academica2: selectedFile2 ? downloadURLs[1] : null,
                     formacao_academica3: selectedFile3 ? downloadURLs[2] : null,
-                    idiomas,
+                    idiomas: docProfile.idiomas,
                     userId
                 });
 
@@ -292,8 +304,9 @@ const DocumentosForm = () => {
                         type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         placeholder="Insira seu Nome Completo"
+                        name="nome"
                         value={docProfile.nome}
-                        onChange={(e) => setNome(e.target.value)}
+                        onChange={handleInputChange}
                     />
                 </div>
                 <div className="flex flex-col">
@@ -303,19 +316,22 @@ const DocumentosForm = () => {
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent "
                         placeholder="Insira seu Email"
                         value={docProfile.email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        name="email"
+                        onChange={handleInputChange}
                     />
                 </div>
 
                 <div className="flex flex-col">
                     <label className="text-lg font-medium">Telefone</label>
-                    <input
+                    <InputMask
                         type="text"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         placeholder="Insira seu Telefone"
                         value={docProfile.telefone
                         }
-                        onChange={(e) => setTelefone(e.target.value)}
+                        mask="(99) 99999-9999"
+                        name="telefone"
+                        onChange={handleInputChange}
                     />
                 </div>
 
@@ -326,10 +342,8 @@ const DocumentosForm = () => {
                         className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         placeholder="Insira seu Endereço"
                         value={docProfile.endereco}
-                        onChange={(e) => {
-                            setEndereco(e.target.value);
-                            adjustTextareaHeight(enderecoRef);
-                        }}
+                        name="endereco"
+                        onChange={handleInputChange}
                     />
                 </div>
 
@@ -339,7 +353,8 @@ const DocumentosForm = () => {
                         type="date"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         value={docProfile.idade}
-                        onChange={(e) => setIdade(e.target.value)}
+                        name="idade"
+                        onChange={handleInputChange}
                     />
                 </div>
 
@@ -350,10 +365,8 @@ const DocumentosForm = () => {
                         className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
                         placeholder="Fale brevemente de suas experiências profissionais"
                         value={docProfile.experiencia1}
-                        onChange={(e) => {
-                            setExperiencia1(e.target.value);
-                            adjustTextareaHeight(experienciaRef);
-                        }}
+                        name="experiencia1"
+                        onChange={handleInputChange}
                     />
                 </div>
 
@@ -362,7 +375,8 @@ const DocumentosForm = () => {
                     <select
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                         value={docProfile.idiomas}
-                        onChange={(e) => setIdiomas(e.target.value)}
+                        name="idiomas"
+                        onChange={handleInputChange}
                     >
                         <option value="">Selecione um idioma</option>
                         <option value="Inglês">Inglês</option>

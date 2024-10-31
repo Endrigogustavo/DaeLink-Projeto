@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { collection, getDocs, doc, getDoc, updateDoc, addDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, updateDoc, addDoc, where, query, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '../../../../Database/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { BsFillXSquareFill } from "react-icons/bs";
@@ -147,6 +147,17 @@ function PessoasList() {
                     await updateDoc(vagaRef, {
                         situação: situação
                     });
+                    
+                    alert()
+                    const ChatColletion = collection(db, "Chat")
+                    const GetQueryCompanyId = query(ChatColletion, where("empresaId", "==", user.uid));
+                    const GetQueryPCDId = query(GetQueryCompanyId, where("userId", "==", id));
+                    const GetVagaId = query(GetQueryPCDId, where("vagaId", "==", vagaId));
+                    const querySnapshot = await getDocs(GetVagaId);
+                    for (const doc of querySnapshot.docs) {
+                        // Delete cada documento encontrado na consulta
+                        await deleteDoc(doc.ref);
+                    }
                     setWorksModal(true)
                     setModalMessage("Candidato Recusado com Sucesso")
                     setModalOpen(true)
@@ -184,9 +195,13 @@ function PessoasList() {
 
     const ChatUser = async (userId) => {
         try {
+
+            const vagaId = localStorage.getItem("vagaId")
             const ChatCollection = collection(db, "Chat");
+            
             await addDoc(ChatCollection, {
                 userId: userId,
+                vagaId:vagaId,
                 empresaId: user.uid
             });
 
