@@ -17,7 +17,24 @@ import axios from 'axios';
 
 const Home = () => {
   useEffect(() => {
+    const geolocalização = () =>{
+      if('geolocation' in navigator){
+  navigator.geolocation.watchPosition(function(position){
+        console.log(position)
+        alert(position.coords.latitude)
+        alert(position.coords.longitude)
+      },
+      function(error){
+        console.log(error)
+      },{enableHighAccuracy: true, maximumAge: 3000, timeout: 3000})
+      navigator.geolocation.clearWatch(geolocalização)
+      } else{
+        alert("Não foi possivel pegar a localização")
+      }
+    
+    }
 
+    geolocalização()
    
     localStorage.removeItem('userId');
     
