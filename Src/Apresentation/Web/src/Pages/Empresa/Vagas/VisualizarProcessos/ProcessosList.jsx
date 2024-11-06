@@ -119,7 +119,7 @@ function ProcessosList() {
 
             <div className={`w-full h-fit flex justify-center items-center flex-col py-4 ${vagas.length > 0 ? 'grid ProcessosEmpresas gap-y-6 justify-items-center items-center' : ''}`}>
                 {vagas.map((vaga) => (
-                    <div key={vaga.id} className='h-56 w-96 rounded-3xl shadow-2xl flex bg-white border-gray-400 border-2 w-processsosempresa'>
+                    <div key={vaga.id} className='h-56 w-96 rounded-3xl shadow-2xl flex bg-white border-gray-400 border-2 w-processsosempresa cardhover'>
                         <div className='w-1/4 h-full flex items-center justify-center bg-gray-200  rounded-3xl'>
                             <MdWork className='text-7xl text-gray-900 text-center bg-white p-4 rounded-full border-2 border-blue-600' />
                         </div>
@@ -128,7 +128,7 @@ function ProcessosList() {
                                 <h1 className='font-bold text-xl text-center w-4/6 processo-title' >{vaga.vaga}</h1>
                             </div>
                             <div className='w-full h-2/6 flex flex-col px-2'>
-                                <p className='opacity-80 truncate'>{vaga.local}</p>
+                                <p className='opacity-80 truncate font-medium'>{vaga.area}</p>
                                 <p className='opacity-80'>{vaga.tipo}</p>
                                 <p className='opacity-80'>R${vaga.salario}</p>
                             </div>

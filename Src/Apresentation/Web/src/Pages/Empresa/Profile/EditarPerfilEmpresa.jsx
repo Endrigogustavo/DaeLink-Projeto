@@ -194,9 +194,10 @@ const EditarPerfil = () => {
     navigate('/perfilempresa');
   }
 
-  const handleTabChange = (tabIndex) => {
+  const handleTabChange = async (tabIndex) => {
     setTab(tabIndex);
   };
+  
 
   const checkScreenSize = () => {
     const mediaQuery = window.matchMedia("(max-width: 580px)");
@@ -277,7 +278,7 @@ const EditarPerfil = () => {
           <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-32 editprofile-menu">
 
             <div className="w-full h-fit flex items-center justify-center  gap-2 editprofile-hello">
-              <img src={userData.imageUrl} className="w-20 h-20 rounded-full border-4 border-blue-600" alt="" />
+              <img src={userData.imageUrl} className="w-20 h-20 rounded-full border-4 border-blue-600 object-cover" alt="" />
               <div className="flex flex-col gap-2">
                 <h1 className="font-bold text-white ">
                   {getFirstAndLastName(userName)}

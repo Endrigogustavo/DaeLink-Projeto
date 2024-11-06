@@ -147,8 +147,7 @@ function PessoasList() {
                     await updateDoc(vagaRef, {
                         situação: situação
                     });
-                    
-                    alert()
+
                     const ChatColletion = collection(db, "Chat")
                     const GetQueryCompanyId = query(ChatColletion, where("empresaId", "==", user.uid));
                     const GetQueryPCDId = query(GetQueryCompanyId, where("userId", "==", id));
@@ -259,7 +258,7 @@ function PessoasList() {
                                     <h2 className='opacity-75 text-sm truncate font-bold'>{candidato.situação}</h2>
                                 </div>
                                 <div className='w-full h-3/5 flex flex-col justify-center items-center '>
-                                    <p className='font-medium text-center text-xl'>Ações</p>
+                                    <p className='font-medium text-center text-lg pb-1'>Ações</p>
                                     <div className='w-full flex justify-center gap-2'>
                                         <button onClick={() => AceitarCandidato(candidato.id)} type="submit"
                                             className='bg-green-400 rounded-2xl px-2 py-1 h-12'>

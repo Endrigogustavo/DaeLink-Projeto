@@ -87,7 +87,12 @@ const DocumentosForm = () => {
         const filesize = e.target.files[0].size / 1024 / 1024
         if (file) {
             if(filesize > 25){
-                alert("Arquivo maior de 25MB, tente novamente.")
+                setWorksModal(false)
+                setModalMessage("Arquivo maior de 25MB")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
             }else{
                 const updatedFiles = [...selectedFiles];
                 updatedFiles[index] = file;
@@ -110,7 +115,12 @@ const DocumentosForm = () => {
 
         try {
             if (selectedFiles.every(file => !file)) {
-                alert("Selecione pelo menos um documento para enviar.")
+                setWorksModal(false)
+                setModalMessage("Arquivo maior de 25MB")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
             }
 
             const uploadFile = async (file) => {

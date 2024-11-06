@@ -35,20 +35,31 @@ const Form = () => {
 
 
                 if (GetPCDDoc.exists()) {
-                    await axios.post('http://localhost:3000/cookie', { uid }, {
-                        withCredentials: true
-                    });
-                    const id = uid;
-                    localStorage.setItem('userId', id);
-                    navigate(`/homeuser`);
+                    setWorksModal(true)
+                    setModalMessage("Autenticado com sucesso")
+                    setModalOpen(true)
+                    setTimeout(() => {
+                        axios.post('http://localhost:3000/cookie', { uid }, {
+                            withCredentials: true
+                        });
+                        const id = uid;
+                        localStorage.setItem('userId', id);
+                        navigate(`/homeuser`);
+                    }, 2200);
+
                 }
                 if (EmpresaDDoc.exists()) {
-                    await axios.post('http://localhost:3000/cookie', { uid }, {
-                        withCredentials: true
-                    });
-                    const id = uid;
-                    localStorage.setItem('userId', id);
-                    navigate(`/homeuser`);
+                    setWorksModal(true)
+                    setModalMessage("Autenticado com sucesso")
+                    setModalOpen(true)
+                    setTimeout(() => {
+                        axios.post('http://localhost:3000/cookie', { uid }, {
+                            withCredentials: true
+                        });
+                        const id = uid;
+                        localStorage.setItem('userId', id);
+                        navigate(`/homeuser`);
+                    }, 2200);
                 }
                 else {
 

@@ -76,13 +76,13 @@ export default function Navbar() {
                             <img
                                 src={userProfile?.imageUrl || defaultempresaicon}
                                 alt="Profile"
-                                className="w-8 h-8 rounded-full"
+                                className="w-8 h-8 rounded-full object-cover"
                             />
                         ) : userProfile?.imageUrl ? (
                             <img
                                 src={userProfile.imageUrl}
                                 alt=""
-                                className="w-8 h-8 rounded-full"
+                                className="w-8 h-8 rounded-full object-cover"
                             />
                         ) : (
                             <div className="w-8 h-8 rounded-full bg-gray-300"></div> // Placeholder se não houver imagem

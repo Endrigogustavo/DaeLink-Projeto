@@ -40,7 +40,7 @@ const ImageEmpresa = () => {
         <>
             <div className='h-EmpresaImg w-full flex EmpresaImgContainer bg-gray-800 overflow-hidden'>
                 <div className="w-1/2 h-full flex items-center justify-center side-container">
-                    <img src={userProfile.imageProfile} className='EmpresaImgPr rounded-3xl' />
+                    <img src={userProfile.imageProfile} className='EmpresaImgPr rounded-3xl object-cover' />
                 </div>
                 <div className="w-1/2 h-full flex items-center justify-center side-container bg-gray-900 textempresa-side">
                     <div className='w-full h-full flex items-center justify-center flex-col gap-2'>

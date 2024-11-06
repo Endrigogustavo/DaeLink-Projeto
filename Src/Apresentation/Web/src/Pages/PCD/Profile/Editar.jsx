@@ -231,9 +231,10 @@ const EditarPerfil = () => {
     return `${firstName} ${lastName}`;
   };
 
-  const handleTabChange = (tabIndex) => {
+  const handleTabChange = async (tabIndex) => {
     setTab(tabIndex);
   };
+  
 
   function voltarincon(e) {
     e.preventDefault();
@@ -351,13 +352,13 @@ const EditarPerfil = () => {
       <div className="h-screen w-full flex items-center justify-center bg-gray-300 editprofile-screen">
         <div className="w-editprofile h-editprofile rounded-3xl flex editprofile-container">
           {/*Lado Esquerdo*/}
-          <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-30 editprofile-menu">
+          <div className="w-2/6 h-full bg-gray-900 rounded-3xl flex flex-col py-4 gap-24 editprofile-menu">
 
             <div className="w-full h-fit flex items-center justify-center  gap-2 editprofile-hello">
-              <img src={userData.imageUrl} className="w-20 h-20 rounded-full border-4 border-blue-600" alt="" />
+              <img src={userData.imageUrl} className="w-20 h-20 rounded-full border-4 border-blue-600 object-cover" alt="" />
               <div className="flex flex-col gap-2">
                 <h1 className="font-bold text-white ">
-                  Olá {getFirstAndLastName(userName)}
+                   {getFirstAndLastName(userName)}
                 </h1>
               </div>
             </div>
@@ -365,7 +366,7 @@ const EditarPerfil = () => {
             <div className="flex flex-col w-full h-fit editprofile-tabs">
 
               <div
-                className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                className={`w-full h-fit py-4 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
                 ${tab === 1 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
                 onClick={() => handleTabChange(1)}>
                 <p className='font-medium'>
@@ -374,7 +375,7 @@ const EditarPerfil = () => {
               </div>
 
               <div
-                className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                className={`w-full h-fit py-4  flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
                 ${tab === 2 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
                 onClick={() => handleTabChange(2)} >
                 <p className='font-medium'>
@@ -384,7 +385,7 @@ const EditarPerfil = () => {
 
               <div
 
-                className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                className={`w-full h-fit py-4  flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
                 ${tab === 3 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
                 onClick={() => handleTabChange(3)} >
                 <p className='font-medium'>
@@ -393,7 +394,7 @@ const EditarPerfil = () => {
               </div>
 
               <div
-                className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                className={`w-full h-fit py-4  flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
                 ${tab === 4 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
                 onClick={() => handleTabChange(4)} >
                 <p className='font-medium'>
@@ -402,7 +403,7 @@ const EditarPerfil = () => {
               </div>
 
               <div
-                className={`w-full h-fit py-2 flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
+                className={`w-full h-fit py-4  flex items-center justify-center cursor-pointer transitiontabs responsivetabs bordertabs
                 ${tab === 5 ? 'bg-gray-200' : 'bg-gray-800 text-white'}`}
                 onClick={() => handleTabChange(5)}>
                 <p className='font-medium'>Deletar Conta</p>

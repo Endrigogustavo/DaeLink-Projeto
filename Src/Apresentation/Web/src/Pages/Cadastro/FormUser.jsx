@@ -68,18 +68,23 @@ const UserFormRegister = () => {
         setProfileImage(file);
 
         if (file) {
-            if(filesize > 5){
-                alert("Arquivo maior que 5mb, tente novamente")
+            if (filesize > 5) {
+                setWorksModal(false)
+                setModalMessage("Arquivo maior de 5MB")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 setProfileImage("")
                 setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
-            }else{
+            } else {
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     setProfileImagePreview(reader.result);
                 };
                 reader.readAsDataURL(file);
             }
-           
+
         } else {
             setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
         }
@@ -91,18 +96,23 @@ const UserFormRegister = () => {
 
         setBackgroundImage(file)
         if (file) {
-            if(filesize > 5){
-                alert("Arquivo maior que 5mb, tente novamente")
+            if (filesize > 5) {
+                setWorksModal(false)
+                setModalMessage("Arquivo maior de 5MB")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
                 setBackgroundImage("")
-            }else{
+            } else {
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     setProfileBackgroundpreview(reader.result);
                 };
                 reader.readAsDataURL(file);
             }
-           
+
         } else {
             setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
         }
@@ -112,15 +122,20 @@ const UserFormRegister = () => {
     const handleLaudoMedicoChange = (e) => {
         const file = e.target.files[0]
         const filesize = e.target.files[0].size / 1024 / 1024
-       
+
         setLaudoMedico(file)
         if (file) {
-            if(filesize > 1){
-                alert("Arqruivo maior de 50MB, tente novamente.")
+            if (filesize > 1) {
+                setWorksModal(false)
+                setModalMessage("Arquivo maior de 50MB")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 setLaudoMedico("")
-            }else{
+            } else {
                 setLaudoName(file.name); // Atualiza o estado com o nome do arquivo
-            }  
+            }
         }
     }
 
@@ -148,26 +163,38 @@ const UserFormRegister = () => {
     const handleRegister = async () => {
         // Validações
 
-        if (!isChecked) {
-            alert("Você deve aceitar os termos de uso.");
-            return;
-        }
-            
-        
-        if (password !== confirmPassword) {
-            alert("As senhas não coincidem.")
-            
-        }
-        if (!/\S+@\S+\.\S+/.test(email)) {
-            setWorksModal(false)
-            setModalMessage("Email Inválido")
-            setModalOpen(true)
+        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+            setWorksModal(false);
+            setModalMessage("Email Inválido");
+            setModalOpen(true);
             setTimeout(() => {
                 setModalOpen(false);
                 return;
             }, 2200);
-            
         }
+
+
+        if (password !== confirmPassword) {
+            setWorksModal(false)
+            setModalMessage("As senhas não coincidem.")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false);
+            }, 2200);
+        }
+
+
+        if (!isChecked) {
+            setWorksModal(false)
+            setModalMessage("Você deve aceitar os termos de uso.")
+            setModalOpen(true)
+            setTimeout(() => {
+                setModalOpen(false);
+            }, 2200);
+            return;
+        }
+
+
         setLoading(true);
         const response = await registerUser(name, email, password, idade, deficiencia, descricao, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, laudomedico, CPF, {});
 
@@ -208,7 +235,7 @@ const UserFormRegister = () => {
 
         // Validação para a etapa 1
         if (step === 1) {
-            if (!name || !email || !password || !confirmPassword || !profileImage|| !backgroundImage) {
+            if (!name || !email || !password || !confirmPassword || !profileImage || !backgroundImage) {
                 setWorksModal(false)
                 setModalMessage("Por favor, preencha todos os campos da Etapa 1.")
                 setModalOpen(true)
@@ -374,7 +401,7 @@ const UserFormRegister = () => {
                         </div>
 
                         <div className='w-full h-fit grid  registerinputsgrid justify-items-center mt-2 gap-y-4'>
-                            
+
                             {step === 1 && (
                                 <>
                                     <label htmlFor="profile-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
@@ -402,7 +429,7 @@ const UserFormRegister = () => {
 
                                     <div className="flex flex-col ">
                                         <label className="text-lg font-medium">Email</label>
-                                        <input required type="text" className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                                        <input required type="email" className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                                             placeholder="Insira seu Email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)} />
@@ -544,10 +571,10 @@ const UserFormRegister = () => {
                                             <IoDocumentAttachSharp className='text-3xl text-gray-900 text-center ' />
                                             <h1 className='font-medium text-lg truncate'>{LaudoName ? `${LaudoName}` : `Insira o Laudo Médico`}</h1>
                                         </label>
-                                        <input hidden type="file" id='laudoinput' accept=".pdf,.doc,.docx" onChange={handleLaudoMedicoChange} required/>
+                                        <input hidden type="file" id='laudoinput' accept=".pdf,.doc,.docx" onChange={handleLaudoMedicoChange} required />
                                     </div>
 
- 
+
 
                                 </>
                             )}
@@ -557,16 +584,16 @@ const UserFormRegister = () => {
                         </div>
 
                         <div className="flex flex-row w-full items-center justify-center space-x-2 col-span-2">
-                                        <input
-                                            type="checkbox"
-                                            checked={isChecked}
-                                            onChange={handleCheckboxChange}
-                                            className="h-5 w-5"
-                                        />
-                                        <span className="text-gray-900">
-                                            Aceito os <Link to="/termos" className="text-blue-600">Termos</Link> de Uso
-                                        </span>
-                                    </div>
+                            <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={handleCheckboxChange}
+                                className="h-5 w-5"
+                            />
+                            <span className="text-gray-900">
+                                Aceito os <Link to="/termos" className="text-blue-600">Termos</Link> de Uso
+                            </span>
+                        </div>
                         <div className='w-full h-fit flex items-center justify-center gap-2 mt-2'>
                             {step > 1 && (
                                 <button onClick={handlePrevious}

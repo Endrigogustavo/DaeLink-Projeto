@@ -23,7 +23,7 @@ const Modal = ({ isOpen, message, Works }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="h-28 w-80 rounded-3xl shadow-2xl flex 
                 items-center justify-center gap-6 bg-white border-gray-400 border-2">
                 <div className='w-2/6 h-full flex items-center justify-center'>

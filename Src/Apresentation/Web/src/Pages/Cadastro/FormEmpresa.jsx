@@ -37,6 +37,7 @@ const EmpresaFormRegister = () => {
 
     const [ramosearch, setRamosearch] = useState(""); // Estado para o valor digitado
     const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Controle de visibilidade do dropdown
+    const dropdownRef = useRef(null);
 
     const ramos = [
         "Alimentação",
@@ -62,6 +63,13 @@ const EmpresaFormRegister = () => {
     const filteredAreas = ramos.filter((area) =>
         area.toLowerCase().includes(ramosearch.toLowerCase())
     );
+
+    const handleBlur = (e) => {
+        // Verifica se o foco foi perdido para um elemento fora do dropdown
+        if (dropdownRef.current && !dropdownRef.current.contains(e.relatedTarget)) {
+            setIsDropdownVisible(false);
+        }
+    };
 
     const handleSelectArea = (selectedArea) => {
         setArea(selectedArea); // Define a área selecionada
@@ -148,16 +156,6 @@ const EmpresaFormRegister = () => {
     // Borão para fazer Cadastro
     const handleRegister = async () => {
         // Verificar se o formato do e-mail é válido
-        if (!/\S+@\S+\.\S+/.test(email)) {
-            setWorksModal(false)
-            setModalMessage("Email Inválido")
-            setModalOpen(true)
-            setTimeout(() => {
-                setModalOpen(false);
-                return;
-            }, 2200);
-
-        }
 
         if (password !== confirmPassword) {
             setWorksModal(false)
@@ -169,16 +167,17 @@ const EmpresaFormRegister = () => {
             }, 2200);
 
         }
-        if (!/\S+@\S+\.\S+/.test(email)) {
-            setWorksModal(false)
-            setModalMessage("Email Inválido")
-            setModalOpen(true)
+
+        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+            setWorksModal(false);
+            setModalMessage("Email Inválido");
+            setModalOpen(true);
             setTimeout(() => {
                 setModalOpen(false);
                 return;
             }, 2200);
-
         }
+
 
         if (!ramos.includes(area)) {
             setWorksModal(false)
@@ -208,28 +207,28 @@ const EmpresaFormRegister = () => {
                 setWorksModal(true)
                 setModalMessage("Cadastro Realizado com Sucesso");
                 setModalOpen(true);
-                
+
                 await sendEmailVerification(auth.currentUser)
                     .then(() => {
                         setModalOpen(true);
                     });
 
-                    setTimeout(() => {
-                        const auth = getAuth();
-                        onAuthStateChanged(auth, async (user) => {
-                          if (user) {
+                setTimeout(() => {
+                    const auth = getAuth();
+                    onAuthStateChanged(auth, async (user) => {
+                        if (user) {
                             const uid = user.uid;
                             try {
-                              await axios.post('http://localhost:3000/cookie', { uid }, {
-                                withCredentials: true
-                              });
+                                await axios.post('http://localhost:3000/cookie', { uid }, {
+                                    withCredentials: true
+                                });
                             } catch (error) {
-                              console.error("Error posting cookie: ", error);
+                                console.error("Error posting cookie: ", error);
                             }
-                          }
-                        })
-                        navigate(`/homeempresa/`);
-                    }, 3000);
+                        }
+                    })
+                    navigate(`/homeempresa/`);
+                }, 3000);
 
             } else {
                 setWorksModal(false)
@@ -254,18 +253,23 @@ const EmpresaFormRegister = () => {
         setProfileImage(file);
 
         if (file) {
-            if(filesize > 5){
-                alert("Arquivo maior de 5MB, tente novamente")
+            if (filesize > 5) {
+                setWorksModal(false)
+                setModalMessage("Arquivo maior de 5MB")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 setProfileImage("")
                 setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
-            }else{
+            } else {
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     setProfileImagePreview(reader.result);
                 };
                 reader.readAsDataURL(file);
             }
-           
+
         } else {
             setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
         }
@@ -277,18 +281,23 @@ const EmpresaFormRegister = () => {
 
         setBackgroundImage(file)
         if (file) {
-            if(filesize > 5){
-                alert("Arquivo maior de 5MB, tente novamente")
+            if (filesize > 5) {
+                setWorksModal(false)
+                setModalMessage("Arquivo maior de 5MB")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 setBackgroundImage("")
                 setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
-            }else{
+            } else {
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     setProfileBackgroundpreview(reader.result);
                 };
                 reader.readAsDataURL(file);
             }
-            
+
         } else {
             setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
         }
@@ -299,51 +308,51 @@ const EmpresaFormRegister = () => {
 
     const validateCNPJ = (cnpj) => {
         cnpj = cnpj.replace(/[^\d]+/g, '');
-    
+
         if (cnpj === '') return false;
         if (cnpj.length !== 14) return false;
-    
+
         // Elimina CNPJs inválidos conhecidos
         const invalidCNPJs = [
-            "00000000000000", "11111111111111", "22222222222222", 
-            "33333333333333", "44444444444444", "55555555555555", 
-            "66666666666666", "77777777777777", "88888888888888", 
+            "00000000000000", "11111111111111", "22222222222222",
+            "33333333333333", "44444444444444", "55555555555555",
+            "66666666666666", "77777777777777", "88888888888888",
             "99999999999999"
         ];
         if (invalidCNPJs.includes(cnpj)) return false;
-    
+
         // Valida DVs
         let tamanho = cnpj.length - 2;
         let numeros = cnpj.substring(0, tamanho);
         let digitos = cnpj.substring(tamanho);
-    
+
         let soma = 0;
         let pos = tamanho - 7;
-    
+
         for (let i = tamanho; i >= 1; i--) {
             soma += numeros.charAt(tamanho - i) * pos--;
             if (pos < 2) pos = 9;
         }
-    
+
         let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
         if (resultado != digitos.charAt(0)) return false;
-    
+
         tamanho++;
         numeros = cnpj.substring(0, tamanho);
         soma = 0;
         pos = tamanho - 7;
-    
+
         for (let i = tamanho; i >= 1; i--) {
             soma += numeros.charAt(tamanho - i) * pos--;
             if (pos < 2) pos = 9;
         }
-    
+
         resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
         if (resultado != digitos.charAt(1)) return false;
-    
+
         return true;
     };
-    
+
 
 
     const handleCNPJChange = (e) => {
@@ -428,7 +437,7 @@ const EmpresaFormRegister = () => {
 
                                     <div className="flex flex-col ">
                                         <label className="text-lg font-medium">Email</label>
-                                        <input required type="text" className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                                        <input required type="email" className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                                             placeholder="Insira seu Email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)} />
@@ -475,7 +484,7 @@ const EmpresaFormRegister = () => {
                                             mask="99999-999"
                                             value={cep}
                                             onChange={(e) => setCep(e.target.value)}
-                                            className={`w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent ${CNPJError ? 'border-red-500' : ''}`}
+                                            className={`w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent `}
                                             placeholder="Digite seu CEP"
                                         />
                                     </div>
@@ -517,13 +526,17 @@ const EmpresaFormRegister = () => {
                                             value={ramosearch}
                                             onChange={(e) => {
                                                 setRamosearch(e.target.value);
+                                                handleSelectArea(e.target.value)
                                                 setIsDropdownVisible(e.target.value.length > 0 && filteredAreas.length > 0); // Mostra o dropdown apenas se houver texto e resultados
                                             }}
                                             onFocus={() => setIsDropdownVisible(ramosearch.length > 0 && filteredAreas.length > 0)} // Mostra o dropdown ao focar no input se houver resultados
+                                            onBlur={handleBlur}
                                             className="w-full border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
                                         />
                                         {isDropdownVisible && filteredAreas.length > 0 && (
-                                            <ul className="border border-gray-300 rounded-lg mt-2 max-h-40 overflow-y-auto bg-white absolute top-20  w-full">
+                                            <ul className="border border-gray-300 rounded-lg mt-2 max-h-40 overflow-y-auto bg-white absolute top-20  w-full"
+                                                ref={dropdownRef}
+                                            >
                                                 {filteredAreas.map((filteredArea) => (
                                                     <li
                                                         key={filteredArea}

@@ -130,7 +130,12 @@ const DocumentosForm = () => {
         const filesize = e.target.files[0].size / 1024 / 1024
         if (file) {
             if (filesize > 25) {
-                alert("Arquivo maior que 25MB, tente novamente")
+                setWorksModal(false)
+                setModalMessage("Arquivo maior de 25MB")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 setSelectedFile1("");
                 setFormacao1a("");
             } else {
@@ -148,7 +153,12 @@ const DocumentosForm = () => {
         const filesize = e.target.files[0].size / 1024 / 1024
         if (file) {
             if (filesize > 25) {
-                alert("Arquivo maior que 25MB, tente novamente")
+                setWorksModal(false)
+                setModalMessage("Arquivo maior de 25MB")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 setSelectedFile2("");
                 setFormacao2a("");
             } else {
@@ -165,7 +175,12 @@ const DocumentosForm = () => {
         const filesize = e.target.files[0].size / 1024 / 1024
         if (file) {
             if (filesize > 25) {
-                alert("Arquivo maior que 25MB, tente novamente")
+                setWorksModal(false)
+                setModalMessage("Arquivo maior de 25MB")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
                 setSelectedFile3("");
                 setFormacao3a("");
             } else {
