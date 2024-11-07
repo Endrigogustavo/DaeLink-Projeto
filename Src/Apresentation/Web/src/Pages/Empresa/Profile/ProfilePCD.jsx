@@ -138,7 +138,7 @@ function Profile() {
             </div>
             <div className='h-fit w-full flex px-8 responsiveprofilepage'>
                 <div className='w-2/6 h-fit flex flex-col items-center relative transform -translate-y-24 gap-2 profilepicelement'>
-                    <img class="w-64 h-64 rounded-full border-4 border-white object-cover"
+                    <img class="w-64 h-64 rounded-full border-4 border-white object-cover bg-gray-200"
                         src={userProfile.imageUrl}
                         alt="" />
                     <div className='w-full h-fit flex flex-col items-center'>

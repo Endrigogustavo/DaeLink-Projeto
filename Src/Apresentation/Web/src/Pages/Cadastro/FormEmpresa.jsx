@@ -540,7 +540,7 @@ const EmpresaFormRegister = () => {
                                                 {filteredAreas.map((filteredArea) => (
                                                     <li
                                                         key={filteredArea}
-                                                        onClick={() => handleSelectArea(filteredArea)}
+                                                        onMouseDown={() => handleSelectArea(filteredArea)} 
                                                         className="p-2 cursor-pointer hover:bg-gray-200"
                                                     >
                                                         {filteredArea}

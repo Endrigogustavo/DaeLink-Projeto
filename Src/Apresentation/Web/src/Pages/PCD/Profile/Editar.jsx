@@ -30,6 +30,68 @@ const EditarPerfil = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('Processando...');
   const [isWorksModal, setWorksModal] = useState(false);
+
+  const [trabalhosearch, setTrabalhosearch] = useState(""); // Estado para o valor digitado
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Controle de visibilidade do dropdown
+  const dropdownRef = useRef(null);
+
+  const trabalhos = [
+    "Desenvolvedor de Sistemas",
+    "Administrador",
+    "Marketeiro",
+    "Designer",
+    "Engenheiro",
+    "Recursos Humanos",
+    "Vendedor",
+    "Economista",
+    "Médico",
+    "Enfermeiro",
+    "Advogado",
+    "Professor",
+    "Psicólogo",
+    "Consultor Financeiro",
+    "Arquiteto",
+    "Farmacêutico",
+    "Cientista de Dados",
+    "Analista de Sistemas",
+    "Gestor de Projetos",
+    "Redator",
+    "Publicitário",
+    "Nutricionista",
+    "Técnico em Informática",
+    "Assistente Administrativo",
+    "Analista de Marketing",
+    "Operador de Máquinas",
+    "Contador",
+    "Químico",
+    "Engenheiro Civil",
+    "Engenheiro de Software",
+    "Analista de Recursos Humanos",
+    "Gerente de Produto",
+    "Consultor de Vendas",
+  ];
+
+
+  // Filtra as áreas com base na busca
+  const filteredAreas = trabalhos.filter((area) =>
+    area.toLowerCase().includes((trabalhosearch || '').toLowerCase())
+  );
+
+  const handleBlur = (e) => {
+    // Verifica se o foco foi perdido para um elemento fora do dropdown
+    if (dropdownRef.current && !dropdownRef.current.contains(e.relatedTarget)) {
+      setIsDropdownVisible(false);
+    }
+  };
+
+  const handleSelectArea = (selectedArea) => {
+    setTrabalhosearch(selectedArea); // Atualiza o input com o valor selecionado
+    setIsDropdownVisible(false); // Esconde o dropdown após a seleção
+    handleInputChange({ target: { name: 'trabalho', value: selectedArea } });
+  };
+
+
+
   const [userData, setUserProfile] = useState({
     name: '',
     email: '',
@@ -82,6 +144,7 @@ const EditarPerfil = () => {
         const data = GetUser.data()
         setProfileImagePreview(data.imageUrl)
         setProfileBackgroundpreview(data.imageProfile)
+        setTrabalhosearch(data.trabalho)
       } else {
         setUserProfile(null);
       }
@@ -234,7 +297,7 @@ const EditarPerfil = () => {
   const handleTabChange = async (tabIndex) => {
     setTab(tabIndex);
   };
-  
+
 
   function voltarincon(e) {
     e.preventDefault();
@@ -245,48 +308,48 @@ const EditarPerfil = () => {
     try {
       const auth = getAuth();
       const user = auth.currentUser;
-  
+
       // Solicita ao usuário que faça login novamente para reautenticação
       const credential = EmailAuthProvider.credential(
         user.email,
         prompt("Por favor, insira sua senha para confirmar a exclusão da conta:")
       );
-      
+
       // Reautentica o usuário
       await reauthenticateWithCredential(user, credential);
-  
+
       // Exclui o documento no Firestore primeiro
       const UserInfo = doc(db, "PCD", id);
       await deleteDoc(UserInfo);
-  
+
       // Exclui o usuário do Firebase Authentication
       await deleteUser(user);
-  
+
       // Exibe mensagem de sucesso e abre modal
       setWorksModal(true);
       setModalMessage("Conta deletada com sucesso");
       setModalOpen(true);
-  
+
       // Aguarda 4 segundos para dar feedback visual antes de redirecionar
       setTimeout(() => {
         navigate('/');
       }, 4000);
-  
+
     } catch (error) {
       console.error("Erro ao deletar a conta:", error);
-  
+
       // Exibe mensagem de erro e abre modal
       setWorksModal(false);
       setModalMessage("Erro ao deletar a conta.");
       setModalOpen(true);
-  
+
       // Fecha o modal após 2.2 segundos
       setTimeout(() => {
         setModalOpen(false);
       }, 2200);
     }
   };
-  
+
 
   // Função para verificar o tamanho da tela e trocar os textos
   const checkScreenSize = () => {
@@ -358,7 +421,7 @@ const EditarPerfil = () => {
               <img src={userData.imageUrl} className="w-20 h-20 rounded-full border-4 border-blue-600 object-cover" alt="" />
               <div className="flex flex-col gap-2">
                 <h1 className="font-bold text-white ">
-                   {getFirstAndLastName(userName)}
+                  {getFirstAndLastName(userName)}
                 </h1>
               </div>
             </div>
@@ -485,27 +548,38 @@ const EditarPerfil = () => {
 
               {tab === 2 && (
                 <>
-                  <div className="flex flex-col ">
+                  <div className="flex flex-col w-80 relative">
                     <label className="text-lg font-medium">Área</label>
-                    <select
-                      name="trabalho"
-                      value={userData.trabalho}
-                      onChange={handleInputChange}
-                      className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                    >
-                      <option value="" disabled>Selecione sua Área</option>
-                      <option value="Desenvolvedor de Sistemas">Desenvolvedor de Sistemas</option>
-                      <option value="Administrador">Administrador</option>
-                      <option value="Marketeiro">Marketeiro</option>
-                      <option value="Designer">Designer</option>
-                      <option value="Engenheiro">Engenheiro</option>
-                      <option value="Recursos Humanos">Recursos Humanos</option>
-                      <option value="Vendedor">Vendedor</option>
-                      <option value="Economista">Economista</option>
-                      <option value="Médico">Médico</option>
-
-                    </select>
-
+                    <input
+                      type="text"
+                      placeholder="Digite para filtrar a área"
+                      name="area"
+                      value={trabalhosearch}
+                      onChange={(e) => {
+                        setTrabalhosearch(e.target.value);
+                        handleSelectArea(e.target.value)
+                        setIsDropdownVisible(e.target.value.length > 0 && filteredAreas.length > 0);
+                      }}
+                      onFocus={() => setIsDropdownVisible(trabalhosearch.length > 0 && filteredAreas.length > 0)}
+                      onBlur={handleBlur}
+                      className="w-full border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                    />
+                    {isDropdownVisible && filteredAreas.length > 0 && (
+                      <ul
+                        className="border border-gray-300 rounded-lg mt-2 max-h-40 overflow-y-auto bg-white absolute top-20 w-full"
+                        ref={dropdownRef}
+                      >
+                        {filteredAreas.map((filteredArea) => (
+                          <li
+                            key={filteredArea}
+                            onMouseDown={() => handleSelectArea(filteredArea)} // Mantém onMouseDown no <li>
+                            className="p-2 cursor-pointer hover:bg-gray-200"
+                          >
+                            {filteredArea}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
 
 

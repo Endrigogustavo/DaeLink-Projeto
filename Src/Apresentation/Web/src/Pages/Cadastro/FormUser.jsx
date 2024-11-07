@@ -40,6 +40,65 @@ const UserFormRegister = () => {
     const [modalMessage, setModalMessage] = useState('Processando...');
     const [isWorksModal, setWorksModal] = useState(false);
 
+    const [trabalhosearch, setTrabalhosearch] = useState(""); // Estado para o valor digitado
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Controle de visibilidade do dropdown
+    const dropdownRef = useRef(null);
+
+    const trabalhos = [
+        "Desenvolvedor de Sistemas",
+        "Administrador",
+        "Marketeiro",
+        "Designer",
+        "Engenheiro",
+        "Recursos Humanos",
+        "Vendedor",
+        "Economista",
+        "Médico",
+        "Enfermeiro",
+        "Advogado",
+        "Professor",
+        "Psicólogo",
+        "Consultor Financeiro",
+        "Arquiteto",
+        "Farmacêutico",
+        "Cientista de Dados",
+        "Analista de Sistemas",
+        "Gestor de Projetos",
+        "Redator",
+        "Publicitário",
+        "Nutricionista",
+        "Técnico em Informática",
+        "Assistente Administrativo",
+        "Analista de Marketing",
+        "Operador de Máquinas",
+        "Contador",
+        "Químico",
+        "Engenheiro Civil",
+        "Engenheiro de Software",
+        "Analista de Recursos Humanos",
+        "Gerente de Produto",
+        "Consultor de Vendas",
+    ];
+    
+
+    // Filtra as áreas com base na busca
+    const filteredAreas = trabalhos.filter((area) =>
+        area.toLowerCase().includes(trabalhosearch.toLowerCase())
+    );
+
+    const handleBlur = (e) => {
+        // Verifica se o foco foi perdido para um elemento fora do dropdown
+        if (dropdownRef.current && !dropdownRef.current.contains(e.relatedTarget)) {
+            setIsDropdownVisible(false);
+        }
+    };
+
+    const handleSelectArea = (selectedArea) => {
+        setTrabalho(selectedArea); // Define a área selecionada
+        setTrabalhosearch(selectedArea); // Atualiza o input com o valor selecionado
+        setIsDropdownVisible(false); // Esconde o dropdown após a seleção
+    };
+
 
 
     const handleCheckboxChange = (event) => {
@@ -195,37 +254,49 @@ const UserFormRegister = () => {
         }
 
 
-        setLoading(true);
-        const response = await registerUser(name, email, password, idade, deficiencia, descricao, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, laudomedico, CPF, {});
-
-        try {
-            if (response.success) {
-                const auth = getAuth();
-                const user = auth.currentUser; // Certifique-se de obter o 'user' da autenticação
-                const id = user.uid; // Pegue o UID do usuário autenticado
-                localStorage.setItem('userId', id);
-
-                setWorksModal(true)
-                setModalMessage("Cadastro Realizado com Sucesso");
-                setModalOpen(true);
-                await sendEmailVerification(auth.currentUser)
-                    .then(() => {
-                        setModalOpen(true);
-                    });
-
-                setTimeout(() => {
-                    navigate('/homeuser');
-                }, 3000);
-            }
-        } catch (error) {
+        if (!trabalhos.includes(trabalho)) {
             setWorksModal(false)
-            setModalMessage(error.message)
+            setModalMessage("Área inválida")
             setModalOpen(true)
             setTimeout(() => {
                 setModalOpen(false);
+                return;
             }, 2200);
-        } finally {
-            setLoading(false); // Desativar o loading
+        } else {
+
+
+            setLoading(true);
+            const response = await registerUser(name, email, password, idade, deficiencia, descricao, trabalho, profileImage, backgroundImage, sobre, experiencias, tipo, laudomedico, CPF, {});
+
+            try {
+                if (response.success) {
+                    const auth = getAuth();
+                    const user = auth.currentUser; // Certifique-se de obter o 'user' da autenticação
+                    const id = user.uid; // Pegue o UID do usuário autenticado
+                    localStorage.setItem('userId', id);
+
+                    setWorksModal(true)
+                    setModalMessage("Cadastro Realizado com Sucesso");
+                    setModalOpen(true);
+                    await sendEmailVerification(auth.currentUser)
+                        .then(() => {
+                            setModalOpen(true);
+                        });
+
+                    setTimeout(() => {
+                        navigate('/homeuser');
+                    }, 3000);
+                }
+            } catch (error) {
+                setWorksModal(false)
+                setModalMessage(error.message)
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
+            } finally {
+                setLoading(false); // Desativar o loading
+            }
         }
 
     }
@@ -476,27 +547,36 @@ const UserFormRegister = () => {
                                         {cpfError && <span className="text-red-500 text-sm">{cpfError}</span>}
                                     </div>
 
-                                    <div className="flex flex-col ">
+                                    <div className="flex flex-col w-80 relative ">
                                         <label className="text-lg font-medium">Área</label>
-                                        <select
-                                            name="area"
+                                        <input
+                                            type="text"
+                                            placeholder="Digite para filtrar a área"
                                             value={trabalho}
-                                            onChange={(e) => setTrabalho(e.target.value)}
-                                            className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                                        >
-                                            <option value="" disabled>Selecione sua Área</option>
-                                            <option value="Desenvolvedor de Sistemas">Desenvolvedor de Sistemas</option>
-                                            <option value="Administrador">Administrador</option>
-                                            <option value="Marketeiro">Marketeiro</option>
-                                            <option value="Designer">Designer</option>
-                                            <option value="Engenheiro">Engenheiro</option>
-                                            <option value="Recursos Humanos">Recursos Humanos</option>
-                                            <option value="Vendedor">Vendedor</option>
-                                            <option value="Economista">Economista</option>
-                                            <option value="Médico">Médico</option>
-
-                                        </select>
-
+                                            onChange={(e) => {
+                                                setTrabalhosearch(e.target.value);
+                                                handleSelectArea(e.target.value)
+                                                setIsDropdownVisible(e.target.value.length > 0 && filteredAreas.length > 0); // Mostra o dropdown apenas se houver texto e resultados
+                                            }}
+                                            onFocus={() => setIsDropdownVisible(trabalhosearch.length > 0 && filteredAreas.length > 0)} // Mostra o dropdown ao focar no input se houver resultados
+                                            onBlur={handleBlur}
+                                            className="w-full border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                                        />
+                                        {isDropdownVisible && filteredAreas.length > 0 && (
+                                            <ul className="border border-gray-300 rounded-lg mt-2 max-h-40 overflow-y-auto bg-white absolute top-20  w-full"
+                                                ref={dropdownRef}
+                                            >
+                                                {filteredAreas.map((filteredArea) => (
+                                                    <li
+                                                        key={filteredArea}
+                                                        onMouseDown={() => handleSelectArea(filteredArea)} 
+                                                        className="p-2 cursor-pointer hover:bg-gray-200"
+                                                    >
+                                                        {filteredArea}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
                                     </div>
 
                                     <div className="flex flex-col ">

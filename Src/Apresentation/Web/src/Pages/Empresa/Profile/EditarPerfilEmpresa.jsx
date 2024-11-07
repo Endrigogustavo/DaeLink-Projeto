@@ -27,6 +27,47 @@ const EditarPerfil = () => {
   const [modalMessage, setModalMessage] = useState('Processando...');
   const [isWorksModal, setWorksModal] = useState(false);
 
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Controle de visibilidade do dropdown
+  const dropdownRef = useRef(null);
+  const [ramosearch, setRamosearch] = useState("");
+
+  const ramos = [
+    "Alimentação",
+    "Automotivo",
+    "Comércio",
+    "E-commerce",
+    "Educação",
+    "Entretenimento",
+    "Entretenimento Digital",
+    "Esportes",
+    "Finanças",
+    "Logística",
+    "Marketing Digital",
+    "Moda",
+    "Saúde e Bem-Estar",
+    "Segurança",
+    "Tecnologia",
+    "Tecnologia da Informação",
+    "Varejo",
+  ];
+
+  // Filtra as áreas com base na busca
+  const filteredAreas = ramos.filter((area) =>
+    area.toLowerCase().includes(ramosearch.toLowerCase())
+  );
+
+  const handleBlur = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.relatedTarget)) {
+      setIsDropdownVisible(false);
+    }
+  };
+
+  const handleSelectArea = (selectedArea) => {
+    setRamosearch(selectedArea); // Atualiza o input com o valor selecionado
+    setIsDropdownVisible(false); // Esconde o dropdown após a seleção
+    handleInputChange({ target: { name: 'area', value: selectedArea } });
+  };
+
   const [CNPJError, setCNPJErro] = useState('')
   // Informações do usuario
   const [userData, setUserProfile] = useState({
@@ -66,6 +107,7 @@ const EditarPerfil = () => {
         const data = GetCompany.data()
         setProfileImagePreview(data.imageUrl)
         setProfileBackgroundpreview(data.imageProfile)
+        setRamosearch(data.area)
       } else {
         setUserProfile(null);
       }
@@ -100,32 +142,40 @@ const EditarPerfil = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!ramos.includes(ramosearch)) {
+        setWorksModal(false)
+        setModalMessage("Ramo inválido")
+        setModalOpen(true)
+        setTimeout(() => {
+          setModalOpen(false);
+          return;
+        }, 2200);
+      } else {
+        const userDoc = doc(db, "Empresa", userId);
 
-      const userDoc = doc(db, "Empresa", userId);
+        await updateDoc(userDoc, {
+          cep: userData.cep,
+          email: userData.email,
+          name: userData.name,
+          cnpj: userData.cnpj,
+          endereco: userData.endereco,
+          sobre: userData.sobre,
+          area: userData.area,
+          userId: userId,
+        });
 
-      await updateDoc(userDoc, {
-        cep: userData.cep,
-        email: userData.email,
-        name: userData.name,
-        cnpj: userData.cnpj,
-        endereco: userData.endereco,
-        sobre: userData.sobre,
-        area: userData.area,
-        userId: userId,
-      });
-
-      const auth = getAuth();
-      updateEmail(auth.currentUser, userData.email).then(() => {
-        // Email updated!
-        // ...
-      })
-      setWorksModal(true)
-      setModalMessage("Conta Atualizada com sucesso.")
-      setModalOpen(true)
-      setTimeout(() => {
-        navigate(-1);
-      }, 2200);
-
+        const auth = getAuth();
+        updateEmail(auth.currentUser, userData.email).then(() => {
+          // Email updated!
+          // ...
+        })
+        setWorksModal(true)
+        setModalMessage("Conta Atualizada com sucesso.")
+        setModalOpen(true)
+        setTimeout(() => {
+          navigate(-1);
+        }, 2200);
+      }
     } catch (e) {
       console.error("Erro ao Atualizar ", e);
 
@@ -197,7 +247,7 @@ const EditarPerfil = () => {
   const handleTabChange = async (tabIndex) => {
     setTab(tabIndex);
   };
-  
+
 
   const checkScreenSize = () => {
     const mediaQuery = window.matchMedia("(max-width: 580px)");
@@ -417,35 +467,40 @@ const EditarPerfil = () => {
 
               {tab === 2 && (
                 <>
-                  <div className="flex flex-col ">
+                  <div className="flex flex-col w-80 relative">
                     <label className="text-lg font-medium">Ramo da Empresa</label>
-                    <select
+                    <input
+                      type="text"
+                      placeholder="Digite para filtrar a área"
                       name="area"
-                      value={userData.area}
-                      onChange={handleInputChange}
-                      className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                    >
-                      <option value="" disabled>Selecione a área de atuação</option>
-                      <option value="Alimentação">Alimentação</option>
-                      <option value="Automotivo">Automotivo</option>
-                      <option value="Comércio">Comércio</option>
-                      <option value="E-commerce">E-commerce</option>
-                      <option value="Educação">Educação</option>
-                      <option value="Entretenimento">Entretenimento</option>
-                      <option value="Entretenimento Digital">Entretenimento Digital</option>
-                      <option value="Esportes">Esportes</option>
-                      <option value="Finanças">Finanças</option>
-                      <option value="Logística">Logística</option>
-                      <option value="Marketing Digital">Marketing Digital</option>
-                      <option value="Moda">Moda</option>
-                      <option value="Saúde e Bem-Estar">Saúde e Bem-Estar</option>
-                      <option value="Segurança">Segurança</option>
-                      <option value="Tecnologia">Tecnologia</option>
-                      <option value="Tecnologia da Informação">Tecnologia da Informação</option>
-                      <option value="Varejo">Varejo</option>
-
-                    </select>
+                      value={ramosearch}
+                      onChange={(e) => {
+                        setRamosearch(e.target.value);
+                        handleSelectArea(e.target.value);
+                        setIsDropdownVisible(e.target.value.length > 0 && filteredAreas.length > 0);
+                      }}
+                      onFocus={() => setIsDropdownVisible(ramosearch.length > 0 && filteredAreas.length > 0)}
+                      onBlur={handleBlur}
+                      className="w-full border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
+                    />
+                    {isDropdownVisible && filteredAreas.length > 0 && (
+                      <ul
+                        className="border border-gray-300 rounded-lg mt-2 max-h-40 overflow-y-auto bg-white absolute top-20 w-full"
+                        ref={dropdownRef}
+                      >
+                        {filteredAreas.map((filteredArea) => (
+                          <li
+                            key={filteredArea}
+                            onMouseDown={() => handleSelectArea(filteredArea)} // Mantém onMouseDown no <li>
+                            className="p-2 cursor-pointer hover:bg-gray-200"
+                          >
+                            {filteredArea}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
+
 
 
                   <div className="flex flex-col ">
