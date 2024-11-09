@@ -45,7 +45,8 @@ const Vagaslist = () => {
                         const empresaData = empresaDoc.data();
                         empresasTemp[vaga.empresaId] = {
                             imageUrl: empresaData.imageUrl,
-                            imageProfile: empresaData.imageProfile
+                            imageProfile: empresaData.imageProfile,
+                            empresaname: empresaData.name
                         };
                     } else {
                         console.log(`Empresa não encontrada `);
@@ -106,7 +107,7 @@ const Vagaslist = () => {
                     </button>
                 </div>
             </section>
-            <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : 'grid Vagascontainer gap-4 justify-items-center items-center pb-4'}`}>
+            <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : 'grid Vagascontainer gap-4  gap-y-12 justify-items-center items-center py-12'}`}>
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
@@ -126,7 +127,7 @@ const Vagaslist = () => {
                                             />
                                         </div>
                                         <div className='h-2/6 w-full  flex justify-center'>
-                                            <h1 className='font-bold text-center text-base text-wrap overflow-x-hidden'>{vaga.empresa}</h1>
+                                            <h1 className='font-bold text-center text-base text-wrap overflow-x-hidden'>{empresa.empresaname}</h1>
                                         </div>
                                     </div>
                                     <div className='w-4/6 h-full flex flex-col items-center justify-center'>
@@ -134,7 +135,7 @@ const Vagaslist = () => {
                                             <h1 className='font-bold text-xl text-center w-4/6'>{vaga.vaga}</h1>
                                         </div>
                                         <div className='w-full h-2/6 flex flex-col px-2 '>
-                                            <p className='opacity-80 truncate'>{vaga.status}</p>
+                                            <p className='opacity-80'>{vaga.status}</p>
                                             <p className='opacity-80'>{vaga.tipo}</p>
                                             <p className='opacity-80'>R${vaga.salario}</p>
                                         </div>

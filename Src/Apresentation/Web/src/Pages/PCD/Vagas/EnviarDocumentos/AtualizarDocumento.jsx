@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { doc, collection, updateDoc, getDocs, query, where, deleteDoc, getDoc } from "firebase/firestore";
 import { db, storage, auth } from "../../../../Database/Firebase";
 import { useNavigate, useParams } from 'react-router-dom';
@@ -15,9 +15,9 @@ import Navbar from "../../Navbar/Navbar";
 const DocumentosForm = () => {
 
     const [idDoc, setDoc] = useState("")
-    const [selectedFile1, setSelectedFile1] = useState(null);
-    const [selectedFile2, setSelectedFile2] = useState(null);
-    const [selectedFile3, setSelectedFile3] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([null, null, null]);
+    const [fileNames, setFileNames] = useState(["", "", ""]);
+    const inputFileRefs = [useRef(null), useRef(null), useRef(null)];
     const [userUid, setUserUid] = useState(null)
     const [docProfile, setDocProfile] = useState({
         nome: '',
@@ -28,9 +28,33 @@ const DocumentosForm = () => {
         experiencia1: '',
         idiomas: '',
     });
+
+
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('Processando...');
     const [isWorksModal, setWorksModal] = useState(false);
+
+    const [Doclist, setDoclistState] = useState(false);
+    const doclistRef = useRef(null);
+
+    const [activeDropdownIndex, setActiveDropdownIndex] = useState(null);
+    const toggleDropdown = (index) => {
+        setActiveDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
+    };
+
+    const handleClickOutside = useCallback((event) => {
+        // Verifica se o clique está fora da referência
+        if (doclistRef.current && !doclistRef.current.contains(event.target)) {
+            setActiveDropdownIndex(null); // Fecha o dropdown ao clicar fora
+        }
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside); // Detecta clique fora do Doclist
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside); // Limpa o ouvinte ao desmontar o componente
+        };
+    }, [handleClickOutside]);
 
     const {
         userId, setUserId,
@@ -50,9 +74,6 @@ const DocumentosForm = () => {
     } = DocumentosStates();
 
     const navigate = useNavigate();
-    const inputFileRef1 = useRef(null);
-    const inputFileRef2 = useRef(null);
-    const inputFileRef3 = useRef(null);
 
     const enderecoRef = useRef(null);
     const experienciaRef = useRef(null);
@@ -106,91 +127,54 @@ const DocumentosForm = () => {
                 const IdDoc = localStorage.getItem('IdDoc');
                 const response = await axios.post(`http://localhost:3000/get-doc/`, { vagaId, candidatoDoc, IdDoc }, { withCredentials: true });
 
+                console.log('Resposta recebida:', response.data); // Adiciona esse log para inspecionar a resposta
+
                 setDocProfile(response.data);
+
+                // Verificando se as respostas contêm referências de arquivos ou URLs
+                const fileRefs = [
+                    response.data.formacao_academica1,
+                    response.data.formacao_academica2,
+                    response.data.formacao_academica3
+                ];
+
+                console.log('Referências de arquivos:', fileRefs); // Verificando as referências de arquivos
+
+                // Se os arquivos forem referências de Firebase ou URLs
+                const fetchFileNames = async () => {
+                    const names = await Promise.all(fileRefs.map(async (fileRef) => {
+                        if (fileRef && fileRef.getMetadata) {
+                            const metadata = await fileRef.getMetadata(); // Se for uma referência de arquivo, pegar os metadados
+                            console.log('Metadados:', metadata); // Verifique os metadados
+                            return metadata.name;
+                        } else if (fileRef && fileRef.name) {
+                            // Se for um arquivo direto com nome
+                            return fileRef.name;
+                        }
+                        return 'Nome não disponível';
+                    }));
+
+                    console.log('Arquivo:', names); // Exibindo os nomes dos arquivos
+                    setFileNames(names);
+                };
+
+                fetchFileNames();
+
+                setSelectedFiles(fileRefs);
             } catch (error) {
                 console.error("Erro ao buscar documentos:", error);
-                setWorksModal(false)
-                setModalMessage("Ocorreu um erro ao buscar documentos.")
-                setModalOpen(true)
+                setWorksModal(false);
+                setModalMessage("Ocorreu um erro ao buscar documentos.");
+                setModalOpen(true);
                 setTimeout(() => {
-                    setModalOpen(false)
+                    setModalOpen(false);
                 }, 2200);
             }
-        }
+        };
 
         getDocPCD();
-    }, [vagaUid, userId]);
+    }, []); // Dependências podem ser ajustadas conforme necessário, por exemplo, `vagaUid` e `userId`
 
-
-
-
-
-    const handleFileChange1 = (e) => {
-        const file = e.target.files[0];
-        const filesize = e.target.files[0].size / 1024 / 1024
-        if (file) {
-            if (filesize > 25) {
-                setWorksModal(false)
-                setModalMessage("Arquivo maior de 25MB")
-                setModalOpen(true)
-                setTimeout(() => {
-                    setModalOpen(false);
-                }, 2200);
-                setSelectedFile1("");
-                setFormacao1a("");
-            } else {
-                setSelectedFile1(file);
-                setFormacao1a(file);
-                inputFileRef1.current.style.display = 'none';
-
-            }
-
-        }
-    };
-
-    const handleFileChange2 = (e) => {
-        const file = e.target.files[0];
-        const filesize = e.target.files[0].size / 1024 / 1024
-        if (file) {
-            if (filesize > 25) {
-                setWorksModal(false)
-                setModalMessage("Arquivo maior de 25MB")
-                setModalOpen(true)
-                setTimeout(() => {
-                    setModalOpen(false);
-                }, 2200);
-                setSelectedFile2("");
-                setFormacao2a("");
-            } else {
-                setSelectedFile2(file);
-                setFormacao2a(file);
-                inputFileRef2.current.style.display = 'none';
-            }
-
-        }
-    };
-
-    const handleFileChange3 = (e) => {
-        const file = e.target.files[0];
-        const filesize = e.target.files[0].size / 1024 / 1024
-        if (file) {
-            if (filesize > 25) {
-                setWorksModal(false)
-                setModalMessage("Arquivo maior de 25MB")
-                setModalOpen(true)
-                setTimeout(() => {
-                    setModalOpen(false);
-                }, 2200);
-                setSelectedFile3("");
-                setFormacao3a("");
-            } else {
-                setSelectedFile3(file);
-                setFormacao3a(file);
-                inputFileRef3.current.style.display = 'none';
-            }
-           
-        }
-    };
 
 
     const handleInputChange = (e) => {
@@ -203,7 +187,7 @@ const DocumentosForm = () => {
 
         try {
             // Verifica se um arquivo foi selecionado
-            if (!selectedFile1 && !selectedFile2 && !selectedFile3) {
+            if (!selectedFiles.some(file => file !== null)) {
                 setWorksModal(false)
                 setModalMessage("Selecione pelo menos um documento para enviar.")
                 setModalOpen(true)
@@ -222,11 +206,9 @@ const DocumentosForm = () => {
             };
 
             // Obtemos a URL de download de todos os arquivos selecionados
-            const downloadURLs = await Promise.all([
-                selectedFile1 ? uploadFile(selectedFile1) : null,
-                selectedFile2 ? uploadFile(selectedFile2) : null,
-                selectedFile3 ? uploadFile(selectedFile3) : null,
-            ]);
+            const downloadURLs = await Promise.all(
+                selectedFiles.map(file => file ? uploadFile(file) : null)
+            );
 
             // Referência para a coleção de candidatos
             const candidatosRef = collection(db, "Vagas", vagaUid, "candidatos");
@@ -249,9 +231,9 @@ const DocumentosForm = () => {
                     idade: docProfile.idade,
                     objetivo: docProfile.objetivo,
                     experiencia1: docProfile.experiencia1,
-                    formacao_academica1: selectedFile1 ? downloadURLs[0] : null,
-                    formacao_academica2: selectedFile2 ? downloadURLs[1] : null,
-                    formacao_academica3: selectedFile3 ? downloadURLs[2] : null,
+                    formacao_academica1: selectedFiles[0] ? downloadURLs[0] : null,
+                    formacao_academica2: selectedFiles[1] ? downloadURLs[1] : null,
+                    formacao_academica3: selectedFiles[2] ? downloadURLs[2] : null,
                     idiomas: docProfile.idiomas,
                     userId
                 });
@@ -260,12 +242,10 @@ const DocumentosForm = () => {
                 setModalMessage("Documento atualizado com sucesso!")
                 setModalOpen(true)
                 setTimeout(() => {
-                    setSelectedFile1(null);
-                    setSelectedFile2(null);
-                    setSelectedFile3(null);
+                    setSelectedFiles([null, null, null]);
                     setDocumento(null);
-                    navigate(`/homeuser`);
-                }, 4000);
+                    navigate(`/processos`);
+                }, 2200);
 
             } else {
                 console.error("Candidato não encontrado.");
@@ -318,9 +298,50 @@ const DocumentosForm = () => {
         }
     }
 
+    const renderFileNameWithExtension = (fileName) => {
+        const maxNameLength = 10; // Ajuste para limitar o nome a um certo número de caracteres
+        const [name, extension] = fileName.split(/(?=\.[^.]+$)/);
+
+        // Corta o nome se ultrapassar o limite
+        const displayName = name.length > maxNameLength
+            ? name.substring(0, maxNameLength) + ""
+            : name;
+
+        return (
+            <p className="text-xs break-words text-center font-semibold normal-case">
+                {displayName} {extension}
+            </p>
+        );
+    };
+
+    const handleFileChange = (index) => (e) => {
+        const file = e.target.files[0];
+        const filesize = file.size / 1024 / 1024;
+        if (file) {
+            if (filesize > 25) {
+                setWorksModal(false);
+                setModalMessage("Arquivo maior de 25MB");
+                setModalOpen(true);
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
+            } else {
+                const updatedFiles = [...selectedFiles];
+                updatedFiles[index] = file;
+                setSelectedFiles(updatedFiles);
+
+                const updatedFileNames = [...fileNames];
+                updatedFileNames[index] = file.name;
+                setFileNames(updatedFileNames);
+
+                inputFileRefs[index].current.style.display = 'none'; // Hide the input after selecting the file
+            }
+        }
+    };
+
     return (
         <>
-        <Navbar />
+            <Navbar />
             <div>
                 <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
             </div>
@@ -331,9 +352,9 @@ const DocumentosForm = () => {
                         <FaFile className='text-5xl text-gray-900 text-center' />
                     </div>
                     <div className='w-5/6 h-full flex items-center justify-center flex-col'>
-                        <p className='font-medium text-lg text-center'>Envio de Documentos</p>
+                        <p className='font-medium text-lg text-center'>Atualização de Documentos</p>
                         <p className='font-normal text-base text-left w-full'>
-                            Coloque aqueles que comprovem sua Deficiência, Currículo, Diplomas...
+                            Modifique conforme as atualizações.
                         </p>
                     </div>
                 </div>
@@ -430,104 +451,102 @@ const DocumentosForm = () => {
                 <div className="flex flex-col">
                     <label className="text-lg font-medium items-center flex gap-2">
                         Formações
-                        <p className="opacity-80 text-sm">limite 3</p>
+                        <p className="opacity-80 text-sm">Max 3</p>
                     </label>
                     <div className="flex gap-2">
-                        {/* Formacao 1 */}
-                        <div>
-                            <label
-                                htmlFor="formacao1-input"
-                                className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl flex flex-col items-center justify-center cursor-pointer ${selectedFile1 ? 'w-32' : 'w-16'
-                                    }`}
-                            >
-                                {selectedFile1 ? (
-                                    <>
-                                        <FaFile size={32} />
-                                        <p className="truncate w-5/6">{selectedFile1.name}</p>
-                                    </>
-                                ) : (
-                                    <IoAddCircleSharp size={32} />
-                                )}
-                            </label>
-                            <input
-                                id="formacao1-input"
-                                type="file"
-                                className='hidden'
-                                accept=".pdf,.doc,.docx,.png,.jpg"
-                                ref={inputFileRef1}
-                                onChange={handleFileChange1}
-                            />
-                        </div>
+                        {["1º Documento", "2º Documento", "3º Documento"].map((label, index) => (
+                            <div key={index} className="flex flex-col relative">
+                                <label
+                                    htmlFor={fileNames[index] ? '' : inputFileRefs[index].current?.id}
+                                    className={`h-fit shadow-2xl rounded-2xl flex border-gray-400 border-2 relative 
+                                    flex flex-col items-center justify-center cursor-pointer ${fileNames[index] ? ' w-28 h-24 text-wrap overflow-hidden ' : 'w-16 py-3 px-1'
+                                        }`}
+                                    onClick={fileNames[index] ? () => toggleDropdown(index) : undefined}
+                                >
+                                    {fileNames[index] ? (
+                                        <>
+                                            <div className="w-full h-3/6 flex items-center justify-center">
+                                                <FaFile size={28} className="text-blue-900" />
+                                            </div>
+                                            <div className="w-full h-2/6 flex items-center justify-center overflow-hidden">
+                                                {renderFileNameWithExtension(fileNames[index])}
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <IoAddCircleSharp size={32} />
+                                    )}
+                                </label>
+                                <input
+                                    id={`input-file-${index}`}
+                                    type="file"
+                                    accept=".pdf,.doc,.docx,.png,.jpg"
+                                    ref={inputFileRefs[index]}
+                                    onChange={handleFileChange(index)}
+                                    hidden
+                                />
 
-                        {/* Formacao 2 */}
-                        <div>
-                            <label
-                                htmlFor="formacao2-input"
-                                className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl flex flex-col items-center justify-center cursor-pointer ${selectedFile2 ? 'w-32' : 'w-16'
-                                    }`}
-                            >
-                                {selectedFile2 ? (
-                                    <>
-                                        <FaFile size={32} />
-                                        <p className="truncate  w-5/6"> {selectedFile2.name}</p>
-                                    </>
-                                ) : (
-                                    <IoAddCircleSharp size={32} />
+                                {/* Dropdown de opções */}
+                                {activeDropdownIndex === index && ( // Apenas exibe o dropdown se o índice ativo corresponder
+                                    <ul
+                                        className="border border-gray-300 rounded-lg bg-white absolute left-full ml-2 mt-1 z-20 w-40 shadow-lg"
+                                        ref={doclistRef}
+                                    >
+                                        <li
+                                            className="p-2 cursor-pointer hover:bg-gray-200"
+                                            onClick={() => window.open(selectedFiles[index], '_blank')}
+                                        >
+                                            Visualizar
+                                        </li>
+                                        <li
+                                            className="p-2 cursor-pointer hover:bg-gray-200"
+                                            onClick={() => {
+                                                // Permitir seleção de novo arquivo (Edit)
+                                                inputFileRefs[index].current?.click();
+                                            }}
+                                        >
+                                            Editar
+                                        </li>
+                                        <li
+                                            className="p-2 cursor-pointer hover:bg-gray-200 text-red-600"
+                                            onClick={() => {
+                                                const updatedFiles = [...selectedFiles];
+                                                updatedFiles[index] = null;
+                                                setSelectedFiles(updatedFiles);
+                                                const updatedFileNames = [...fileNames];
+                                                updatedFileNames[index] = '';
+                                                setFileNames(updatedFileNames);
+                                                setActiveDropdownIndex(null); // Fecha o dropdown após excluir
+                                            }}
+                                        >
+                                            Excluir
+                                        </li>
+                                    </ul>
                                 )}
-                            </label>
-                            <input
-                                id="formacao2-input"
-                                type="file"
-                                className='hidden'
-                                accept=".pdf,.doc,.docx"
-                                ref={inputFileRef2}
-                                onChange={handleFileChange2}
-                            />
-                        </div>
-
-                        {/* Formacao 3 */}
-                        <div>
-                            <label
-                                htmlFor="formacao3-input"
-                                className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl flex flex-col items-center justify-center cursor-pointer ${selectedFile3 ? 'w-32' : 'w-16'
-                                    }`}>
-                                {selectedFile3 ? (
-                                    <>
-                                        <FaFile size={32} />
-                                        <p className="truncate w-5/6">{selectedFile3.name}</p>
-                                    </>
-                                ) : (
-                                    <IoAddCircleSharp size={32} />
-                                )}
-                            </label>
-                            <input
-                                id="formacao3-input"
-                                type="file"
-                                className='hidden'
-                                accept=".pdf,.doc,.docx"
-                                ref={inputFileRef3}
-                                onChange={handleFileChange3}
-                            />
-                        </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
-                <button
-                    type="submit"
-                    className="w-56 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-3 px-4 rounded-full transition-all"
-                >
-                    Enviar Documentos
-                </button>
+                <div className="flex gap-2 items-center justify-center">
+                    <button
+                        type="submit"
+                        className="w-32 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-3 px-4 rounded-full transition-all"
+                    >
+                        Atualizar 
+                    </button>
+
+                    <button
+                        onClick={() => DeletarDoc()}
+                        type="button"
+                        className="w-32 bg-red-500 hover:bg-red-400 text-white font-bold text-sm py-3 px-4 rounded-full transition-all"
+                    >
+                        Deletar Doc
+                    </button>
+                </div>
 
 
             </form>
-            <button
-                onClick={() => DeletarDoc()}
-                type="submit"
-                className="w-56 bg-blue-700 hover:bg-blue-500 text-white font-bold text-sm py-3 px-4 rounded-full transition-all"
-            >
-                Deletar Documento
-            </button>
+
         </>
     );
 };

@@ -59,6 +59,7 @@ const ProcessosList = () => {
                                     empresa: {
                                         imageUrl: empresaData.imageUrl,
                                         imageProfile: empresaData.imageProfile,
+                                        name: empresaData.name
                                     }
                                 };
                             }
@@ -126,7 +127,7 @@ const ProcessosList = () => {
             case 'Aprovado':
                 return 'bg-green-500'; // Verde para aprovado
             case 'Reprovado':
-                return 'bg-red-600'; // Vermelho para reprovado
+                return 'bg-red-500'; // Vermelho para reprovado
             case 'Pendente':
                 return 'bg-gray-500'; // Cinza para pendente
             default:
@@ -139,7 +140,7 @@ const ProcessosList = () => {
             <div>
                 <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
             </div>
-            <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : (vagas.length > 0 ? 'grid Processoscontainer gap-4 justify-items-center items-center pb-4' : 'flex pb-8')}`}>
+            <div className={`w-full h-fit flex justify-center items-center flex-col ${loading ? '' : (vagas.length > 0 ? 'grid Processoscontainer gap-4  gap-y-12 justify-items-center items-center pb-4' : 'flex pb-8')}`}>
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>

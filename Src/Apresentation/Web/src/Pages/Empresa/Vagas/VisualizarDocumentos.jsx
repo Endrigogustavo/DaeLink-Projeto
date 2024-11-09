@@ -152,7 +152,7 @@ function VisualizarDocumentos() {
               <img
                 src={currentCandidate.imageUrl}
                 alt=""
-                className='w-32 h-32 rounded-3xl shadow-2xl border-4 border-blue-600'
+                className='w-32 h-32 rounded-3xl shadow-2xl border-4 border-blue-600 object-cover'
               />
 
               <div className='h-fit w-fit flex flex-col justify-center items-center gap-2'>

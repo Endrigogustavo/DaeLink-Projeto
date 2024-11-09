@@ -85,7 +85,7 @@ const CandidatosTable = () => {
             </section>
 
             <div
-                className={`w-full h-fit overflow-x-hidden  Pcdscontainer gap-4 justify-items-center justify-center items-center ${hasSearched ? 'py-6 grid ' : ''}`}
+                className={`w-full h-fit overflow-x-hidden  Pcdscontainer gap-4 gap-y-12 justify-items-center justify-center items-center ${hasSearched ? 'py-6 pb-12 grid ' : ''}`}
             >
                 {loading ? (
                     // Exibe skeleton loaders enquanto está carregando

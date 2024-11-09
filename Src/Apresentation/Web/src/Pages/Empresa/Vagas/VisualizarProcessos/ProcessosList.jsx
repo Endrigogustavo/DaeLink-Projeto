@@ -117,7 +117,7 @@ function ProcessosList() {
                 />
             
 
-            <div className={`w-full h-fit flex justify-center items-center flex-col py-4 ${vagas.length > 0 ? 'grid ProcessosEmpresas gap-y-6 justify-items-center items-center' : ''}`}>
+            <div className={`w-full h-fit flex justify-center items-center flex-col py-4 ${vagas.length > 0 ? 'grid ProcessosEmpresas gap-4 gap-y-12 justify-items-center items-center' : ''}`}>
                 {vagas.map((vaga) => (
                     <div key={vaga.id} className='h-56 w-96 rounded-3xl shadow-2xl flex bg-white border-gray-400 border-2 w-processsosempresa cardhover'>
                         <div className='w-1/4 h-full flex items-center justify-center bg-gray-200  rounded-3xl'>

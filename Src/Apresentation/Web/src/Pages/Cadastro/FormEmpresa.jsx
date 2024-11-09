@@ -568,7 +568,7 @@ const EmpresaFormRegister = () => {
                                     disabled={loading}
                                     className="w-32 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition-all">Cadastrar</button>
                             )}
-                            <button onClick={handleClear} className="w-32 bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full transition-all">Limpar</button>
+                            <button onClick={handleClear} className="w-32 bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-full transition-all">Limpar</button>
                         </div>
 
                     </div>

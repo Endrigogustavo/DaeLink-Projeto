@@ -236,7 +236,7 @@ function PessoasList() {
             </div>
 
 
-            <div className={`w-full h-fit overflow-x-hidden  Pcdscontainer gap-4 justify-items-center justify-center items-center ${candidatos.length > 0 ? 'py-12 grid ' : ''}`}>
+            <div className={`w-full h-fit overflow-x-hidden  Pcdscontainer gap-4  gap-y-12 justify-items-center justify-center items-center ${candidatos.length > 0 ? 'py-12 grid ' : ''}`}>
 
                 {candidatos.map(candidato => (
                     <div key={candidato.id} className='h-profilecard w-72  rounded-3xl flex flex-col 

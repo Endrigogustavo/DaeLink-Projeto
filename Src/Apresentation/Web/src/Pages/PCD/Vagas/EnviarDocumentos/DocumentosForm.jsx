@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect,useCallback } from "react";
 import { doc, collection, addDoc, getDocs, query, where, getDoc } from "firebase/firestore";
 import { db, storage } from "../../../../Database/Firebase";
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +15,27 @@ const DocumentosForm = () => {
     const [selectedFiles, setSelectedFiles] = useState([null, null, null]);
     const [isLoading, setIsLoading] = useState(false);
     const [pessoaId, setPessoaId] = useState(null);
+    const [Doclist, setDoclistState] = useState(false);
+    const doclistRef = useRef(null);
+
+    const [activeDropdownIndex, setActiveDropdownIndex] = useState(null);
+    const toggleDropdown = (index) => {
+        setActiveDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
+    };
+
+    const handleClickOutside = useCallback((event) => {
+        // Verifica se o clique está fora da referência
+        if (doclistRef.current && !doclistRef.current.contains(event.target)) {
+            setActiveDropdownIndex(null); // Fecha o dropdown ao clicar fora
+        }
+    }, []);
+    
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside); // Detecta clique fora do Doclist
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside); // Limpa o ouvinte ao desmontar o componente
+        };
+    }, [handleClickOutside]);
 
     const {
         userId, setUserId,
@@ -43,7 +64,7 @@ const DocumentosForm = () => {
     useEffect(() => {
         const getInfoPCD = async () => {
             const storedUserId = await axios.get('http://localhost:3000/getcookie', { withCredentials: true });
-            
+
             if (storedUserId) {
                 setUserId(storedUserId.data)
                 const PCDDoc = await getDoc(doc(db, "PCD", storedUserId.data));
@@ -86,25 +107,25 @@ const DocumentosForm = () => {
         const file = e.target.files[0];
         const filesize = e.target.files[0].size / 1024 / 1024
         if (file) {
-            if(filesize > 25){
+            if (filesize > 25) {
                 setWorksModal(false)
                 setModalMessage("Arquivo maior de 25MB")
                 setModalOpen(true)
                 setTimeout(() => {
                     setModalOpen(false);
                 }, 2200);
-            }else{
+            } else {
                 const updatedFiles = [...selectedFiles];
                 updatedFiles[index] = file;
                 setSelectedFiles(updatedFiles);
-    
+
                 const updatedFileNames = [...fileNames];
                 updatedFileNames[index] = file.name;
                 setFileNames(updatedFileNames);
-    
+
                 inputFileRefs[index].current.style.display = 'none'; // Esconde o input
             }
-            
+
         }
     };
 
@@ -185,6 +206,27 @@ const DocumentosForm = () => {
             setIsLoading(false);
         }
     };
+
+    const renderFileNameWithExtension = (fileName) => {
+        const maxNameLength = 10; // Ajuste para limitar o nome a um certo número de caracteres
+        const [name, extension] = fileName.split(/(?=\.[^.]+$)/);
+
+        // Corta o nome se ultrapassar o limite
+        const displayName = name.length > maxNameLength
+            ? name.substring(0, maxNameLength) + ""
+            : name;
+
+        return (
+            <p className="text-xs break-words text-center font-semibold normal-case">
+                {displayName} {extension}
+            </p>
+        );
+    };
+
+    const Doclistdropdown = () => {
+        setDoclistState(true)
+
+    }
 
     return (
         <>
@@ -274,23 +316,26 @@ const DocumentosForm = () => {
                     </label>
                     <div className="flex gap-2">
                         {["1º Documento", "2º Documento", "3º Documento"].map((label, index) => (
-                            <div key={index} className="flex flex-col">
+                            <div key={index} className="flex flex-col relative">
                                 <label
-                                    htmlFor={inputFileRefs[index].current?.id}
-                                    className={`h-fit py-3 px-3 border-2 border-blue-500 font-bold rounded-xl 
-                                flex flex-col items-center justify-center cursor-pointer ${fileNames[index] ? 'w-32 text-wrap overflow-x-hidden' : 'w-16'
+                                    htmlFor={fileNames[index] ? '' : inputFileRefs[index].current?.id}
+                                    className={`h-fit shadow-2xl rounded-2xl flex border-gray-400 border-2 relative 
+                                    flex flex-col items-center justify-center cursor-pointer ${fileNames[index] ? ' w-28 h-24 text-wrap overflow-hidden ' : 'w-16 py-3 px-1'
                                         }`}
+                                        onClick={fileNames[index] ? () => toggleDropdown(index) : undefined}
                                 >
-
                                     {fileNames[index] ? (
                                         <>
-                                            <FaFile size={32} />
-                                            <p className="text-xs break-words text-center px-1 w-full overflow-x-hidden capitalize ">{fileNames[index]}</p>
+                                            <div className="w-full h-3/6 flex items-center justify-center">
+                                                <FaFile size={28} className="text-blue-900" />
+                                            </div>
+                                            <div className="w-full h-2/6 flex items-center justify-center overflow-hidden">
+                                                {renderFileNameWithExtension(fileNames[index])}
+                                            </div>
                                         </>
                                     ) : (
                                         <IoAddCircleSharp size={32} />
                                     )}
-
                                 </label>
                                 <input
                                     id={`input-file-${index}`}
@@ -300,6 +345,38 @@ const DocumentosForm = () => {
                                     onChange={handleFileChange(index)}
                                     hidden
                                 />
+
+                                {/* Dropdown de opções */}
+                                {activeDropdownIndex === index && ( // Apenas exibe o dropdown se o índice ativo corresponder
+                                    <ul
+                                        className="border border-gray-300 rounded-lg bg-white absolute left-full ml-2 mt-1 z-20 w-40 shadow-lg"
+                                        ref={doclistRef}
+                                    >
+                                        <li
+                                            className="p-2 cursor-pointer hover:bg-gray-200"
+                                            onClick={() => {
+                                                // Permitir seleção de novo arquivo (Edit)
+                                                inputFileRefs[index].current?.click();
+                                            }}
+                                        >
+                                            Editar
+                                        </li>
+                                        <li
+                                            className="p-2 cursor-pointer hover:bg-gray-200 text-red-600"
+                                            onClick={() => {
+                                                const updatedFiles = [...selectedFiles];
+                                                updatedFiles[index] = null;
+                                                setSelectedFiles(updatedFiles);
+                                                const updatedFileNames = [...fileNames];
+                                                updatedFileNames[index] = '';
+                                                setFileNames(updatedFileNames);
+                                                setActiveDropdownIndex(null); // Fecha o dropdown após excluir
+                                            }}
+                                        >
+                                            Excluir
+                                        </li>
+                                    </ul>
+                                )}
                             </div>
                         ))}
                     </div>
