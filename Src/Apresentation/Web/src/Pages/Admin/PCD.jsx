@@ -112,7 +112,7 @@ const EditarPerfil = () => {
 
     if (response == true) {
       try {
-        
+
         const UserInfo = doc(db, "PCD", id)
         await deleteDoc(UserInfo)
         navigate(-1);
@@ -211,7 +211,7 @@ const EditarPerfil = () => {
         <button type="submit">Adicionar Documento</button>
       </form>
       <br />
-      <button onClick={DeleteProfile()}>Deletar conta</button>
+      <button type="button" onClick={DeleteProfile()}>Deletar conta</button>
     </>
   );
 };

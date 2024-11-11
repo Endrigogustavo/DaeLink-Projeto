@@ -7,7 +7,7 @@ const About = () => {
     <>
       <div className="h-75vh flex justify-center items-center  aboutcontainer overflow-hidden ">
         <img src="https://i.postimg.cc/8ktnc47C/Girl-About.png" alt="" className="flex h-full aboutimg" />
-        <div className="bg-gray-900 w-4/6 h-5/6 rounded-64px flex aboutextcontainer">
+        <div className="bg-gradient-to-br from-gray-900 to-gray-800 w-4/6 h-5/6 rounded-64px flex aboutextcontainer">
           <div className="content w-full h-full flex flex-col items-center  gap-8 py-20">
             <div className="flex flex-col items-center ">
               <h1 className="text-3xl font-bold uppercase text-white pt-2 text-center">Quem Somos</h1>

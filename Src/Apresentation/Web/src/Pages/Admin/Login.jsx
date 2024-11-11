@@ -6,6 +6,7 @@ import axios from 'axios';
 import ImgEmpresa from '../../Img/LoginE.png'
 import { doc, getDoc } from 'firebase/firestore';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import Modal from './Modal';
 
 const LoginEmpresa = () => {
   //Variaveis onde as informações serão setadas
@@ -13,6 +14,10 @@ const LoginEmpresa = () => {
   const [password, setPassword] = useState("");
   //Função de navegação do site
   const navigate = useNavigate();
+
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('Processando...');
+  const [isWorksModal, setWorksModal] = useState(false);
 
   // Borão para fazer Login
   const handleLogin = async () => {
@@ -24,26 +29,42 @@ const LoginEmpresa = () => {
       const GetPCDDoc = await getDoc(PCDDocRef);
 
       if (GetPCDDoc.exists()) {
-        await axios.post('http://localhost:3000/cookie', {uid},{
-          withCredentials: true 
-      });
-      const id = uid;
-      localStorage.setItem('userId', id);
-        alert("Logado com sucesso")
-        navigate(`/adm`);
+        setWorksModal(true)
+        setModalMessage("Autenticado com sucesso")
+        setModalOpen(true)
+        setTimeout(() => {
+          axios.post('http://localhost:3000/cookie', { uid }, {
+            withCredentials: true
+          });
+          const id = uid;
+          localStorage.setItem('userId', id);
+          navigate(`/adm`);
+        }, 2200);
+
       } else {
-        alert("Erro ao fazer Login, tente novamente!");
-        return null;
+        setWorksModal(false)
+        setModalMessage("Não foi possível fazer login.")
+        setModalOpen(true)
+        setTimeout(() => {
+          setModalOpen(false)
+        }, 2200);
       }
     } catch (error) {
-      console.error("Login error:", error.message);
-      alert("Erro ao fazer Login, tente novamente mais tarde!");
+      setWorksModal(false)
+      setModalMessage("Não foi possível fazer login.")
+      setModalOpen(true)
+      setTimeout(() => {
+        setModalOpen(false)
+      }, 2200);
     }
   };
 
 
   return (
     <>
+      <div>
+        <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+      </div>
       <div className='flex w-full h-screen'>
         <div className='w-full lg:w-1/2 flex items-center justify-center'>
           <div className="px-6 py-10 rounded-3xl border-4 border-blue-600 w-full max-w-lg mx-auto">

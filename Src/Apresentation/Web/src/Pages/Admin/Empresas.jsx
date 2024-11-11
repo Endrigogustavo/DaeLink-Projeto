@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { doc, collection, updateDoc, getDoc, getDocs } from "firebase/firestore";
-import { db } from "../../Database/Firebase"; 
+import { db } from "../../Database/Firebase";
 import { useParams, useNavigate } from 'react-router-dom';
 
 const EditarPerfil = () => {
@@ -72,71 +72,71 @@ const EditarPerfil = () => {
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
-      <div>
-        <input
-          type="text"
-          name="name"
-          placeholder="name"
-          value={userData.name}
-          onChange={handleInputChange}
-        />
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            type="text"
+            name="name"
+            placeholder="name"
+            value={userData.name}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="email"
+            placeholder="Email"
+            value={userData.email}
+            onChange={handleInputChange}
+            disabled
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="cnpj"
+            placeholder="cnpj"
+            value={userData.cnpj}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="endereco"
+            placeholder="endereco"
+            value={userData.endereco}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="sobre"
+            placeholder="sobre"
+            value={userData.sobre}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            name="area"
+            placeholder="area"
+            value={userData.area}
+            onChange={handleInputChange}
+          />
+        </div>
+        <br />
+        <button type="submit">Adicionar Documento</button>
+      </form>
       <br />
-      <div>
-        <input
-          type="text"
-          name="email"
-          placeholder="Email"
-          value={userData.email}
-          onChange={handleInputChange}
-          disabled
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="cnpj"
-          placeholder="cnpj"
-          value={userData.cnpj}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="endereco"
-          placeholder="endereco"
-          value={userData.endereco}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="sobre"
-          placeholder="sobre"
-          value={userData.sobre}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <div>
-        <input
-          type="text"
-          name="area"
-          placeholder="area"
-          value={userData.area}
-          onChange={handleInputChange}
-        />
-      </div>
-      <br />
-      <button type="submit">Adicionar Documento</button>
-    </form>
-    <br />
     </>
   );
 };

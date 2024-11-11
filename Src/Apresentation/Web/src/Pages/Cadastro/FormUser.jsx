@@ -79,7 +79,7 @@ const UserFormRegister = () => {
         "Gerente de Produto",
         "Consultor de Vendas",
     ];
-    
+
 
     // Filtra as áreas com base na busca
     const filteredAreas = trabalhos.filter((area) =>
@@ -569,7 +569,7 @@ const UserFormRegister = () => {
                                                 {filteredAreas.map((filteredArea) => (
                                                     <li
                                                         key={filteredArea}
-                                                        onMouseDown={() => handleSelectArea(filteredArea)} 
+                                                        onMouseDown={() => handleSelectArea(filteredArea)}
                                                         className="p-2 cursor-pointer hover:bg-gray-200"
                                                     >
                                                         {filteredArea}
@@ -647,9 +647,13 @@ const UserFormRegister = () => {
                                     <div className="flex flex-col ">
                                         <label className="text-lg font-medium">Laudo Médico</label>
                                         <label htmlFor="laudoinput" className='h-16 w-80 rounded-3xl flex 
-                                        items-center justify-center gap-4 bg-transparent border-gray-400 border-2 cursor-pointer'>
-                                            <IoDocumentAttachSharp className='text-3xl text-gray-900 text-center ' />
-                                            <h1 className='font-medium text-lg truncate'>{LaudoName ? `${LaudoName}` : `Insira o Laudo Médico`}</h1>
+                                        items-center justify-center bg-transparent border-gray-400 border-2 cursor-pointer'>
+                                            <div className='w-2/6 h-full flex justify-center items-center'>
+                                                <IoDocumentAttachSharp className='text-3xl text-gray-900 text-center ' />
+                                            </div>
+                                            <div className="w-4/6">
+                                                <h1 className='font-medium text-lg truncate'>{LaudoName ? `${LaudoName}` : `Insira o Laudo Médico`}</h1>
+                                            </div>
                                         </label>
                                         <input hidden type="file" id='laudoinput' accept=".pdf,.doc,.docx" onChange={handleLaudoMedicoChange} required />
                                     </div>

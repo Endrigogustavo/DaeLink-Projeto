@@ -107,7 +107,7 @@ const VagaForm = () => {
             </div>
 
             <div className='w-full h-36 flex items-center justify-center'>
-                <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gray-900 border-2 items-center justify-center px-5'>
+                <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gradient-to-br from-gray-900 to-gray-800 border-2 items-center justify-center px-5'>
                     <h1 className='font-bold text-2xl text-white'>Criar Vaga</h1>
                 </div>
             </div>
