@@ -380,9 +380,9 @@ const EditarPerfil = () => {
             </div>
 
             <div className="h-fit w-full flex items-center justify-center tabs-voltar">
-              <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1'>
+              <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1 iconhover'>
                 <p className='font-medium text-white'>Voltar</p>
-                <MdExitToApp className='text-4xl text-white iconhover ' />
+                <MdExitToApp className='text-4xl text-white  ' />
               </button>
             </div>
 
@@ -393,9 +393,9 @@ const EditarPerfil = () => {
             <form onSubmit={handleSubmit} className="h-full w-full flex flex-col items-center justify-center gap-2">
 
               <div className="h-fit w-full flex items-center justify-end form-voltar hidden">
-                <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1'>
+                <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1 iconhover'>
                   <p className='font-medium text-gray-900'>Voltar</p>
-                  <MdExitToApp className='text-4xl text-gray-900 iconhover ' />
+                  <MdExitToApp className='text-4xl text-gray-900  ' />
                 </button>
               </div>
 

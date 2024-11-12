@@ -28,6 +28,12 @@
     }
 }
 
+@media (max-width:1277px) {
+    .h-table-admin {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+}
 
 @media (max-width:870px) {
 
@@ -42,6 +48,8 @@
     .menu-div {
         display: flex;
     }
+
+    
 }
 
 @media (max-width:647px) {
@@ -50,15 +58,13 @@
         gap: 1rem;
     }
 
-}
-
-@media (max-width:600px) {
     .h-table-admin {
-        height: fit-content;
-        grid-template-columns: repeat(1, minmax(0, 1fr));
+        height: 60vh;
+     
     }
 
 }
+
 
 @media (max-width:410px) {
 

@@ -387,9 +387,9 @@ const EmpresaFormRegister = () => {
 
                         <div className='w-full h-fit flex flex-col items-center justify-center'>
                             <div className='w-full justify-end flex items-center px-14'>
-                                <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1 '>
+                                <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1 iconhover '>
                                     <p className='font-medium'>Voltar</p>
-                                    <MdExitToApp className='text-4xl text-gray-800 iconhover ' />
+                                    <MdExitToApp className='text-4xl  ' />
                                 </button>
                             </div>
                             <h1 className="font-extrabold text-3xl my-4">Cadastro Empresa</h1>
@@ -540,7 +540,7 @@ const EmpresaFormRegister = () => {
                                                 {filteredAreas.map((filteredArea) => (
                                                     <li
                                                         key={filteredArea}
-                                                        onMouseDown={() => handleSelectArea(filteredArea)} 
+                                                        onMouseDown={() => handleSelectArea(filteredArea)}
                                                         className="p-2 cursor-pointer hover:bg-gray-200"
                                                     >
                                                         {filteredArea}

@@ -199,45 +199,80 @@ const EditarPerfil = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
+    console.log("Data de nascimento:", userData.idade); // Verifica o valor de userData.idade
+    if (!userData.idade) {
+      console.error("Idade não definida corretamente.");
+      return;
+    }
 
-      if (user) {
-        await updateEmail(user, userData.email);
-        const userDoc = doc(db, "PCD", userId);
-        await updateDoc(userDoc, {
-          name: userData.name,
-          email: userData.email,
-          trabalho: userData.trabalho,
-          descrição: userData.descrição,
-          sobre: userData.sobre,
-          experiencias: userData.experiencias,
-          idade: userData.idade,
-          userId: userId,
-          deficiencia: userData.deficiencia,
-        });
+    // Converta a data de nascimento para um objeto Date
+    const birthdate = new Date(userData.idade);
 
-        const auth = getAuth();
-        updateEmailmobile(auth.currentUser, userData.email).then(() => {
-          // Email updated!
-          // ...
-        })
-        setWorksModal(true);
-        setModalMessage("Conta atualizada com sucesso!");
-        setModalOpen(true);
-        setTimeout(() => navigate(-2), setModalOpen(false), 4000);
-      }
-    } catch (error) {
-      console.error("Erro ao atualizar conta: ", error);
-      let errorMessage = "Erro ao atualizar conta.";
-      if (error.code === 'auth/email-already-in-use') {
-        errorMessage = "Este e-mail já está em uso.";
-      } else if (error.code === 'auth/invalid-email') {
-        errorMessage = "O e-mail informado é inválido.";
-      }
+    // Verifique se a data foi criada corretamente
+    if (isNaN(birthdate.getTime())) {
+      console.error("Data de nascimento inválida:", userData.idade);
+      return;
+    }
+
+    const today = new Date();
+    let age = today.getFullYear() - birthdate.getFullYear();
+    const monthDifference = today.getMonth() - birthdate.getMonth();
+    const dayDifference = today.getDate() - birthdate.getDate();
+
+    // Ajusta a idade se a data de aniversário ainda não foi completada neste ano
+    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+      age--;
+    }
+
+    // Verifica se a idade está entre 18 e 90 anos
+    if (age < 18 || age > 90) {
       setWorksModal(false);
-      setModalMessage(errorMessage);
+      setModalMessage("Data de Nascimento Inválida");
       setModalOpen(true);
-      setTimeout(() => setModalOpen(false), 2200);
+      setTimeout(() => {
+        setModalOpen(false);
+      }, 4000);
+    } else {
+      try {
+
+        if (user) {
+          await updateEmail(user, userData.email);
+          const userDoc = doc(db, "PCD", userId);
+          await updateDoc(userDoc, {
+            name: userData.name,
+            email: userData.email,
+            trabalho: userData.trabalho,
+            descrição: userData.descrição,
+            sobre: userData.sobre,
+            experiencias: userData.experiencias,
+            idade: userData.idade,
+            userId: userId,
+            deficiencia: userData.deficiencia,
+          });
+
+          const auth = getAuth();
+          updateEmailmobile(auth.currentUser, userData.email).then(() => {
+            // Email updated!
+            // ...
+          })
+          setWorksModal(true);
+          setModalMessage("Conta atualizada com sucesso!");
+          setModalOpen(true);
+          setTimeout(() => navigate(-2), setModalOpen(false), 4000);
+        }
+      } catch (error) {
+        console.error("Erro ao atualizar conta: ", error);
+        let errorMessage = "Erro ao atualizar conta.";
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = "Este e-mail já está em uso.";
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = "O e-mail informado é inválido.";
+        }
+        setWorksModal(false);
+        setModalMessage(errorMessage);
+        setModalOpen(true);
+        setTimeout(() => setModalOpen(false), 2200);
+      }
     }
   };
 
@@ -474,9 +509,9 @@ const EditarPerfil = () => {
             </div>
 
             <div className="h-fit w-full flex items-center justify-center tabs-voltar">
-              <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1'>
+              <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1 iconhover'>
                 <p className='font-medium text-white'>Voltar</p>
-                <MdExitToApp className='text-4xl text-white iconhover ' />
+                <MdExitToApp className='text-4xl text-white  ' />
               </button>
             </div>
 
@@ -487,9 +522,9 @@ const EditarPerfil = () => {
             <form className="h-full w-full flex flex-col items-center justify-center gap-2">
 
               <div className="h-fit w-full flex items-center justify-end form-voltar hidden">
-                <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1'>
+                <button onClick={(e) => voltarincon(e)} className='flex h-fit items-center gap-1 iconhover'>
                   <p className='font-medium text-gray-900'>Voltar</p>
-                  <MdExitToApp className='text-4xl text-gray-900 iconhover ' />
+                  <MdExitToApp className='text-4xl text-gray-900  ' />
                 </button>
               </div>
 

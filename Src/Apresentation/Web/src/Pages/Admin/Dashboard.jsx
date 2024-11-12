@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db, auth } from '../../Database/Firebase'
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs,getDoc,doc } from 'firebase/firestore';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { FaUsers } from "react-icons/fa6";
 import { MdWork, MdExitToApp, MdDashboard } from "react-icons/md";
@@ -143,12 +143,28 @@ const Dashboard = () => {
     setMenuSide(false)
   }
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 870) {
+        setMenuSide(false);
+      }
+    };
+
+    // Adiciona o event listener
+    window.addEventListener('resize', handleResize);
+
+    // Remove o event listener ao desmontar o componente
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <>
 
 
-      <div className='h-screen w-full flex '>
-        <div className={` h-full w-3/12  shadow-2xl border-r-2  border-gray-300 flex flex-col ${menuSide ? ' bg-white w-sidebar z-20 ' : 'dash-nav '} `}>
+      <div className='h-full w-full flex dashboard-screen '>
+        <div className={` h-full w-3/12  shadow-2xl border-r-2  border-gray-300 flex flex-col ${menuSide ? ' bg-white w-sidebar z-20 absolute' : 'dash-nav '} `}>
           <div className='w-full h-1/6 flex border-b-2 border-gray-200 items-end  pb-2 justify-center' >
             <img src="https://i.postimg.cc/vB5MHPX1/DaeLink.png" className='max-sm-logo w-36' alt="Logo" />
           </div>
@@ -206,7 +222,7 @@ const Dashboard = () => {
         <div className='h-full w-9/12 dash-content'>
           <div className='h-20 w-full flex px-12 hidden menu-div items-center relative'>
             {menuSide ?
-              <IoCloseOutline className='text-4xl cursor-pointer absolute ' onClick={menuclose} />
+              <IoCloseOutline className='text-4xl cursor-pointer absolute z-30 left-60' onClick={menuclose} />
               :
               <FiMenu className='text-4xl cursor-pointer ' onClick={menuopen} />
             }
@@ -319,6 +335,8 @@ const Dashboard = () => {
                       </div>
                     </div>
 
+                    <h1 className='my-4 font-medium text-xl'>Utilize o Scroll para ver todos:</h1>
+
                     <div className='h-table-admin w-full overflow-x-hidden overflow-y-scroll grid grid-cols-2 gap-y-8 justify-items-center py-4'>
 
                       {listPCD.map((list) => (
@@ -328,7 +346,7 @@ const Dashboard = () => {
                           </div>
                           <div className='h-full w-2/6 flex flex-col  items-center justify-center overflow-hidden'>
                             <h1 className='font-bold text-center'>{list.name}</h1>
-                            <p className='font-normal'>{list.trabalho}</p>
+                            <p className='font-normal text-center'>{list.trabalho}</p>
                           </div>
 
                           <div className='h-full w-2/6 flex flex-col  items-center justify-center '>
@@ -384,6 +402,8 @@ const Dashboard = () => {
                       </div>
                     </div>
 
+                    <h1 className='my-4 font-medium text-xl'>Utilize o Scroll para ver todos:</h1>
+
                     <div className='h-table-admin w-full overflow-x-hidden overflow-y-scroll grid grid-cols-2 gap-y-8 justify-items-center py-4'>
 
                       {listEmpresas.map((list) => (
@@ -393,7 +413,7 @@ const Dashboard = () => {
                           </div>
                           <div className='h-full w-2/6 flex flex-col  items-center justify-center overflow-hidden'>
                             <h1 className='font-bold text-center'>{list.name}</h1>
-                            <p className='font-normal'>{list.area}</p>
+                            <p className='font-normal text-center'>{list.area}</p>
                           </div>
 
                           <div className='h-full w-2/6 flex flex-col  items-center justify-center '>
@@ -449,6 +469,8 @@ const Dashboard = () => {
                       </div>
                     </div>
 
+                    <h1 className='my-4 font-medium text-xl'>Utilize o Scroll para ver todos:</h1>
+
                     <div className='h-table-admin w-full overflow-x-hidden overflow-y-scroll grid grid-cols-2 gap-y-8 justify-items-center py-4'>
 
                       {listVagas.map((list) => {
@@ -457,11 +479,11 @@ const Dashboard = () => {
                           <div key={list.id} className='h-20 w-96 border-2 border-gray-300 rounded-full shadow-2xl flex'>
                             <div className='h-full w-2/6 flex items-center justify-center'>
                               {/* Usando imageProfile como chave correta */}
-                              <img src={empresa.imageProfile || empresa.imageUrl} className='w-12 h-12 rounded-full object-cover bg-gray-200 border-2 border-blue-400' alt="Imagem da empresa" />
+                              <img src={empresa.imageUrl} className='w-12 h-12 rounded-full object-cover bg-gray-200 border-2 border-blue-400' alt="Imagem da empresa" />
                             </div>
                             <div className='h-full w-2/6 flex flex-col items-center justify-center overflow-hidden'>
                               <h1 className='font-bold text-center'>{list.vaga}</h1>
-                              <p className='font-normal'>{empresa.empresaname || 'Empresa não encontrada'}</p> {/* Caso o nome da empresa não seja encontrado */}
+                              <p className='font-normal text-center'>{empresa.empresaname || 'Empresa não encontrada'}</p> {/* Caso o nome da empresa não seja encontrado */}
                             </div>
                             <div className='h-full w-2/6 flex flex-col items-center justify-center'>
                               <button onClick={() => UpdateVaga(list.id)} type="submit"
