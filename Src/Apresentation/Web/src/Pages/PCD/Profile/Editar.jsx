@@ -11,6 +11,8 @@ import Modal from "../Modal/Modal";
 import ConfirmModal from "../Modal/ConfirmModal"
 import axios from "axios";
 
+import CropEasy from "../../../Components/Imagecrop/CropEasy";
+
 const EditarPerfil = () => {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -21,6 +23,10 @@ const EditarPerfil = () => {
   const [profileImagePreview, setProfileImagePreview] = useState('');
   const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('');
   const [backgroundImage, setBackgroundImage] = useState(null);
+  const [imageToCrop, setImageToCrop] = useState(null);
+  const [isProfile, setIsProfile] = useState(false);
+  const aspectRatio = isProfile ? 1 : 16 / 9;
+
   const [userId, setUserId] = useState('');
   const [senha, setSenha] = useState("");
   const [tab, setTab] = useState(1);
@@ -407,45 +413,88 @@ const EditarPerfil = () => {
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0];
-    setProfileImage(file);
+    const filesize = file.size / 1024 / 1024;
 
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      if (filesize > 5) {
+        setWorksModal(false);
+        setModalMessage("Arquivo maior de 5MB");
+        setModalOpen(true);
+        setTimeout(() => {
+          setModalOpen(false);
+        }, 2200);
+        setProfileImage("");
+        setProfileImagePreview("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
+      } else {
+        setIsProfile(true)
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImageToCrop(reader.result); // Abre o modal de recorte para a imagem de perfil
+          setIsProfile(true); // Indicador de que é para o perfil
+        };
+        reader.readAsDataURL(file);
+      }
     } else {
-      setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
+      setProfileImagePreview("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
     }
   };
 
   const handleProfileBackgroundChange = (e) => {
-    const file = e.target.files[0]
-    setBackgroundImage(file)
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileBackgroundpreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
-    }
+    const file = e.target.files[0];
+    const filesize = file.size / 1024 / 1024;
 
-  }
+    if (file) {
+      if (filesize > 5) {
+        setWorksModal(false);
+        setModalMessage("Arquivo maior de 5MB");
+        setModalOpen(true);
+        setTimeout(() => {
+          setModalOpen(false);
+        }, 2200);
+        setBackgroundImage("");
+        setProfileBackgroundpreview("https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png");
+      } else {
+        setIsProfile(false)
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImageToCrop(reader.result); // Abre o modal de recorte para a imagem de fundo
+          setIsProfile(false); // Indicador de que é para o background
+        };
+        reader.readAsDataURL(file);
+      }
+    } else {
+      setProfileBackgroundpreview("https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png");
+    }
+  };
 
 
   return (
     <>
 
       <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+
       <ConfirmModal
         isWorksModal={isConfirmModalOpen}
         onConfirm={() => DeleteProfile(userId)} // Função só será chamada ao confirmar
         onClose={handleCloseModal}
         message={ConfirmModalMessage}
       />
+
+      {imageToCrop && (
+        <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50'>
+          <div className={` h-fit rounded-3xl border-2 border-gray-300 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden
+                                    ${isProfile ? 'w-96  ' : 'w-backgroundcrop'}`}>
+            <CropEasy
+              imageToCrop={imageToCrop}
+              setImageToCrop={setImageToCrop}
+              setPreview={isProfile ? setProfileImagePreview : setProfileBackgroundpreview}
+              setFile={isProfile ? setProfileImage : setBackgroundImage}
+              aspectRatio={aspectRatio}
+
+            />
+          </div>
+        </div>
+      )}
 
       <div className="h-screen w-full flex items-center justify-center bg-gray-300 editprofile-screen">
         <div className="w-editprofile h-editprofile rounded-3xl flex editprofile-container">

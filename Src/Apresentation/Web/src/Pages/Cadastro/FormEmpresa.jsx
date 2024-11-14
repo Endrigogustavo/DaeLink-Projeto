@@ -10,16 +10,12 @@ import { getAuth, onAuthStateChanged, sendEmailVerification } from 'firebase/aut
 import InputMask from 'react-input-mask';
 import axios from 'axios';
 import Modal from './Modal';
-import { FaClipboardList, FaIdCard, FaUser } from 'react-icons/fa';
+import CropEasy from '../../Components/Imagecrop/CropEasy';
 
 
 const EmpresaFormRegister = () => {
     //Variaveis onde as informações serão setadas
     const [step, setStep] = useState(1);
-    const [profileImage, setProfileImage] = useState(null);
-    const [profileImagePreview, setProfileImagePreview] = useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
-    const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
-    const [backgroundImage, setBackgroundImage] = useState(null);
     const [cep, setCep] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -38,6 +34,14 @@ const EmpresaFormRegister = () => {
     const [ramosearch, setRamosearch] = useState(""); // Estado para o valor digitado
     const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Controle de visibilidade do dropdown
     const dropdownRef = useRef(null);
+
+    const [profileImage, setProfileImage] = useState(null);
+    const [profileImagePreview, setProfileImagePreview] = useState('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
+    const [profilebackgroundpreview, setProfileBackgroundpreview] = useState('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
+    const [backgroundImage, setBackgroundImage] = useState(null);
+    const [imageToCrop, setImageToCrop] = useState(null);
+    const [isProfile, setIsProfile] = useState(false);
+    const aspectRatio = isProfile ? 1 : 16 / 9;
 
     const ramos = [
         "Alimentação",
@@ -247,64 +251,8 @@ const EmpresaFormRegister = () => {
         Object.values(textareaRefs).forEach(adjustTextareaHeight);
     }, []);
 
-    const handleProfileImageChange = (e) => {
-        const file = e.target.files[0];
-        const filesize = e.target.files[0].size / 1024 / 1024
-        setProfileImage(file);
-
-        if (file) {
-            if (filesize > 5) {
-                setWorksModal(false)
-                setModalMessage("Arquivo maior de 5MB")
-                setModalOpen(true)
-                setTimeout(() => {
-                    setModalOpen(false);
-                }, 2200);
-                setProfileImage("")
-                setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
-            } else {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    setProfileImagePreview(reader.result);
-                };
-                reader.readAsDataURL(file);
-            }
-
-        } else {
-            setProfileImagePreview('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
-        }
-    };
-
-    const handleProfileBackgroundChange = (e) => {
-        const file = e.target.files[0]
-        const filesize = e.target.files[0].size / 1024 / 1024
-
-        setBackgroundImage(file)
-        if (file) {
-            if (filesize > 5) {
-                setWorksModal(false)
-                setModalMessage("Arquivo maior de 5MB")
-                setModalOpen(true)
-                setTimeout(() => {
-                    setModalOpen(false);
-                }, 2200);
-                setBackgroundImage("")
-                setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
-            } else {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    setProfileBackgroundpreview(reader.result);
-                };
-                reader.readAsDataURL(file);
-            }
-
-        } else {
-            setProfileBackgroundpreview('https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png');
-        }
-    };
 
     const progressPercentage = (step / 3) * 100; // Calcular a porcentagem de progresso
-
 
     const validateCNPJ = (cnpj) => {
         cnpj = cnpj.replace(/[^\d]+/g, '');
@@ -353,8 +301,6 @@ const EmpresaFormRegister = () => {
         return true;
     };
 
-
-
     const handleCNPJChange = (e) => {
         const value = e.target.value;
         setCnpj(value);
@@ -370,6 +316,62 @@ const EmpresaFormRegister = () => {
         navigate('/cadastro');
     }
 
+    const handleProfileImageChange = (e) => {
+        const file = e.target.files[0];
+        const filesize = file.size / 1024 / 1024;
+
+        if (file) {
+            if (filesize > 5) {
+                setWorksModal(false);
+                setModalMessage("Arquivo maior de 5MB");
+                setModalOpen(true);
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
+                setProfileImage("");
+                setProfileImagePreview("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
+            } else {
+                setIsProfile(true)
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setImageToCrop(reader.result); // Abre o modal de recorte para a imagem de perfil
+                    setIsProfile(true); // Indicador de que é para o perfil
+                };
+                reader.readAsDataURL(file);
+            }
+        } else {
+            setProfileImagePreview("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
+        }
+    };
+
+    const handleProfileBackgroundChange = (e) => {
+        const file = e.target.files[0];
+        const filesize = file.size / 1024 / 1024;
+
+        if (file) {
+            if (filesize > 5) {
+                setWorksModal(false);
+                setModalMessage("Arquivo maior de 5MB");
+                setModalOpen(true);
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
+                setBackgroundImage("");
+                setProfileBackgroundpreview("https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png");
+            } else {
+                setIsProfile(false)
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setImageToCrop(reader.result); // Abre o modal de recorte para a imagem de fundo
+                    setIsProfile(false); // Indicador de que é para o background
+                };
+                reader.readAsDataURL(file);
+            }
+        } else {
+            setProfileBackgroundpreview("https://themeskills.com/wp-content/uploads/2017/08/add-background-image-wordpress-website.png");
+        }
+    };
+
     return (
         <>
             {loading ? (
@@ -381,6 +383,21 @@ const EmpresaFormRegister = () => {
                 <>
                     <div>
                         <Modal isOpen={isModalOpen} message={modalMessage} Works={isWorksModal} />
+                        {imageToCrop && (
+                            <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50'>
+                                <div className={` h-fit rounded-3xl border-2 border-gray-300 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden
+                                    ${isProfile ? 'w-96  ' : 'w-backgroundcrop'}`}>
+                                    <CropEasy
+                                        imageToCrop={imageToCrop}
+                                        setImageToCrop={setImageToCrop}
+                                        setPreview={isProfile ? setProfileImagePreview : setProfileBackgroundpreview}
+                                        setFile={isProfile ? setProfileImage : setBackgroundImage}
+                                        aspectRatio={aspectRatio}
+
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className='h-full w-full flex flex-col items-center justify-center gap-4'>
