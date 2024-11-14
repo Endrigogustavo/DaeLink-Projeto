@@ -89,7 +89,7 @@ const EmpresaFormRegister = () => {
     const textareaRefs = {
         sobre: useRef(null),
         area: useRef(null),
-
+        enderecoRef: useRef(null)
     };
 
 
@@ -117,6 +117,28 @@ const EmpresaFormRegister = () => {
                 setModalOpen(true)
                 setTimeout(() => {
                     setModalOpen(false);
+                }, 2200);
+                isValid = false;
+            }
+
+            if (password !== confirmPassword) {
+                setWorksModal(false)
+                setModalMessage("As senhas não coincidem.")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                    return;
+                }, 2200);
+                isValid = false;
+            }
+
+            if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+                setWorksModal(false);
+                setModalMessage("Email Inválido");
+                setModalOpen(true);
+                setTimeout(() => {
+                    setModalOpen(false);
+                    return;
                 }, 2200);
                 isValid = false;
             }
@@ -159,30 +181,6 @@ const EmpresaFormRegister = () => {
 
     // Borão para fazer Cadastro
     const handleRegister = async () => {
-        // Verificar se o formato do e-mail é válido
-
-        if (password !== confirmPassword) {
-            setWorksModal(false)
-            setModalMessage("As senhas não coincidem.")
-            setModalOpen(true)
-            setTimeout(() => {
-                setModalOpen(false);
-                return;
-            }, 2200);
-
-        }
-
-        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-            setWorksModal(false);
-            setModalMessage("Email Inválido");
-            setModalOpen(true);
-            setTimeout(() => {
-                setModalOpen(false);
-                return;
-            }, 2200);
-        }
-
-
         if (!ramos.includes(area)) {
             setWorksModal(false)
             setModalMessage("Ramo inválido")
@@ -440,7 +438,7 @@ const EmpresaFormRegister = () => {
                                         <label htmlFor="background-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
                                             <img src={profilebackgroundpreview}
                                                 className="w-60 h-32 rounded-3xl border-2 border-blue-600 object-cover" alt="Preview Background" />
-                                            <p className='text-center font-medium'>Background Perfil</p>
+                                            <p className='text-center font-medium'>Foto Background</p>
                                         </label>
                                         <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
                                     </div>
@@ -508,11 +506,14 @@ const EmpresaFormRegister = () => {
 
                                     <div className="flex flex-col">
                                         <label className="text-lg font-medium">Endereço</label>
-                                        <input required
-                                            className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                                            placeholder="insira o Endereço"
+                                        <textarea
+                                            ref={textareaRefs.enderecoRef}
+                                            className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
+                                            placeholder="Insira seu Endereço"
                                             value={endereco}
-                                            onChange={(e) => setEndereco(e.target.value)} />
+                                            name="endereco"
+                                            onChange={(e) => setEndereco(e.target.value)} 
+                                        />
                                     </div>
 
 

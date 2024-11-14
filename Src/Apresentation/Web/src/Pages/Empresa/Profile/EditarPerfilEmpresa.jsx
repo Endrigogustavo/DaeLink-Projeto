@@ -88,6 +88,7 @@ const EditarPerfil = () => {
 
   const textareaRefs = {
     sobre: useRef(null),
+    enderecoRef: useRef(null)
   };
 
   const adjustTextareaHeight = (ref) => {
@@ -498,12 +499,15 @@ const EditarPerfil = () => {
 
                   <div className="flex flex-col">
                     <label className="text-lg font-medium">Endereço</label>
-                    <input required
-                      name="endereco"
-                      className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-                      placeholder="insira o Endereço"
+
+                    <textarea
+                      ref={textareaRefs.enderecoRef}
+                      className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
+                      placeholder="Insira seu Endereço"
                       value={userData.endereco}
-                      onChange={handleInputChange} />
+                      name="endereco"
+                      onChange={handleInputChange}
+                    />
                   </div>
 
 
@@ -584,7 +588,7 @@ const EditarPerfil = () => {
                     <label htmlFor="background-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
                       <img src={profilebackgroundpreview}
                         className="w-60 h-32 rounded-3xl border-2 border-blue-600 object-cover" alt="Preview Background" />
-                      <p className='text-center font-medium'>Background Perfil</p>
+                      <p className='text-center font-medium'>Foto Background</p>
                     </label>
                     <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
                   </div> <br />

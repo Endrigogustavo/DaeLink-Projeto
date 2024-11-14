@@ -89,9 +89,8 @@ const EditarPerfil = () => {
   };
 
   const textareaRefs = {
-    exigencias: useRef(null),
-    area: useRef(null),
-    detalhes: useRef(null),
+    sobre: useRef(null),
+    enderecoRef: useRef(null)
   };
 
   const adjustTextareaHeight = (ref) => {
@@ -227,12 +226,14 @@ const EditarPerfil = () => {
 
         <div className="flex flex-col">
           <label className="text-lg font-medium">Endereço</label>
-          <input required
-            name="endereco"
-            className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
-            placeholder="insira o Endereço"
+          <textarea
+            ref={textareaRefs.enderecoRef}
+            className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
+            placeholder="Insira seu Endereço"
             value={userData.endereco}
-            onChange={handleInputChange} />
+            name="endereco"
+            onChange={handleInputChange} 
+          />
         </div>
 
         <div className="flex flex-col ">

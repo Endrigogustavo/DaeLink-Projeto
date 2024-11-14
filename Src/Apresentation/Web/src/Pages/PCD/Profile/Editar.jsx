@@ -730,7 +730,7 @@ const EditarPerfil = () => {
                     <label htmlFor="background-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
                       <img src={profilebackgroundpreview}
                         className="w-60 h-32 rounded-3xl border-2 border-blue-600 object-cover" alt="Preview Background" />
-                      <p className='text-center font-medium'>Background Perfil</p>
+                      <p className='text-center font-medium'>Foto Background</p>
                     </label>
                     <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
                   </div> <br />

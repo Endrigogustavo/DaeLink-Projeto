@@ -166,28 +166,6 @@ const UserFormRegister = () => {
 
     const handleRegister = async () => {
         // Validações
-
-        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-            setWorksModal(false);
-            setModalMessage("Email Inválido");
-            setModalOpen(true);
-            setTimeout(() => {
-                setModalOpen(false);
-                return;
-            }, 2200);
-        }
-
-
-        if (password !== confirmPassword) {
-            setWorksModal(false)
-            setModalMessage("As senhas não coincidem.")
-            setModalOpen(true)
-            setTimeout(() => {
-                setModalOpen(false);
-            }, 2200);
-        }
-
-
         if (!isChecked) {
             setWorksModal(false)
             setModalMessage("Você deve aceitar os termos de uso.")
@@ -199,15 +177,7 @@ const UserFormRegister = () => {
         }
 
 
-        if (!trabalhos.includes(trabalho)) {
-            setWorksModal(false)
-            setModalMessage("Área inválida")
-            setModalOpen(true)
-            setTimeout(() => {
-                setModalOpen(false);
-                return;
-            }, 2200);
-        } else {
+        else {
 
 
             setLoading(true);
@@ -260,6 +230,28 @@ const UserFormRegister = () => {
                 }, 2200);
                 isValid = false;
             }
+
+            if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+                setWorksModal(false);
+                setModalMessage("Email Inválido");
+                setModalOpen(true);
+                setTimeout(() => {
+                    setModalOpen(false);
+                    return;
+                }, 2200);
+                isValid = false;
+            }
+
+
+            if (password !== confirmPassword) {
+                setWorksModal(false)
+                setModalMessage("As senhas não coincidem.")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                }, 2200);
+                isValid = false;
+            }
         }
 
         const validateDate = (dateString) => {
@@ -280,8 +272,13 @@ const UserFormRegister = () => {
             const age = today.getFullYear() - selectedDate.getFullYear();
             const monthDifference = today.getMonth() - selectedDate.getMonth();
 
-            // Verifica se a idade é maior ou igual a 18 anos
-            if (age > 18 || (age === 18 && monthDifference > 0) || (age === 18 && monthDifference === 0 && today.getDate() >= selectedDate.getDate())) {
+            // Verifica se a idade está entre 18 e 90 anos
+            if (
+                (age > 18 || (age === 18 && monthDifference > 0) ||
+                    (age === 18 && monthDifference === 0 && today.getDate() >= selectedDate.getDate())) &&
+                (age < 90 || (age === 90 && monthDifference < 0) ||
+                    (age === 90 && monthDifference === 0 && today.getDate() <= selectedDate.getDate()))
+            ) {
                 return true;
             }
 
@@ -304,6 +301,17 @@ const UserFormRegister = () => {
                 setModalOpen(true)
                 setTimeout(() => {
                     setModalOpen(false);
+                }, 2200);
+                isValid = false;
+            }
+
+            if (!trabalhos.includes(trabalho)) {
+                setWorksModal(false)
+                setModalMessage("Área inválida")
+                setModalOpen(true)
+                setTimeout(() => {
+                    setModalOpen(false);
+                    return;
                 }, 2200);
                 isValid = false;
             }
@@ -506,7 +514,7 @@ const UserFormRegister = () => {
                                         <label htmlFor="background-image-input" className='flex flex-col items-center w-fit  h-fit justify-center cursor-pointer gap-1'>
                                             <img src={profilebackgroundpreview}
                                                 className="w-60 h-32 rounded-3xl border-2 border-blue-600 object-cover" alt="Preview Background" />
-                                            <p className='text-center font-medium'>Background Perfil</p>
+                                            <p className='text-center font-medium'>Foto Background </p>
                                         </label>
                                         <input required id="background-image-input" type="file" className='hidden' accept="image/*" onChange={handleProfileBackgroundChange} />
                                     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db, auth } from '../../Database/Firebase'
-import { collection, getDocs,getDoc,doc } from 'firebase/firestore';
+import { collection, getDocs, getDoc, doc } from 'firebase/firestore';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { FaUsers } from "react-icons/fa6";
 import { MdWork, MdExitToApp, MdDashboard } from "react-icons/md";
@@ -263,23 +263,11 @@ const Dashboard = () => {
 
                       </div>
 
-                      <div className='h-64 w-52 rounded-3xl bg-gradient-to-br from-green-500 to-gray-400 shadow-2xl cardhover 
-                  cursor-pointer flex flex-col overflow-hidden'
-                        onClick={() => handleTabChange(3)} >
 
-                        <div className='w-full h-3/6 flex flex-col justify-center pl-4 gap-2'>
-                          <h2 className='font-semibold text-white text-xl'>Vagas Registradas:</h2>
-                          <p className=' text-2xl font-bold text-white '>{Vagaquantidade}</p>
-                        </div>
-                        <div className='w-full h-3/6 flex items-center justify-center '>
-                          <img src={job} alt="" />
-                        </div>
-
-                      </div>
 
                       <div className='h-64 w-52 rounded-3xl bg-gradient-to-br from-blue-500 to-gray-400 shadow-2xl cardhover 
                   cursor-pointer flex flex-col overflow-hidden'
-                        onClick={() => handleTabChange(4)} >
+                        onClick={() => handleTabChange(3)} >
 
                         <div className='w-full h-3/6 flex flex-col justify-center pl-4 gap-2'>
                           <h2 className='font-semibold text-white text-xl'>Empresas Registradas:</h2>
@@ -287,6 +275,20 @@ const Dashboard = () => {
                         </div>
                         <div className='w-full h-3/6 flex items-center justify-center '>
                           <img src={empresa} alt="" />
+                        </div>
+
+                      </div>
+
+                      <div className='h-64 w-52 rounded-3xl bg-gradient-to-br from-green-500 to-gray-400 shadow-2xl cardhover 
+                  cursor-pointer flex flex-col overflow-hidden'
+                        onClick={() => handleTabChange(4)} >
+
+                        <div className='w-full h-3/6 flex flex-col justify-center pl-4 gap-2'>
+                          <h2 className='font-semibold text-white text-xl'>Vagas Registradas:</h2>
+                          <p className=' text-2xl font-bold text-white '>{Vagaquantidade}</p>
+                        </div>
+                        <div className='w-full h-3/6 flex items-center justify-center '>
+                          <img src={job} alt="" />
                         </div>
 
                       </div>

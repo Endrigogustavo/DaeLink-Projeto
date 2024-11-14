@@ -32,6 +32,7 @@ const VagaForm = () => {
         exigencias: useRef(null),
         area: useRef(null),
         detalhes: useRef(null),
+        enderecoRef: useRef(null)
     };
 
     // Função para ajustar a altura dos textareas
@@ -54,7 +55,7 @@ const VagaForm = () => {
             } catch (error) {
                 console.error('Erro ao buscar os usuários:', error.response ? error.response.data : error.message);
             }
-            
+
         };
         getPCDprofile();
 
@@ -116,7 +117,7 @@ const VagaForm = () => {
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Cargo</label>
                     <input
-                    required
+                        required
                         type="text"
                         name="vaga"
                         placeholder="Digite o nome da Vaga"
@@ -159,7 +160,7 @@ const VagaForm = () => {
                 </div>
 
                 <input
-                required
+                    required
                     type="text"
                     placeholder="Nome da empresa"
                     value={empresa}
@@ -172,7 +173,7 @@ const VagaForm = () => {
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Salário</label>
                     <input
-                    required
+                        required
                         type="number"
                         placeholder="Apenas Números"
                         className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent"
@@ -206,12 +207,12 @@ const VagaForm = () => {
 
                 <div className="flex flex-col ">
                     <label className="text-lg font-medium">Endereço</label>
-                    <input
-                    required
-                        type="text"
-                        placeholder="Insira o endereço da empresa"
-                        className="w-80 border-2 border-gray-300 rounded-full p-4 mt-1 bg-transparent overflow-y-hidden"
+                    <textarea
+                        ref={textareaRefs.enderecoRef}
+                        className="w-80 border-2 border-gray-300 rounded-3xl p-4 mt-1 bg-transparent overflow-y-hidden"
+                        placeholder="Insira seu Endereço"
                         value={local}
+                        name="endereco"
                         onChange={(e) => setLocal(e.target.value)}
                     />
                 </div>
