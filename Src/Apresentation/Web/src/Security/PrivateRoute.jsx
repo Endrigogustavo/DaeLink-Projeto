@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { onAuthChange, getUserData } from '../Auth/Auth';
 import CarregamentoTela from "../Components/TelaCarregamento/Carregamento";
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
 const PrivateRoute = ({ allowedRoles }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -9,14 +9,19 @@ const PrivateRoute = ({ allowedRoles }) => {
   const [userType, setUserType] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthChange(async (user) => {
-      setLoading(true); // Garantir que a tela de carregamento apareça até a verificação concluir
-
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setLoading(true);
+      console.log(user)
       if (user) {
         try {
-          const userData = await getUserData(user.uid);
-          setIsAuthenticated(true);
-          setUserType(userData.tipo);
+          if (user.displayName) { 
+            setUserType(user.displayName);
+            setIsAuthenticated(true);
+          } else {
+            console.error("Tipo de usuário não encontrado.");
+            setIsAuthenticated(false);
+          }
         } catch (error) {
           console.error('Erro ao obter dados do usuário:', error);
           setIsAuthenticated(false);
@@ -29,19 +34,21 @@ const PrivateRoute = ({ allowedRoles }) => {
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // Cleanup ao desmontar
   }, []);
 
+  // Tela de carregamento enquanto verifica autenticação
   if (loading) {
     return <CarregamentoTela />;
   }
 
+  // Redirecionar para login se não autenticado
   if (!isAuthenticated) {
     return <Navigate to="/loginu" />;
   }
 
+  // Redirecionar com base no tipo de usuário
   if (allowedRoles && !allowedRoles.includes(userType)) {
-    // Redirecionamento com base no tipo de usuário
     switch (userType) {
       case 'Empresa':
         return <Navigate to="/homeempresa" />;
@@ -54,6 +61,7 @@ const PrivateRoute = ({ allowedRoles }) => {
     }
   }
 
+  // Renderizar a rota protegida
   return <Outlet />;
 };
 

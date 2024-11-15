@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaApple } from 'react-icons/fa6';
 import { FcGoogle } from 'react-icons/fc';
 import { useNavigate, Link } from 'react-router-dom';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { db, auth } from "../../Database/Firebase"
 import axios from 'axios'
 import Cookies from 'js-cookie';
@@ -32,6 +32,19 @@ const Form = () => {
 
                 const EmpresaDocRef = doc(db, "Empresa", uid);
                 const EmpresaDDoc = await getDoc(EmpresaDocRef);
+
+                {/*
+                    await updateProfile(PCDCredential.user, {
+                        displayName: "Empresa",
+                    });
+                */}
+
+
+                {/*
+                    await updateProfile(PCDCredential.user, {
+                        displayName: "PCD",
+                    });    
+                */}
 
 
                 if (GetPCDDoc.exists()) {

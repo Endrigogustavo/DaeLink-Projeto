@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, getAuth, updateProfile } from "firebase/auth";
 import { doc, setDoc, getDoc, getFirestore, addDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { auth, db, storage } from "../Database/Firebase";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
@@ -10,6 +10,9 @@ export const registerUser = async (name, email, password, idade, deficiencia, de
     const PCDCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = PCDCredential.user;
 
+    await updateProfile(user, {
+      displayName: "PCD",
+    });
     // Upload das imagens em paralelo
     const [profileImageUrl, backgroundImageUrl, LaudoURL] = await Promise.all([
       uploadAndGetDownloadUrl(`pcd_profile/${image.name}`, image),
@@ -32,6 +35,7 @@ export const registerUser = async (name, email, password, idade, deficiencia, de
       imageProfile: backgroundImageUrl,
       laudo: LaudoURL,
       CPF,
+      createdAt: new Date(),
       ...additionalData
     };
 
@@ -70,7 +74,9 @@ export const registerEmpresa = async (email, password, sobre, area, cnpj, endere
     // Autenticação do Firebase
     const CompanyCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = CompanyCredential.user;
-
+    await updateProfile(user, {
+      displayName: "Empresa",
+    });
     // Upload das imagens em paralelo
     const [profileImageUrl, backgroundImageUrl] = await Promise.all([
       uploadAndGetDownloadUrl(`images_company/${image.name}`, image),
@@ -88,6 +94,7 @@ export const registerEmpresa = async (email, password, sobre, area, cnpj, endere
       tipo,
       imageProfile: backgroundImageUrl,
       imageUrl: profileImageUrl,
+      createdAt: new Date(),
       ...additionalData
     };
 

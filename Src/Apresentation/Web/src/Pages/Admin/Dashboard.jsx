@@ -8,6 +8,7 @@ import { BiSolidBusiness } from "react-icons/bi";
 import { CgSpinner } from 'react-icons/cg';
 import { FiMenu } from 'react-icons/fi';
 import { IoCloseOutline } from 'react-icons/io5';
+import { logout } from '../../Auth/Auth';
 
 import "./adminpage.css"
 import user from "../../Img/admin/users.png"
@@ -129,8 +130,6 @@ const Dashboard = () => {
     //Função do Auth.jsx para deslogar
     logout();
     localStorage.removeItem('userId');
-    await axios.post('http://localhost:3000/logout', {}, { withCredentials: true })
-    Cookies.remove('userType')
     // Redireciona para a página de login após o logout
     navigate('/');
   }

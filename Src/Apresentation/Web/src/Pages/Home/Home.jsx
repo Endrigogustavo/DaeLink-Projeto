@@ -20,9 +20,6 @@ const Home = () => {
     const geolocalização = () =>{
       if('geolocation' in navigator){
   navigator.geolocation.watchPosition(function(position){
-        console.log(position)
-        alert(position.coords.latitude)
-        alert(position.coords.longitude)
       },
       function(error){
         console.log(error)

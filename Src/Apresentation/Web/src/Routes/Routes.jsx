@@ -102,8 +102,11 @@ function App() {
         <Route path="/empresas" element={<Empresas />} />
 
 
+        {/* Rotas privadas da empresa */}
+        <Route path="/" element={<PrivateRoute allowedRoles={['Adm']} />}>
+          <Route path="/adm" element={<Adm />} />
+        </Route>
 
-        <Route path="/adm/" element={<Adm />} />
         <Route path="/pcdadm/" element={<PCDadm />} />
         <Route path="/empresaadm/" element={<EmpresaAdm />} />
         <Route path="/vagaadm/" element={<VagasAdm />} />

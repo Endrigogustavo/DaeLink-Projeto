@@ -82,7 +82,7 @@ const Vagaslist = () => {
         // Configurações do Fuse.js para busca fuzzy
         const options = {
             includeScore: true,
-            keys: ['area']
+            keys: ['area', 'local']
         };
 
         const fuse = new Fuse(vagasAll, options);

@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import ImgEmpresa from '../../Img/LoginE.png'
 import { doc, getDoc } from 'firebase/firestore';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import Modal from './Modal';
 
 const LoginEmpresa = () => {
@@ -25,6 +25,12 @@ const LoginEmpresa = () => {
       //Função do Auth.jsx para fazer o Login de empresa
       const PCDCredential = await signInWithEmailAndPassword(auth, email, password);
       const uid = PCDCredential.user.uid;
+      
+      {/*
+        await updateProfile(PCDCredential.user, {
+        displayName: "Adm",
+      });
+      */}
       const PCDDocRef = doc(db, "Admin", uid);
       const GetPCDDoc = await getDoc(PCDDocRef);
 
