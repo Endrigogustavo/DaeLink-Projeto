@@ -43,6 +43,7 @@
 
     .dash-content {
         width: 100%;
+        height: fit-content;
     }
 
     .menu-div {
@@ -78,5 +79,25 @@
 
     .w-sidebar {
         width: 52vw !important;
+    }
+}
+
+@media (max-height:660px){
+    .banner-tab{
+        margin-bottom: 2.5rem;
+    }
+
+    .container-tabs{
+        padding-top: 2rem;
+    }
+}
+
+@media (max-height:600px){
+    .banner-tab{
+        margin-bottom: 1.5rem;
+    }
+
+    .container-tabs{
+        padding-top: 1rem;
     }
 }

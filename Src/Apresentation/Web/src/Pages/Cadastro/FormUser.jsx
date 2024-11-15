@@ -706,7 +706,7 @@ const UserFormRegister = () => {
                                 Aceito os <Link to="/termos" className="text-blue-600">Termos</Link> de Uso
                             </span>
                         </div>
-                        <div className='w-full h-fit flex items-center justify-center gap-2 mt-2'>
+                        <div className='w-full h-fit flex items-center justify-center gap-2 my-2'>
                             {step > 1 && (
                                 <button onClick={handlePrevious}
                                     className="w-32 bg-gray-900 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-full transition-all">Voltar</button>

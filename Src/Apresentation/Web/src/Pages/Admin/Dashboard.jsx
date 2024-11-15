@@ -165,6 +165,15 @@ const Dashboard = () => {
 
       <div className='h-full w-full flex dashboard-screen '>
         <div className={` h-full w-3/12  shadow-2xl border-r-2  border-gray-300 flex flex-col ${menuSide ? ' bg-white w-sidebar z-20 absolute' : 'dash-nav '} `}>
+          {menuSide ?
+            <div className='w-full h-fit flex justify-end absolute px-4'>
+              <IoCloseOutline className='text-4xl cursor-pointer z-30 ' onClick={menuclose} />
+            </div>
+            :
+            <></>
+          }
+
+
           <div className='w-full h-1/6 flex border-b-2 border-gray-200 items-end  pb-2 justify-center' >
             <img src="https://i.postimg.cc/vB5MHPX1/DaeLink.png" className='max-sm-logo w-36' alt="Logo" />
           </div>
@@ -222,7 +231,7 @@ const Dashboard = () => {
         <div className='h-full w-9/12 dash-content'>
           <div className='h-20 w-full flex px-12 hidden menu-div items-center relative'>
             {menuSide ?
-              <IoCloseOutline className='text-4xl cursor-pointer absolute z-30 left-60' onClick={menuclose} />
+              <></>
               :
               <FiMenu className='text-4xl cursor-pointer ' onClick={menuopen} />
             }
@@ -237,7 +246,7 @@ const Dashboard = () => {
 
               {listAtual === 1 && (
                 <>
-                  <div className='w-full h-full flex flex-col items-center py-12'>
+                  <div className='w-full h-full flex flex-col items-center py-12 container-tabs'>
                     <div className='w-full h-36 flex items-center justify-center'>
                       <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gradient-to-br from-gray-900 to-gray-700  
                       border-2 items-center justify-center px-5 mb-16 '>
@@ -302,10 +311,10 @@ const Dashboard = () => {
 
               {listAtual === 2 && (
                 <>
-                  <div className='w-full h-full flex flex-col items-center pt-12 px-4'>
+                  <div className='w-full h-full flex flex-col items-center pt-12 px-4 container-tabs'>
                     <div className='w-full h-36 flex items-center justify-center'>
                       <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gradient-to-br from-red-500 to-gray-400  
-                border-2 items-center justify-center px-5 mb-16 '>
+                border-2 items-center justify-center px-5 mb-16 banner-tab '>
                         <h1 className='font-bold text-2xl text-white'>Usuários</h1>
                       </div>
                     </div>
@@ -369,10 +378,10 @@ const Dashboard = () => {
 
               {listAtual === 3 && (
                 <>
-                  <div className='w-full h-full flex flex-col items-center pt-12 px-4'>
+                  <div className='w-full h-full flex flex-col items-center pt-12 px-4 container-tabs'>
                     <div className='w-full h-36 flex items-center justify-center'>
                       <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gradient-to-br from-blue-500 to-gray-400  
-                border-2 items-center justify-center px-5 mb-16 '>
+                border-2 items-center justify-center px-5 mb-16 banner-tab'>
                         <h1 className='font-bold text-2xl text-white'>Empresas</h1>
                       </div>
                     </div>
@@ -436,11 +445,11 @@ const Dashboard = () => {
 
               {listAtual === 4 && (
                 <>
-                  <div className='w-full h-full flex flex-col items-center pt-12 px-4'>
+                  <div className='w-full h-full flex flex-col items-center pt-12 px-4 container-tabs'>
 
                     <div className='w-full h-36 flex items-center justify-center'>
                       <div className='w-64 h-20 rounded-3xl shadow-2xl flex bg-gradient-to-br from-green-500 to-gray-400 
-                border-2 items-center justify-center px-5 mb-16 '>
+                border-2 items-center justify-center px-5 mb-16 banner-tab '>
                         <h1 className='font-bold text-2xl text-white'>Vagas</h1>
                       </div>
                     </div>
