@@ -6,6 +6,7 @@ from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials, firestore
 import logging
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
@@ -40,8 +41,8 @@ def get_jobs_from_firestore():
 
 def combine_title_and_description(job):
     """Combina o título do trabalho e a descrição em um único campo de texto."""
-    title = job.get('trabalho', '')  # Campo 'trabalho' que representa o título
-    description = job.get('descrição', '')  # Campo 'descrição'
+    title = job.get('trabalho', '')  
+    description = job.get('descrição', '')  
     return f"{title} {description}"
 
 def find_job_index_by_similar_description_and_title(title, description, jobs, threshold=0.2):
@@ -70,18 +71,17 @@ def find_job_index_by_similar_description_and_title(title, description, jobs, th
 
     # Verifica se a similaridade excede o limiar configurado
     if cosine_similarities[most_similar_job_index] >= threshold:
-        return most_similar_job_index, cosine_similarities[most_similar_job_index]  # Retorna índice e valor de similaridade
-
+        return most_similar_job_index, cosine_similarities[most_similar_job_index] 
     return None, None
 
 # Rota para recomendação de vagas
 @app.route('/recommend', methods=['POST'])
 def recommend():
     try:
-        jobs = get_jobs_from_firestore()  # Obtem todas as vagas do Firestore
+        jobs = get_jobs_from_firestore()
         data = request.json
-        job_title = data.get('trabalho', '')  # O título da vaga
-        job_description = data.get('trabalho', '')  # A descrição da vaga
+        job_title = data.get('trabalho', '')  
+        job_description = data.get('trabalho', '') 
 
         if not job_title and not job_description:
             return jsonify({"error": "Os campos 'trabalho' ou 'descrição' são necessários."}), 400
@@ -93,10 +93,13 @@ def recommend():
         job_index, similarity = find_job_index_by_similar_description_and_title(job_title, job_description, jobs, threshold=0.2)
 
         if job_index is None:
-            return jsonify({"error": "Nenhuma vaga correspondente encontrada."}), 404  # Retorna erro 404 se não encontrar
+            return jsonify({"error": "Nenhuma vaga correspondente encontrada."}), 404  
 
         print(f"Vaga encontrada com similaridade: {similarity}")
 
+
+        
+        
         # Cria a matriz TF-IDF para as vagas
         job_texts = [combine_title_and_description(job) for job in jobs]
         tfidf_vectorizer = TfidfVectorizer()
@@ -106,8 +109,15 @@ def recommend():
         related_docs_indices = cosine_similarities.argsort()[:-20:-1]
 
         recommendations = [jobs[i] for i in related_docs_indices if i != job_index]
-        recommendations.insert(0, jobs[job_index])  # Coloca a vaga encontrada no início da lista
-
+        recommendations.insert(0, jobs[job_index]) 
+    
+        recomend_table = pd.DataFrame({
+            "Quantidade": [job_index],
+            "Similaridade": [similarity],            
+        })
+        print("\n")
+        print(recomend_table.head())
+        print("\n")
         return jsonify(recommendations)
 
     except Exception as e:
@@ -118,7 +128,7 @@ def recommend():
 @app.route('/profile', methods=['POST'])
 def recommend_profile():
     try:
-        jobs = get_jobs_from_firestore()  # Obtem todas as vagas do Firestore
+        jobs = get_jobs_from_firestore()  
         data = request.json
         job_id = data.get('id')
 
@@ -131,8 +141,8 @@ def recommend_profile():
         job_index = next((index for (index, job) in enumerate(jobs) if job["id"] == job_id), None)
 
         if job_index is None:
-            return jsonify({"error": "Nenhuma pessa encontrada com o ID fornecido."}), 404  # Retorna erro 404 se não encontrar
-
+            return jsonify({"error": "Nenhuma pessa encontrada com o ID fornecido."}), 404 
+        
         job_texts = [combine_title_and_description(job) for job in jobs]
         tfidf_vectorizer = TfidfVectorizer()
         tfidf = tfidf_vectorizer.fit_transform(job_texts)
@@ -141,7 +151,7 @@ def recommend_profile():
         related_docs_indices = cosine_similarities.argsort()[:-5:-1]
 
         recommendations = [jobs[i] for i in related_docs_indices if i != job_index]
-        recommendations.insert(0, jobs[job_index])  # Coloca a vaga encontrada no início da lista
+        recommendations.insert(0, jobs[job_index])
 
         return jsonify(recommendations)
 
