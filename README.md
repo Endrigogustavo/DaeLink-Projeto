@@ -35,6 +35,7 @@ O objetivo do Daelink é facilitar o processo de recrutamento para empresas que 
 # Para Profissionais
 
 Cadastro: Crie uma conta de profissional.
+
 Criação de Perfil: Preencha seu perfil com informações sobre suas habilidades e experiências.
 
 Busca de Vagas: Utilize a ferramenta de busca para encontrar vagas adequadas.
@@ -63,6 +64,7 @@ Candidatura: Candidate-se diretamente às vagas através da plataforma.
 ## Screenshots
 
 ![App Screenshot](https://i.postimg.cc/4dYvbVmy/Captura-de-tela-2024-10-26-205410.png)
+
 
 ## Documentação de cores
 
