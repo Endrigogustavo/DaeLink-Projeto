@@ -37,9 +37,9 @@ function Profile() {
 
     //useEffect é utilizado por ser chamado toda vez que o site for renderizado (F5)
     useEffect(() => {
-        const getUser = async() => {
+        const getUser = async () => {
             const storedUserId = await axios.get('http://localhost:3000/getcookie', { withCredentials: true });
-        setUserId(storedUserId.data)
+            setUserId(storedUserId.data)
         }
         getUser()
 
@@ -140,10 +140,9 @@ function Profile() {
                                         <h2 className='font-medium text-lg'>Informações</h2>
                                     </div>
 
-                                    <div className='flex gap-1 h-fit items-center'>
+                                    <div className='items-center break-words flex-wrap overflow-hidden '>
                                         <h2 className='font-medium text-lg'>Email:</h2>
                                         {userProfile.email}
-
                                     </div>
 
                                     <div className='flex gap-1 h-fit items-center'>
@@ -162,7 +161,7 @@ function Profile() {
 
                                 </div>
 
-                                <div className='w-72 h-fit rounded-3xl shadow-2xl border-2 border-gray-300 p-4 gap-2'>
+                                <div className='w-72 h-fit rounded-3xl shadow-2xl border-2 border-gray-300 p-4 gap-2 break-words'>
                                     <div className='flex w-full justify-center gap-1'>
                                         <FaNoteSticky className='text-2xl' />
                                         <h2 className='font-semibold text-lg'>Descrição</h2>
@@ -171,7 +170,7 @@ function Profile() {
 
                                 </div>
 
-                                <div className='w-72 h-fit rounded-3xl shadow-2xl border-2 border-gray-300 p-4 gap-2'>
+                                <div className='w-72 h-fit rounded-3xl shadow-2xl border-2 border-gray-300 p-4 gap-2 break-words'>
                                     <div className='flex w-full justify-center gap-1'>
                                         <IoDocumentText className='text-2xl' />
                                         <h2 className='font-semibold text-lg'>Experiências</h2>
@@ -193,7 +192,7 @@ function Profile() {
                                         >Editar Perfil</button>
                                         <button className=" w-40 bg-transparent hover:bg-red-400 font-bold 
                                              py-2 px-4 rounded-full transition-all border-2 border-gray-300"
-                                             onClick={handleOpenModal}
+                                            onClick={handleOpenModal}
                                         >Logout</button>
                                     </div>
                                 </div>

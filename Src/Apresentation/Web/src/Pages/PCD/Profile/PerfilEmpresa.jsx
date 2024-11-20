@@ -131,13 +131,13 @@ function Profile() {
                                         <FaUser className='text-2xl' />
                                         <h2 className='font-medium text-lg'>Informações</h2>
                                     </div>
-                                    <div className='flex gap-1 h-fit items-center'>
+                                    <div className='items-center break-words flex-wrap overflow-hidden '>
                                         <h2 className='font-medium text-lg'>Email:</h2>
                                         {userProfile.email}
                                     </div>
 
-                                    <div className='flex gap-1 h-fit items-center'>
-                                        <h2 className='font-medium text-lg truncate'>Endereço:</h2>
+                                    <div className='items-center break-words flex-wrap overflow-hidden'>
+                                        <h2 className='font-medium text-lg'>Endereço:</h2>
                                         {userProfile.endereco}
 
                                     </div>

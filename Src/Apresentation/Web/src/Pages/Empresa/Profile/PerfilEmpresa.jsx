@@ -95,7 +95,7 @@ function Profile() {
                     <div className='w-full h-fit flex flex-col items-center'>
                         <div className='w-4/5 profilecontent-responsive'>
                             <h1 class="text-gray-900 font-bold text-xl leading-8">{userProfile.name}</h1>
-                            <h3 class="text-gray-900 font-lg text-semibold leading-6">{userProfile.trabalho}</h3>
+                            <h3 class="text-gray-900 font-lg text-semibold leading-6">{userProfile.area}</h3>
                             <p class="text-sm text-gray-500 hover:text-gray-600 leading-6 ">
                                 {userProfile.sobre}
                             </p>
@@ -128,12 +128,12 @@ function Profile() {
                                         <FaUser className='text-2xl' />
                                         <h2 className='font-medium text-lg'>Informações</h2>
                                     </div>
-                                    <div className='flex gap-1 h-fit items-center'>
+                                    <div className='items-center break-words flex-wrap overflow-hidden'>
                                         <h2 className='font-medium text-lg'>Email:</h2>
                                         {userProfile.email}
                                     </div>
 
-                                    <div className='flex gap-1 h-fit items-center'>
+                                    <div className='items-center break-words flex-wrap overflow-hidden'>
                                         <h2 className='font-medium text-lg truncate'>Endereço:</h2>
                                         {userProfile.endereco}
 

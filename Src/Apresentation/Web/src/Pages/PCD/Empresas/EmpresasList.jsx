@@ -59,7 +59,7 @@ function EmpresasList() {
             <div
                 ref={containerRef}
                 className={`w-full h-fit flex justify-center items-center flex-col ${
-                    (loading || empresas.length > 0) && 'grid Empresascontainer gap-4   gap-y-12 justify-items-center items-center py-4'
+                    (loading || empresas.length > 0) && 'grid Empresascontainer gap-4   gap-y-12 justify-items-center items-center py-4 pb-8'
                 }`}
             >
                 {loading ? (

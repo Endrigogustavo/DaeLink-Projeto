@@ -356,7 +356,11 @@ const Dashboard = () => {
                           </div>
                           <div className='h-full w-2/6 flex flex-col  items-center justify-center overflow-hidden'>
                             <h1 className='font-bold text-center'>{list.name}</h1>
-                            <p className='font-normal text-center'>{list.trabalho}</p>
+                            <p className="font-normal text-center">
+                              {list.trabalho.split(' ').length > 2
+                                ? `${list.trabalho.split(' ').slice(0, 2).join(' ')}...`
+                                : list.trabalho}
+                            </p>
                           </div>
 
                           <div className='h-full w-2/6 flex flex-col  items-center justify-center '>
@@ -493,7 +497,13 @@ const Dashboard = () => {
                             </div>
                             <div className='h-full w-2/6 flex flex-col items-center justify-center overflow-hidden'>
                               <h1 className='font-bold text-center'>{list.vaga}</h1>
-                              <p className='font-normal text-center'>{empresa.empresaname || 'Empresa não encontrada'}</p> {/* Caso o nome da empresa não seja encontrado */}
+                              <p className="font-normal text-center">
+                                {empresa.empresaname
+                                  ? empresa.empresaname.split(' ').length > 2
+                                    ? `${empresa.empresaname.split(' ').slice(0, 2).join(' ')}...`
+                                    : empresa.empresaname
+                                  : 'Empresa não encontrada'}
+                              </p>
                             </div>
                             <div className='h-full w-2/6 flex flex-col items-center justify-center'>
                               <button onClick={() => UpdateVaga(list.id)} type="submit"

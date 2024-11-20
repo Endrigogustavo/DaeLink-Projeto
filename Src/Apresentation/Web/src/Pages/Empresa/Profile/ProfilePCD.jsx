@@ -144,7 +144,7 @@ function Profile() {
                     <div className='w-full h-fit flex flex-col items-center'>
                         <div className='w-4/5 profilecontent-responsive'>
                             <h1 class="text-gray-900 font-bold text-xl leading-8">{userProfile.name}</h1>
-                            <h3 class="text-gray-900 font-lg text-semibold leading-6">{userProfile.area}</h3>
+                            <h3 class="text-gray-900 font-lg text-semibold leading-6">{userProfile.trabalho}</h3>
                             <p class="text-sm text-gray-500 hover:text-gray-600 leading-6 ">
                                 {userProfile.sobre}
                             </p>
@@ -163,8 +163,8 @@ function Profile() {
                                             alt="" />
                                     </div>
 
-                                    <div className='w-3/5 h-full flex flex-col items-center justify-center gap-2'>
-                                        <h3 className='font-medium'>{rec.name}</h3>
+                                    <div className='w-3/5 h-full flex flex-col items-center justify-center gap-2 '>
+                                        <h3 className='font-medium text-center truncate w-full '>{rec.name}</h3>
                                         <button class="w-20 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2  rounded-full transition-all text-sm"
                                             onClick={() => handleButtonClick(rec.id)}>Visitar</button>
                                     </div>
@@ -203,7 +203,7 @@ function Profile() {
                                         <h2 className='font-medium text-lg'>Informações</h2>
                                     </div>
 
-                                    <div className='flex gap-1 h-fit items-center'>
+                                    <div className='items-center break-words flex-wrap overflow-hidden'>
                                         <h2 className='font-medium text-lg'>Email:</h2>
                                         {userProfile.email}
 
@@ -224,7 +224,7 @@ function Profile() {
 
                                 </div>
 
-                                <div className='w-72 h-fit rounded-3xl shadow-2xl border-2 border-gray-300 p-4 gap-2'>
+                                <div className='w-72 h-fit rounded-3xl shadow-2xl border-2 border-gray-300 p-4 gap-2 break-words'>
                                     <div className='flex w-full justify-center gap-1'>
                                         <FaNoteSticky className='text-2xl' />
                                         <h2 className='font-semibold text-lg'>Descrição</h2>
@@ -233,7 +233,7 @@ function Profile() {
 
                                 </div>
 
-                                <div className='w-72 h-fit rounded-3xl shadow-2xl border-2 border-gray-300 p-4 gap-2'>
+                                <div className='w-72 h-fit rounded-3xl shadow-2xl border-2 border-gray-300 p-4 gap-2 break-words'>
                                     <div className='flex w-full justify-center gap-1'>
                                         <IoDocumentText className='text-2xl' />
                                         <h2 className='font-semibold text-lg'>Experiências</h2>

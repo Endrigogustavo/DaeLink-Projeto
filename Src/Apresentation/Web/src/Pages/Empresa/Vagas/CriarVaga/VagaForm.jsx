@@ -233,9 +233,9 @@ const VagaForm = () => {
                 </div>
 
                 <div className="flex gap-2">
-                    <button onClick={handleRegister} className='w-32 h-12 bg-blue-500 hover:bg-blue-700 transition-all text-white py-2 px-4 rounded-full'
+                    <button onClick={handleRegister} className='w-40 h-12 bg-blue-700 hover:bg-blue-500 transition-all text-white py-2 px-4 rounded-full'
                     >Registrar</button>
-                    <button onClick={HandleCancel} className="w-32 h-12 bg-red-500 hover:bg-red-700 transition-all text-white py-2 px-4 rounded-full"
+                    <button onClick={HandleCancel} className="w-40 h-12 bg-red-500 hover:bg-red-600 transition-all text-white py-2 px-4 rounded-full"
                     > Cancelar</button>
                 </div>
             </div>
