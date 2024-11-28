@@ -58,7 +58,7 @@ export default StyleSheet.create({
    width: '100%',
    alignItems: 'center',
    borderColor: '#4369F1',
-   borderWidth:1,
+   borderWidth:0.5,
    borderRadius:30,
    padding: 5,
    marginBottom: 10,
@@ -81,8 +81,9 @@ export default StyleSheet.create({
   },
   EntradaText: {
    flex: 1,
-   height: 45,
+   height: 30,
    fontSize: 16,
+   color: '#A9A9A9',
   },
   errorText: {
   color: '#ff375b',

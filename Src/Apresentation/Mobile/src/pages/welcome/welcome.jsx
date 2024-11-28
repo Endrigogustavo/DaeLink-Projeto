@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import{View, Text, StyleSheet,Image, Touchable, TouchableOpacity} from 'react-native'
+import{View, Text, StyleSheet,Image, Touchable, TouchableOpacity, Platform} from 'react-native'
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
 export default function Welcome(){
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: '100%',
-        top: -100,
+        top:Platform.OS === 'ios'? -100 : 0,
     },
     logo:{
         width: 200,  
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize:15,
-        margin: 25, 
+        margin:Platform.OS === 'ios'? 25 : 0, 
         fontWeight:'bold',
         marginTop: 28,
         marginBottom:'#111827',
@@ -95,10 +95,10 @@ const styles = StyleSheet.create({
         backgroundColor:'#1D3FAD',
         borderRadius:50,
         paddingVertical:8,
-        width:'70%',
-        height: '18%',
+        width: Platform.OS ==='ios'?'70%' : '60%',
+        height: Platform.OS ==='ios'? '18%' : '21%',
         alignSelf:'center',
-        bottom:'20%',
+        bottom: Platform.OS ==='ios'? '20%' : '10%',
         alignItems:'center',
         justifyContent: 'center',
        

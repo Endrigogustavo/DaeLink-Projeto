@@ -9,12 +9,16 @@ import { MaterialIcons,FontAwesome5,FontAwesome6 } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import Toast from 'react-native-toast-message';
 
+
+
 export default function Processo() {
     //Variaveis que armazenam, e buscam resultados 
    const navigation = useNavigation();
    const [vagas, setVagas] = useState([]);//array vazio
    const [userId, setUserId] = useState(['']);//
    const [loading, setLoading] = useState(true);
+
+
 
    useEffect(() => {
     if (auth.currentUser) {
@@ -113,7 +117,7 @@ const handleChat = (empresaId) =>{
     if (situação === 'Aprovado') {
         return { backgroundColor: '#22c55e' };
             }
-     if (situação === 'Reprovado') {
+     if (situação === 'Recusado') {
         return { backgroundColor: '#dc2626' }; 
             }
      if (situação === 'Pendente') {

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
   container: {
@@ -27,9 +27,9 @@ export default StyleSheet.create({
     fontSize: 30, 
     fontWeight: 'bold',
     color: '#828CD9',
-    marginBottom: 0,
+    marginBottom: Platform.OS ==='ios'? 0:20,
     textAlign: 'center',
-    top: -100
+    top: Platform.OS === 'ios'?-100 : 0
   },
   inputArea:{
 flexDirection:'row',
@@ -45,11 +45,11 @@ alignItems: 'center',
     fontSize: 16,
     paddingLeft: 10,
     color: '#828CD9',
-    top: -60
+    top:Platform.OS === 'ios'?-60 : 0
     
   },
   icon:{
-    top: -70
+    top: Platform.OS === 'ios'?-70 : 0
     
   },
   button: {
@@ -73,7 +73,7 @@ alignItems: 'center',
   },
   labelError: {
     alignSelf: 'flex-start',
-    color: '#828CD9',
+    color: '#ff375b',
     marginBottom: 8,
     marginLeft: 20,
   },

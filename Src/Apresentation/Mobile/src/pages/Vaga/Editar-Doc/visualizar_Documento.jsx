@@ -14,6 +14,7 @@ import * as DocumentPicker from "expo-document-picker"
 
 import Toast from 'react-native-toast-message';
 import Alert from '../../Alert/Alert';
+import { Input, Block } from 'galio-framework';
 
 import style from "./styleViDoc";
 
@@ -413,6 +414,7 @@ const headerScrollHeight = scrollOffsetY.interpolate({
                     value={userData.name}
                     onChangeText={(text)=> setUserData({...userData, name:text})}
                     style={style.EntradaText}
+                    
                 />
                 </View>
 
@@ -421,7 +423,7 @@ const headerScrollHeight = scrollOffsetY.interpolate({
                      <View style={style.iconContainer}>
                           <MaterialIcons name="alternate-email" size={24} color="white" />
                        </View>
-                       <TextInput
+                    <TextInput
                     value={userData.email}
                     onChangeText={(text) => handleInputChange('email', text)}
                     style={[style.EntradaText, {

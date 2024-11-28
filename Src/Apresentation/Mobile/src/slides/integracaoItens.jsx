@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, useWindowDimensions, item } from 'react-native'
+import { View, Text, StyleSheet, Image, useWindowDimensions, item ,Platform} from 'react-native'
 import React from 'react'
 
 
@@ -12,7 +12,8 @@ const {width} = useWindowDimensions();
 
       <View style={{flex:0.3}}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <Text style={[styles.description, { paddingHorizontal: width * 0.1 }]} numberOfLines={5}>
+          {item.description}</Text>
 
       </View>
     </View>
@@ -24,25 +25,30 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff',
+   
   },
+  
+
   image: {
-  flex:0.7,
+  flex:0.5,
   justifyContent: 'center',
   margin: 30,
+  borderRadius:20
   },
 
   title:{
-    fontWeight:'800',
-    fontSize:30,
-    marginBottom:10,
+    fontWeight: '800',
+    fontSize:Platform.OS ==='ios'? 30:22,
+    marginBottom:Platform.OS ==='ios'? 10:2,
     color:'#493d8a',
     textAlign:'center'
   },
   description:{
-    fontWeight:'500',
-    fontSize:18,
+    fontWeight:'600',
+    fontSize:13,
     color:'#62656b',
-    textAlign:'center',
-    paddingHorizontal:64
+    textAlign:'justify',
+    flexShrink: 1,
   }
 })

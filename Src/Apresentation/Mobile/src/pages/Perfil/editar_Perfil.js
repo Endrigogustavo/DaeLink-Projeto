@@ -309,7 +309,6 @@ justifyContent: 'center' },
     borderColor: '#fff',
     borderWidth: 3,
     borderColor: '#4369F1',
-   
   },
 
   //

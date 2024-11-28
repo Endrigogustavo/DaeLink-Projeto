@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Mobile",
-    "slug": "Mobile",
+    "name": "DAELink",
+    "slug": "DAELink",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,25 +9,21 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#1D3FAD"
+      "backgroundColor": "#828CD9"
     },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.endrigo938.Mobile"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#111827"
-      }
+        "backgroundColor": "#828CD9"
+      },
+      "package": ""
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "8c2c7e70-d6c7-4192-84ad-03d8e4b82de9"
-      }
+     }
     }
   }
-}
+

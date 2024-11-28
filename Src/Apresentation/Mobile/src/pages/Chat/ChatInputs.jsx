@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet,TouchableOpacity, TextInput, Platform  } from 'react-native'
+import { View, Text, StyleSheet,TouchableOpacity, TextInput, Platform,   } from 'react-native'
 import React, {useState} from 'react';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { addDoc, collection, orderBy, query, where, serverTimestamp, limit, getDoc, doc, getDocs } from 'firebase/firestore';
@@ -37,7 +37,8 @@ const CreateMessagem = async ()=>{
         <Input
          style={{ borderColor: "blue", borderRadius: 22, width:'125%', marginLeft:10 }}
             bottomHelp
-            placeholderTextColor="#4F8EC9"
+            multiline 
+            placeholder='Digite sua mensagem aqui...' 
             value={formValue}
             onChangeText={(text) => setFormValue(text)}
         />
@@ -55,12 +56,12 @@ const CreateMessagem = async ()=>{
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingHorizontal: Platform.OS === 'ios' ? 10 : 0,
+    paddingVertical: Platform.OS === 'ios' ? 10 : 5,
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
+    justifyContent: Platform.OS === 'ios' ? 'space-between' : 'center',
+   padding: Platform.OS === 'ios' ? 0: 10,
   },
   innerContainer: {
     flexDirection: 'row',
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderWidth: 2,
     borderColor:'#0000ff',
-    borderRadius: 20,
+    
   },
   input: {
     flex: 1,
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
   rightIconButtonStyle: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal:10,
     borderLeftWidth: 1,
     borderLeftColor: '#ccc',
   },

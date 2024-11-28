@@ -82,11 +82,10 @@ export default function Editar() {
 
  const DeletPerf = async (id)=>{
    try{
-    const auth =getAuth();
-    const user = auth.currentUser();
-    const UserInfo = doc(db, "PCD", id);
+    const user = auth.currentUser;
+    const UserInfo = doc(db, "PCD", user.uid);
     await deleteDoc(UserInfo);
-    localStorage.removeItem('userId');
+    await user.delete();
     navigation.navigate('Login')
     Toast.show({
       type: 'ResetSenha',
