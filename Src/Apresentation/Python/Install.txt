@@ -1,1 +1,0 @@
-pip install Flask scikit-learn firebase-admin flask-cors

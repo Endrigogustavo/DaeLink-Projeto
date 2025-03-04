@@ -1,1 +1,8 @@
 Src/Apresentation/Backend/FirebaseDaeLink.json
+
+# Ignorar o arquivo específico
+Src/Apresentation/Api/src/main/resources/daelinkKey.json
+
+# Ou ignorar todos os arquivos .json nesse diretório
+Src/Apresentation/Api/src/main/resources/*.json
+
