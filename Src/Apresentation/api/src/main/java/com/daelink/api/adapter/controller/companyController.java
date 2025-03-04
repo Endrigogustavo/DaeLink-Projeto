@@ -33,9 +33,8 @@ public class companyController {
         }
     }
 
-    @PostMapping("/craate")
-    public String createCompany() {
-
+    @PostMapping("/createJob")
+    public String createJobCompany() {
         return "Company";
     }
 }
