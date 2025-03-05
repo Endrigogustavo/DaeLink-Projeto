@@ -1,17 +1,13 @@
 package com.daelink.api.useCase.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.stereotype.Service;
 
 import com.daelink.api.entity.model.companyEntity;
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QuerySnapshot;
 
 @Service
 public class companyService {

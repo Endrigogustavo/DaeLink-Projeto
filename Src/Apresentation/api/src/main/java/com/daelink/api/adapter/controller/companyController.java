@@ -2,7 +2,9 @@ package com.daelink.api.adapter.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,14 +23,23 @@ public class companyController {
         try {
             return ResponseEntity.ok(service.getAllCompanies());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao buscar empresas");
+            return ResponseEntity.badRequest().body("Erro ao buscar empresas " + e.getMessage());
         }
     }
 
-    @GetMapping("/getCompanyById")
-    public ResponseEntity<?> getCompanyById() {
+    @GetMapping("/getCompanyById/{id}")
+    public ResponseEntity<?> getCompanyById(@PathVariable String id) {
         try {
-            return ResponseEntity.ok(service.getCompanyById("u3wdvwj1ggaeoZ272POPq058Z0K3"));
+            return ResponseEntity.ok(service.getCompanyById(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao buscar empresa " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/getMyCompany")
+    public ResponseEntity<?> getMyCompany(@CookieValue(name = "token", defaultValue="null") String id) {
+        try {
+            return ResponseEntity.ok(service.getCompanyById(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao buscar empresa " + e.getMessage());
         }

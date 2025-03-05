@@ -14,7 +14,7 @@ public class personWithDisabilityEntity {
     private String name;
     private String email;
     private String experiencias;
-    private Date idade;
+    private String idade;
     private String sobre;
     private String tipo;
     private String trabalho;
