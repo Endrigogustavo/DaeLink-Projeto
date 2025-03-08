@@ -1,5 +1,7 @@
 package com.daelink.api.entity.model;
 
+import com.google.cloud.firestore.annotation.DocumentId;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class companyEntity {
+      @DocumentId
       private String id;
       private String name;
       private String email;

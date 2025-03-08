@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.daelink.api.entity.model.candidateEntity;
 import com.daelink.api.entity.model.companyEntity;
 import com.daelink.api.entity.model.workEntity;
+import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 
@@ -51,17 +52,24 @@ public class workService {
 
     public List<workEntity> getVagasByEmpresa(String empresaId) throws ExecutionException, InterruptedException {
         return firestore.collection("Vagas")
-                .whereEqualTo("empresaId", empresaId) 
+                .whereEqualTo("empresaId", empresaId)
                 .get().get().getDocuments()
                 .stream()
                 .map(document -> {
                     workEntity vaga = document.toObject(workEntity.class);
                     if (vaga != null) {
-                        vaga.setWorkId(document.getId()); 
+                        vaga.setWorkId(document.getId());
                     }
                     return vaga;
                 })
                 .collect(Collectors.toList());
     }
-    
+
+    public String createWork(workEntity work, String empresaId) throws InterruptedException, ExecutionException {
+        work.setEmpresaId(empresaId);
+        work.setStatus("Aberta");
+        CollectionReference usersCollection = firestore.collection("Vagas");
+        usersCollection.add(work).get();
+        return "Vaga de trabalho salva com sucesso!";
+    }
 }
