@@ -136,7 +136,7 @@ export default function Example() {
         setModalOpen(true)
         setTimeout(() => {
           localStorage.removeItem('VagaId');
-          navigate(`/processos`);
+          navigate(`/homeuser/processos/`);
         }, 4000);
       }
 
