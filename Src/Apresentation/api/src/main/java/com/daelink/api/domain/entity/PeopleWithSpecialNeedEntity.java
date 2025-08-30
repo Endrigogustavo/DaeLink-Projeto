@@ -1,7 +1,7 @@
 package com.daelink.api.domain.entity;
 
 import java.time.LocalDate;
-import java.util.UUID;
+
 
 import com.daelink.api.domain.enums.UserType;
 import jakarta.persistence.*;
@@ -22,8 +22,8 @@ public class PeopleWithSpecialNeedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
-    private UUID id;
+    @Column(columnDefinition = "String", updatable = false, nullable = false)
+    private String id;
 
     @NotBlank(message = "O CPF é obrigatório")
     @Size(min = 11, max = 14, message = "O CPF deve ter entre 11 e 14 caracteres")

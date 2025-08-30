@@ -1,6 +1,6 @@
 package com.daelink.api.domain.entity;
 
-import java.util.UUID;
+
 
 import com.daelink.api.domain.enums.UserType;
 
@@ -22,8 +22,8 @@ public class CompanyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) 
-    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
-    private UUID id;
+    @Column(columnDefinition = "String", updatable = false, nullable = false)
+    private String id;
 
     @NotBlank(message = "O CNPJ é obrigatório")
     @Size(min = 14, max = 18, message = "O CNPJ deve ter entre 14 e 18 caracteres")

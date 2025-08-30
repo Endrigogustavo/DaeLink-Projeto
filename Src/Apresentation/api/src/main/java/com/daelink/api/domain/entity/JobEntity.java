@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.UUID;
+
 
 import com.daelink.api.domain.enums.Modality;
 import com.daelink.api.domain.enums.JogStatus;
@@ -23,8 +23,8 @@ public class JobEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
-    private UUID id;
+    @Column(columnDefinition = "String", updatable = false, nullable = false)
+    private String id;
 
     @NotBlank(message = "O nome da vaga é obrigatório")
     @Column(nullable = false, length = 150)
