@@ -1,7 +1,10 @@
 package com.daelink.api.useCase.service.company;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.daelink.api.domain.entity.CompanyEntity;
 import com.daelink.api.driver.repository.CompanyRepository;
 
 import lombok.RequiredArgsConstructor;

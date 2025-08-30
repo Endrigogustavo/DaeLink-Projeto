@@ -19,6 +19,10 @@ public class ShowJob {
                 .orElseThrow(() -> new RuntimeException("Job not found"));
     }
 
+    public List<JobEntity> getByUserId(String userId) {
+        return jobRepository.findByUserId(userId);
+    }
+
     public List<JobEntity> getAll() {
         return jobRepository.findAll();
     }
@@ -28,6 +32,7 @@ public class ShowJob {
     }
 
     public List<JobEntity> getByTitle(String title) {
-        return jobRepository.findByTitle(title);
+        return jobRepository.findByTitle(title)
+                .orElseThrow(() -> new RuntimeException("Job not found"));
     }
 }
